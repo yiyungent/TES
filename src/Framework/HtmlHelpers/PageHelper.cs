@@ -78,10 +78,12 @@ namespace Framework.HtmlHelpers
                 tag.InnerHtml = i.ToString();
                 if (i == pageInfo.PageIndex)
                 {
-                    tag.AddCssClass("selected");
-                    tag.AddCssClass("btn-primary");
+                    tag.AddCssClass("btn btn-primary selected");
                 }
-                tag.AddCssClass("btn btn-default");
+                else
+                {
+                    tag.AddCssClass("btn btn-default");
+                }
                 sbResult.Append(tag.ToString());
             }
             #endregion
