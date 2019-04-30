@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Framework.Config;
 
 namespace Framework.Infrastructure.Concrete
 {
@@ -32,6 +33,16 @@ namespace Framework.Infrastructure.Concrete
         public RoleInfo GetGuestRoleInfo()
         {
             return Container.Instance.Resolve<RoleInfoService>().GetEntity(2);
+        }
+
+        public UserInfo GetUserInfoByTokenCookieKey(string tokenCookieValue)
+        {
+            UserInfo user = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+            {
+                Expression.Eq(AppConfig.RememberMeTokenCookieKey, tokenCookieValue)
+            }).FirstOrDefault();
+
+            return user;
         }
     }
 }

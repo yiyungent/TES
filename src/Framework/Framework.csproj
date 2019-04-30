@@ -61,11 +61,13 @@
     <Compile Include="Config\AppConfig.cs" />
     <Compile Include="Config\FrameworkConfig.cs" />
     <Compile Include="Factories\AuthManagerFactory.cs" />
+    <Compile Include="Factories\DBAccessProviderFactory.cs" />
     <Compile Include="HtmlHelpers\AuthTagHelper.cs" />
     <Compile Include="HtmlHelpers\PageHelper.cs" />
     <Compile Include="HtmlHelpers\PageInfo.cs" />
     <Compile Include="Infrastructure\Abstract\IAuthManager.cs" />
     <Compile Include="Infrastructure\Abstract\IDBAccessProvider.cs" />
+    <Compile Include="Infrastructure\Concrete\AccountManager.cs" />
     <Compile Include="Infrastructure\Concrete\AuthManager.cs" />
     <Compile Include="Infrastructure\Concrete\CurrentAccountModelBinder.cs" />
     <Compile Include="Infrastructure\Concrete\DBAccessProvider.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Mvc\WebViewPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestResult\CommonResult.cs" />
+    <Compile Include="RequestResult\LoginTimeOutResult.cs" />
     <Compile Include="RequestResult\NeedLoginResult.cs" />
     <Compile Include="RequestResult\WithoutAuthResult.cs" />
   </ItemGroup>

@@ -7,20 +7,21 @@ using System.Web.Routing;
 namespace Framework.RequestResult
 {
     /// <summary>
-    /// 指示需要登录，当前未登录
+    /// 指示需要登录，当前登录超时
+    /// <para>上次登录使用 "记住我", 当已超时</para>
     /// </summary>
-    public class NeedLoginResultProvider
+    public class LoginTimeOutResultProvider
     {
         public static ActionResult Get(bool isAjax, string returnUrl = null)
         {
             ActionResult rtnResult = null;
             if (isAjax)
             {
-                rtnResult = new Ajax_NeedLoginResult(returnUrl);
+                rtnResult = new Ajax_LoginTimeOutResult(returnUrl);
             }
             else
             {
-                rtnResult = new NeedLoginResult(returnUrl);
+                rtnResult = new LoginTimeOutResult(returnUrl);
             }
 
             return rtnResult;
@@ -39,14 +40,14 @@ namespace Framework.RequestResult
     /// 需要登录结果
     /// <para>修改自 <see cref="RedirectToRouteResult"/></para>
     /// </summary>
-    public class NeedLoginResult : ActionResult
+    public class LoginTimeOutResult : ActionResult
     {
 
-        public NeedLoginResult(string returnUrl = null)
+        public LoginTimeOutResult(string returnUrl = null)
         {
             RouteValueDictionary routeValDic = new RouteValueDictionary();
             routeValDic.Add("controller", "Errors");
-            routeValDic.Add("action", "NeedLogin");
+            routeValDic.Add("action", "LoginTimeOut");
             routeValDic.Add("area", "");
             if (!string.IsNullOrEmpty(returnUrl))
             {
@@ -75,11 +76,11 @@ namespace Framework.RequestResult
         }
     }
 
-    public class Ajax_NeedLoginResult : JsonResult
+    public class Ajax_LoginTimeOutResult : JsonResult
     {
-        public Ajax_NeedLoginResult(string returnUrl = null)
+        public Ajax_LoginTimeOutResult(string returnUrl = null)
         {
-            this.Data = new { code = -1, message = "请登录", returnUrl = returnUrl };
+            this.Data = new { code = -1, message = "登录超时，请重新登录", returnUrl = returnUrl };
             this.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             this.ReturnUrl = returnUrl;
         }

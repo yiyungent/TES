@@ -11,12 +11,16 @@ namespace Framework.Attributes
     using Service;
     using NHibernate.Criterion;
     using System.Web.Mvc;
+    using Framework.Infrastructure.Abstract;
+    using Framework.Factories;
 
     public class LoginAccountFilterAttribute : ActionFilterAttribute
     {
         private static string _sessionKeyLoginAccount = AppConfig.LoginAccountSessionKey;
         private static string _cookieKeyToken = AppConfig.RememberMeTokenCookieKey;
         private static int _rememberMeDayCount = AppConfig.RememberMeDayCount;
+
+        private static IDBAccessProvider _dBAccessProvider = DBAccessProviderFactory.Get();
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -55,10 +59,7 @@ namespace Framework.Attributes
                 if (request.Cookies[_cookieKeyToken] != null && string.IsNullOrEmpty(request.Cookies[_cookieKeyToken].Value) == false)
                 {
                     string cookieTokenValue = request.Cookies[_cookieKeyToken].Value;
-                    UserInfo user = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
-                    {
-                        Expression.Eq(_cookieKeyToken, cookieTokenValue)
-                    }).FirstOrDefault();
+                    UserInfo user = _dBAccessProvider.GetUserInfoByTokenCookieKey(cookieTokenValue);
 
                     if (user == null)
                     {

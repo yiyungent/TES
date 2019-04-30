@@ -48,18 +48,24 @@ namespace Framework.Attributes
             if (CheckRequestNeedAuth(filterContext))
             {
                 CurrentAccountModel currentAccount = new CurrentAccountModel();
-                if (CheckLoginStatus(filterContext))
-                {
-                    // 已登录--则查询当前登录用户-角色 是否拥有此请求会话权限
-                    currentAccount.UserInfo = Tools.GetSession<UserInfo>(AppConfig.LoginAccountSessionKey);
-                    currentAccount.IsGuest = false;
-                }
-                else
-                {
-                    // 未登录--则为默认游客角色--查询游客角色是否拥有此会话权限
-                    currentAccount.UserInfo = UserInfo_Guest.Instance;
-                    currentAccount.IsGuest = true;
-                }
+
+                #region 废弃
+                //if (CheckLoginStatus(filterContext))
+                //{
+                //    // 已登录--则查询当前登录用户-角色 是否拥有此请求会话权限
+                //    currentAccount.UserInfo = Tools.GetSession<UserInfo>(AppConfig.LoginAccountSessionKey);
+                //    currentAccount.IsGuest = false;
+                //}
+                //else
+                //{
+                //    // 未登录--则为默认游客角色--查询游客角色是否拥有此会话权限
+                //    currentAccount.UserInfo = UserInfo_Guest.Instance;
+                //    currentAccount.IsGuest = true;
+                //} 
+                #endregion
+
+                currentAccount = AccountManager.GetCurrentAccount();
+
                 CheckAuthSufficientAndProcess(currentAccount, filterContext);
             }
         }
@@ -108,7 +114,14 @@ namespace Framework.Attributes
                 if (currentAccount.IsGuest)
                 {
                     // 游客--游客无权限，则让其登录
-                    filterContext.Result = NeedLoginResultProvider.Get(filterContext.HttpContext.Request);
+                    if (AccountManager.CheckLoginStatus() == LoginStatus.LoginTimeOut)
+                    {
+                        filterContext.Result = LoginTimeOutResultProvider.Get(filterContext.HttpContext.Request);
+                    }
+                    else
+                    {
+                        filterContext.Result = NeedLoginResultProvider.Get(filterContext.HttpContext.Request);
+                    }
                 }
                 else
                 {
@@ -119,18 +132,20 @@ namespace Framework.Attributes
         }
         #endregion
 
-        #region 检查登录状态-已登录/未登录(登录超时)
-        private bool CheckLoginStatus(ActionExecutingContext filterContext)
-        {
-            bool isLogin = true;
-            UserInfo userInfo = Tools.GetSession<UserInfo>(AppConfig.LoginAccountSessionKey);
-            if (userInfo == null)
-            {
-                isLogin = false;
-            }
+        #region 废弃
+        //#region 检查登录状态-已登录/未登录(登录超时)
+        //private bool CheckLoginStatus(ActionExecutingContext filterContext)
+        //{
+        //    bool isLogin = true;
+        //    UserInfo userInfo = Tools.GetSession<UserInfo>(AppConfig.LoginAccountSessionKey);
+        //    if (userInfo == null)
+        //    {
+        //        isLogin = false;
+        //    }
 
-            return isLogin;
-        }
+        //    return isLogin;
+        //}
+        //#endregion 
         #endregion
 
         #region 处理需要登录（默认游客角色权限不足）的情况---转向登录处理

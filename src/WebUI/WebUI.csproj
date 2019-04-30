@@ -7042,6 +7042,7 @@
     <Content Include="Areas\Admin\Views\Shared\_Admin.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminContent.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Views\Errors\LoginTimeOut.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

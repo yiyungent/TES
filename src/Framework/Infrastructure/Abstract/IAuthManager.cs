@@ -9,9 +9,9 @@ namespace Framework.Infrastructure.Abstract
 {
     public interface IAuthManager
     {
-        bool AuthPass(UserInfo userInfo, string authKey);
+        bool CanPass(UserInfo userInfo, string authKey);
 
-        bool AuthPass(string authKey);
+        bool CanPass(string authKey);
 
         bool HasAuth(UserInfo userInfo, string authKey);
 

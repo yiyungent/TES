@@ -26,14 +26,6 @@ namespace Framework.Infrastructure.Concrete
         {
             string authName = null;
 
-            #region 废弃
-            //// 此处耦合--等待数据库操作接口
-            //FunctionInfo func = Container.Instance.Resolve<FunctionInfoService>().Query(new List<ICriterion>
-            //{
-            //    Expression.Eq("AuthKey", authKey)
-            //}).FirstOrDefault(); 
-            #endregion
-
             FunctionInfo func = _dBAccessProvider.GetFunctionInfoByAuthKey(authKey);
 
             if (func != null)
@@ -72,12 +64,7 @@ namespace Framework.Infrastructure.Concrete
         public bool HasAuth(string authKey)
         {
             // 获取当前登录用户
-            UserInfo userInfo = Tools.GetSession<UserInfo>(AppConfig.LoginAccountSessionKey);
-            if (userInfo == null)
-            {
-                // 当前未登录则为 游客
-                userInfo = UserInfo_Guest.Instance;
-            }
+            UserInfo userInfo = AccountManager.GetCurrentUserInfo();
 
             return HasAuth(userInfo, authKey);
         }
@@ -167,17 +154,27 @@ namespace Framework.Infrastructure.Concrete
         /// <summary>
         /// 认证通过--有权限/此请求不需要权限验证
         /// </summary>
-        public bool AuthPass(UserInfo userInfo, string authKey)
+        public bool CanPass(UserInfo userInfo, string authKey)
         {
-            throw new NotImplementedException();
+            bool isPass = false;
+            if (!NeedAuth(authKey) || HasAuth(userInfo, authKey))
+            {
+                isPass = true;
+            }
+
+            return isPass;
         }
 
         /// <summary>
         /// 认证通过--有权限/此请求不需要权限验证
         /// </summary>
-        public bool AuthPass(string authKey)
+        public bool CanPass(string authKey)
         {
-            throw new NotImplementedException();
+            bool isPass = false;
+            UserInfo userInfo = AccountManager.GetCurrentUserInfo();
+            isPass = CanPass(userInfo, authKey);
+
+            return isPass;
         }
         #endregion
 

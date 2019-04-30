@@ -19,5 +19,12 @@ namespace WebUI.Controllers
 
             return View();
         }
+
+        public ViewResult LoginTimeOut(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+
+            return View();
+        }
     }
 }
