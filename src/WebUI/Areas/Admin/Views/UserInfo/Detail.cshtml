@@ -1,0 +1,11 @@
+﻿@using Domain
+@model UserInfo
+@{
+	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+}
+
+<div class="input-group">
+	@Html.TextBoxFor(m => m.ID, new { @class = "form-control", @readonly = "readonly" })
+	@Html.TextBoxFor(m => m.Name, new { @class = "form-control", @readonly = "readonly" })
+	<a class="btn btn-primary" href="@Url.Action("Index")" data-pjax>返回</a>
+</div>

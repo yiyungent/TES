@@ -365,6 +365,20 @@ namespace WebUI.Controllers
                     RegTime = DateTime.Now
                 });
 
+                for (int i = 0; i < 100; i++)
+                {
+                    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo()
+                    {
+                        Name = "用户" + (i + 1),
+                        LoginAccount = "user" + (i + 1),
+                        Avatar = "/images/default-avatar.jpg",
+                        Password = EncryptHelper.MD5Encrypt32("123456"),
+                        Status = 0,
+                        RoleInfoList = null,
+                        RegTime = DateTime.Now
+                    });
+                }
+
                 ShowMessage("成功");
             }
             catch (Exception ex)

@@ -13,8 +13,8 @@ namespace WebUI.Areas.Admin.Models
 
         public AdminWebBaseInfoViewModel()
         {
-            this.Logo_mini = "<b>S</b>tore";
-            this.Logo_lg = "<b>DotKit</b>Store";
+            this.Logo_mini = "<b>T</b>ES";
+            this.Logo_lg = "<b>教学</b>评价系统";
             this.Copyright = "<strong>Copyright &copy; " + DateTime.Now.Year + " <a href=\"#\">Company</a>.</strong> All rights reserved.";
         }
     }

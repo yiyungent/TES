@@ -6516,6 +6516,9 @@
     </Content>
     <Content Include="Areas\Account\Views\Login\Index.cshtml" />
     <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\UserInfo\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\UserInfo\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\UserInfo\Index.cshtml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -6537,6 +6540,8 @@
     <Compile Include="Areas\Account\Controllers\LoginController.cs" />
     <Compile Include="Areas\Account\Models\AccountModel.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Models\UserInfoForEdit.cs" />
+    <Compile Include="Areas\Admin\Models\UserInfoListViewModel.cs" />
     <Compile Include="Controllers\ErrorsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstallController.cs" />
@@ -7054,7 +7059,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Account\Views\Shared\" />
     <Folder Include="Areas\Admin\Views\SysMenu\" />
-    <Folder Include="Areas\Admin\Views\UserInfo\" />
     <Folder Include="HtmlHelpers\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Shared\" />
