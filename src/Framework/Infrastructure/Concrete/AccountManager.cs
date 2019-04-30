@@ -48,15 +48,45 @@ namespace Framework.Infrastructure.Concrete
         /// <returns></returns>
         public static UserInfo GetCurrentUserInfo()
         {
+            HttpRequest request = HttpContext.Current.Request;
+
             // 获取当前登录用户
-            UserInfo userInfo = Tools.GetSession<UserInfo>(AppConfig.LoginAccountSessionKey);
-            if (userInfo == null)
+            UserInfo rtnUserInfo = Tools.GetSession<UserInfo>(AppConfig.LoginAccountSessionKey);
+            if (rtnUserInfo == null)
             {
-                // 当前未登录则为 游客
-                userInfo = UserInfo_Guest.Instance;
+                #region 记住我
+                if (request.Cookies.AllKeys.Contains(_rememberMeTokenCookieKey))
+                {
+                    if (request.Cookies[_rememberMeTokenCookieKey] != null && string.IsNullOrEmpty(request.Cookies[_rememberMeTokenCookieKey].Value) == false)
+                    {
+                        string cookieTokenValue = request.Cookies[_rememberMeTokenCookieKey].Value;
+                        UserInfo dbUser = _dBAccessProvider.GetUserInfoByTokenCookieKey(cookieTokenValue);
+
+                        if (dbUser == null)
+                        {
+                            // 口令不正确---游客
+                            rtnUserInfo = UserInfo_Guest.Instance;
+                        }
+                        else if (dbUser.LastLoginTime.AddDays(_rememberMeDayCount) > DateTime.UtcNow)
+                        {
+                            // 最多 "记住我" 保存7天的 登录状态
+                            rtnUserInfo = dbUser;
+                        }
+                        else
+                        {
+                            // 登录 已过期---游客
+                            rtnUserInfo = UserInfo_Guest.Instance;
+                        }
+                    }
+                }
+                else
+                {
+                    rtnUserInfo = UserInfo_Guest.Instance;
+                }
+                #endregion
             }
 
-            return userInfo;
+            return rtnUserInfo;
         }
         #endregion
 
@@ -86,6 +116,13 @@ namespace Framework.Infrastructure.Concrete
         #endregion
 
         #region 检查登录状态-已登录/未登录(登录超时)
+        /// <summary>
+        /// 检查登录状态
+        /// <para>已登录:1.Session有UserInfo 2.Cookie 有 有效Token(记住我)</para>
+        /// <para>未登录: 无Session 且 Cookie无Token(记住我)</para>
+        /// <para>登录超时: Cookie 有 Token(记住我) Token存在但已过期</para>
+        /// </summary>
+        /// <returns></returns>
         public static LoginStatus CheckLoginStatus()
         {
             LoginStatus loginStatus = LoginStatus.WithoutLogin;
@@ -125,6 +162,10 @@ namespace Framework.Infrastructure.Concrete
                             loginStatus = LoginStatus.LoginTimeOut;
                         }
                     }
+                }
+                else
+                {
+                    loginStatus = LoginStatus.WithoutLogin;
                 }
                 #endregion
 

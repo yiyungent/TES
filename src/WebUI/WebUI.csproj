@@ -7047,6 +7047,7 @@
     <Content Include="Areas\Admin\Views\RoleInfo\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\RoleInfo\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\RoleInfo\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\RoleInfo\AssignPower.cshtml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

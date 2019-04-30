@@ -10,19 +10,21 @@ using Framework.Infrastructure.Abstract;
 using Framework.Infrastructure.Concrete;
 using Framework.Models;
 using Framework.Factories;
+using Framework.Mvc;
 
 namespace WebUI.Areas.Admin.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        IAuthManager _authManager = AuthManagerFactory.Get();
+
+        public HomeController()
+        {
+
+        }
 
         #region 后台主页
         public ViewResult Index(CurrentAccountModel currentAccount)
         {
-            ViewBag.LoginAccount = currentAccount.UserInfo;
-
-            ViewBag.MenuList = _authManager.GetMenuListByAccount(currentAccount.UserInfo);
 
             return View();
         }

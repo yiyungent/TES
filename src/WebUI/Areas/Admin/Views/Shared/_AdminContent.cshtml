@@ -1,7 +1,8 @@
 ﻿@using WebUI.Areas.Admin.Models
 @using WebUI.Extensions
 @{
-	if (Request.IsPjaxRequest())
+	bool isPjax = Request.IsPjaxRequest();
+	if (isPjax)
 	{
 		// PJAX 请求返回部分
 		Layout = null;
@@ -12,7 +13,20 @@
 		Layout = "~/Areas/Admin/Views/Shared/_Admin.cshtml";
 	}
 }
+@if (isPjax == false)
+{
+	@section head {
+		@RenderSection("head", false)
+	}
+	@section body {
+		@RenderSection("body", false)
+	}
+}
 
+@if (isPjax)
+{
+	@RenderSection("head", false)
+}
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -34,3 +48,7 @@
 </section>
 <!-- /.content -->
 
+@if (isPjax)
+{
+	@RenderSection("body", false)
+}

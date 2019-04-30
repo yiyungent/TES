@@ -249,7 +249,6 @@ namespace WebUI.Controllers
                     Name = "后台首页"
                 });
 
-
                 IList<ICriterion> qryWhere = new List<ICriterion>();
 
                 // 5-16
@@ -282,6 +281,16 @@ namespace WebUI.Controllers
                         }
                     }
                 }
+
+                // 角色RoleInfo菜单 增加授权操作
+                Sys_Menu roleInfo_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "RoleInfo") }).FirstOrDefault();
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.RoleInfo.AssignPower",
+                    Name = "角色管理-授权",
+                    Sys_Menu = roleInfo_Sys_Menu
+                });
+
 
                 ShowMessage("成功");
             }

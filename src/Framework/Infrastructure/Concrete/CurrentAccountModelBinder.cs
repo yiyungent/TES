@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using Framework.Infrastructure.Abstract;
+using Framework.Factories;
 
 namespace Framework.Infrastructure.Concrete
 {
@@ -22,6 +24,8 @@ namespace Framework.Infrastructure.Concrete
         private string _loginAccountSessionKey = AppConfig.LoginAccountSessionKey;
         private string _rememberMeTokenCookieKey = AppConfig.RememberMeTokenCookieKey;
         private int _rememberMeDayCount = AppConfig.RememberMeDayCount;
+
+        private IDBAccessProvider _dBAccessProvider = DBAccessProviderFactory.Get();
 
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
@@ -39,10 +43,7 @@ namespace Framework.Infrastructure.Concrete
                     var response = controllerContext.HttpContext.Response;
                     var session = controllerContext.HttpContext.Session;
                     string cookieTokenValue = request.Cookies[_rememberMeTokenCookieKey].Value;
-                    UserInfo userFromToken = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
-                    {
-                        Expression.Eq(_rememberMeTokenCookieKey, cookieTokenValue)
-                    }).FirstOrDefault();
+                    UserInfo userFromToken = _dBAccessProvider.GetUserInfoByTokenCookieKey(cookieTokenValue);
 
                     if (userFromToken == null)
                     {

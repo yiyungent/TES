@@ -194,7 +194,7 @@ namespace Framework.Infrastructure.Concrete
         #endregion
 
         #region 获取此用户的系统菜单列表
-        public IList<Sys_Menu> GetMenuListByAccount(UserInfo userInfo)
+        public IList<Sys_Menu> GetMenuListByUserInfo(UserInfo userInfo)
         {
             IList<Sys_Menu> menuList = new List<Sys_Menu>();
 

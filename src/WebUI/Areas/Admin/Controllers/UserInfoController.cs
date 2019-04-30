@@ -4,6 +4,7 @@ using Framework.Factories;
 using Framework.HtmlHelpers;
 using Framework.Infrastructure.Abstract;
 using Framework.Models;
+using Framework.Mvc;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,8 @@ using WebUI.Areas.Admin.Models;
 
 namespace WebUI.Areas.Admin.Controllers
 {
-    public class UserInfoController : Controller
+    public class UserInfoController : BaseController
     {
-        IAuthManager _authManager = AuthManagerFactory.Get();
 
         #region Ctor
         public UserInfoController()
@@ -27,7 +27,6 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 new BreadcrumbItem("业务管理"),
             };
-
         }
         #endregion
 
@@ -57,7 +56,7 @@ namespace WebUI.Areas.Admin.Controllers
 
             #region MyRegion
             ViewBag.LoginAccount = currentAccount.UserInfo;
-            ViewBag.MenuList = _authManager.GetMenuListByAccount(currentAccount.UserInfo);
+            ViewBag.MenuList = this.AuthManager.GetMenuListByUserInfo(currentAccount.UserInfo);
             #endregion
 
             return View(model);
@@ -124,9 +123,6 @@ namespace WebUI.Areas.Admin.Controllers
             }
         }
         #endregion
-
-
-        
 
     }
 }

@@ -37,6 +37,6 @@ namespace Framework.Infrastructure.Abstract
 
         IList<string> AllAuthKey();
 
-        IList<Sys_Menu> GetMenuListByAccount(UserInfo userInfo);
+        IList<Sys_Menu> GetMenuListByUserInfo(UserInfo userInfo);
     }
 }

@@ -3,7 +3,9 @@ using Domain;
 using Framework.Factories;
 using Framework.HtmlHelpers;
 using Framework.Infrastructure.Abstract;
+using Framework.Infrastructure.Concrete;
 using Framework.Models;
+using Framework.Mvc;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -14,9 +16,8 @@ using WebUI.Areas.Admin.Models;
 
 namespace WebUI.Areas.Admin.Controllers
 {
-    public class RoleInfoController : Controller
+    public class RoleInfoController : BaseController
     {
-        IAuthManager _authManager = AuthManagerFactory.Get();
 
         #region Ctor
         public RoleInfoController()
@@ -27,7 +28,6 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 new BreadcrumbItem("业务管理"),
             };
-
         }
         #endregion
 
@@ -54,11 +54,6 @@ namespace WebUI.Areas.Admin.Controllers
                     MaxLinkCount = 10
                 }
             };
-
-            #region MyRegion
-            ViewBag.LoginAccount = currentAccount.UserInfo;
-            ViewBag.MenuList = _authManager.GetMenuListByAccount(currentAccount.UserInfo);
-            #endregion
 
             return View(model);
         }
@@ -155,5 +150,6 @@ namespace WebUI.Areas.Admin.Controllers
             }
         }
         #endregion
+
     }
 }
