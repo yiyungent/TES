@@ -7088,6 +7088,7 @@
     </Compile>
     <Compile Include="Areas\Admin\Models\AdminWebBaseInfoViewModel.cs" />
     <Compile Include="Areas\Admin\Models\BreadcrumbItem.cs" />
+    <Compile Include="Models\ErrorViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -7576,12 +7577,12 @@
     <Content Include="Scripts\jquery-1.12.0.min.map" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Install\Index.cshtml" />
-    <Content Include="Views\Errors\NeedLogin.cshtml" />
     <Content Include="Views\Errors\WithoutAuth.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Admin.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminContent.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Views\Errors\LoginTimeOut.cshtml" />
+    <Content Include="Views\Shared\_ErrorRedirect.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -7594,8 +7595,6 @@
     <Folder Include="Areas\Account\Views\Shared\" />
     <Folder Include="Areas\Admin\Views\SysMenu\" />
     <Folder Include="HtmlHelpers\" />
-    <Folder Include="Models\" />
-    <Folder Include="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
