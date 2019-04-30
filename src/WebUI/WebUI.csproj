@@ -7027,9 +7027,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="images\default-avatar.jpg" />
-    <Content Include="libman.json" />
-    <Content Include="libs\jQuery_1.12.0\jquery.js" />
-    <Content Include="libs\jQuery_1.12.0\jquery.min.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
@@ -7092,7 +7089,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
-    <Content Include="libs\jQuery_1.12.0\jquery.min.map" />
     <Content Include="dist\AdminLTE\bower_components\bootstrap-colorpicker\.bower.json" />
     <Content Include="dist\AdminLTE\bower_components\bootstrap-colorpicker\.editorconfig" />
     <Content Include="dist\AdminLTE\bower_components\bootstrap-colorpicker\.github\CODE_OF_CONDUCT.md" />
