@@ -1,0 +1,46 @@
+﻿@model Domain.RoleInfo
+@{
+	ViewBag.Title = "用户修改 - " + Model.Name;
+	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+}
+
+<!-- start 提示框 -->
+<div id="js-message" class="alert alert-success hidden" role="alert">
+	<button onclick="closeMsg()" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<span class="message"></span>
+</div>
+<!-- end 提示框 -->
+
+@using (Ajax.BeginForm("Edit", new AjaxOptions
+{
+	HttpMethod = "Post",
+	OnComplete = "onComplete"
+}))
+{
+	@Html.ValidationMessage("Name", new { @class = "list-group" })
+	<div class="input-group">
+		@Html.TextBoxFor(m => m.ID, new { @class = "form-control", @readonly = "readonly" })
+		@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+		<div class="btn-group">
+			<input class="btn btn-info" type="submit" value="保存" />
+			<a class="btn btn-primary" href="@Url.Action("Index")" data-pjax>返回</a>
+		</div>
+	</div>
+}
+
+<script>
+	// 关闭提示消息
+	function closeMsg() {
+		$("#js-message").attr("class", "hidden");
+	}
+
+	function onComplete(data) {
+		console.log(data);
+		var resJson = data.responseJSON;
+		if (resJson.code <= 0) {
+			$("#js-message").attr("class", "alert alert-danger").find(".message").html(resJson.message)
+		} else {
+			$("#js-message").attr("class", "alert alert-success").find(".message").html(resJson.message);
+		}
+	}
+</script>
