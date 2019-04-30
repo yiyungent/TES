@@ -11,7 +11,7 @@ using Framework.Infrastructure.Concrete;
 using Framework.Models;
 using Framework.Factories;
 
-namespace WebUI.Controllers
+namespace WebUI.Areas.Admin.Controllers
 {
     public class HomeController : Controller
     {

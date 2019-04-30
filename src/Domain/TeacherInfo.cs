@@ -82,7 +82,7 @@ namespace Domain
         ///     多对多关系
         /// </summary>
         [Display(Name = "担任角色列表")]
-        [HasAndBelongsToMany(Table = "Role_User", ColumnKey = "UserId", ColumnRef = "RoleId")]
+        [HasAndBelongsToMany(Table = "Role_Teacher", ColumnKey = "TeacherId", ColumnRef = "RoleId")]
         public IList<RoleInfo> RoleInfoList { get; set; }
 
         /// <summary>

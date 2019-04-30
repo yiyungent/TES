@@ -37,6 +37,8 @@ namespace WebUI.Controllers
             InitFunction();
             InitRole();
             InitUser();
+            InitStudent();
+            InitTeacher();
         }
         #endregion
 
@@ -95,7 +97,7 @@ namespace WebUI.Controllers
                     Name = "站点信息",
                     ControllerName = "BaseInfo",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 10,
                 });
@@ -104,7 +106,7 @@ namespace WebUI.Controllers
                     Name = "用户管理",
                     ControllerName = "UserInfo",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 20,
                 });
@@ -113,7 +115,7 @@ namespace WebUI.Controllers
                     Name = "角色管理",
                     ControllerName = "RoleInfo",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 30,
                 });
@@ -122,7 +124,7 @@ namespace WebUI.Controllers
                     Name = "菜单管理",
                     ControllerName = "Menu",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 10,
                 });
@@ -136,7 +138,7 @@ namespace WebUI.Controllers
                     Name = "操作管理",
                     ControllerName = "FunctionInfo",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 10,
                 });
@@ -145,7 +147,7 @@ namespace WebUI.Controllers
                     Name = "部门管理",
                     ControllerName = "Department",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 20,
                 });
@@ -154,7 +156,7 @@ namespace WebUI.Controllers
                     Name = "班级管理",
                     ControllerName = "Clazz",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 30,
                 });
@@ -163,7 +165,7 @@ namespace WebUI.Controllers
                     Name = "学生管理",
                     ControllerName = "Student",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 40,
                 });
@@ -172,7 +174,7 @@ namespace WebUI.Controllers
                     Name = "课程管理",
                     ControllerName = "Course",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 50,
                 });
@@ -181,7 +183,7 @@ namespace WebUI.Controllers
                     Name = "课表管理",
                     ControllerName = "TimeTable",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 60,
                 });
@@ -195,7 +197,7 @@ namespace WebUI.Controllers
                     Name = "评价指标",
                     ControllerName = "EvaluationIndex",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 10,
                 });
@@ -204,7 +206,7 @@ namespace WebUI.Controllers
                     Name = "评价选项",
                     ControllerName = "EvaluationOperation",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 20,
                 });
@@ -213,7 +215,7 @@ namespace WebUI.Controllers
                     Name = "评价任务",
                     ControllerName = "EvaluationTask",
                     ActionName = "Index",
-                    AreaName = "",
+                    AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 30,
                 });
@@ -243,7 +245,7 @@ namespace WebUI.Controllers
 
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
-                    AuthKey = ".Home.Index",
+                    AuthKey = "Admin.Home.Index",
                     Name = "后台首页"
                 });
 
@@ -363,15 +365,68 @@ namespace WebUI.Controllers
                     RegTime = DateTime.Now
                 });
 
+                ShowMessage("成功");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("失败");
+                ShowMessage(ex.Message);
+            }
+        }
+        #endregion
+
+        #region 初始化学生表
+        private void InitStudent()
+        {
+            try
+            {
+                ShowMessage("开始初始化学生表");
+
+                var allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
+
                 for (int i = 0; i < 100; i++)
                 {
-                    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo()
+                    Container.Instance.Resolve<StudentInfoService>().Create(new StudentInfo()
                     {
                         Name = "学生" + (i + 1),
-                        LoginAccount = "student" + (i + 1),
+                        StudentCode = "student" + (i + 1),
+                        Avatar = "/images/default-avatar.jpg",
                         Password = EncryptHelper.MD5Encrypt32("123456"),
                         Status = 0,
-                        RoleInfoList = new List<RoleInfo> { Container.Instance.Resolve<RoleInfoService>().GetEntity(2) },
+                        RoleInfoList = (from m in allRole where m.ID == 3 select m).ToList(),
+                        RegTime = DateTime.Now
+                    });
+                }
+
+                ShowMessage("成功");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("失败");
+                ShowMessage(ex.Message);
+            }
+        }
+        #endregion
+
+        #region 初始化教师表
+        private void InitTeacher()
+        {
+            try
+            {
+                ShowMessage("开始初始化教师表");
+
+                var allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
+
+                for (int i = 0; i < 100; i++)
+                {
+                    Container.Instance.Resolve<TeacherInfoService>().Create(new TeacherInfo()
+                    {
+                        Name = "教师" + (i + 1),
+                        TeacherCode = "teacher" + (i + 1),
+                        Avatar = "/images/default-avatar.jpg",
+                        Password = EncryptHelper.MD5Encrypt32("123456"),
+                        Status = 0,
+                        RoleInfoList = (from m in allRole where m.ID == 4 select m).ToList(),
                         RegTime = DateTime.Now
                     });
                 }

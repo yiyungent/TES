@@ -108,48 +108,11 @@ namespace Framework.Attributes
                 if (currentAccount.IsGuest)
                 {
                     // 游客--游客无权限，则让其登录
-                    #region 废弃
-                    //if (filterContext.HttpContext.Request.IsAjaxRequest())
-                    //{
-                    //    filterContext.Result = new JsonResult()
-                    //    {
-                    //        Data = new { code = -1, message = "请登录", returnUrl = returnUrl },
-                    //        JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                    //    };
-                    //}
-                    //else
-                    //{
-                    //    System.Web.Routing.RouteValueDictionary routeValDic = new System.Web.Routing.RouteValueDictionary();
-                    //    routeValDic.Add("controller", "Errors");
-                    //    routeValDic.Add("action", "NeedLogin");
-                    //    routeValDic.Add("area", "");
-                    //    routeValDic.Add("returnUrl", returnUrl);
-                    //    filterContext.Result = new RedirectToRouteResult(routeValDic);
-                    //}
-                    #endregion
                     filterContext.Result = NeedLoginResultProvider.Get(filterContext.HttpContext.Request);
                 }
                 else
                 {
                     // 非游客---已登录用户无权限则 就为 无权限
-                    #region 废弃
-                    //if (filterContext.HttpContext.Request.IsAjaxRequest())
-                    //{
-                    //    filterContext.Result = new JsonResult()
-                    //    {
-                    //        Data = new { code = -1, message = "无此权限" },
-                    //        JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                    //    };
-                    //}
-                    //else
-                    //{
-                    //    System.Web.Routing.RouteValueDictionary routeValDic = new System.Web.Routing.RouteValueDictionary();
-                    //    routeValDic.Add("controller", "Errors");
-                    //    routeValDic.Add("action", "WithoutAuth");
-                    //    routeValDic.Add("area", "");
-                    //    filterContext.Result = new RedirectToRouteResult(routeValDic);
-                    //} 
-                    #endregion
                     filterContext.Result = WithoutAuthResultProvider.Get(filterContext.HttpContext.Request);
                 }
             }

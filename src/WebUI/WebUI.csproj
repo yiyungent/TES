@@ -6515,6 +6515,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Account\Views\Login\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -6535,18 +6536,19 @@
     <Compile Include="Areas\Account\AccountAreaRegistration.cs" />
     <Compile Include="Areas\Account\Controllers\LoginController.cs" />
     <Compile Include="Areas\Account\Models\AccountModel.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Controllers\ErrorsController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstallController.cs" />
-    <Compile Include="Controllers\SysMenuController.cs" />
-    <Compile Include="Controllers\UserInfoController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SysMenuController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserInfoController.cs" />
     <Compile Include="Extensions\DateTimeExt.cs" />
     <Compile Include="Extensions\RequestExt.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AdminWebBaseInfoViewModel.cs" />
-    <Compile Include="Models\BreadcrumbItem.cs" />
+    <Compile Include="Areas\Admin\Models\AdminWebBaseInfoViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\BreadcrumbItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -7037,9 +7039,9 @@
     <Content Include="Views\Install\Index.cshtml" />
     <Content Include="Views\Errors\NeedLogin.cshtml" />
     <Content Include="Views\Errors\WithoutAuth.cshtml" />
-    <Content Include="Views\Shared\_Admin.cshtml" />
-    <Content Include="Views\Shared\_AdminContent.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Admin.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminContent.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -7050,9 +7052,11 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Account\Views\Shared\" />
+    <Folder Include="Areas\Admin\Views\SysMenu\" />
+    <Folder Include="Areas\Admin\Views\UserInfo\" />
     <Folder Include="HtmlHelpers\" />
-    <Folder Include="Views\SysMenu\" />
-    <Folder Include="Views\UserInfo\" />
+    <Folder Include="Models\" />
+    <Folder Include="Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

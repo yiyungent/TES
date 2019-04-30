@@ -1,4 +1,4 @@
-﻿@using WebUI.Models
+﻿@using WebUI.Areas.Admin.Models
 @using WebUI.Extensions
 @{
 	if (Request.IsPjaxRequest())
@@ -9,7 +9,7 @@
 	else
 	{
 		// 非 PJAX 完整
-		Layout = "~/Views/Shared/_Admin.cshtml";
+		Layout = "~/Areas/Admin/Views/Shared/_Admin.cshtml";
 	}
 }
 

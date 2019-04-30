@@ -5,7 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
-namespace WebUI.Models
+namespace WebUI.Areas.Admin.Models
 {
     public class BreadcrumbItem
     {
