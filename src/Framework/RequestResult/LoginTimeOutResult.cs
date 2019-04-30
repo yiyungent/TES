@@ -21,29 +21,37 @@ namespace Framework.RequestResult
             }
             else
             {
-                rtnResult = new LoginTimeOutResult(returnUrl);
+                rtnResult = new Redirect_LoginTimeOutResult(returnUrl);
             }
 
             return rtnResult;
         }
 
-        public static ActionResult Get(HttpRequestBase request)
+        public static ActionResult Get(HttpRequestBase requestBase)
         {
-            bool isAjax = request.IsAjaxRequest();
-            string returnUrl = request.Url.AbsoluteUri;
+            bool isAjax = requestBase.IsAjaxRequest();
+            string returnUrl = requestBase.Url.AbsoluteUri;
 
             return Get(isAjax, returnUrl);
         }
+
+        public static ActionResult Get()
+        {
+            HttpRequestBase requestBase = HttpContext.Current.Request.RequestContext.HttpContext.Request;
+
+            return Get(requestBase);
+        }
     }
 
+    #region RedirectResult
     /// <summary>
-    /// 需要登录结果
-    /// <para>修改自 <see cref="RedirectToRouteResult"/></para>
+    /// 登录超时
+    /// <para>跳转</para>
     /// </summary>
-    public class LoginTimeOutResult : ActionResult
+    public class Redirect_LoginTimeOutResult : ActionResult
     {
 
-        public LoginTimeOutResult(string returnUrl = null)
+        public Redirect_LoginTimeOutResult(string returnUrl = null)
         {
             RouteValueDictionary routeValDic = new RouteValueDictionary();
             routeValDic.Add("controller", "Errors");
@@ -75,7 +83,9 @@ namespace Framework.RequestResult
             redirectToRouteResult.ExecuteResult(context);
         }
     }
+    #endregion
 
+    #region AjaxJsonResult
     public class Ajax_LoginTimeOutResult : JsonResult
     {
         public Ajax_LoginTimeOutResult(string returnUrl = null)
@@ -90,4 +100,5 @@ namespace Framework.RequestResult
         /// </summary>
         public string ReturnUrl { get; private set; }
     }
+    #endregion
 }

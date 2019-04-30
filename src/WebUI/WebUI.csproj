@@ -7088,7 +7088,6 @@
     </Compile>
     <Compile Include="Areas\Admin\Models\AdminWebBaseInfoViewModel.cs" />
     <Compile Include="Areas\Admin\Models\BreadcrumbItem.cs" />
-    <Compile Include="Models\ErrorViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -7595,6 +7594,7 @@
     <Folder Include="Areas\Account\Views\Shared\" />
     <Folder Include="Areas\Admin\Views\SysMenu\" />
     <Folder Include="HtmlHelpers\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

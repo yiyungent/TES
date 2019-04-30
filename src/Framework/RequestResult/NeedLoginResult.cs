@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Framework.Models;
+using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Properties;
@@ -20,29 +21,38 @@ namespace Framework.RequestResult
             }
             else
             {
-                rtnResult = new NeedLoginResult(returnUrl);
+                //rtnResult = new Redirect_NeedLoginResult(returnUrl);
+                rtnResult = new View_NeedLoginResult(returnUrl);
             }
 
             return rtnResult;
         }
 
-        public static ActionResult Get(HttpRequestBase request)
+        public static ActionResult Get(HttpRequestBase requestBase)
         {
-            bool isAjax = request.IsAjaxRequest();
-            string returnUrl = request.Url.AbsoluteUri;
+            bool isAjax = requestBase.IsAjaxRequest();
+            string returnUrl = requestBase.Url.AbsoluteUri;
 
             return Get(isAjax, returnUrl);
         }
+
+        public static ActionResult Get()
+        {
+            HttpRequestBase requestBase = HttpContext.Current.Request.RequestContext.HttpContext.Request;
+
+            return Get(requestBase);
+        }
     }
 
+    #region RedirectResult
     /// <summary>
     /// 需要登录结果
-    /// <para>修改自 <see cref="RedirectToRouteResult"/></para>
+    /// <para>跳转到错误地址</para>
     /// </summary>
-    public class NeedLoginResult : ActionResult
+    public class Redirect_NeedLoginResult : ActionResult
     {
 
-        public NeedLoginResult(string returnUrl = null)
+        public Redirect_NeedLoginResult(string returnUrl = null)
         {
             RouteValueDictionary routeValDic = new RouteValueDictionary();
             routeValDic.Add("controller", "Errors");
@@ -74,7 +84,34 @@ namespace Framework.RequestResult
             redirectToRouteResult.ExecuteResult(context);
         }
     }
+    #endregion
 
+    #region ViewResult
+    public class View_NeedLoginResult : ViewResult
+    {
+        public View_NeedLoginResult(string returnUrl = null)
+        {
+            UrlHelper url = new UrlHelper(HttpContext.Current.Request.RequestContext);
+
+            this.ReturnUrl = returnUrl;
+            // 注意, this.Model 不可写，且无法 override, 通过写入 this.ViewData.Model，然后读 this.Model 时实则就是 读 this.ViewData.Model
+            this.ViewData.Model = new ErrorRedirectViewModel
+            {
+                Title = "请登录",
+                Message = "该页面需要登录",
+                RedirectUrl = url.Action("Index", "Login", new { area = "Account", returnUrl = returnUrl }),
+                RedirectUrlName = "登录页",
+                WaitSecond = 8
+            };
+
+            this.ViewName = "_ErrorRedirect";
+        }
+
+        public string ReturnUrl { get; private set; }
+    }
+    #endregion
+
+    #region AjaxJsonResult
     public class Ajax_NeedLoginResult : JsonResult
     {
         public Ajax_NeedLoginResult(string returnUrl = null)
@@ -89,4 +126,5 @@ namespace Framework.RequestResult
         /// </summary>
         public string ReturnUrl { get; private set; }
     }
+    #endregion
 }
