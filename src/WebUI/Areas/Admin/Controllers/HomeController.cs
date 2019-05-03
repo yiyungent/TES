@@ -20,8 +20,8 @@ namespace WebUI.Areas.Admin.Controllers
 
         public HomeController()
         {
-            ViewBag.PageHeader = "首页";
-            ViewBag.PageHeaderDescription = "后台管理";
+            ViewBag.PageHeader = "TES";
+            ViewBag.PageHeaderDescription = "后台概述";
             ViewBag.BreadcrumbList = new List<BreadcrumbItem>();
         }
 
@@ -32,7 +32,7 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
-        #region 后台默认主页
+        #region 后台概述
         public ViewResult Default()
         {
             return View();

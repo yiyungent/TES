@@ -246,7 +246,13 @@ namespace WebUI.Controllers
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
                     AuthKey = "Admin.Home.Index",
-                    Name = "后台首页"
+                    Name = "后台管理(框架)"
+                });
+
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.Home.Default",
+                    Name = "后台概述"
                 });
 
                 IList<ICriterion> qryWhere = new List<ICriterion>();

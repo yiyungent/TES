@@ -28,7 +28,7 @@
 			<small>@ViewBag.PageHeaderDescription</small>
 		</h1>
 		<ol class="breadcrumb" data-pjax>
-			<li><a href="/Admin/Home"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li><a href="@Url.Action("Default", "Home", new { area = "Admin" })"><i class="fa fa-dashboard"></i> Home</a></li>
 			@foreach (BreadcrumbItem item in ViewBag.BreadcrumbList)
 			{
 				@item.GenerateHtmlTag()
