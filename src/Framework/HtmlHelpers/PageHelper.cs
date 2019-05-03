@@ -16,29 +16,43 @@ namespace Framework.HtmlHelpers
             #region 上一页
             if (pageInfo.PageIndex > 1)
             {
-                TagBuilder prevTag = new TagBuilder("a");
-                prevTag.MergeAttribute("href", pageUrl(pageInfo.PageIndex - 1));
-                prevTag.InnerHtml = "&laquo;";
-                prevTag.AddCssClass("btn btn-default");
-                sbResult.Append(prevTag.ToString());
+                TagBuilder prevLi = new TagBuilder("li");
+
+                TagBuilder prevA = new TagBuilder("a");
+                prevA.MergeAttribute("href", pageUrl(pageInfo.PageIndex - 1));
+                prevA.InnerHtml = "&laquo;";
+
+                prevLi.InnerHtml = prevA.ToString();
+
+                sbResult.Append(prevLi.ToString());
             }
             #endregion
 
             #region 首页按钮
-            TagBuilder homeTag = new TagBuilder("a");
-            homeTag.MergeAttribute("href", pageUrl(1));
-            homeTag.InnerHtml = "首页";
-            homeTag.AddCssClass("btn btn-default");
-            sbResult.Append(homeTag.ToString());
+            TagBuilder homeLi = new TagBuilder("li");
+
+            TagBuilder homeA = new TagBuilder("a");
+            homeA.MergeAttribute("href", pageUrl(1));
+            homeA.InnerHtml = "首页";
+
+            homeLi.InnerHtml = homeA.ToString();
+
+            sbResult.Append(homeLi.ToString());
             #endregion
             #region 首页后省略号
             if (pageInfo.PageIndex >= pageInfo.MaxLinkCount)
             {
-                TagBuilder tag = new TagBuilder("span");
-                tag.InnerHtml = "…";
-                tag.AddCssClass("btn btn-default disabled");
-                tag.MergeAttribute("disabled", "disabled");
-                sbResult.Append(tag.ToString());
+                TagBuilder tagLi = new TagBuilder("li");
+                tagLi.AddCssClass("disabled");
+                tagLi.MergeAttribute("disabled", "disabled");
+
+                TagBuilder tagA = new TagBuilder("a");
+                tagA.MergeAttribute("href", "#");
+                tagA.InnerHtml = "…";
+
+                tagLi.InnerHtml = tagA.ToString();
+
+                sbResult.Append(tagLi.ToString());
             }
             #endregion
 
@@ -73,47 +87,65 @@ namespace Framework.HtmlHelpers
             }
             for (int i = begin; i <= end; i++)
             {
-                TagBuilder tag = new TagBuilder("a");
-                tag.MergeAttribute("href", pageUrl(i));
-                tag.InnerHtml = i.ToString();
+                TagBuilder pageLi = new TagBuilder("li");
                 if (i == pageInfo.PageIndex)
                 {
-                    tag.AddCssClass("btn btn-primary selected");
+                    pageLi.AddCssClass("active");
                 }
                 else
                 {
-                    tag.AddCssClass("btn btn-default");
                 }
-                sbResult.Append(tag.ToString());
+
+                TagBuilder pageA = new TagBuilder("a");
+                pageA.MergeAttribute("href", pageUrl(i));
+                pageA.InnerHtml = i.ToString();
+
+                pageLi.InnerHtml = pageA.ToString();
+
+                sbResult.Append(pageLi.ToString());
             }
             #endregion
 
             #region 尾页前省略号
             if (pageInfo.PageIndex <= pageInfo.TotalPages - pageInfo.MaxLinkCount + 1)
             {
-                TagBuilder tag = new TagBuilder("span");
-                tag.InnerHtml = "…";
-                tag.AddCssClass("btn btn-default disabled");
-                tag.MergeAttribute("disabled", "disabled");
-                sbResult.Append(tag.ToString());
+                TagBuilder tagLi = new TagBuilder("li");
+                tagLi.AddCssClass("disabled");
+                tagLi.MergeAttribute("disabled", "disabled");
+
+                TagBuilder tagA = new TagBuilder("a");
+                tagA.MergeAttribute("href", "#");
+                tagA.InnerHtml = "…";
+
+                tagLi.InnerHtml = tagA.ToString();
+
+                sbResult.Append(tagLi.ToString());
             }
             #endregion
             #region 尾页按钮
-            TagBuilder endTag = new TagBuilder("a");
-            endTag.MergeAttribute("href", pageUrl(pageInfo.TotalPages));
-            endTag.InnerHtml = "尾页";
-            endTag.AddCssClass("btn btn-default");
-            sbResult.Append(endTag.ToString());
+            TagBuilder endLi = new TagBuilder("li");
+
+            TagBuilder endA = new TagBuilder("a");
+            endA.MergeAttribute("href", pageUrl(pageInfo.TotalPages));
+            endA.InnerHtml = "尾页";
+
+            endLi.InnerHtml = endA.ToString();
+
+            sbResult.Append(endLi.ToString());
             #endregion
 
             #region 下一页
             if (pageInfo.PageIndex < pageInfo.TotalPages)
             {
-                TagBuilder nextTag = new TagBuilder("a");
-                nextTag.MergeAttribute("href", pageUrl(pageInfo.PageIndex + 1));
-                nextTag.InnerHtml = "&raquo;";
-                nextTag.AddCssClass("btn btn-default");
-                sbResult.Append(nextTag.ToString());
+                TagBuilder nextLi = new TagBuilder("li");
+
+                TagBuilder nextA = new TagBuilder("a");
+                nextA.MergeAttribute("href", pageUrl(pageInfo.PageIndex + 1));
+                nextA.InnerHtml = "&raquo;";
+
+                nextLi.InnerHtml = nextA.ToString();
+
+                sbResult.Append(nextLi.ToString());
             }
             #endregion
 

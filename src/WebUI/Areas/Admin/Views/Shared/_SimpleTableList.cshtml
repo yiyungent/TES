@@ -1,56 +1,22 @@
 ﻿@using Framework.HtmlHelpers
 @using WebUI.Areas.Admin.Models
-@model UserInfoListViewModel
+@model RoleInfoListViewModel
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
 
-	ViewBag.Title = "用户列表 - 后台管理";
+	ViewBag.Box_Title = "";
 }
 @section head {
-	@*<!-- DataTables -->
-		<link href="~/dist/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />*@
+	@RenderSection("head", false)
 }
 @section body {
-	@*<!-- DataTables -->
-		<script src="~/dist/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-		<script src="~/dist/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>*@
 	<script>
 		// 关闭提示消息
 		function closeMsg() {
 			$("#js-message").attr("class", "hidden");
 		}
-
-		// start 删除
-		function deleteOp(id) {
-			$("#js-id").val(id);
-			$('#deleteModal').modal();
-		}
-		function deleteSubmit() {
-			var id = $("#js-id").val();
-			$.ajax({
-				type: 'POST',
-				url: '/Admin/UserInfo/Delete',
-				data: { id: id },
-				dataType: 'json',
-				success: function (data) {
-					if (data.code <= 0) {
-						// 删除失败
-						$("#js-message").attr("class", "alert alert-danger").find(".message").html(data.message);
-					} else {
-						// 删除成功
-						$("#js-message").attr("class", "alert alert-success").find(".message").html(data.message);
-						$(".table").find("tr:contains('" + id + "')").remove();
-						// 检查当前当前页面是否已经全部删除完，若是，则点击当前页码，重新加载
-						var trNum = $(".table").find("tr").length - 1;
-						if (trNum == 0) {
-							$("#js-page").find("a[class*='active']").click();
-						}
-					}
-				}
-			});
-		}
-		// end 删除
 	</script>
+	@RenderSection("body", false)
 }
 
 <!-- start 删除确认框 -->
@@ -76,7 +42,6 @@
 	</div>
 </div>
 <!-- end 删除确认框 -->
-
 <!-- start 提示框 -->
 <div id="js-message" class="alert alert-success hidden" role="alert">
 	<button onclick="closeMsg()" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -90,7 +55,7 @@
 <div class="box">
 	<!-- start .box-header -->
 	<div class="box-header">
-		<h3 class="box-title">用户列表</h3>
+		<h3 class="box-title">@ViewBag.Box_Title</h3>
 
 		<div class="box-tools">
 			<div class="input-group input-group-sm" style="width: 150px;">
@@ -107,34 +72,7 @@
 	<!-- start 简单表格 -->
 	<div class="box-body table-responsive no-padding">
 		<table id="js-table" class="table table-hover">
-			<tr>
-				<th>ID</th>
-				<th>用户名</th>
-				<th>操作</th>
-			</tr>
-			@foreach (var cat in Model.UserInfos)
-			{
-				<tr>
-					<td>@cat.ID</td>
-					<td>@cat.Name</td>
-					<td>
-						<div class="btn-group" role="group" data-pjax>
-							@if (Html.HasAuth("Admin", "UserInfo", "Detail"))
-							{
-								<a class="btn btn-success" href="@Url.Action("Detail")?id=@cat.ID">查看</a>
-							}
-							@if (Html.HasAuth("Admin", "UserInfo", "Delete"))
-							{
-								<button class="btn btn-danger" type="button" onclick="deleteOp(@cat.ID)">删除</button>
-							}
-							@if (Html.HasAuth("Admin", "UserInfo", "Edit"))
-							{
-								<a class="btn btn-warning" href="@Url.Action("Edit")?id=@cat.ID">修改</a>
-							}
-						</div>
-					</td>
-				</tr>
-			}
+			@RenderSection("table", true)
 		</table>
 	</div>
 	<!-- end 简单表格 -->
