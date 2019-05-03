@@ -38,5 +38,25 @@ namespace Framework.Infrastructure.Abstract
         IList<string> AllAuthKey();
 
         IList<Sys_Menu> GetMenuListByUserInfo(UserInfo userInfo);
+
+        IList<Sys_Menu> GetMenuListByUserInfo();
+
+        IList<FunctionInfo> GetFuncListByUserInfo(UserInfo userInfo);
+
+        IList<FunctionInfo> GetFuncListByUserInfo();
+
+        IList<Sys_Menu> AllMenuList();
+
+        IList<FunctionInfo> AllFuncList();
+
+        /// <summary>
+        /// 获取此角色的系统菜单列表
+        /// </summary>
+        IList<Sys_Menu> GetMenuListByRole(RoleInfo roleInfo);
+
+        /// <summary>
+        /// 获取此角色的权限操作列表
+        /// </summary>
+        IList<FunctionInfo> GetFuncListByRole(RoleInfo roleInfo);
     }
 }

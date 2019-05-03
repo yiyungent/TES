@@ -44,5 +44,26 @@ namespace Framework.Infrastructure.Concrete
 
             return user;
         }
+
+
+        #region 获取所有菜单
+        public IList<Sys_Menu> AllMenuList()
+        {
+            IList<Sys_Menu> menuList = new List<Sys_Menu>();
+            menuList = Container.Instance.Resolve<Sys_MenuService>().GetAll();
+
+            return menuList;
+        }
+        #endregion
+
+        #region 获取所有操作
+        public IList<FunctionInfo> AllFuncList()
+        {
+            IList<FunctionInfo> funcList = new List<FunctionInfo>();
+            funcList = Container.Instance.Resolve<FunctionInfoService>().GetAll();
+
+            return funcList;
+        }
+        #endregion
     }
 }

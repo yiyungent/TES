@@ -15,5 +15,9 @@ namespace Framework.Infrastructure.Abstract
         RoleInfo GetGuestRoleInfo();
 
         UserInfo GetUserInfoByTokenCookieKey(string tokenCookieValue);
+
+        IList<Sys_Menu> AllMenuList();
+
+        IList<FunctionInfo> AllFuncList();
     }
 }

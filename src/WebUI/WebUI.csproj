@@ -7075,6 +7075,7 @@
     <Compile Include="Areas\Admin\Models\RoleInfoListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserInfoForEdit.cs" />
     <Compile Include="Areas\Admin\Models\UserInfoListViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ZNodeModel.cs" />
     <Compile Include="Controllers\ErrorsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstallController.cs" />

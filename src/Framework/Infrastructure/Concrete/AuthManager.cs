@@ -178,21 +178,6 @@ namespace Framework.Infrastructure.Concrete
         }
         #endregion
 
-        #region 权限(操作)键相等比较器
-        sealed class AuthKeyCompare : IEqualityComparer<string>
-        {
-            public bool Equals(string x, string y)
-            {
-                return x.ToLower() == y.ToLower();
-            }
-
-            public int GetHashCode(string obj)
-            {
-                throw new NotImplementedException();
-            }
-        }
-        #endregion
-
         #region 获取此用户的系统菜单列表
         public IList<Sys_Menu> GetMenuListByUserInfo(UserInfo userInfo)
         {
@@ -212,23 +197,92 @@ namespace Framework.Infrastructure.Concrete
             return menuList;
         }
 
-        sealed class Sys_Menu_Compare : IEqualityComparer<Sys_Menu>
+        /// <summary>
+        /// 获取当前用户的系统菜单列表
+        /// </summary>
+        public IList<Sys_Menu> GetMenuListByUserInfo()
         {
-            public bool Equals(Sys_Menu x, Sys_Menu y)
-            {
-                if (x == null || y == null)
-                {
-                    return false;
-                }
-                return x.ID == y.ID;
-            }
+            UserInfo userInfo = AccountManager.GetCurrentUserInfo();
 
-            public int GetHashCode(Sys_Menu obj)
-            {
-                throw new NotImplementedException();
-            }
+            return GetMenuListByUserInfo(userInfo);
         }
         #endregion
 
+        #region 获取此用户的权限操作列表
+        public IList<FunctionInfo> GetFuncListByUserInfo(UserInfo userInfo)
+        {
+            IList<FunctionInfo> funcList = new List<FunctionInfo>();
+
+            foreach (RoleInfo role in userInfo.RoleInfoList)
+            {
+                foreach (FunctionInfo menu in role.FunctionInfoList)
+                {
+                    if (!funcList.Contains(menu, new FunctionInfo_Compare()))
+                    {
+                        funcList.Add(menu);
+                    }
+                }
+            }
+
+            return funcList;
+        }
+
+        /// <summary>
+        /// 获取当前用户的权限操作列表
+        /// </summary>
+        public IList<FunctionInfo> GetFuncListByUserInfo()
+        {
+            UserInfo userInfo = AccountManager.GetCurrentUserInfo();
+
+            return GetFuncListByUserInfo(userInfo);
+        }
+        #endregion
+
+        #region 获取所有菜单
+        public IList<Sys_Menu> AllMenuList()
+        {
+            return _dBAccessProvider.AllMenuList();
+        }
+        #endregion
+
+        #region 获取所有操作
+        public IList<FunctionInfo> AllFuncList()
+        {
+            return _dBAccessProvider.AllFuncList();
+        }
+        #endregion
+
+        #region 获取此角色的系统菜单列表
+        public IList<Sys_Menu> GetMenuListByRole(RoleInfo roleInfo)
+        {
+            IList<Sys_Menu> menuList = new List<Sys_Menu>();
+            foreach (Sys_Menu menu in roleInfo.Sys_MenuList)
+            {
+                if (!menuList.Contains(menu, new Sys_Menu_Compare()))
+                {
+                    menuList.Add(menu);
+                }
+            }
+
+            return menuList;
+        }
+        #endregion
+
+        #region 获取此角色的权限操作列表
+        public IList<FunctionInfo> GetFuncListByRole(RoleInfo roleInfo)
+        {
+            IList<FunctionInfo> funcList = new List<FunctionInfo>();
+
+            foreach (FunctionInfo menu in roleInfo.FunctionInfoList)
+            {
+                if (!funcList.Contains(menu, new FunctionInfo_Compare()))
+                {
+                    funcList.Add(menu);
+                }
+            }
+
+            return funcList;
+        }
+        #endregion
     }
 }

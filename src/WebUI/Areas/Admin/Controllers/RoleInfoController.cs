@@ -128,13 +128,22 @@ namespace WebUI.Areas.Admin.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// 授权
+        /// </summary>
+        /// <param name="id">角色ID</param>
+        /// <param name="menuIds">授予的菜单ID: 1,2,4,5,6,</param>
+        /// <param name="funcIds">授予的权限操作ID: 3,6,8,3,</param>
         [HttpPost]
-        public JsonResult AssignPower(string model)
+        public JsonResult AssignPower(int id, string menuIds, string funcIds)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    string[] menuIdArr = menuIds.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] funcIdArr = menuIds.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
 
 
                     return Json(new { code = 1, message = "保存成功" });
@@ -149,7 +158,53 @@ namespace WebUI.Areas.Admin.Controllers
                 return Json(new { code = -1, message = "保存失败" });
             }
         }
+
+
         #endregion
 
+
+        #region 获取此角色的菜单权限树
+        public JsonResult GetRole_MenuAndFunc_Tree(int id)
+        {
+            IList<ZNodeModel> rtnJson = new List<ZNodeModel>();
+
+            RoleInfo roleInfo = Container.Instance.Resolve<RoleInfoService>().GetEntity(id);
+
+            IList<Sys_Menu> allMenuList = AuthManager.AllMenuList();
+            IList<FunctionInfo> allFuncList = AuthManager.AllFuncList();
+            IList<Sys_Menu> roleMenuList = AuthManager.GetMenuListByRole(roleInfo);
+            IList<FunctionInfo> roleFuncList = AuthManager.GetFuncListByRole(roleInfo);
+
+            foreach (Sys_Menu menu in allMenuList)
+            {
+                rtnJson.Add(new ZNodeModel
+                {
+                    id = menu.ID,
+                    fId = null,
+                    isParent = true,
+                    name = menu.Name,
+                    pId = menu.ParentMenu == null ? 0 : menu.ParentMenu.ID,
+                    open = false,
+                    @checked = roleMenuList.Contains(menu, new Sys_Menu_Compare())
+                });
+            }
+            foreach (FunctionInfo func in allFuncList)
+            {
+                rtnJson.Add(new ZNodeModel
+                {
+                    // 标记为操作，由于Menu.ID, 和 FunctionInfo.ID 存在重复，所以不能写 FunctionInfo.ID
+                    id = -1,
+                    fId = func.ID,
+                    isParent = false,
+                    name = func.Name,
+                    pId = func.Sys_Menu == null ? 0 : func.Sys_Menu.ID,
+                    open = true,
+                    @checked = roleFuncList.Contains(func, new FunctionInfo_Compare())
+                });
+            }
+
+            return Json(rtnJson, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }
