@@ -29,7 +29,7 @@
 					<i class="fa fa-angle-left pull-right"></i>
 				</span>
 			</a>
-			<ul class="treeview-menu" data-pjax>
+			<ul id="js-menu-tree" class="treeview-menu" data-pjax>
 				@foreach (Sys_Menu subMenu in subMenus)
 				{
 					<li><a href="@Url.Action(subMenu.ActionName, subMenu.ControllerName, new { area = subMenu.AreaName })" target="iframe-content">@subMenu.Name</a></li>
@@ -257,6 +257,21 @@
 		</aside>
 		<!-- Content Wrapper. Contains page content -->
 		<div id="js-content-wrapper" class="content-wrapper">
+			<div id="loading">
+				<div id="loading-center">
+					<div id="loading-center-absolute">
+						<div class="object" id="object_one"></div>
+						<div class="object" id="object_two"></div>
+						<div class="object" id="object_three"></div>
+						<div class="object" id="object_four"></div>
+						<div class="object" id="object_five"></div>
+						<div class="object" id="object_six"></div>
+						<div class="object" id="object_seven"></div>
+						<div class="object" id="object_eight"></div>
+						<div class="object" id="object_nine"></div>
+					</div>
+				</div>
+			</div>
 			<iframe id="js-iframe-content" name="iframe-content" src="@Url.Action("Default", "Home", new { area = "Admin" })" frameborder="0" scrolling="yes" style="width: 100%; min-height: 463px;">内容主体区域</iframe>
 		</div>
 		<!-- /.content-wrapper -->
@@ -339,8 +354,6 @@
 	</div>
 	<!-- ./wrapper -->
 	<!-- REQUIRED JS SCRIPTS -->
-	<script>
-	</script>
 	@RenderSection("body", false)
 </body>
 </html>

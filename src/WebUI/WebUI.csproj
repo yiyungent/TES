@@ -6500,6 +6500,7 @@
     <Content Include="dist\AdminLTE\plugins\timepicker\bootstrap-timepicker.js" />
     <Content Include="dist\AdminLTE\plugins\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="dist\AdminLTE\plugins\timepicker\bootstrap-timepicker.min.js" />
+    <Content Include="dist\loader\loading.css" />
     <Content Include="dist\pjax\jquery.pjax.js" />
     <Content Include="dist\ztree_v3\.gitattributes" />
     <Content Include="dist\ztree_v3\api\apiCss\api.js" />
@@ -7575,11 +7576,9 @@
     <Content Include="Scripts\jquery-1.12.0.min.map" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Install\Index.cshtml" />
-    <Content Include="Views\Errors\WithoutAuth.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_Admin.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminContent.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
-    <Content Include="Views\Errors\LoginTimeOut.cshtml" />
     <Content Include="Views\Shared\_ErrorRedirect.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -7594,6 +7593,7 @@
     <Folder Include="Areas\Admin\Views\SysMenu\" />
     <Folder Include="HtmlHelpers\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Errors\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
