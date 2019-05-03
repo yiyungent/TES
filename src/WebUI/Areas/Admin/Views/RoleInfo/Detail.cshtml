@@ -5,7 +5,7 @@
 }
 
 <div class="input-group">
+	<a class="btn btn-default" href="@Url.Action("Index")">返回</a>
 	@Html.TextBoxFor(m => m.ID, new { @class = "form-control", @readonly = "readonly" })
 	@Html.TextBoxFor(m => m.Name, new { @class = "form-control", @readonly = "readonly" })
-	<a class="btn btn-primary" href="@Url.Action("Index")" data-pjax>返回</a>
 </div>
