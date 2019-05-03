@@ -58,5 +58,7 @@ namespace Framework.Infrastructure.Abstract
         /// 获取此角色的权限操作列表
         /// </summary>
         IList<FunctionInfo> GetFuncListByRole(RoleInfo roleInfo);
+
+        bool AssignPower(int roleId, IList<int> menuIdList, IList<int> funcIdList);
     }
 }

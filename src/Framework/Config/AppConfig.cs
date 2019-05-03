@@ -7,7 +7,7 @@ namespace Framework.Config
 {
     public class AppConfig
     {
-        public static string LoginAccountSessionKey { get; set; } = "LoginAccount";
+        public static string LoginAccountSessionKey { get; set; } = "LoginUserInfo";
 
         public static string RememberMeTokenCookieKey { get; set; } = "Token";
 

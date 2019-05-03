@@ -174,5 +174,21 @@ namespace Framework.Infrastructure.Concrete
             return loginStatus;
         }
         #endregion
+
+        #region 更新 当前 Session 内的 UserInfo
+        public static void UpdateSessionAccount()
+        {
+            UserInfo userInfo = GetCurrentUserInfo();
+            if (userInfo == null)
+            {
+                // 游客(未登录)
+            }
+            else
+            {
+                int userInfoId = userInfo.ID;
+                Tools.SetSession(AppConfig.LoginAccountSessionKey, _dBAccessProvider.GetUserInfoById(userInfoId));
+            }
+        }
+        #endregion
     }
 }

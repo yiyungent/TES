@@ -284,5 +284,20 @@ namespace Framework.Infrastructure.Concrete
             return funcList;
         }
         #endregion
+
+        #region 分配菜单
+        public bool AssignPower(int roleId, IList<int> menuIdList, IList<int> funcIdList)
+        {
+            bool isSuccess = false;
+            RoleInfo roleInfo = _dBAccessProvider.GetRoleInfoById(roleId);
+            IList<Sys_Menu> sys_Menus = _dBAccessProvider.GetSys_MenuListByIds(menuIdList.ToArray());
+            IList<FunctionInfo> functionInfos = _dBAccessProvider.GetFunctionInfoListByIds(funcIdList.ToArray());
+            roleInfo.Sys_MenuList = sys_Menus;
+            roleInfo.FunctionInfoList = functionInfos;
+            isSuccess = _dBAccessProvider.EditRoleInfo(roleInfo);
+
+            return isSuccess;
+        }
+        #endregion
     }
 }

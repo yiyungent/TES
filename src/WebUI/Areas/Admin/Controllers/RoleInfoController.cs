@@ -141,12 +141,30 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    string[] menuIdArr = menuIds.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    string[] funcIdArr = menuIds.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] menuIdStrArr = menuIds.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] funcIdStrArr = funcIds.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    IList<int> menuIdList = new List<int>();
+                    IList<int> funcIdList = new List<int>();
+                    foreach (string idStr in menuIdStrArr)
+                    {
+                        menuIdList.Add(Convert.ToInt32(idStr));
+                    }
+                    foreach (string idStr in funcIdStrArr)
+                    {
+                        funcIdList.Add(Convert.ToInt32(idStr));
+                    }
+                    bool isSuccess = AuthManager.AssignPower(id, menuIdList, funcIdList);
 
-
-
-                    return Json(new { code = 1, message = "保存成功" });
+                    if (isSuccess)
+                    {
+                        // 更新 Session 登录用户
+                        AccountManager.UpdateSessionAccount();
+                        return Json(new { code = 1, message = "保存成功, 菜单需刷新后有效" });
+                    }
+                    else
+                    {
+                        return Json(new { code = 1, message = "不合理的输入" });
+                    }
                 }
                 else
                 {

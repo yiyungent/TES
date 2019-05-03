@@ -35,6 +35,11 @@ namespace Framework.Infrastructure.Concrete
             return Container.Instance.Resolve<RoleInfoService>().GetEntity(2);
         }
 
+        public UserInfo GetUserInfoById(int id)
+        {
+            return Container.Instance.Resolve<UserInfoService>().GetEntity(id);
+        }
+
         public UserInfo GetUserInfoByTokenCookieKey(string tokenCookieValue)
         {
             UserInfo user = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
@@ -65,5 +70,69 @@ namespace Framework.Infrastructure.Concrete
             return funcList;
         }
         #endregion
+
+        #region 编辑角色
+        public bool EditRoleInfo(RoleInfo roleInfo)
+        {
+            bool isSuccess = false;
+            try
+            {
+                Container.Instance.Resolve<RoleInfoService>().Edit(roleInfo);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+            }
+
+            return isSuccess;
+        }
+        #endregion
+
+        public RoleInfo GetRoleInfoById(int id)
+        {
+            RoleInfo rtn = null;
+            rtn = Container.Instance.Resolve<RoleInfoService>().GetEntity(id);
+
+            return rtn;
+        }
+
+        public Sys_Menu GetSys_MenuById(int id)
+        {
+            Sys_Menu rtn = null;
+            rtn = Container.Instance.Resolve<Sys_MenuService>().GetEntity(id);
+
+            return rtn;
+        }
+
+        public FunctionInfo GetFunctionInfoById(int id)
+        {
+            FunctionInfo rtn = null;
+            rtn = Container.Instance.Resolve<FunctionInfoService>().GetEntity(id);
+
+            return rtn;
+        }
+
+        public IList<Sys_Menu> GetSys_MenuListByIds(params int[] ids)
+        {
+            IList<Sys_Menu> rtn = new List<Sys_Menu>();
+            rtn = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion>
+            {
+                Expression.In("ID", ids.ToArray())
+            });
+
+            return rtn;
+        }
+
+        public IList<FunctionInfo> GetFunctionInfoListByIds(params int[] ids)
+        {
+            IList<FunctionInfo> rtn = new List<FunctionInfo>();
+            rtn = Container.Instance.Resolve<FunctionInfoService>().Query(new List<ICriterion>
+            {
+                Expression.In("ID", ids.ToArray())
+            });
+
+            return rtn;
+        }
     }
 }
