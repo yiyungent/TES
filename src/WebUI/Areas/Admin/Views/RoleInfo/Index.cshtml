@@ -31,11 +31,12 @@
 					} else {
 						// 删除成功
 						$("#js-message").attr("class", "alert alert-success").find(".message").html(data.message);
-						$(".table").find("tr:contains('" + id + "')").remove();
+						//$(".table").find("tr:contains('" + id + "')").remove();
+						$(".table").find("tr[data-tr-id='" + id + "']").remove();
 						// 检查当前当前页面是否已经全部删除完，若是，则点击当前页码，重新加载
 						var trNum = $(".table").find("tr").length - 1;
 						if (trNum == 0) {
-							$("#js-page").find("a[class*='active']").click();
+							$("#js-page").find("li[class*='active']>a")[0].click();
 						}
 					}
 				}
@@ -54,7 +55,7 @@
 	</tr>
 	@foreach (var cat in Model.RoleInfos)
 	{
-		<tr>
+		<tr data-tr-id="@cat.ID">
 			<td>@cat.ID</td>
 			<td>@cat.Name</td>
 			<td>
