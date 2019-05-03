@@ -7034,7 +7034,7 @@
     <Content Include="Areas\Account\Views\web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Areas\Account\Views\Login\Index.cshtml" />
+    <None Include="Areas\Account\Views\Login\Index.cshtml.bk" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\UserInfo\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\UserInfo\Edit.cshtml" />
@@ -7050,6 +7050,7 @@
     <Content Include="Areas\Admin\Views\RoleInfo\Index.cshtml" />
     <Content Include="Areas\Admin\Views\RoleInfo\AssignPower.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Default.cshtml" />
+    <Content Include="Areas\Account\Views\Login\Index.cshtml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
