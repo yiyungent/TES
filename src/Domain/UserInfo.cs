@@ -41,6 +41,10 @@ namespace Domain
         [Property(Length = 50, NotNull = false)]
         public string Email { get; set; }
 
+        [Display(Name = "描述")]
+        [Property(Length = 300, NotNull = false)]
+        public string Description { get; set; }
+
         /// <summary>
         /// 注册时间
         /// </summary>

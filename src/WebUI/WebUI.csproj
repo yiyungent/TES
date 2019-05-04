@@ -7055,6 +7055,16 @@
     <Content Include="Areas\Account\Views\Login\Exit.cshtml" />
     <Content Include="Areas\Account\Views\Profile\Index.cshtml" />
     <Content Include="Areas\Account\Views\Shared\_TopNav.cshtml" />
+    <Content Include="Areas\Account\Views\Shared\_SettingsPartial.cshtml" />
+    <Content Include="Areas\Account\Views\Shared\_ActivityPartial.cshtml" />
+    <Content Include="Areas\Account\Views\Shared\_TimeLinePartial.cshtml" />
+    <Content Include="Areas\Account\Views\Shared\_AboutMeBoxPartial.cshtml" />
+    <Content Include="Areas\Account\Views\Shared\_ProfileBoxPartial.cshtml" />
+    <Content Include="Areas\Account\Views\Shared\_TopNav_UserAccountMenuPartial.cshtml" />
+    <Content Include="Areas\Account\Views\Shared\_TopNav_TasksMenuPartial.cshtml" />
+    <Content Include="Areas\Account\Views\Shared\_TopNav_NotificationsMenuPartial.cshtml" />
+    <Content Include="Areas\Account\Views\Shared\_TopNav_MessagesMenuPartial.cshtml" />
+    <Content Include="Areas\Account\Views\Shared\_TopNav_NavbarCollapsePartial.cshtml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -7076,6 +7086,7 @@
     <Compile Include="Areas\Account\Controllers\LoginController.cs" />
     <Compile Include="Areas\Account\Controllers\ProfileController.cs" />
     <Compile Include="Areas\Account\Models\AccountModel.cs" />
+    <Compile Include="Areas\Account\Models\EditUserInfoModel.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEdit.cs" />
