@@ -83,6 +83,7 @@
     <Compile Include="RequestResult\CommonResult.cs" />
     <Compile Include="RequestResult\LoginTimeOutResult.cs" />
     <Compile Include="RequestResult\NeedLoginResult.cs" />
+    <Compile Include="RequestResult\NotExistAccountResult.cs" />
     <Compile Include="RequestResult\WithoutAuthResult.cs" />
   </ItemGroup>
   <ItemGroup>

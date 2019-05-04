@@ -419,11 +419,6 @@ namespace WebUI.Controllers
                     {
                         Name = "学生" + (i + 1),
                         StudentCode = "student" + (i + 1),
-                        Avatar = "/images/default-avatar.jpg",
-                        Password = EncryptHelper.MD5Encrypt32("123456"),
-                        Status = 0,
-                        RoleInfoList = (from m in allRole where m.ID == 3 select m).ToList(),
-                        RegTime = DateTime.Now
                     });
                 }
 
@@ -452,11 +447,6 @@ namespace WebUI.Controllers
                     {
                         Name = "教师" + (i + 1),
                         TeacherCode = "teacher" + (i + 1),
-                        Avatar = "/images/default-avatar.jpg",
-                        Password = EncryptHelper.MD5Encrypt32("123456"),
-                        Status = 0,
-                        RoleInfoList = (from m in allRole where m.ID == 4 select m).ToList(),
-                        RegTime = DateTime.Now
                     });
                 }
 

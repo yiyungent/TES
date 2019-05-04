@@ -83,12 +83,26 @@ namespace Domain
         #region Relationship
 
         /// <summary>
+        /// 关联学生(若有)
+        /// </summary>
+        [Display(Name = "关联学生")]
+        [BelongsTo(Column = "StudentId")]
+        public StudentInfo StudentInfo { get; set; }
+
+        /// <summary>
+        /// 关联教师(若有)
+        /// </summary>
+        [Display(Name = "关联教师")]
+        [BelongsTo(Column = "TeacherId")]
+        public TeacherInfo TeacherInfo { get; set; }
+
+        /// <summary>
         /// 担任角色列表
         ///     多对多关系
         /// </summary>
         [Display(Name = "担任角色列表")]
         [HasAndBelongsToMany(Table = "Role_User", ColumnKey = "UserId", ColumnRef = "RoleId")]
-        public IList<RoleInfo> RoleInfoList { get; set; } 
+        public IList<RoleInfo> RoleInfoList { get; set; }
 
         #endregion
 

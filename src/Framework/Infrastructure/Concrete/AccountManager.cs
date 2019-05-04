@@ -115,6 +115,16 @@ namespace Framework.Infrastructure.Concrete
         }
         #endregion
 
+        #region 根据登录账号获取UserInfo
+        public static UserInfo GetUserInfoByLoginAccount(string loginAccount)
+        {
+            UserInfo rtn = null;
+            rtn = _dBAccessProvider.GetUserInfoByLoginAccount(loginAccount);
+
+            return rtn;
+        }
+        #endregion
+
         #region 检查登录状态-已登录/未登录(登录超时)
         /// <summary>
         /// 检查登录状态
