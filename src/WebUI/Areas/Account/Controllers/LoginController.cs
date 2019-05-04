@@ -11,6 +11,7 @@ using Service;
 using Framework.Config;
 using WebUI.Areas.Account.Models;
 using NHibernate.Criterion;
+using Framework.Infrastructure.Concrete;
 
 namespace WebUI.Areas.Account.Controllers
 {
@@ -167,6 +168,20 @@ namespace WebUI.Areas.Account.Controllers
                     return Redirect(returnUrl);
                 }
             }
+        }
+        #endregion
+
+        #region 退出账号
+        public ViewResult Exit(string returnUrl = null)
+        {
+            if (returnUrl == null)
+            {
+                returnUrl = Url.Action("Index", "Home", new { area = "" });
+            }
+            ViewBag.ReturnUrl = returnUrl;
+            AccountManager.Exit();
+
+            return View();
         }
         #endregion
     }

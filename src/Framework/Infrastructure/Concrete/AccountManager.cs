@@ -190,5 +190,22 @@ namespace Framework.Infrastructure.Concrete
             }
         }
         #endregion
+
+        #region 退出账号
+        /// <summary>
+        /// 退出当前登录账号
+        /// </summary>
+        public static void Exit()
+        {
+            Tools.SetSession(_loginAccountSessionKey, null);
+            HttpRequest request = HttpContext.Current.Request;
+            HttpResponse response = HttpContext.Current.Response;
+
+            if (request.Cookies.AllKeys.Contains(_rememberMeTokenCookieKey))
+            {
+                response.Cookies[_rememberMeTokenCookieKey].Expires = DateTime.UtcNow.AddDays(-1);
+            }
+        }
+        #endregion
     }
 }
