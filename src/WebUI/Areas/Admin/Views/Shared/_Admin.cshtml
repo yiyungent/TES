@@ -202,7 +202,7 @@
 								<!-- Menu Footer-->
 								<li class="user-footer">
 									<div class="pull-left">
-										<a href="@Url.Action("Index", "Profile", new { area = "Account" })" class="btn btn-default btn-flat" target="_blank">个人中心</a>
+										<a href="@Url.Action("Index", "Profile", new { area = "Account", loginAccount= CurrentUserInfo.LoginAccount })" class="btn btn-default btn-flat" target="_blank">个人中心</a>
 									</div>
 									<div class="pull-right">
 										<a href="@Url.Action("Exit", "Login", new { area = "Account", returnUrl = Url.Action("Index", "Login", new { area = "Account" }) })" class="btn btn-default btn-flat">退出</a>
