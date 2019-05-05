@@ -8,6 +8,7 @@
 	Layout = "~/Areas/Account/Views/Shared/_TopNav.cshtml";
 	ViewBag.Title = Model.Name + "- 个人中心 - TES";
 
+	// 当前登录账号
 	CurrentAccountModel currentAccount = AccountManager.GetCurrentAccount();
 	UserInfo currentUserInfo = currentAccount.UserInfo;
 	EditUserInfoModel editUserInfoModel = new EditUserInfoModel

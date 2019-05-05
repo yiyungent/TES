@@ -38,5 +38,12 @@ namespace WebUI.Areas.Admin.Controllers
             return View();
         }
         #endregion
+
+        public PartialViewResult LeftMenuPartial()
+        {
+            ViewBag.AllMenuList = AuthManager.GetMenuListByUserInfo(AccountManager.GetCurrentUserInfo());
+
+            return PartialView("_LeftMenuPartial");
+        }
     }
 }

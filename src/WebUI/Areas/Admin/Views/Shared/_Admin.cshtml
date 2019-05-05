@@ -10,34 +10,6 @@
 
 	IList<Sys_Menu> MenuList = ViewBag.MenuList as IList<Sys_Menu>;
 }
-@helper SidebarMenu(IList<Sys_Menu> menuList)
-{
-	IList<Sys_Menu> firstLevelMenus = (from m in menuList
-									  where m.ParentMenu == null
-									  orderby m.SortCode
-									  select m).ToList();
-	foreach (Sys_Menu firstMenu in firstLevelMenus)
-	{
-		IList<Sys_Menu> subMenus = (from m in menuList
-								   where m.ParentMenu != null && m.ParentMenu.ID == firstMenu.ID
-								   orderby m.SortCode
-								   select m).ToList();
-		<li class="treeview">
-			<a href="#">
-				<i class="fa fa-link"></i> <span>@firstMenu.Name</span>
-				<span class="pull-right-container">
-					<i class="fa fa-angle-left pull-right"></i>
-				</span>
-			</a>
-			<ul id="js-menu-tree" class="treeview-menu" data-pjax>
-				@foreach (Sys_Menu subMenu in subMenus)
-				{
-					<li><a href="@Url.Action(subMenu.ActionName, subMenu.ControllerName, new { area = subMenu.AreaName })" target="iframe-content">@subMenu.Name</a></li>
-				}
-			</ul>
-		</li>
-	}
-}
 
 <!DOCTYPE html>
 <html>
@@ -202,7 +174,7 @@
 								<!-- Menu Footer-->
 								<li class="user-footer">
 									<div class="pull-left">
-										<a href="@Url.Action("Index", "Profile", new { area = "Account", loginAccount= CurrentUserInfo.LoginAccount })" class="btn btn-default btn-flat" target="_blank">个人中心</a>
+										<a href="@Url.Action("Index", "Profile", new { area = "Account", loginAccount = CurrentUserInfo.LoginAccount })" class="btn btn-default btn-flat" target="_blank">个人中心</a>
 									</div>
 									<div class="pull-right">
 										<a href="@Url.Action("Exit", "Login", new { area = "Account", returnUrl = Url.Action("Index", "Login", new { area = "Account" }) })" class="btn btn-default btn-flat">退出</a>
@@ -246,11 +218,7 @@
 				</form>
 				<!-- /.search form -->
 				<!-- Sidebar Menu -->
-				<ul class="sidebar-menu" data-widget="tree">
-					<li class="header">菜单列表</li>
-					<!-- Optionally, you can add icons to the links -->
-					@SidebarMenu(MenuList)
-				</ul>
+				@{ Html.RenderAction("LeftMenuPartial"); }
 				<!-- /.sidebar-menu -->
 			</section>
 			<!-- /.sidebar -->

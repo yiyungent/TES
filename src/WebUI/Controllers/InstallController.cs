@@ -87,6 +87,15 @@ namespace WebUI.Controllers
                     Name = "仪表盘",
                     SortCode = 40,
                 });
+
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "测试一级菜单",
+                    SortCode = 50,
+                    AreaName = "Admin",
+                    ControllerName = "UserInfo",
+                    ActionName = "Index",
+                });
                 #endregion
 
                 #region 二级菜单
@@ -254,6 +263,23 @@ namespace WebUI.Controllers
 
                 #endregion
 
+                #region 三级菜单
+                parentMenu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "仪表盘-1")
+                }).FirstOrDefault();
+
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "仪表盘-1 - 测试三级菜单",
+                    AreaName = "Admin",
+                    ControllerName = "RoleInfo",
+                    ActionName = "Index",
+                    ParentMenu = parentMenu,
+                    SortCode = 10,
+                });
+                #endregion
+
                 ShowMessage("成功");
             }
             catch (Exception ex)
@@ -282,9 +308,9 @@ namespace WebUI.Controllers
 
                 IList<ICriterion> qryWhere = new List<ICriterion>();
 
-                // 5-16
-                qryWhere.Add(Expression.Ge("ID", 5));
-                qryWhere.Add(Expression.Le("ID", 16));
+                // 7-18
+                qryWhere.Add(Expression.Ge("ID", 7));
+                qryWhere.Add(Expression.Le("ID", 18));
                 IList<Sys_Menu> findMenuList = Container.Instance.Resolve<Sys_MenuService>().Query(qryWhere);
                 string[] funcNames = { "新增", "修改", "删除", "查看" };
                 string[] actionNames = { "Create", "Edit", "Delete", "Detail", "Index" };

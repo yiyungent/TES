@@ -142,6 +142,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="demo.html" />
     <Content Include="dist\AdminLTE\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.css" />
     <Content Include="dist\AdminLTE\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.min.css" />
     <Content Include="dist\AdminLTE\bower_components\bootstrap-colorpicker\dist\img\bootstrap-colorpicker\alpha-horizontal.png" />
@@ -7065,6 +7066,7 @@
     <Content Include="Areas\Account\Views\Shared\_TopNav_NotificationsMenuPartial.cshtml" />
     <Content Include="Areas\Account\Views\Shared\_TopNav_MessagesMenuPartial.cshtml" />
     <Content Include="Areas\Account\Views\Shared\_TopNav_NavbarCollapsePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LeftMenuPartial.cshtml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
