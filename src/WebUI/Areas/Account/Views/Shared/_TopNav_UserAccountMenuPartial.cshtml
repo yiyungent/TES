@@ -1,5 +1,6 @@
 ﻿@using Domain
 @using WebUI.Extensions
+@using Framework.HtmlHelpers
 @using Framework.Models
 @{
 	Layout = null;
@@ -57,6 +58,12 @@
 				<div class="pull-right">
 					<a href="@Url.Action("Exit", "Login", new { area = "Account", returnUrl = Request.Url.AbsoluteUri })" class="btn btn-default btn-flat">退出</a>
 				</div>
+				if (Html.HasAuth("Admin.Home.Index"))
+				{
+				<div class="pull-right">
+					<a href="@Url.Action("Index", "Home", new { area = "Admin" })" class="btn btn-default btn-flat"><i class="fa fa-gear"></i><span>管理中心</span></a>
+				</div>
+				}
 			}
 			else
 			{
