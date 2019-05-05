@@ -36,7 +36,7 @@
 					// 包装数据
 					var $obj = $("<code></code>").append($(data));
 					// 需要获取的对应块（如#js-profileBox)
-					var $needHtmlObj = $("#js-profileBox", $obj); 
+					var $needHtmlObj = $("#js-profileBox", $obj);
 					$("#js-profileBox").html($needHtmlObj.html());
 				}
 			});
@@ -51,58 +51,74 @@
 		});
 	</script>
 }
-<div class="row">
-	<div class="col-md-12">
-		<!-- start 提示框 -->
-		<div id="js-message" class="alert alert-success" role="alert" style="display: none;">
-			<button onclick="closeMsg()" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<span class="message"></span>
-		</div>
-		<!-- end 提示框 -->
-	</div>
-</div>
-<div class="row">
-	<div class="col-md-3">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>
+		@ViewBag.PageHeader
+		<small>@ViewBag.PageHeaderDescription</small>
+	</h1>
+	<ol class="breadcrumb" data-pjax>
+		<li><a href="/"><i class="fa fa-home"></i> 首页</a></li>
+		@foreach (BreadcrumbItem item in ViewBag.BreadcrumbList)
+		{
+			@item.GenerateHtmlTag()
+		}
+	</ol>
+</section>
 
-		<!-- Profile Image -->
-		@Html.Partial("_ProfileBoxPartial")
-		<!-- /.box -->
-		<!-- About Me Box -->
-		@Html.Partial("_AboutMeBoxPartial")
-		<!-- /.box -->
+<!-- Main content -->
+<section class="content">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- start 提示框 -->
+			@Html.Partial("_MessagePartial")
+			<!-- end 提示框 -->
+		</div>
 	</div>
-	<!-- /.col -->
-	<div class="col-md-9">
-		<div class="nav-tabs-custom">
-			<ul class="nav nav-tabs">
-				<li class="active"><a href="#activity" data-toggle="tab">活动</a></li>
-				<li><a href="#timeline" data-toggle="tab">时间轴</a></li>
-				@if (isSelf)
-				{
-					<li><a href="#settings" data-toggle="tab">设置</a></li>
-				}
-			</ul>
-			<div class="tab-content">
-				<div class="active tab-pane" id="activity">
-					@Html.Partial("_ActivityPartial")
-				</div>
-				<!-- /.tab-pane -->
-				<div class="tab-pane" id="timeline">
-					@Html.Partial("_TimeLinePartial")
-				</div>
-				<!-- /.tab-pane -->
-				@if (isSelf)
-				{
-					<div class="tab-pane" id="settings">
-						@Html.Partial("_SettingsPartial", editUserInfoModel)
+	<div class="row">
+		<div class="col-md-3">
+
+			<!-- Profile Image -->
+			@Html.Partial("_ProfileBoxPartial")
+			<!-- /.box -->
+			<!-- About Me Box -->
+			@Html.Partial("_AboutMeBoxPartial")
+			<!-- /.box -->
+		</div>
+		<!-- /.col -->
+		<div class="col-md-9">
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#activity" data-toggle="tab">活动</a></li>
+					<li><a href="#timeline" data-toggle="tab">时间轴</a></li>
+					@if (isSelf)
+					{
+						<li><a href="#settings" data-toggle="tab">设置</a></li>
+					}
+				</ul>
+				<div class="tab-content">
+					<div class="active tab-pane" id="activity">
+						@Html.Partial("_ActivityPartial")
 					</div>
 					<!-- /.tab-pane -->
-				}
+					<div class="tab-pane" id="timeline">
+						@Html.Partial("_TimeLinePartial")
+					</div>
+					<!-- /.tab-pane -->
+					@if (isSelf)
+					{
+						<div class="tab-pane" id="settings">
+							@Html.Partial("_SettingsPartial", editUserInfoModel)
+						</div>
+						<!-- /.tab-pane -->
+					}
+				</div>
+				<!-- /.tab-content -->
 			</div>
-			<!-- /.tab-content -->
+			<!-- /.nav-tabs-custom -->
 		</div>
-		<!-- /.nav-tabs-custom -->
+		<!-- /.col -->
 	</div>
-	<!-- /.col -->
-</div>
-<!-- /.row -->
+	<!-- /.row -->
+</section>
+<!-- /.content -->

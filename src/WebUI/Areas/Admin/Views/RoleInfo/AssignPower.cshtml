@@ -9,11 +9,6 @@
 @section body {
 	<script src="~/dist/ztree_v3/js/jquery.ztree.all.min.js"></script>
 	<script>
-		// 关闭提示消息
-		function closeMsg() {
-			$("#js-message").css("display", "none");
-		}
-
 		// start 菜单权限树
 		var setting = {
 			view: {
@@ -95,10 +90,7 @@
 }
 
 <!-- start 提示框 -->
-<div id="js-message" class="alert alert-success hidden" role="alert">
-	<button onclick="closeMsg()" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<span class="message"></span>
-</div>
+@Html.Partial("_MessagePartial")
 <!-- end 提示框 -->
 <!-- start 控制面板 -->
 <div class="panel panel-default">

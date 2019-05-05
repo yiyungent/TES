@@ -7028,6 +7028,8 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="images\notexist-avatar.jpg" />
+    <Content Include="images\guest-avatar.jpg" />
     <Content Include="images\default-avatar.jpg" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -7067,6 +7069,8 @@
     <Content Include="Areas\Account\Views\Shared\_TopNav_MessagesMenuPartial.cshtml" />
     <Content Include="Areas\Account\Views\Shared\_TopNav_NavbarCollapsePartial.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_LeftMenuPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_MessagePartial.cshtml" />
+    <Content Include="Areas\Account\Views\Shared\_MessagePartial.cshtml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -7091,6 +7095,7 @@
     <Compile Include="Areas\Account\Models\AccountModel.cs" />
     <Compile Include="Areas\Account\Models\EditUserInfoModel.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ControlController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEdit.cs" />
@@ -7100,6 +7105,7 @@
     <Compile Include="Areas\Admin\Models\ZNodeModel.cs" />
     <Compile Include="Controllers\ErrorsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstallController.cs" />
     <Compile Include="Areas\Admin\Controllers\SysMenuController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserInfoController.cs" />
@@ -7601,6 +7607,13 @@
     <Content Include="Areas\Admin\Views\Shared\_AdminContent.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_ErrorRedirect.cshtml" />
+    <Content Include="Views\Shared\_TopNav_MessagesMenuPartial.cshtml" />
+    <Content Include="Views\Shared\_TopNav.cshtml" />
+    <Content Include="Views\Shared\_TopNav_NavbarCollapsePartial.cshtml" />
+    <Content Include="Views\Shared\_TopNav_NotificationsMenuPartial.cshtml" />
+    <Content Include="Views\Shared\_TopNav_TasksMenuPartial.cshtml" />
+    <Content Include="Views\Shared\_TopNav_UserAccountMenuPartial.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -7611,6 +7624,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Account\Views\Control\" />
+    <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="Areas\Admin\Views\Dashboard\" />
     <Folder Include="Areas\Admin\Views\SysMenu\" />
     <Folder Include="HtmlHelpers\" />

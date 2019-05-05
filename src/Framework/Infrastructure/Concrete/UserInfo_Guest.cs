@@ -26,7 +26,8 @@ namespace Framework.Infrastructure.Concrete
                     UserInfo guest = new UserInfo
                     {
                         Name = "游客(未登录)",
-                        Avatar = "/images/default-avatar.jpg",
+                        LoginAccount = "guest",
+                        Avatar = "/images/guest-avatar.jpg",
                         RoleInfoList = new List<RoleInfo>
                         {
                             //Container.Instance.Resolve<RoleInfoService>().GetEntity(2)

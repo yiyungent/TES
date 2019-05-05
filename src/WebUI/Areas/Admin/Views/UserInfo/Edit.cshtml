@@ -5,10 +5,7 @@
 }
 
 <!-- start 提示框 -->
-<div id="js-message" class="alert alert-success hidden" role="alert">
-	<button onclick="closeMsg()" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<span class="message"></span>
-</div>
+@Html.Partial("_MessagePartial")
 <!-- end 提示框 -->
 
 @using (Ajax.BeginForm("Edit", new AjaxOptions
@@ -29,11 +26,6 @@
 }
 
 <script>
-	// 关闭提示消息
-	function closeMsg() {
-		$("#js-message").css("display", "none");
-	}
-
 	function onComplete(data) {
 		console.log(data);
 		$("#js-message").fadeIn();
