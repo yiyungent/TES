@@ -1,6 +1,7 @@
 ﻿using Framework.Attributes;
 using Framework.Infrastructure.Concrete;
 using Framework.Models;
+using Framework.Mvc.ViewEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Framework.Config
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
             RegisterModelBinder(ModelBinders.Binders);
+            RegisterViewEngine(ViewEngines.Engines);
         }
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
@@ -33,6 +35,11 @@ namespace Framework.Config
         public static void RegisterModelBinder(ModelBinderDictionary binders)
         {
             binders.Add(typeof(CurrentAccountModel), new CurrentAccountModelBinder());
+        }
+
+        public static void RegisterViewEngine(ViewEngineCollection viewEngines)
+        {
+            viewEngines.Add(new GlobalSharedViewEngine());
         }
     }
 }
