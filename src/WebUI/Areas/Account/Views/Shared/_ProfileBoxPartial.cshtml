@@ -6,7 +6,8 @@
 	string roleName = Model.RoleInfoList.FirstOrDefault() == null ? "" : Model.RoleInfoList.FirstOrDefault().Name;
 }
 
-<div class="box box-primary">
+
+<div id="js-profileBox" class="box box-primary">
 	<div class="box-body box-profile">
 		<img class="profile-user-img img-responsive img-circle" src="@Model.Avatar" alt="User profile picture">
 
@@ -29,4 +30,9 @@
 		<a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
 	</div>
 	<!-- /.box-body -->
+	<!-- Loading (remove the following to stop the loading)-->
+	<div class="js-loading overlay" style="display: none;">
+		<i class="fa fa-refresh fa-spin"></i>
+	</div>
+	<!-- end loading -->
 </div>

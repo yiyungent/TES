@@ -55,7 +55,7 @@
 <script>
 	// 关闭提示消息
 	function closeMsg() {
-		$("#js-message").attr("class", "hidden");
+		$("#js-message").css("display", "none");
 	}
 
 	function submitSettings(event) {
@@ -67,14 +67,16 @@
 			data: $("#js-settings-form").serialize(),
 			dataType: "json",
 			success: function (data) {
+				$("#js-message").fadeIn();
 				if (data.code <= 0) {
-					$("#js-message").attr("class", "alert alert-danger").find(".message").html(data.message)
+					$("#js-message").attr("class", "alert alert-danger").find(".message").html(data.message);
 				} else {
 					$("#js-message").attr("class", "alert alert-success").find(".message").html(data.message);
+					loadProfileBox("@Model.InputAccount");
 				}
 				// 3s 后隐藏
 				setTimeout(function () {
-					$("#js-message").addClass("hidden");
+					$("#js-message").fadeOut("slow");
 				}, 3000);
 			}
 		});

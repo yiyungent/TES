@@ -11,7 +11,7 @@
 	<script>
 		// 关闭提示消息
 		function closeMsg() {
-			$("#js-message").attr("class", "hidden");
+			$("#js-message").css("display", "none");
 		}
 
 		// start 菜单权限树
@@ -76,12 +76,17 @@
 				data: { id: @Model.ID, menuIds: selectedMenuIds, funcIds: selectedFuncIds },
 				dataType: "json",
 				success: function (data) {
+					$("#js-message").fadeIn();
 					if (data.code <= 0) {
 						$("#js-message").attr("class", "alert alert-danger").find(".message").html(data.message)
 					} else {
 						$("#js-message").attr("class", "alert alert-success").find(".message").html(data.message);
 						loadTree();
 					}
+					// 3s 后隐藏
+					setTimeout(function () {
+						$("#js-message").fadeOut("slow");
+					}, 3000);
 				}
 			});
 		});

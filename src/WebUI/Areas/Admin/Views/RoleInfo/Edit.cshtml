@@ -31,16 +31,21 @@
 <script>
 	// 关闭提示消息
 	function closeMsg() {
-		$("#js-message").attr("class", "hidden");
+		$("#js-message").css("display", "none");
 	}
 
 	function onComplete(data) {
 		console.log(data);
+		$("#js-message").fadeIn();
 		var resJson = data.responseJSON;
 		if (resJson.code <= 0) {
 			$("#js-message").attr("class", "alert alert-danger").find(".message").html(resJson.message)
 		} else {
 			$("#js-message").attr("class", "alert alert-success").find(".message").html(resJson.message);
 		}
+		// 3s 后隐藏
+		setTimeout(function () {
+			$("#js-message").fadeOut("slow");
+		}, 3000);
 	}
 </script>

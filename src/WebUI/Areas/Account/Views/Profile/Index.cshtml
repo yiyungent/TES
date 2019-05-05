@@ -23,11 +23,37 @@
 @section head {
 }
 @section body {
+	<script>
+		function loadProfileBox(loginAccount) {
+			loading();
+			$.ajax({
+				url: "@Url.Action("ProfileBoxPartial", "Control")",
+				type: "post",
+				data:{ loginAccount: loginAccount },
+				dataType: "html",
+				success: function (data) {
+					// 包装数据
+					var $obj = $("<code></code>").append($(data));
+					// 需要获取的对应块（如#js-profileBox)
+					var $needHtmlObj = $("#js-profileBox", $obj); 
+					$("#js-profileBox").html($needHtmlObj.html());
+				}
+			});
+		}
+		function loading(){
+			$(".js-loading").css("display", "block");
+		}
+		function loadComplete () {
+			$(".js-loading").css("display", "none");
+		}
+		$(function () {
+		});
+	</script>
 }
 <div class="row">
 	<div class="col-md-12">
 		<!-- start 提示框 -->
-		<div id="js-message" class="alert alert-success hidden" role="alert">
+		<div id="js-message" class="alert alert-success" role="alert" style="display: none;">
 			<button onclick="closeMsg()" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<span class="message"></span>
 		</div>
