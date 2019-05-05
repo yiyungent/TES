@@ -82,6 +82,11 @@ namespace WebUI.Controllers
                     Name = "评价管理",
                     SortCode = 30,
                 });
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "仪表盘",
+                    SortCode = 40,
+                });
                 #endregion
 
                 #region 二级菜单
@@ -90,7 +95,10 @@ namespace WebUI.Controllers
 
 
                 #region 系统管理的二级菜单
-                parentMenu = Container.Instance.Resolve<Sys_MenuService>().GetEntity(1);
+                parentMenu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "系统管理")
+                }).FirstOrDefault();
 
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
@@ -131,7 +139,10 @@ namespace WebUI.Controllers
                 #endregion
 
                 #region 业务管理的二级菜单
-                parentMenu = Container.Instance.Resolve<Sys_MenuService>().GetEntity(2);
+                parentMenu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "业务管理")
+                }).FirstOrDefault();
 
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
@@ -190,7 +201,10 @@ namespace WebUI.Controllers
                 #endregion
 
                 #region 评价管理的二级菜单
-                parentMenu = Container.Instance.Resolve<Sys_MenuService>().GetEntity(3);
+                parentMenu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "评价管理")
+                }).FirstOrDefault(); ;
 
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
@@ -221,6 +235,23 @@ namespace WebUI.Controllers
                 });
                 #endregion
 
+                #region 仪表盘的二级菜单
+                parentMenu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "仪表盘")
+                }).FirstOrDefault();
+
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "仪表盘-1",
+                    ControllerName = "Dashboard",
+                    ActionName = "One",
+                    AreaName = "Admin",
+                    ParentMenu = parentMenu,
+                    SortCode = 10,
+                });
+                #endregion
+
                 #endregion
 
                 ShowMessage("成功");
@@ -247,12 +278,6 @@ namespace WebUI.Controllers
                 {
                     AuthKey = "Admin.Home.Index",
                     Name = "后台管理(框架)"
-                });
-
-                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
-                {
-                    AuthKey = "Admin.Home.Default",
-                    Name = "后台概述"
                 });
 
                 IList<ICriterion> qryWhere = new List<ICriterion>();

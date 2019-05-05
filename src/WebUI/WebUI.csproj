@@ -7089,6 +7089,7 @@
     <Compile Include="Areas\Account\Models\AccountModel.cs" />
     <Compile Include="Areas\Account\Models\EditUserInfoModel.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEdit.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoListViewModel.cs" />
@@ -7608,6 +7609,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Account\Views\Control\" />
+    <Folder Include="Areas\Admin\Views\Dashboard\" />
     <Folder Include="Areas\Admin\Views\SysMenu\" />
     <Folder Include="HtmlHelpers\" />
     <Folder Include="Models\" />
