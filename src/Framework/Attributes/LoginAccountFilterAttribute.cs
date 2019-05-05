@@ -14,6 +14,10 @@ namespace Framework.Attributes
     using Framework.Infrastructure.Abstract;
     using Framework.Factories;
 
+    /// <summary>
+    /// 登录用户Session 维护器
+    /// <para>当浏览器端Session被移除，但拥有"记住我"Cookie时，只要有效，则会在任何请求之前 将此用户信息存于 Session</para>
+    /// </summary>
     public class LoginAccountFilterAttribute : ActionFilterAttribute
     {
         private static string _sessionKeyLoginAccount = AppConfig.LoginAccountSessionKey;

@@ -132,7 +132,7 @@ namespace WebUI.Areas.Admin.Controllers
         /// 授权
         /// </summary>
         /// <param name="id">角色ID</param>
-        /// <param name="menuIds">授予的菜单ID: 1,2,4,5,6,</param>
+        /// <param name="menuIds">授予的系统菜单ID: 1,2,4,5,6,</param>
         /// <param name="funcIds">授予的权限操作ID: 3,6,8,3,</param>
         [HttpPost]
         public JsonResult AssignPower(int id, string menuIds, string funcIds)
@@ -142,6 +142,11 @@ namespace WebUI.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     string[] menuIdStrArr = menuIds.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                    // 只要拥有系统菜单下的任一操作权限 --> 就会拥有此对应系统菜单项 --> 就会拥有进入管理中心，即拥有此抽象的特殊操作权限(Admin.Home.Index  (后台)管理中心(框架))
+                    if (menuIdStrArr != null && menuIdStrArr.Length > 0)
+                    {
+                        funcIds += "1";
+                    }
                     string[] funcIdStrArr = funcIds.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                     IList<int> menuIdList = new List<int>();
                     IList<int> funcIdList = new List<int>();
@@ -182,6 +187,10 @@ namespace WebUI.Areas.Admin.Controllers
 
 
         #region 获取此角色的菜单权限树
+        /// <summary>
+        /// 获取此角色的菜单权限树
+        /// </summary>
+        /// <param name="id">角色ID</param>
         public JsonResult GetRole_MenuAndFunc_Tree(int id)
         {
             IList<ZNodeModel> rtnJson = new List<ZNodeModel>();
@@ -190,6 +199,8 @@ namespace WebUI.Areas.Admin.Controllers
 
             IList<Sys_Menu> allMenuList = AuthManager.AllMenuList();
             IList<FunctionInfo> allFuncList = AuthManager.AllFuncList();
+            // 排除抽象的特殊操作（只要拥有系统菜单下的任一权限，即会拥有进入管理中心，即拥有此操作权限）
+            allFuncList = allFuncList.Where(m => m.Name != "(后台)管理中心(框架)").ToList();
             IList<Sys_Menu> roleMenuList = AuthManager.GetMenuListByRole(roleInfo);
             IList<FunctionInfo> roleFuncList = AuthManager.GetFuncListByRole(roleInfo);
 

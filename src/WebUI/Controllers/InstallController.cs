@@ -299,11 +299,13 @@ namespace WebUI.Controllers
             try
             {
                 ShowMessage("开始初始化操作表");
-
+                // ID: 1
+                // 特殊抽象操作---决定是否能进入管理中心
+                // 只要拥有系统菜单下的任一操作权限 --> 就会拥有此对应系统菜单项 --> 就会拥有进入管理中心，即拥有此抽象的特殊操作权限(Admin.Home.Index  (后台)管理中心(框架))
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
                     AuthKey = "Admin.Home.Index",
-                    Name = "后台管理(框架)"
+                    Name = "(后台)管理中心(框架)"
                 });
 
                 IList<ICriterion> qryWhere = new List<ICriterion>();
