@@ -380,20 +380,6 @@ namespace WebUI.Controllers
                     RegTime = DateTime.Now
                 });
 
-                for (int i = 0; i < 100; i++)
-                {
-                    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo()
-                    {
-                        Name = "用户" + (i + 1),
-                        LoginAccount = "user" + (i + 1),
-                        Avatar = "/images/default-avatar.jpg",
-                        Password = EncryptHelper.MD5Encrypt32("123456"),
-                        Status = 0,
-                        RoleInfoList = null,
-                        RegTime = DateTime.Now
-                    });
-                }
-
                 ShowMessage("成功");
             }
             catch (Exception ex)
@@ -411,14 +397,27 @@ namespace WebUI.Controllers
             {
                 ShowMessage("开始初始化学生表");
 
-                var allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
+                IList<RoleInfo> allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
 
                 for (int i = 0; i < 100; i++)
                 {
+                    string name = "学生" + (i + 1);
+                    string studentCode = "170010" + i.ToString("000");
+                    // 创建其绑定用户
+                    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo()
+                    {
+                        Name = name,
+                        Avatar = "/images/default-avatar.jpg",
+                        LoginAccount = studentCode,
+                        Password = EncryptHelper.MD5Encrypt32("12345"),
+                        RoleInfoList = allRole.Where(m => m.Name == "学生").ToList()
+                    });
+                    // 创建学生
                     Container.Instance.Resolve<StudentInfoService>().Create(new StudentInfo()
                     {
-                        Name = "学生" + (i + 1),
-                        StudentCode = "student" + (i + 1),
+                        Name = name,
+                        StudentCode = studentCode,
+                        UserInfo_Account = studentCode
                     });
                 }
 
@@ -443,10 +442,23 @@ namespace WebUI.Controllers
 
                 for (int i = 0; i < 100; i++)
                 {
+                    string name = "教师" + (i + 1);
+                    string teacherCode = "120010" + i.ToString("000");
+                    // 创建其绑定用户
+                    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo()
+                    {
+                        Name = name,
+                        Avatar = "/images/default-avatar.jpg",
+                        LoginAccount = teacherCode,
+                        Password = EncryptHelper.MD5Encrypt32("12345"),
+                        RoleInfoList = allRole.Where(m => m.Name == "教师").ToList()
+                    });
+                    // 创建学生
                     Container.Instance.Resolve<TeacherInfoService>().Create(new TeacherInfo()
                     {
-                        Name = "教师" + (i + 1),
-                        TeacherCode = "teacher" + (i + 1),
+                        Name = name,
+                        TeacherCode = teacherCode,
+                        UserInfo_Account = teacherCode
                     });
                 }
 

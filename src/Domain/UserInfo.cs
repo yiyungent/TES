@@ -13,17 +13,17 @@ namespace Domain
     public class UserInfo : BaseEntity<UserInfo>
     {
         /// <summary>
-        /// 用户名
+        /// 用户名(不唯一，可改，不可作为登录使用)
         /// </summary>
         [Display(Name = "用户名")]
         [Property(Length = 30, NotNull = true)]
         public string Name { get; set; }
 
         /// <summary>
-        /// 登录账号
+        /// 账号(唯一，一经创建不可改，可作为登录使用)
         /// </summary>
-        [Display(Name = "登录账号")]
-        [Property(Length = 30, NotNull = true)]
+        [Display(Name = "账号")]
+        [Property(Length = 30, NotNull = true, Unique = true)]
         [Required(ErrorMessage = "请输入账号")]
         public string LoginAccount { get; set; }
 
@@ -35,10 +35,10 @@ namespace Domain
         public string Avatar { get; set; }
 
         /// <summary>
-        /// 邮箱
+        /// 邮箱(唯一，可改，可作为登录使用)
         /// </summary>
         [Display(Name = "邮箱")]
-        [Property(Length = 50, NotNull = false)]
+        [Property(Length = 50, NotNull = false, Unique = true)]
         public string Email { get; set; }
 
         [Display(Name = "描述")]
@@ -57,8 +57,6 @@ namespace Domain
         /// </summary>
         [Display(Name = "密码")]
         [Property(Length = 64, NotNull = true)]
-        [Required(ErrorMessage = "密码不能为空")]
-        //[MinLength(11, ErrorMessage = "密码11位及以上")]
         public string Password { get; set; }
 
         /// <summary>
@@ -85,20 +83,6 @@ namespace Domain
         public int Status { get; set; }
 
         #region Relationship
-
-        /// <summary>
-        /// 关联学生(若有)
-        /// </summary>
-        [Display(Name = "关联学生")]
-        [BelongsTo(Column = "StudentId")]
-        public StudentInfo StudentInfo { get; set; }
-
-        /// <summary>
-        /// 关联教师(若有)
-        /// </summary>
-        [Display(Name = "关联教师")]
-        [BelongsTo(Column = "TeacherId")]
-        public TeacherInfo TeacherInfo { get; set; }
 
         /// <summary>
         /// 担任角色列表

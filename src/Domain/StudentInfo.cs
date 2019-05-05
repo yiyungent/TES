@@ -29,6 +29,14 @@ namespace Domain
         #region Relationship
 
         /// <summary>
+        /// 绑定用户账号
+        /// <para>在创建学生时，同时创建其绑定用户</para>
+        /// </summary>
+        [Display(Name = "绑定用户账号")]
+        [Property(Length = 30, NotNull = true)]
+        public string UserInfo_Account { get; set; }
+
+        /// <summary>
         /// 若为学生，则为所在班级
         /// </summary>
         [BelongsTo(Column = "ClazzId")]
