@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Framework.Mvc.ViewEngines
+namespace Framework.Mvc.ViewEngines.GlobalShared
 {
     public class GlobalSharedViewEngine : RazorViewEngine
     {

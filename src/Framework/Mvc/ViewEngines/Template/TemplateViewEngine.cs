@@ -8,23 +8,23 @@ using System.Web.Routing;
 
 namespace Framework.Mvc.ViewEngines.Template
 {
-    public class ThemeViewEngine : ThemeBuildManagerViewEngine
+    public class TemplateViewEngine : TemplateBuildManagerViewEngine
     {
         // mod 修改视图检索路径
-        public ThemeViewEngine()
+        public TemplateViewEngine()
         {
             // {0} ViewName
             // {1} ControllerName
-            // {2} ThemeName
-            // {3} AreaName
+            // {2} AreaName
+            // {3} TemplateName
 
             this.AreaViewLocationFormats = new[]
               {
-                // themes
-                "~/Themes/{3}/Areas/{2}/Views/{1}/{0}.cshtml",
-                //"~/Themes/{3}/Areas/{2}/Views/{1}/{0}.vbhtml",
-                "~/Themes/{3}/Areas/{2}/Views/Shared/{0}.cshtml",
-                //"~/Themes/{3}/Areas/{2}/Views/Shared/{0}.vbhtml",
+                // templates
+                "~/Areas/{2}/Templates/{3}/Views/{1}/{0}.cshtml",
+                //"~/Areas/{2}/Templates/{3}/Views/{1}/{0}.vbhtml",
+                "~/Areas/{2}/Templates/{3}/Views/Shared/{0}.cshtml",
+                //"~/Areas/{2}/Templates/{3}/Views/Shared/{0}.vbhtml",
 
                 // default
                 //"~/Areas/{2}/Views/{1}/{0}.cshtml",
@@ -34,11 +34,11 @@ namespace Framework.Mvc.ViewEngines.Template
               };
             this.AreaMasterLocationFormats = new[]
               {
-                // themes
-                "~/Themes/{3}/Areas/{2}/Views/{1}/{0}.cshtml",
-                //"~/Themes/{3}/Areas/{2}/Views/{1}/{0}.vbhtml",
-                "~/Themes/{3}/Areas/{2}/Views/Shared/{0}.cshtml",
-                //"~/Themes/{3}/Areas/{2}/Views/Shared/{0}.vbhtml",
+                // templates
+                "~/Areas/{2}/Templates/{3}/Views/{1}/{0}.cshtml",
+                //"~/Areas/{2}/Templates/{3}/Views/{1}/{0}.vbhtml",
+                "~/Areas/{2}/Templates/{3}/Views/Shared/{0}.cshtml",
+                //"~/Areas/{2}/Templates/{3}/Views/Shared/{0}.vbhtml",
 
                 // default
                 //"~/Areas/{2}/Views/{1}/{0}.cshtml",
@@ -48,11 +48,11 @@ namespace Framework.Mvc.ViewEngines.Template
               };
             this.AreaPartialViewLocationFormats = new[]
               {
-                // themes
-                "~/Themes/{3}/Areas/{2}/Views/{1}/{0}.cshtml",
-                //"~/Themes/{3}/Areas/{2}/Views/{1}/{0}.vbhtml",
-                "~/Themes/{3}/Areas/{2}/Views/Shared/{0}.cshtml",
-                //"~/Themes/{3}/Areas/{2}/Views/Shared/{0}.vbhtml",
+                // templates
+                "~/Areas/{2}/Templates/{3}/Views/{1}/{0}.cshtml",
+                //"~/Areas/{2}/Templates/{3}/Views/{1}/{0}.vbhtml",
+                "~/Areas/{2}/Templates/{3}/Views/Shared/{0}.cshtml",
+                //"~/Areas/{2}/Templates/{3}/Views/Shared/{0}.vbhtml",
 
                 // default
                 //"~/Areas/{2}/Views/{1}/{0}.cshtml",
@@ -62,11 +62,11 @@ namespace Framework.Mvc.ViewEngines.Template
               };
             this.ViewLocationFormats = new[]
               {
-                // themes
-                "~/Themes/{2}/Views/{1}/{0}.cshtml",
-                //"~/Themes/{2}/Views/{1}/{0}.vbhtml",
-                "~/Themes/{2}/Views/Shared/{0}.cshtml",
-                //"~/Themes/{2}/Views/Shared/{0}.vbhtml",
+                // templates
+                "~/Templates/{2}/Views/{1}/{0}.cshtml",
+                //"~/Templates/{2}/Views/{1}/{0}.vbhtml",
+                "~/Templates/{2}/Views/Shared/{0}.cshtml",
+                //"~/Templates/{2}/Views/Shared/{0}.vbhtml",
 
                 // default
                 //"~/Views/{1}/{0}.cshtml",
@@ -76,11 +76,11 @@ namespace Framework.Mvc.ViewEngines.Template
               };
             this.MasterLocationFormats = new[]
               {
-                // themes
-                "~/Themes/{2}/Views/{1}/{0}.cshtml",
-                //"~/Themes/{2}/Views/{1}/{0}.vbhtml",
-                "~/Themes/{2}/Views/Shared/{0}.cshtml",
-                //"~/Themes/{2}/Views/Shared/{0}.vbhtml",
+                // templates
+                "~/Templates/{2}/Views/{1}/{0}.cshtml",
+                //"~/Templates/{2}/Views/{1}/{0}.vbhtml",
+                "~/Templates/{2}/Views/Shared/{0}.cshtml",
+                //"~/Templates/{2}/Views/Shared/{0}.vbhtml",
 
                 // default
                 //"~/Views/{1}/{0}.cshtml",
@@ -90,11 +90,11 @@ namespace Framework.Mvc.ViewEngines.Template
               };
             this.PartialViewLocationFormats = new[]
               {
-                // themes
-                "~/Themes/{2}/Views/{1}/{0}.cshtml",
-                //"~/Themes/{2}/Views/{1}/{0}.vbhtml",
-                "~/Themes/{2}/Views/Shared/{0}.cshtml",
-                //"~/Themes/{2}/Views/Shared/{0}.vbhtml",
+                // templates
+                "~/Templates/{2}/Views/{1}/{0}.cshtml",
+                //"~/Templates/{2}/Views/{1}/{0}.vbhtml",
+                "~/Templates/{2}/Views/Shared/{0}.cshtml",
+                //"~/Templates/{2}/Views/Shared/{0}.vbhtml",
 
                 // default
                 //"~/Views/{1}/{0}.cshtml",

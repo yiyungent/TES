@@ -10,14 +10,14 @@ using System.Web.Routing;
 
 namespace Framework.Mvc.ViewEngines.Template
 {
-    public abstract class ThemeVirtualPathProviderViewEngine : VirtualPathProviderViewEngine
+    public abstract class TemplateVirtualPathProviderViewEngine : VirtualPathProviderViewEngine
     {
-        public const string ThemeSessionKey = "Theme";
+        public const string TemplateSessionKey = "Template";
 
         // add 使之在当前类可见，在 VirtualPathProviderViewEngine 有此，但为 私有
         internal Func<string, string> GetExtensionThunk;
 
-        protected ThemeVirtualPathProviderViewEngine()
+        protected TemplateVirtualPathProviderViewEngine()
         {
             // add 初始化，原直接在属性处 完成 new 初始化
             GetExtensionThunk = new Func<string, string>(VirtualPathUtility.GetExtension);
@@ -31,8 +31,8 @@ namespace Framework.Mvc.ViewEngines.Template
         // mod
         protected virtual string GetPath(ControllerContext controllerContext, string[] locations, string[] areaLocations, string locationsPropertyName, string name, string controllerName, string cacheKeyPrefix, bool useCache, out string[] searchedLocations)
         {
-            // add 主题名
-            string theme = GetCurrentTheme(controllerContext);
+            // add 主题模板
+            string templateName = GetCurrentTemplate(controllerContext);
             // mod 自己 字段 的 此
             searchedLocations = _emptyLocations;
             if (string.IsNullOrEmpty(name))
@@ -41,8 +41,8 @@ namespace Framework.Mvc.ViewEngines.Template
             string areaName = GetAreaName(controllerContext.RouteData);
             // update 判断 区域名 是否为空   原直接写在实参列表中的，实则一致
             bool flag = !string.IsNullOrEmpty(areaName);
-            // mod 改用 自己的 ThemeViewLocation, GetViewLocations
-            List<ThemeViewLocation> viewLocations = GetViewLocations(locations, flag ? areaLocations : null);
+            // mod 改用 自己的 TemplateViewLocation, GetViewLocations
+            List<TemplateViewLocation> viewLocations = GetViewLocations(locations, flag ? areaLocations : null);
             if (viewLocations.Count == 0)
             {
                 // mod 由于 MvcResources 不可访问，改用自己写错误信息
@@ -50,8 +50,8 @@ namespace Framework.Mvc.ViewEngines.Template
             }
             // mod 改用自己实现 VirtualPathProviderViewEngine.IsSpecificPath(name);
             bool isSpecificPath = IsSpecificPath(name);
-            // mod 调用自己 带 theme 的 this.CreateCacheKey()
-            string key = this.CreateCacheKey(cacheKeyPrefix, name, isSpecificPath ? string.Empty : controllerName, areaName, theme);
+            // mod 调用自己 带 templateName 的 this.CreateCacheKey()
+            string key = this.CreateCacheKey(cacheKeyPrefix, name, isSpecificPath ? string.Empty : controllerName, areaName, templateName);
             if (useCache)
             {
                 // mod
@@ -63,8 +63,8 @@ namespace Framework.Mvc.ViewEngines.Template
             }
             if (!isSpecificPath)
             {
-                // mod 改用自己 带 theme 的
-                return this.GetPathFromGeneralName(controllerContext, viewLocations, name, controllerName, areaName, theme, key, ref searchedLocations);
+                // mod 改用自己 带 templateName 的
+                return this.GetPathFromGeneralName(controllerContext, viewLocations, name, controllerName, areaName, templateName, key, ref searchedLocations);
             }
             return this.GetPathFromSpecificName(controllerContext, name, key, ref searchedLocations);
         }
@@ -93,14 +93,14 @@ namespace Framework.Mvc.ViewEngines.Template
             return virtualPath;
         }
 
-        // mod 增加 theme 参数 
-        protected virtual string GetPathFromGeneralName(ControllerContext controllerContext, List<ThemeViewLocation> locations, string name, string controllerName, string areaName, string theme, string cacheKey, ref string[] searchedLocations)
+        // mod 增加 templateName 参数 
+        protected virtual string GetPathFromGeneralName(ControllerContext controllerContext, List<TemplateViewLocation> locations, string name, string controllerName, string areaName, string templateName, string cacheKey, ref string[] searchedLocations)
         {
             string virtualPath = string.Empty;
             searchedLocations = new string[locations.Count];
             for (int i = 0; i < locations.Count; i++)
             {
-                string str2 = locations[i].Format(name, controllerName, areaName, theme);
+                string str2 = locations[i].Format(name, controllerName, areaName, templateName);
                 if (this.FileExists(controllerContext, str2))
                 {
                     searchedLocations = _emptyLocations;
@@ -113,10 +113,10 @@ namespace Framework.Mvc.ViewEngines.Template
             return virtualPath;
         }
 
-        // add 增加 theme 参数
-        protected virtual string CreateCacheKey(string prefix, string name, string controllerName, string areaName, string theme)
+        // add 增加 templateName 参数
+        protected virtual string CreateCacheKey(string prefix, string name, string controllerName, string areaName, string templateName)
         {
-            return string.Format(CultureInfo.InvariantCulture, ":ViewCacheEntry:{0}:{1}:{2}:{3}:{4}:{5}", new object[] { base.GetType().AssemblyQualifiedName, prefix, name, controllerName, areaName, theme });
+            return string.Format(CultureInfo.InvariantCulture, ":ViewCacheEntry:{0}:{1}:{2}:{3}:{4}:{5}", new object[] { base.GetType().AssemblyQualifiedName, prefix, name, controllerName, areaName, templateName });
         }
 
         #region add 替换原 AreaHelpers.GetAreaName(), 而是使用它
@@ -148,17 +148,17 @@ namespace Framework.Mvc.ViewEngines.Template
 
         #endregion
 
-        // mod 改用自己 的 ThemeViewLocation 类型
-        protected virtual List<ThemeViewLocation> GetViewLocations(string[] viewLocationFormats, string[] areaViewLocationFormats)
+        // mod 改用自己 的 TemplateViewLocation 类型
+        protected virtual List<TemplateViewLocation> GetViewLocations(string[] viewLocationFormats, string[] areaViewLocationFormats)
         {
-            var list = new List<ThemeViewLocation>();
+            var list = new List<TemplateViewLocation>();
             if (areaViewLocationFormats != null)
             {
-                list.AddRange(areaViewLocationFormats.Select(s => new ThemeAreaAwareViewLocation(s)).Cast<ThemeViewLocation>());
+                list.AddRange(areaViewLocationFormats.Select(s => new TemplateAreaAwareViewLocation(s)).Cast<TemplateViewLocation>());
             }
             if (viewLocationFormats != null)
             {
-                list.AddRange(viewLocationFormats.Select(s => new ThemeViewLocation(s)));
+                list.AddRange(viewLocationFormats.Select(s => new TemplateViewLocation(s)));
             }
             return list;
         }
@@ -174,26 +174,26 @@ namespace Framework.Mvc.ViewEngines.Template
             return true;
         }
 
-        // add 查找当前主题
-        protected virtual string GetCurrentTheme(ControllerContext controllerContext)
+        // add 查找主题模板
+        protected virtual string GetCurrentTemplate(ControllerContext controllerContext)
         {
-            //var theme = controllerContext.RequestContext.HttpContext.Request["Theme"];
-            object themeSession = controllerContext.RequestContext.HttpContext.Session[ThemeSessionKey];
-            string theme = null;
-            if (themeSession != null)
+            //var templateName = controllerContext.RequestContext.HttpContext.Request["Template"];
+            object templateNameSession = controllerContext.RequestContext.HttpContext.Session[TemplateSessionKey];
+            string templateName = null;
+            if (templateNameSession != null)
             {
-                theme = themeSession.ToString();
+                templateName = templateNameSession.ToString();
             }
 
-            return theme;
+            return templateName;
         }
 
         // add 但原本就为 public, 重写后，功能一致啊，为什么要重写??????,难道是因为只有这样重写后，this才能指向当前，使用当前类的 GetPath()。原因应该是 GetPath()在原处为 private,无法重写只能覆盖, 如果不在这里再写一次此方法，就会指向原处的 GetPath()
         public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            // hook theme 未设置时, 放弃->找不到了，让下一个视图引擎搜索
-            string theme = GetCurrentTheme(controllerContext);
-            if (string.IsNullOrEmpty(theme))
+            // hook templateName 未设置时, 放弃->找不到了，让下一个视图引擎搜索
+            string templateName = GetCurrentTemplate(controllerContext);
+            if (string.IsNullOrEmpty(templateName))
             {
                 return new ViewEngineResult((IEnumerable<string>)new string[] { "" });
             }
@@ -216,9 +216,9 @@ namespace Framework.Mvc.ViewEngines.Template
         // add 重写，但代码一致，只为调用本类新 GetPath()
         public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
-            // hook theme 未设置时, 放弃->找不到了，让下一个视图引擎搜索
-            string theme = GetCurrentTheme(controllerContext);
-            if (string.IsNullOrEmpty(theme))
+            // hook templateName 未设置时, 放弃->找不到了，让下一个视图引擎搜索
+            string templateName = GetCurrentTemplate(controllerContext);
+            if (string.IsNullOrEmpty(templateName))
             {
                 return new ViewEngineResult((IEnumerable<string>)new string[] { "" });
             }
@@ -239,33 +239,33 @@ namespace Framework.Mvc.ViewEngines.Template
 
 
         #region mod VirtualPathProviderViewEngine---AreaAwareViewLocation, ViewLocation
-        // add theme 参数
+        // add templateName 参数
 
-        public class ThemeAreaAwareViewLocation : ThemeViewLocation
+        public class TemplateAreaAwareViewLocation : TemplateViewLocation
         {
-            public ThemeAreaAwareViewLocation(string virtualPathFormatString)
+            public TemplateAreaAwareViewLocation(string virtualPathFormatString)
                 : base(virtualPathFormatString)
             {
             }
 
-            public override string Format(string viewName, string controllerName, string areaName, string theme)
+            public override string Format(string viewName, string controllerName, string areaName, string templateName)
             {
-                return string.Format(CultureInfo.InvariantCulture, _virtualPathFormatString, viewName, controllerName, areaName, theme);
+                return string.Format(CultureInfo.InvariantCulture, _virtualPathFormatString, viewName, controllerName, areaName, templateName);
             }
         }
 
-        public class ThemeViewLocation
+        public class TemplateViewLocation
         {
             protected readonly string _virtualPathFormatString;
 
-            public ThemeViewLocation(string virtualPathFormatString)
+            public TemplateViewLocation(string virtualPathFormatString)
             {
                 _virtualPathFormatString = virtualPathFormatString;
             }
 
-            public virtual string Format(string viewName, string controllerName, string areaName, string theme)
+            public virtual string Format(string viewName, string controllerName, string areaName, string templateName)
             {
-                return string.Format(CultureInfo.InvariantCulture, _virtualPathFormatString, viewName, controllerName, theme);
+                return string.Format(CultureInfo.InvariantCulture, _virtualPathFormatString, viewName, controllerName, templateName);
             }
         }
 

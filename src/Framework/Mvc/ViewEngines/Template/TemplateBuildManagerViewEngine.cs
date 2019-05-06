@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace Framework.Mvc.ViewEngines.Template
 {
-    public abstract class ThemeBuildManagerViewEngine : ThemeVirtualPathProviderViewEngine
+    public abstract class TemplateBuildManagerViewEngine : TemplateVirtualPathProviderViewEngine
     {
         #region Methods 
 

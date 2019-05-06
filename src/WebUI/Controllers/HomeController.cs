@@ -25,7 +25,7 @@ namespace WebUI.Controllers
         {
             // 当前登录账号/未登录
             CurrentAccountModel currentAccount = AccountManager.GetCurrentAccount();
-            //Session[ThemeViewEngine.ThemeSessionKey] = "Red";
+            Session[TemplateViewEngine.TemplateSessionKey] = "Red";
 
             return View(currentAccount);
         }

@@ -6,6 +6,12 @@ using System.Web.Mvc;
 
 namespace Framework.Mvc.ViewEngines.Template
 {
+    /// <summary>
+    /// 原作者称需使用，不然 MasterPage 无效，
+    /// 但测试 Action() 中 View("ViewName", "MasterName", model) 有效，
+    /// ???
+    /// https://www.cnblogs.com/coolite/archive/2012/12/28/CustomTheme.html
+    /// </summary>
     public abstract class WebViewPage<TModel> : System.Web.Mvc.WebViewPage<TModel>
     {
         public override string Layout

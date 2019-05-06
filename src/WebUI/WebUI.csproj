@@ -7617,16 +7617,16 @@
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_ErrorRedirect.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Themes\Red\Views\web.config">
+    <Content Include="Templates\Red\Views\web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Themes\Red\Views\Shared\_TopNav.cshtml" />
-    <Content Include="Themes\Red\Views\Shared\_TopNav_MessagesMenuPartial.cshtml" />
-    <Content Include="Themes\Red\Views\Shared\_TopNav_NavbarCollapsePartial.cshtml" />
-    <Content Include="Themes\Red\Views\Shared\_TopNav_NotificationsMenuPartial.cshtml" />
-    <Content Include="Themes\Red\Views\Shared\_TopNav_TasksMenuPartial.cshtml" />
-    <Content Include="Themes\Red\Views\Shared\_TopNav_UserAccountMenuPartial.cshtml" />
-    <Content Include="Themes\Red\Views\Home\Index.cshtml" />
+    <Content Include="Templates\Red\Views\Shared\_TopNav.cshtml" />
+    <Content Include="Templates\Red\Views\Shared\_TopNav_MessagesMenuPartial.cshtml" />
+    <Content Include="Templates\Red\Views\Shared\_TopNav_NavbarCollapsePartial.cshtml" />
+    <Content Include="Templates\Red\Views\Shared\_TopNav_NotificationsMenuPartial.cshtml" />
+    <Content Include="Templates\Red\Views\Shared\_TopNav_TasksMenuPartial.cshtml" />
+    <Content Include="Templates\Red\Views\Shared\_TopNav_UserAccountMenuPartial.cshtml" />
+    <Content Include="Templates\Red\Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
