@@ -28,6 +28,11 @@ namespace Framework.Mvc.ViewEngine.Template
         public ThemeViewEngine(IViewPageActivator viewPageActivator)
             : base(viewPageActivator)
         {
+            // {0} ViewName
+            // {1} ControllerName
+            // {2} ThemeName
+            // {3} AreaName
+
             this.AreaViewLocationFormats = new[]
               {
                 "~/Themes/{3}/Areas/{2}/Views/{1}/{0}.cshtml",
