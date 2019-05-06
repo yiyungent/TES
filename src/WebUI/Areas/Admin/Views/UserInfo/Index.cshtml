@@ -15,11 +15,6 @@
 		<script src="~/dist/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 		<script src="~/dist/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>*@
 	<script>
-		// 关闭提示消息
-		function closeMsg() {
-			$("#js-message").attr("class", "hidden");
-		}
-
 		// start 删除
 		function deleteOp(id) {
 			$("#js-id").val(id);
@@ -46,6 +41,10 @@
 							$("#js-page").find("li[class*='active']>a")[0].click();
 						}
 					}
+					// 3s 后隐藏
+					setTimeout(function () {
+						$("#js-message").fadeOut("slow");
+					}, 3000);
 				}
 			});
 		}
@@ -86,10 +85,7 @@
 <!-- end 删除确认框 -->
 
 <!-- start 提示框 -->
-<div id="js-message" class="alert alert-success hidden" role="alert">
-	<button onclick="closeMsg()" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<span class="message"></span>
-</div>
+@{ Html.RenderPartial("__MessagePartial"); }
 <!-- end 提示框 -->
 
 <input id="js-id" type="hidden" />

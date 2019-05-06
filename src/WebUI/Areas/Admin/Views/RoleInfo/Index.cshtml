@@ -39,6 +39,10 @@
 							$("#js-page").find("li[class*='active']>a")[0].click();
 						}
 					}
+					// 3s 后隐藏
+					setTimeout(function () {
+						$("#js-message").fadeOut("slow");
+					}, 3000);
 				}
 			});
 		}

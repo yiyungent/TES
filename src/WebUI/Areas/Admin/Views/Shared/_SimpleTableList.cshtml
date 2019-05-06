@@ -9,11 +9,6 @@
 }
 @section body {
 	<script>
-		// 关闭提示消息
-		function closeMsg() {
-			$("#js-message").attr("class", "hidden");
-		}
-
 		$(function () {
 			// 分页加载动画
 			$("#js-page a").on("click", function () {
@@ -49,10 +44,7 @@
 </div>
 <!-- end 删除确认框 -->
 <!-- start 提示框 -->
-<div id="js-message" class="alert alert-success hidden" role="alert">
-	<button onclick="closeMsg()" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<span class="message"></span>
-</div>
+@{ Html.RenderPartial("__MessagePartial"); }
 <!-- end 提示框 -->
 
 <input id="js-id" type="hidden" />
