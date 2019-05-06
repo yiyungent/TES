@@ -122,7 +122,12 @@ namespace Framework.Mvc.ViewEngine.Template
         protected virtual string GetCurrentTheme(ControllerContext controllerContext)
         {
             //var theme = controllerContext.RequestContext.HttpContext.Request["Theme"];
-            var theme = controllerContext.RequestContext.HttpContext.Session[ThemeSessionKey].ToString();
+            object themeSession = controllerContext.RequestContext.HttpContext.Session[ThemeSessionKey];
+            string theme = null;
+            if (themeSession != null)
+            {
+                theme = themeSession.ToString();
+            }
 
             return theme;
         }
@@ -279,6 +284,13 @@ namespace Framework.Mvc.ViewEngine.Template
         // add 重写，但代码一致，只为调用本类新 GetPath()
         public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
+            // hook theme 未设置时, 放弃->找不到了，让下一个视图引擎搜索
+            string theme = GetCurrentTheme(controllerContext);
+            if (string.IsNullOrEmpty(theme))
+            {
+                return new ViewEngineResult((IEnumerable<string>)new string[] { "" });
+            }
+
             if (controllerContext == null)
                 throw new ArgumentNullException("controllerContext");
             if (string.IsNullOrEmpty(partialViewName))
@@ -295,6 +307,13 @@ namespace Framework.Mvc.ViewEngine.Template
         // add 但原本就为 public, 重写后，功能一致啊，为什么要重写??????,难道是因为只有这样重写后，this才能指向当前，使用当前类的 GetPath()。原因应该是 GetPath()在原处为 private,无法重写只能覆盖, 如果不在这里再写一次此方法，就会指向原处的 GetPath()
         public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
+            // hook theme 未设置时, 放弃->找不到了，让下一个视图引擎搜索
+            string theme = GetCurrentTheme(controllerContext);
+            if (string.IsNullOrEmpty(theme))
+            {
+                return new ViewEngineResult((IEnumerable<string>)new string[] { "" });
+            }
+
             if (controllerContext == null)
                 throw new ArgumentNullException("controllerContext");
             if (string.IsNullOrEmpty(viewName))

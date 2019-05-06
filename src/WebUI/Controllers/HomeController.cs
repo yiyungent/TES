@@ -25,10 +25,12 @@ namespace WebUI.Controllers
         {
             // 当前登录账号/未登录
             CurrentAccountModel currentAccount = AccountManager.GetCurrentAccount();
+            ViewBag.CurrentAccount = currentAccount;
             Session[ThemeViewEngine.ThemeSessionKey] = "Red";
 
             //return View(currentAccount);
             return View("Index", "_TestMaster", currentAccount);
+            //return PartialView("_TopNav_UserAccountMenuPartial");
         }
     }
 }
