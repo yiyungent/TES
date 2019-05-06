@@ -1,8 +1,8 @@
 ﻿using Framework.Attributes;
 using Framework.Infrastructure.Concrete;
 using Framework.Models;
-using Framework.Mvc.ViewEngine;
-using Framework.Mvc.ViewEngine.Template;
+using Framework.Mvc.ViewEngines;
+using Framework.Mvc.ViewEngines.Template;
 using System.Web.Mvc;
 using System.Web.Routing;
 

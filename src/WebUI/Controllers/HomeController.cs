@@ -2,7 +2,7 @@
 using Framework.Infrastructure.Concrete;
 using Framework.Models;
 using Framework.Mvc;
-using Framework.Mvc.ViewEngine.Template;
+using Framework.Mvc.ViewEngines.Template;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +25,7 @@ namespace WebUI.Controllers
         {
             // 当前登录账号/未登录
             CurrentAccountModel currentAccount = AccountManager.GetCurrentAccount();
+            //Session[ThemeViewEngine.ThemeSessionKey] = "Red";
 
             return View(currentAccount);
         }

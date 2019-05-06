@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Framework.Mvc.ViewEngine.Template
+namespace Framework.Mvc.ViewEngines.Template
 {
     public abstract class WebViewPage<TModel> : System.Web.Mvc.WebViewPage<TModel>
     {
