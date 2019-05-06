@@ -2,10 +2,7 @@
 using Framework.Infrastructure.Concrete;
 using Framework.Models;
 using Framework.Mvc.ViewEngine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Framework.Mvc.ViewEngine.Template;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -29,7 +26,7 @@ namespace Framework.Config
 
         public static void RegisterRoutes(RouteCollection routes)
         {
-
+            routes.LowercaseUrls = true;
         }
 
         public static void RegisterModelBinder(ModelBinderDictionary binders)
@@ -40,6 +37,7 @@ namespace Framework.Config
         public static void RegisterViewEngine(ViewEngineCollection viewEngines)
         {
             viewEngines.Add(new GlobalSharedViewEngine());
+            viewEngines.Insert(0, new ThemeViewEngine());
         }
     }
 }

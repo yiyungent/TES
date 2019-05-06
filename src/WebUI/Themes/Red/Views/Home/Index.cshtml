@@ -1,0 +1,30 @@
+﻿@using Domain
+@using Framework.Models
+@using Framework.Infrastructure.Concrete
+@model CurrentAccountModel
+@{
+	ViewBag.Title = "教学评价系统 - TES";
+	Layout = "~/Themes/Red/Views/Shared/_TopNav.cshtml";
+
+	UserInfo currentUserInfo = Model.UserInfo;
+}
+@section head {
+	<style>
+		/* 测试 */
+	</style>
+}
+@section body {
+	<script>
+
+	</script>
+}
+
+<!-- Main content -->
+<section class="content">
+	<div class="row">
+		<div class="col-md-12">
+			@{ Html.RenderAction("ProfileBoxPartial", "Control", new { area = "Account", loginAccount = currentUserInfo.LoginAccount }); }
+		</div>
+	</div>
+</section>
+<!-- /.content -->

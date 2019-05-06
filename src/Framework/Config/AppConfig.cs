@@ -12,7 +12,5 @@ namespace Framework.Config
         public static string RememberMeTokenCookieKey { get; set; } = "Token";
 
         public static int RememberMeDayCount { get; set; } = 7;
-
-        public static string LoginPageUrl { get; set; } = "";
     }
 }
