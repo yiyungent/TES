@@ -18,13 +18,19 @@ namespace Framework.Mvc.ViewEngines.Template
             // {2} AreaName
             // {3} TemplateName
 
+            // 注意：当 Area 区域的 找不到 视图时，默认会 到外层 Views 寻找视图
+            // 所以：在设计 TemplateViewEngine 时，为避免 当某 Area/Admin/Views 区域内 无目标模板视图时，导致出现向外搜索到不合理的视图，所以 不将 Templates 文件夹放入 ~/Areas/ 中，
+            // 而是完全所有模板视图文件均在 ~/Templates
+            // eg. 若有 Areas/Admin, 主题模板为 "Red", 则主题模板视图在 ~/Templates/Red/Areas/Admin
+            // 若找不到目标主题模板视图，则放弃，让下一个视图引擎进行搜索
+
             this.AreaViewLocationFormats = new[]
               {
                 // templates
-                "~/Areas/{2}/Templates/{3}/Views/{1}/{0}.cshtml",
-                //"~/Areas/{2}/Templates/{3}/Views/{1}/{0}.vbhtml",
-                "~/Areas/{2}/Templates/{3}/Views/Shared/{0}.cshtml",
-                //"~/Areas/{2}/Templates/{3}/Views/Shared/{0}.vbhtml",
+                "~/Templates/{3}/Areas/{2}/Views/{1}/{0}.cshtml",
+                //"~/Templates/{3}/Areas/{2}/Views/{1}/{0}.vbhtml",
+                "~/Templates/{3}/Areas/{2}/Views/Shared/{0}.cshtml",
+                //"~/Templates/{3}/Areas/{2}/Views/Shared/{0}.vbhtml",
 
                 // default
                 //"~/Areas/{2}/Views/{1}/{0}.cshtml",
@@ -35,10 +41,10 @@ namespace Framework.Mvc.ViewEngines.Template
             this.AreaMasterLocationFormats = new[]
               {
                 // templates
-                "~/Areas/{2}/Templates/{3}/Views/{1}/{0}.cshtml",
-                //"~/Areas/{2}/Templates/{3}/Views/{1}/{0}.vbhtml",
-                "~/Areas/{2}/Templates/{3}/Views/Shared/{0}.cshtml",
-                //"~/Areas/{2}/Templates/{3}/Views/Shared/{0}.vbhtml",
+                "~/Templates/{3}/Areas/{2}/Views/{1}/{0}.cshtml",
+                //"~/Templates/{3}/Areas/{2}/Views/{1}/{0}.vbhtml",
+                "~/Templates/{3}/Areas/{2}/Views/Shared/{0}.cshtml",
+                //"~/Templates/{3}/Areas/{2}/Views/Shared/{0}.vbhtml",
 
                 // default
                 //"~/Areas/{2}/Views/{1}/{0}.cshtml",
@@ -49,10 +55,10 @@ namespace Framework.Mvc.ViewEngines.Template
             this.AreaPartialViewLocationFormats = new[]
               {
                 // templates
-                "~/Areas/{2}/Templates/{3}/Views/{1}/{0}.cshtml",
-                //"~/Areas/{2}/Templates/{3}/Views/{1}/{0}.vbhtml",
-                "~/Areas/{2}/Templates/{3}/Views/Shared/{0}.cshtml",
-                //"~/Areas/{2}/Templates/{3}/Views/Shared/{0}.vbhtml",
+                "~/Templates/{3}/Areas/{2}/Views/{1}/{0}.cshtml",
+                //"~/Templates/{3}/Areas/{2}/Views/{1}/{0}.vbhtml",
+                "~/Templates/{3}/Areas/{2}/Views/Shared/{0}.cshtml",
+                //"~/Templates/{3}/Areas/{2}/Views/Shared/{0}.vbhtml",
 
                 // default
                 //"~/Areas/{2}/Views/{1}/{0}.cshtml",
