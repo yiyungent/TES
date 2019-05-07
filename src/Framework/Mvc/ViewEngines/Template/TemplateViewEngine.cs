@@ -23,6 +23,7 @@ namespace Framework.Mvc.ViewEngines.Template
             // 而是完全所有模板视图文件均在 ~/Templates
             // eg. 若有 Areas/Admin, 主题模板为 "Red", 则主题模板视图在 ~/Templates/Red/Areas/Admin
             // 若找不到目标主题模板视图，则放弃，让下一个视图引擎进行搜索
+            // 内部已经将其改为 当为 Area时，如果在指定的 主题模板内-指定的Area内找不到目标视图，则放弃，不会再到 非Areas区找视图(eg.~/Templates/Red/Views, 不会再到这里找)
 
             this.AreaViewLocationFormats = new[]
               {

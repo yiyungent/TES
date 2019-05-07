@@ -26,7 +26,9 @@ namespace Framework.Mvc.ViewEngines.Template
         // add 使之在当前类可见，在 VirtualPathProviderViewEngine 有此, 
         // 注意，在 VirtualPathProviderViewEngine 中 private static readonly string[] _emptyLocations = new string[0];
         // 但在此处始终为 null
-        private readonly string[] _emptyLocations = null;
+        //private readonly string[] _emptyLocations = null;
+        // 解决: 214行 searchedLocations2 为 null 时报错
+        private readonly string[] _emptyLocations = new string[0];
 
         // mod
         protected virtual string GetPath(ControllerContext controllerContext, string[] locations, string[] areaLocations, string locationsPropertyName, string name, string controllerName, string cacheKeyPrefix, bool useCache, out string[] searchedLocations)
@@ -40,9 +42,10 @@ namespace Framework.Mvc.ViewEngines.Template
             // mod 自己 实现的 GetAreaName()
             string areaName = GetAreaName(controllerContext.RouteData);
             // update 判断 区域名 是否为空   原直接写在实参列表中的，实则一致
-            bool flag = !string.IsNullOrEmpty(areaName);
+            bool isArea = !string.IsNullOrEmpty(areaName);
             // mod 改用 自己的 TemplateViewLocation, GetViewLocations
-            List<TemplateViewLocation> viewLocations = GetViewLocations(locations, flag ? areaLocations : null);
+            // 如果 为 Area ，则只到 eg. ~/Templates/Red/Areas/Admin/Views 找视图
+            List<TemplateViewLocation> viewLocations = GetViewLocations(isArea ? null : locations, isArea ? areaLocations : null);
             if (viewLocations.Count == 0)
             {
                 // mod 由于 MvcResources 不可访问，改用自己写错误信息
