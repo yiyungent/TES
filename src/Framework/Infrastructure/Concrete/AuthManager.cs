@@ -49,12 +49,11 @@ namespace Framework.Infrastructure.Concrete
                     continue;
                 }
                 // 判断是否具有此具体操作权限
-                foreach (FunctionInfo func in role.FunctionInfoList)
+                IList<string> haveAuthKeyList = (from m in role.FunctionInfoList
+                                                 select m.AuthKey).ToList();
+                if (haveAuthKeyList.Contains(authKey, new AuthKeyCompare()))
                 {
-                    if (func.AuthKey == authKey)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 
