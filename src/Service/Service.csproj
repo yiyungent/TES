@@ -56,7 +56,7 @@
     <Compile Include="RoleInfoService.cs" />
     <Compile Include="StudentInfoService.cs" />
     <Compile Include="Sys_MenuService.cs" />
-    <Compile Include="TeacherInfoService.cs" />
+    <Compile Include="EmployeeInfoService.cs" />
     <Compile Include="UserInfoService.cs" />
   </ItemGroup>
   <ItemGroup>

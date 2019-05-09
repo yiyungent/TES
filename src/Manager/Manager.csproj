@@ -56,7 +56,7 @@
     <Compile Include="RoleInfoManager.cs" />
     <Compile Include="StudentInfoManager.cs" />
     <Compile Include="Sys_MenuManger.cs" />
-    <Compile Include="TeacherInfoManager.cs" />
+    <Compile Include="EmployeeInfoManager.cs" />
     <Compile Include="UserInfoManager.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -56,7 +56,7 @@
     <Compile Include="RoleInfoComponent.cs" />
     <Compile Include="StudentInfoComponent.cs" />
     <Compile Include="Sys_MenuComponent.cs" />
-    <Compile Include="TeacherInfoComponent.cs" />
+    <Compile Include="EmployeeInfoComponent.cs" />
     <Compile Include="UserInfoComponent.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -52,6 +52,7 @@
     <Compile Include="Base\CommonEntity.cs" />
     <Compile Include="ClazzInfo.cs" />
     <Compile Include="CourseInfo.cs" />
+    <Compile Include="CourseTable.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="FrameworkBase\FunctionInfo.cs" />
     <Compile Include="FrameworkBase\RoleInfo.cs" />
@@ -62,7 +63,7 @@
     <Compile Include="RoleInfo.cs" />
     <Compile Include="StudentInfo.cs" />
     <Compile Include="Sys_Menu.cs" />
-    <Compile Include="TeacherInfo.cs" />
+    <Compile Include="EmployeeInfo.cs" />
     <Compile Include="UserInfo.cs" />
   </ItemGroup>
   <ItemGroup />

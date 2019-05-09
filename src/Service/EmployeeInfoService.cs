@@ -2,7 +2,7 @@
 using Service.Base;
 namespace Service
 {
-    public interface TeacherInfoService : BaseService<TeacherInfo>
+    public interface EmployeeInfoService : BaseService<EmployeeInfo>
     {
     }
 }

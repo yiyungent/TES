@@ -9,9 +9,9 @@
                service="Service.StudentInfoService,Service"
                type="Component.StudentInfoComponent,Component"
                isTransactional="true" />
-    <component id="TeacherInfoService"
-               service="Service.TeacherInfoService,Service"
-               type="Component.TeacherInfoComponent,Component"
+    <component id="EmployeeInfoService"
+               service="Service.EmployeeInfoService,Service"
+               type="Component.EmployeeInfoComponent,Component"
                isTransactional="true" />
     <component id="ClazzInfoService"
                service="Service.ClazzInfoService,Service"

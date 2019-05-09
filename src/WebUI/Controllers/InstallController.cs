@@ -38,7 +38,7 @@ namespace WebUI.Controllers
             InitRole();
             InitUser();
             InitStudent();
-            InitTeacher();
+            InitEmployee();
         }
         #endregion
 
@@ -484,34 +484,34 @@ namespace WebUI.Controllers
         }
         #endregion
 
-        #region 初始化教师表
-        private void InitTeacher()
+        #region 初始化员工表
+        private void InitEmployee()
         {
             try
             {
-                ShowMessage("开始初始化教师表");
+                ShowMessage("开始初始化员工表");
 
                 var allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
 
                 for (int i = 0; i < 100; i++)
                 {
                     string name = "教师" + (i + 1);
-                    string teacherCode = "120010" + i.ToString("000");
+                    string employeeCode = "120010" + i.ToString("000");
                     // 创建其绑定用户
                     Container.Instance.Resolve<UserInfoService>().Create(new UserInfo()
                     {
                         Name = name,
                         Avatar = "/images/default-avatar.jpg",
-                        LoginAccount = teacherCode,
+                        LoginAccount = employeeCode,
                         Password = EncryptHelper.MD5Encrypt32("12345"),
                         RoleInfoList = allRole.Where(m => m.Name == "教师").ToList()
                     });
-                    // 创建学生
-                    Container.Instance.Resolve<TeacherInfoService>().Create(new TeacherInfo()
+                    // 创建教师
+                    Container.Instance.Resolve<EmployeeInfoService>().Create(new EmployeeInfo()
                     {
                         Name = name,
-                        TeacherCode = teacherCode,
-                        UserInfo_Account = teacherCode
+                        EmployeeCode = employeeCode,
+                        UserInfo_Account = employeeCode
                     });
                 }
 
