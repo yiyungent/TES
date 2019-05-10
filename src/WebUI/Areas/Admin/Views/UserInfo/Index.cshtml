@@ -1,5 +1,6 @@
 ﻿@using Framework.HtmlHelpers
 @using WebUI.Areas.Admin.Models
+@using Domain
 @model UserInfoListViewModel
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
@@ -83,7 +84,6 @@
 	</div>
 </div>
 <!-- end 删除确认框 -->
-
 <!-- start 提示框 -->
 @{ Html.RenderPartial("_MessagePartial"); }
 <!-- end 提示框 -->
@@ -113,14 +113,38 @@
 		<table id="js-table" class="table table-hover">
 			<tr>
 				<th>ID</th>
+				<th>账号</th>
 				<th>用户名</th>
+				<th>角色</th>
+				<th>绑定账号</th>
 				<th>操作</th>
 			</tr>
 			@foreach (var cat in Model.UserInfos)
 			{
 				<tr data-tr-id="@cat.ID">
 					<td>@cat.ID</td>
+					<td>@cat.LoginAccount</td>
 					<td>@cat.Name</td>
+					<td>
+						@{ string[] colors = { "success", "warning", "primary", "danger", "info", "default" }; }
+						@for (int i = 0; i < cat.RoleInfoList.Count; i++)
+						{
+							<span class="label label-@colors[i%colors.Length]">@cat.RoleInfoList[i].Name</span>
+						}
+					</td>
+					<td>
+						@if (cat.StudentInfo != null)
+						{
+							<span class="label label-info">学生: @cat.StudentInfo.Name -  @cat.StudentInfo.StudentCode</span>
+						}else if (cat.EmployeeInfo != null)
+						{
+							<span class="label label-success">员工: @cat.EmployeeInfo.Name -  @cat.EmployeeInfo.EmployeeCode</span>
+						}
+						else
+						{
+							<span class="label label-default">无</span>
+						}
+					</td>
 					<td>
 						<div class="btn-group" role="group" data-pjax>
 							@if (Html.HasAuth("Admin", "UserInfo", "Detail"))
