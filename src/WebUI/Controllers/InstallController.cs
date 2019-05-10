@@ -37,8 +37,11 @@ namespace WebUI.Controllers
             InitFunction();
             InitRole();
             InitUser();
+            InitCourse();
+            InitClazz();
             InitStudent();
             InitEmployee();
+            InitCourseTable();
         }
         #endregion
 
@@ -443,6 +446,59 @@ namespace WebUI.Controllers
         }
         #endregion
 
+        #region 初始化班级
+        private void InitClazz()
+        {
+            try
+            {
+                ShowMessage("开始初始化班级表");
+
+                for (int i = 0; i < 50; i++)
+                {
+                    Container.Instance.Resolve<ClazzInfoService>().Create(new ClazzInfo
+                    {
+                        ClazzCode = "17001" + i.ToString("00")
+                    });
+                }
+
+                ShowMessage("成功");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("失败");
+                ShowMessage(ex.Message);
+            }
+        }
+        #endregion
+
+        #region 初始化课程
+        private void InitCourse()
+        {
+            try
+            {
+                ShowMessage("开始初始化课程");
+
+                string[] names = { "高等数学", "大学英语", "C#程序设计", "素质教育", "框架设计" };
+
+                for (int i = 0; i < names.Length; i++)
+                {
+                    Container.Instance.Resolve<CourseInfoService>().Create(new CourseInfo
+                    {
+                        CourseCode = "10010" + i.ToString("00"),
+                        Name = names[i]
+                    });
+                }
+
+                ShowMessage("成功");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("失败");
+                ShowMessage(ex.Message);
+            }
+        }
+        #endregion
+
         #region 初始化学生表
         private void InitStudent()
         {
@@ -451,6 +507,7 @@ namespace WebUI.Controllers
                 ShowMessage("开始初始化学生表");
 
                 IList<RoleInfo> allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
+                IList<ClazzInfo> allClazz = Container.Instance.Resolve<ClazzInfoService>().GetAll();
 
                 for (int i = 0; i < 100; i++)
                 {
@@ -466,11 +523,19 @@ namespace WebUI.Controllers
                         RoleInfoList = allRole.Where(m => m.Name == "学生").ToList()
                     });
                     // 创建学生
+                    int randomNum = new Random().Next(0, 50);
                     Container.Instance.Resolve<StudentInfoService>().Create(new StudentInfo()
                     {
                         Name = name,
                         StudentCode = studentCode,
-                        UserInfo_Account = studentCode
+                        UserInfoList = new List<UserInfo>
+                        {
+                             Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+                            {
+                                Expression.Eq("LoginAccount", studentCode)
+                            }).FirstOrDefault()
+                        },
+                        ClazzInfo = (from m in allClazz where m.ClazzCode == "1700103" + randomNum.ToString("00") select m).FirstOrDefault()
                     });
                 }
 
@@ -511,7 +576,48 @@ namespace WebUI.Controllers
                     {
                         Name = name,
                         EmployeeCode = employeeCode,
-                        UserInfo_Account = employeeCode
+                        UserInfoList = new List<UserInfo>
+                        {
+                             Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+                            {
+                                Expression.Eq("LoginAccount", employeeCode)
+                            }).FirstOrDefault()
+                        },
+                        CourseTableList = new List<CourseTable>
+                        {
+
+                        }
+                    });
+                }
+
+                ShowMessage("成功");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("失败");
+                ShowMessage(ex.Message);
+            }
+        }
+        #endregion
+
+        #region 初始化课程表
+        private void InitCourseTable()
+        {
+            try
+            {
+                ShowMessage("开始初始化课程表");
+
+                IList<ClazzInfo> allClazz = Container.Instance.Resolve<ClazzInfoService>().GetAll();
+                IList<CourseInfo> allCourse = Container.Instance.Resolve<CourseInfoService>().GetAll();
+                IList<EmployeeInfo> allEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetAll();
+
+                for (int i = 0; i < allClazz.Count; i++)
+                {
+                    Container.Instance.Resolve<CourseTableService>().Create(new CourseTable
+                    {
+                        Clazz = allClazz[i],
+                        Teacher = allEmployee[i % allEmployee.Count],
+                        Course = allCourse[i % allCourse.Count]
                     });
                 }
 

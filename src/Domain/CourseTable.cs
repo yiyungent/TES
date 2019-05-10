@@ -14,7 +14,7 @@ namespace Domain
         #region Relationship
 
         [Display(Name = "教师")]
-        [BelongsTo(Column = "EmployeeId")]
+        [BelongsTo(Column = "TeacherId")]
         public EmployeeInfo Teacher { get; set; }
 
         [Display(Name = "课程")]

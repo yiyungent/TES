@@ -37,5 +37,23 @@ namespace Domain
         [Property(NotNull = true)]
         public DateTime RegTime { get; set; }
 
+        #region Relationship
+
+        /// <summary>
+        /// 绑定学生
+        /// </summary>
+        [Display(Name = "绑定学生")]
+        [BelongsTo(Column = "StudentId")]
+        public StudentInfo StudentInfo { get; set; }
+
+        /// <summary>
+        /// 绑定员工
+        /// </summary>
+        [Display(Name = "绑定员工")]
+        [BelongsTo(Column = "EmployeeId")]
+        public EmployeeInfo EmployeeInfo { get; set; }
+
+        #endregion
+
     }
 }

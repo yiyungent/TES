@@ -33,8 +33,8 @@ namespace Domain
         /// <para>在创建学生时，同时创建其绑定用户</para>
         /// </summary>
         [Display(Name = "绑定用户账号")]
-        [Property(Length = 30, NotNull = true)]
-        public string UserInfo_Account { get; set; }
+        [HasMany(ColumnKey = "StudentId")]
+        public IList<UserInfo> UserInfoList { get; set; }
 
         /// <summary>
         /// 若为学生，则为所在班级

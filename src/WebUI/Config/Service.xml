@@ -37,5 +37,13 @@
                service="Service.FunctionInfoService,Service"
                type="Component.FunctionInfoComponent,Component"
                isTransactional="true" />
+   <component id="SettingService"
+               service="Service.SettingService,Service"
+               type="Component.SettingComponent,Component"
+               isTransactional="true" />
+   <component id="CourseTableService"
+               service="Service.CourseTableService,Service"
+               type="Component.CourseTableComponent,Component"
+               isTransactional="true" />
   </components>
 </configuration>

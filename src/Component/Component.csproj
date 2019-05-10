@@ -50,10 +50,12 @@
     <Compile Include="Base\BaseComponent.cs" />
     <Compile Include="ClazzInfoComponent.cs" />
     <Compile Include="CourseInfoComponent.cs" />
+    <Compile Include="CourseTableComponent.cs" />
     <Compile Include="DepartmentComponent.cs" />
     <Compile Include="FunctionInfoComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleInfoComponent.cs" />
+    <Compile Include="SettingComponent.cs" />
     <Compile Include="StudentInfoComponent.cs" />
     <Compile Include="Sys_MenuComponent.cs" />
     <Compile Include="EmployeeInfoComponent.cs" />

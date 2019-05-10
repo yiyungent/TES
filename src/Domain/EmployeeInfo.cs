@@ -48,11 +48,11 @@ namespace Domain
 
         /// <summary>
         /// 绑定用户账号
-        /// <para>在创建员工时，同时创建其绑定用户</para>
+        /// <para>在创建学生时，同时创建其绑定用户</para>
         /// </summary>
         [Display(Name = "绑定用户账号")]
-        [Property(Length = 30, NotNull = true)]
-        public string UserInfo_Account { get; set; }
+        [HasMany(ColumnKey = "EmployeeId")]
+        public IList<UserInfo> UserInfoList { get; set; }
 
         [Display(Name = "所在部门")]
         [BelongsTo(Column = "DeptId")]
