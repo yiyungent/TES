@@ -126,19 +126,31 @@
 					<td>@cat.LoginAccount</td>
 					<td>@cat.Name</td>
 					<td>
-						@{ string[] colors = { "success", "warning", "primary", "danger", "info", "default" }; }
+						@{ string[] colors = { "warning", "primary", "danger", "default" }; }
 						@for (int i = 0; i < cat.RoleInfoList.Count; i++)
 						{
-							<span class="label label-@colors[i%colors.Length]">@cat.RoleInfoList[i].Name</span>
+							if (cat.RoleInfoList[i].Name == "教师")
+							{
+								<span class="label label-success">@cat.RoleInfoList[i].Name</span>
+							}
+							else if (cat.RoleInfoList[i].Name == "学生")
+							{
+								<span class="label label-info">@cat.RoleInfoList[i].Name</span>
+							}
+							else
+							{
+								<span class="label label-@colors[i%colors.Length]">@cat.RoleInfoList[i].Name</span>
+							}
 						}
 					</td>
 					<td>
-						@if (cat.StudentInfo != null)
-						{
-							<span class="label label-info">学生: @cat.StudentInfo.Name -  @cat.StudentInfo.StudentCode</span>
-						}else if (cat.EmployeeInfo != null)
+						@if (cat.EmployeeInfo != null)
 						{
 							<span class="label label-success">员工: @cat.EmployeeInfo.Name -  @cat.EmployeeInfo.EmployeeCode</span>
+						}
+						else if (cat.StudentInfo != null)
+						{
+							<span class="label label-info">学生: @cat.StudentInfo.Name -  @cat.StudentInfo.StudentCode</span>
 						}
 						else
 						{
