@@ -55,4 +55,23 @@ namespace Framework.Infrastructure.Concrete
         }
     }
     #endregion
+
+    #region 角色相等比较器
+    public class RoleInfoEqualityComparer : IEqualityComparer<RoleInfo>
+    {
+        public bool Equals(RoleInfo x, RoleInfo y)
+        {
+            if (x == null || y == null)
+            {
+                return false;
+            }
+            return x.ID == y.ID;
+        }
+
+        public int GetHashCode(RoleInfo obj)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    #endregion
 }

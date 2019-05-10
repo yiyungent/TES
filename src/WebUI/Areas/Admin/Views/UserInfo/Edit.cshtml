@@ -1,43 +1,105 @@
-﻿@model Domain.UserInfo
+﻿@using WebUI.Areas.Admin.Models
+@model UserInfoForEdit
 @{
-	ViewBag.Title = "用户修改 - " + Model.Name;
+	ViewBag.Title = "用户修改 - " + Model.InputName;
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+
+	Html.EnableClientValidation(false);
+}
+@section head {
+	<link href="~/dist/AdminLTE/bower_components/select2/dist/css/select2.min.css" rel="stylesheet" />
+	<!-- 重新覆盖掉 select2 所覆盖的主题样式 -->
+	<link rel="stylesheet" href="/dist/AdminLTE/dist/css/AdminLTE.min.css">
+}
+@section body {
+	<script src="~/dist/AdminLTE/bower_components/select2/dist/js/select2.full.min.js"></script>
+	<script>
+		//Initialize Select2 Elements
+		$(".select2").select2();
+
+		function onComplete(data) {
+			$("#js-message").fadeIn();
+			var resJson = data.responseJSON;
+			if (resJson.code <= 0) {
+				$("#js-message").attr("class", "alert alert-danger").find(".message").html(resJson.message)
+			} else {
+				$("#js-message").attr("class", "alert alert-success").find(".message").html(resJson.message);
+			}
+			// 3s 后隐藏
+			setTimeout(function () {
+				$("#js-message").fadeOut("slow");
+			}, 3000);
+		}
+
+		$("#js-roleOptions").change(selectRole);
+
+		function selectRole() {
+			var $selectedOptions = $("#js-roleOptions").find("option:selected");
+			console.log($selectedOptions);
+			var inputHtmlStr = '';
+			for (var i = 0; i < $selectedOptions.length; i++) {
+				inputHtmlStr += '<input type="hidden" name="RoleOptions[' + i + '].ID" value="' + $selectedOptions[i].value + '" />';
+			}
+			$("#js-selectedRoleInput").html(inputHtmlStr);
+		}
+	</script>
 }
 
 <!-- start 提示框 -->
 @Html.Partial("_MessagePartial")
 <!-- end 提示框 -->
+<!-- general form elements -->
+<div class="box box-primary">
+	<div class="box-header with-border">
+		<h3 class="box-title">用户资料 - 编辑</h3>
+	</div>
+	<!-- /.box-header -->
+	<!-- form start -->
+	@using (Ajax.BeginForm("Edit", new AjaxOptions
+	{
+		HttpMethod = "Post",
+		OnComplete = "onComplete"
+	}))
+	{
+		@Html.HiddenFor(m => m.ID)
+		<div class="box-body">
+			<div class="form-group">
+				<label for="InputAccount">账号</label>
+				@Html.TextBoxFor(m => m.InputAccount, new { @class = "form-control", @readonly = "readonly" })
+			</div>
+			<div class="form-group">
+				<label for="InputName">用户名</label>
+				@Html.TextBoxFor(m => m.InputName, new { @class = "form-control", placeholder = "请输入用户名" })
+			</div>
+			<div class="form-group">
+				<label for="InputEmail">邮箱</label>
+				@Html.TextBoxFor(m => m.InputEmail, new { @class = "form-control", placeholder = "请输入邮箱", type = "email" })
+			</div>
+			@*<div class="form-group">
+					<label for="exampleInputFile">头像上传</label>
+					<input type="file" id="exampleInputFile">
 
-@using (Ajax.BeginForm("Edit", new AjaxOptions
-{
-	HttpMethod = "Post",
-	OnComplete = "onComplete"
-}))
-{
-	@Html.ValidationMessage("Name", new { @class = "list-group" })
-	<div class="input-group">
-		@Html.TextBoxFor(m => m.ID, new { @class = "form-control", @readonly = "readonly" })
-		@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-		<div class="btn-group">
-			<a class="btn btn-default" href="@Url.Action("Index")">返回</a>
+					<p class="help-block">Example block-level help text here.</p>
+				</div>*@
+			<div class="form-group">
+				<label>角色</label>
+				<select id="js-roleOptions" class="form-control select2" multiple data-placeholder="选择角色" style="width: 100%;">
+					@foreach (RoleOption option in Model.RoleOptions)
+					{
+						string selectedStr = option.IsSelected ? "selected" : "";
+						<option value="@option.ID" @selectedStr>@option.Text</option>
+					}
+				</select>
+			</div>
+			<div id="js-selectedRoleInput" class="form-group" style="display: none;">
+			</div>
+		</div>
+		<!-- /.box-body -->
+
+		<div class="box-footer">
+			<a class="btn btn-default" href="javascript:history.go(-1);">返回</a>
 			<input class="btn btn-primary" type="submit" value="保存" />
 		</div>
-	</div>
-}
-
-<script>
-	function onComplete(data) {
-		console.log(data);
-		$("#js-message").fadeIn();
-		var resJson = data.responseJSON;
-		if (resJson.code <= 0) {
-			$("#js-message").attr("class", "alert alert-danger").find(".message").html(resJson.message)
-		} else {
-			$("#js-message").attr("class", "alert alert-success").find(".message").html(resJson.message);
-		}
-		// 3s 后隐藏
-		setTimeout(function () {
-			$("#js-message").fadeOut("slow");
-		}, 3000);
 	}
-</script>
+</div>
+<!-- /.box -->

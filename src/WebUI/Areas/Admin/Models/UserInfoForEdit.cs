@@ -10,18 +10,35 @@ namespace WebUI.Areas.Admin.Models
         public int ID { get; set; }
 
         /// <summary>
+        /// 账号
+        /// </summary>
+        public string InputAccount { get; set; }
+
+        /// <summary>
         /// 用户名
         /// </summary>
-        public string Name { get; set; }
+        public string InputName { get; set; }
 
         /// <summary>
         /// 用户头像Url地址
         /// </summary>
-        public string Avatar { get; set; }
+        public string InputAvatar { get; set; }
 
         /// <summary>
         /// 邮箱
         /// </summary>
-        public string Email { get; set; }
+        public string InputEmail { get; set; }
+
+
+        public List<RoleOption> RoleOptions { get; set; }
+    }
+
+    public class RoleOption
+    {
+        public int ID { get; set; }
+
+        public string Text { get; set; }
+
+        public bool IsSelected { get; set; }
     }
 }

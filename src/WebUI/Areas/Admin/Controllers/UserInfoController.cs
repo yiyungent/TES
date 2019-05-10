@@ -3,6 +3,7 @@ using Domain;
 using Framework.Factories;
 using Framework.HtmlHelpers;
 using Framework.Infrastructure.Abstract;
+using Framework.Infrastructure.Concrete;
 using Framework.Models;
 using Framework.Mvc;
 using Service;
@@ -92,7 +93,29 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Edit(int id)
         {
-            UserInfo model = Container.Instance.Resolve<UserInfoService>().GetEntity(id);
+            UserInfo userInfo = Container.Instance.Resolve<UserInfoService>().GetEntity(id);
+            IList<RoleInfo> allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
+            allRole = allRole.Where(m => m.Name != "游客").ToList();
+
+            List<RoleOption> roleOptions = new List<RoleOption>();
+            foreach (RoleInfo role in allRole)
+            {
+                roleOptions.Add(new RoleOption
+                {
+                    ID = role.ID,
+                    Text = role.Name,
+                    IsSelected = userInfo.RoleInfoList.Contains(role, new RoleInfoEqualityComparer())
+                });
+            }
+            UserInfoForEdit model = new UserInfoForEdit
+            {
+                ID = userInfo.ID,
+                InputAccount = userInfo.LoginAccount,
+                InputName = userInfo.Name,
+                InputAvatar = userInfo.Avatar,
+                InputEmail = userInfo.Email,
+                RoleOptions = roleOptions
+            };
 
             return View(model);
         }
@@ -105,9 +128,10 @@ namespace WebUI.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     UserInfo dbEntry = Container.Instance.Resolve<UserInfoService>().GetEntity(model.ID);
-                    dbEntry.Name = model.Name;
+                    dbEntry.Name = model.InputName;
                     //dbEntry.Avatar = model.Avatar;
-                    //dbEntry.Email = model.Email;
+                    // 勿忘邮箱还要做检查是否已经被其它用户绑定!!!!!!!!!!!!!!!!!!!!!!!!
+                    dbEntry.Email = model.InputEmail;
                     Container.Instance.Resolve<UserInfoService>().Edit(dbEntry);
 
                     return Json(new { code = 1, message = "保存成功" });
@@ -125,4 +149,5 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
     }
+
 }
