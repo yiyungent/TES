@@ -70,7 +70,7 @@ namespace WebUI.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { code = 1, message = "删除失败" });
+                return Json(new { code = -1, message = "删除失败" });
             }
         }
         #endregion
@@ -109,12 +109,12 @@ namespace WebUI.Areas.Admin.Controllers
                 }
                 else
                 {
-                    return Json(new { code = 1, message = "不合理的输入" });
+                    return Json(new { code = -1, message = "不合理的输入" });
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { code = -1, message = "保存失败" });
+                return Json(new { code = -2, message = "保存失败" });
             }
         }
         #endregion
@@ -168,17 +168,17 @@ namespace WebUI.Areas.Admin.Controllers
                     }
                     else
                     {
-                        return Json(new { code = 1, message = "不合理的输入" });
+                        return Json(new { code = -1, message = "保存失败" });
                     }
                 }
                 else
                 {
-                    return Json(new { code = 1, message = "不合理的输入" });
+                    return Json(new { code = -2, message = "不合理的输入" });
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { code = -1, message = "保存失败" });
+                return Json(new { code = -3, message = "保存失败" });
             }
         }
 

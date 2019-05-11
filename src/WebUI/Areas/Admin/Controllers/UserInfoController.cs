@@ -6,6 +6,7 @@ using Framework.Infrastructure.Abstract;
 using Framework.Infrastructure.Concrete;
 using Framework.Models;
 using Framework.Mvc;
+using NHibernate.Criterion;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -54,10 +55,11 @@ namespace WebUI.Areas.Admin.Controllers
                     MaxLinkCount = 10
                 }
             };
+            TempData["RedirectUrl"] = Request.RawUrl;
 
             #region MyRegion
-            ViewBag.LoginAccount = currentAccount.UserInfo;
-            ViewBag.MenuList = this.AuthManager.GetMenuListByUserInfo(currentAccount.UserInfo);
+            //ViewBag.LoginAccount = currentAccount.UserInfo;
+            //ViewBag.MenuList = this.AuthManager.GetMenuListByUserInfo(currentAccount.UserInfo);
             #endregion
 
             return View(model);
@@ -128,22 +130,47 @@ namespace WebUI.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     UserInfo dbEntry = Container.Instance.Resolve<UserInfoService>().GetEntity(model.ID);
-                    dbEntry.Name = model.InputName;
+                    dbEntry.Name = model.InputName.Trim();
                     //dbEntry.Avatar = model.Avatar;
                     // 勿忘邮箱还要做检查是否已经被其它用户绑定!!!!!!!!!!!!!!!!!!!!!!!!
-                    dbEntry.Email = model.InputEmail;
+                    // 查找 已经绑定此邮箱的 (非本正编辑) 的用户
+                    UserInfo useNeedEmailUser = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.And(
+                            Expression.Eq("Email", model.InputEmail.Trim()),
+                            Expression.Not(Expression.Eq("ID", model.ID))
+                        )
+                    }).FirstOrDefault();
+                    if (useNeedEmailUser != null)
+                    {
+                        return Json(new { code = -3, message = "邮箱已经被其他用户绑定，请绑定其他邮箱" });
+                    }
+
+                    dbEntry.Email = model.InputEmail.Trim();
+
+                    IList<int> roleIdList = new List<int>();
+                    foreach (RoleOption option in model.RoleOptions)
+                    {
+                        roleIdList.Add(option.ID);
+                    }
+                    IList<RoleInfo> selectedRole = Container.Instance.Resolve<RoleInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.In("ID", roleIdList.ToArray())
+                    });
+                    dbEntry.RoleInfoList = selectedRole;
+
                     Container.Instance.Resolve<UserInfoService>().Edit(dbEntry);
 
                     return Json(new { code = 1, message = "保存成功" });
                 }
                 else
                 {
-                    return Json(new { code = 1, message = "不合理的输入" });
+                    return Json(new { code = -1, message = "不合理的输入" });
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { code = -1, message = "保存失败" });
+                return Json(new { code = -2, message = "保存失败" });
             }
         }
         #endregion

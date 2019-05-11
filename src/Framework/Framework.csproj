@@ -79,10 +79,10 @@
     <Compile Include="Models\ErrorRedirectViewModel.cs" />
     <Compile Include="Mvc\BaseController.cs" />
     <Compile Include="Mvc\ViewEngines\GlobalShared\GlobalSharedViewEngine.cs" />
-    <Compile Include="Mvc\ViewEngines\Template\TemplateBuildManagerViewEngine.cs" />
-    <Compile Include="Mvc\ViewEngines\Template\TemplateViewEngine.cs" />
-    <Compile Include="Mvc\ViewEngines\Template\TemplateVirtualPathProviderViewEngine.cs" />
-    <Compile Include="Mvc\ViewEngines\Template\WebViewPage.cs" />
+    <Compile Include="Mvc\ViewEngines\Templates\TemplateBuildManagerViewEngine.cs" />
+    <Compile Include="Mvc\ViewEngines\Templates\TemplateViewEngine.cs" />
+    <Compile Include="Mvc\ViewEngines\Templates\TemplateVirtualPathProviderViewEngine.cs" />
+    <Compile Include="Mvc\ViewEngines\Templates\WebViewPage.cs" />
     <Compile Include="Mvc\WebViewPages\Auth\WebViewPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestResult\CommonResult.cs" />

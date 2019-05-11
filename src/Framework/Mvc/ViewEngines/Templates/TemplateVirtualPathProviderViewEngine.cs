@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Framework.Mvc.ViewEngines.Template
+namespace Framework.Mvc.ViewEngines.Templates
 {
     public abstract class TemplateVirtualPathProviderViewEngine : VirtualPathProviderViewEngine
     {
@@ -194,7 +194,7 @@ namespace Framework.Mvc.ViewEngines.Template
         // add 但原本就为 public, 重写后，功能一致啊，为什么要重写??????,难道是因为只有这样重写后，this才能指向当前，使用当前类的 GetPath()。原因应该是 GetPath()在原处为 private,无法重写只能覆盖, 如果不在这里再写一次此方法，就会指向原处的 GetPath()
         public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            // hook templateName 未设置时, 放弃->找不到了，让下一个视图引擎搜索
+            // hack templateName 未设置时, 放弃->找不到了，让下一个视图引擎搜索
             string templateName = GetCurrentTemplate(controllerContext);
             if (string.IsNullOrEmpty(templateName))
             {
@@ -205,10 +205,13 @@ namespace Framework.Mvc.ViewEngines.Template
                 throw new ArgumentNullException("controllerContext");
             if (string.IsNullOrEmpty(viewName))
                 throw new ArgumentException("viewName");
+            // controllerName
             string requiredString = controllerContext.RouteData.GetRequiredString("controller");
             string[] searchedLocations1;
+            // 视图路径 eg. ~/Templates/Red/Views/Home/Index.cshtml
             string path1 = this.GetPath(controllerContext, this.ViewLocationFormats, this.AreaViewLocationFormats, "ViewLocationFormats", viewName, requiredString, "View", useCache, out searchedLocations1);
             string[] searchedLocations2;
+            // Master视图路径,未使用 MasterName ，则为空
             string path2 = this.GetPath(controllerContext, this.MasterLocationFormats, this.AreaMasterLocationFormats, "MasterLocationFormats", masterName, requiredString, "Master", useCache, out searchedLocations2);
             if (string.IsNullOrEmpty(path1) || string.IsNullOrEmpty(path2) && !string.IsNullOrEmpty(masterName))
                 return new ViewEngineResult(Enumerable.Union<string>((IEnumerable<string>)searchedLocations1, (IEnumerable<string>)searchedLocations2));
@@ -219,7 +222,7 @@ namespace Framework.Mvc.ViewEngines.Template
         // add 重写，但代码一致，只为调用本类新 GetPath()
         public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
-            // hook templateName 未设置时, 放弃->找不到了，让下一个视图引擎搜索
+            // hack templateName 未设置时, 放弃->找不到了，让下一个视图引擎搜索
             string templateName = GetCurrentTemplate(controllerContext);
             if (string.IsNullOrEmpty(templateName))
             {

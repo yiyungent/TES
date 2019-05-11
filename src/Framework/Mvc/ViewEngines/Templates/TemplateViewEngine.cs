@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Framework.Mvc.ViewEngines.Template
+namespace Framework.Mvc.ViewEngines.Templates
 {
     public class TemplateViewEngine : TemplateBuildManagerViewEngine
     {

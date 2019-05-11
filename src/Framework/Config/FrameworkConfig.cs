@@ -2,7 +2,7 @@
 using Framework.Infrastructure.Concrete;
 using Framework.Models;
 using Framework.Mvc.ViewEngines.GlobalShared;
-using Framework.Mvc.ViewEngines.Template;
+using Framework.Mvc.ViewEngines.Templates;
 using System.Web.Mvc;
 using System.Web.Routing;
 

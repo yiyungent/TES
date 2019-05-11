@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace Framework.Mvc.ViewEngines.Template
+namespace Framework.Mvc.ViewEngines.Templates
 {
     public abstract class TemplateBuildManagerViewEngine : TemplateVirtualPathProviderViewEngine
     {

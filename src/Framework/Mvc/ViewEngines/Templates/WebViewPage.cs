@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Framework.Mvc.ViewEngines.Template
+namespace Framework.Mvc.ViewEngines.Templates
 {
     /// <summary>
     /// 原作者称需使用，不然 MasterPage 无效，

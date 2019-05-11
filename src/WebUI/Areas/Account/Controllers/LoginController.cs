@@ -178,10 +178,17 @@ namespace WebUI.Areas.Account.Controllers
             {
                 returnUrl = Url.Action("Index", "Home", new { area = "" });
             }
-            ViewBag.ReturnUrl = returnUrl;
+            //ViewBag.ReturnUrl = returnUrl;
             AccountManager.Exit();
+            RedirectViewModel model = new RedirectViewModel
+            {
+                Title = "退出账号",
+                Message = "成功退出登录",
+                RedirectUrl = returnUrl,
+                WaitSecond = 3
+            };
 
-            return View();
+            return View("_Redirect", model);
         }
         #endregion
     }

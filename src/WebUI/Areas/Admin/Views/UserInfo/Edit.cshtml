@@ -1,7 +1,6 @@
 ﻿@using WebUI.Areas.Admin.Models
 @model UserInfoForEdit
 @{
-	ViewBag.Title = "用户修改 - " + Model.InputName;
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
 
 	Html.EnableClientValidation(false);
@@ -42,6 +41,7 @@
 			}
 			$("#js-selectedRoleInput").html(inputHtmlStr);
 		}
+
 	</script>
 }
 
@@ -51,7 +51,7 @@
 <!-- general form elements -->
 <div class="box box-primary">
 	<div class="box-header with-border">
-		<h3 class="box-title">用户资料 - 编辑</h3>
+		<h3 class="box-title">用户资料 - 修改</h3>
 	</div>
 	<!-- /.box-header -->
 	<!-- form start -->
@@ -97,7 +97,14 @@
 		<!-- /.box-body -->
 
 		<div class="box-footer">
-			<a class="btn btn-default" href="javascript:history.go(-1);">返回</a>
+			@if (TempData["RedirectUrl"] != null)
+			{
+				<a class="btn btn-default" href="@TempData["RedirectUrl"].ToString()">返回</a>
+			}
+			else
+			{
+				<a class="btn btn-default" href="javascript:history.go(-1);">返回</a>
+			}
 			<input class="btn btn-primary" type="submit" value="保存" />
 		</div>
 	}
