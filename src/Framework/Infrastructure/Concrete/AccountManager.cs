@@ -39,7 +39,7 @@ namespace Framework.Infrastructure.Concrete
         private static string _rememberMeTokenCookieKey = AppConfig.RememberMeTokenCookieKey;
         private static int _rememberMeDayCount = AppConfig.RememberMeDayCount;
 
-        private static IDBAccessProvider _dBAccessProvider = DBAccessProviderFactory.Get();
+        private static IDBAccessProvider _dBAccessProvider = HttpOneRequestFactory.Get<IDBAccessProvider>();
 
         #region 获取当前UserInfo
         /// <summary>

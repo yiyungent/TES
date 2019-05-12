@@ -25,7 +25,7 @@ namespace Framework.Infrastructure.Concrete
         private string _rememberMeTokenCookieKey = AppConfig.RememberMeTokenCookieKey;
         private int _rememberMeDayCount = AppConfig.RememberMeDayCount;
 
-        private IDBAccessProvider _dBAccessProvider = DBAccessProviderFactory.Get();
+        private IDBAccessProvider _dBAccessProvider = HttpOneRequestFactory.Get<IDBAccessProvider>();
 
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {

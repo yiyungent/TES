@@ -21,7 +21,7 @@ namespace Framework.Mvc
 
         public BaseController()
         {
-            this.AuthManager = AuthManagerFactory.Get();
+            this.AuthManager = HttpOneRequestFactory.Get<IAuthManager>();
             this.CurrentAccount = AccountManager.GetCurrentAccount();
 
             UserInfo currentUserInfo = AccountManager.GetCurrentUserInfo();

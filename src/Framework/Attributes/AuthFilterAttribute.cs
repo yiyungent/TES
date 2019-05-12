@@ -19,7 +19,7 @@ namespace Framework.Attributes
 
     public class AuthFilterAttribute : ActionFilterAttribute
     {
-        private IAuthManager _authManger = AuthManagerFactory.Get();
+        private IAuthManager _authManger = HttpOneRequestFactory.Get<IAuthManager>();
 
         public AuthFilterAttribute()
         {

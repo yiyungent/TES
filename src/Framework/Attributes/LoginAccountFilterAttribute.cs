@@ -24,7 +24,7 @@ namespace Framework.Attributes
         private static string _cookieKeyToken = AppConfig.RememberMeTokenCookieKey;
         private static int _rememberMeDayCount = AppConfig.RememberMeDayCount;
 
-        private static IDBAccessProvider _dBAccessProvider = DBAccessProviderFactory.Get();
+        private static IDBAccessProvider _dBAccessProvider = HttpOneRequestFactory.Get<IDBAccessProvider>();
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {

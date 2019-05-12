@@ -62,6 +62,7 @@
     <Compile Include="Config\FrameworkConfig.cs" />
     <Compile Include="Factories\AuthManagerFactory.cs" />
     <Compile Include="Factories\DBAccessProviderFactory.cs" />
+    <Compile Include="Factories\HttpOneRequestFactory.cs" />
     <Compile Include="HtmlHelpers\AuthTagHelper.cs" />
     <Compile Include="HtmlHelpers\PageHelper.cs" />
     <Compile Include="HtmlHelpers\PageInfo.cs" />

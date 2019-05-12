@@ -1,5 +1,6 @@
 ﻿using Core;
 using Domain;
+using Framework.Factories;
 using Framework.Infrastructure.Abstract;
 using Service;
 using System;
@@ -21,7 +22,7 @@ namespace Framework.Infrastructure.Concrete
             {
                 if (_instance == null)
                 {
-                    _dBAccessProvider = new DBAccessProvider();
+                    _dBAccessProvider = HttpOneRequestFactory.Get<IDBAccessProvider>();
 
                     UserInfo guest = new UserInfo
                     {
