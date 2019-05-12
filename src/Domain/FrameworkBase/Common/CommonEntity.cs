@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Domain.Base
+namespace Domain.FrameworkBase.Common
 {
-    public class CommonEntity
-    {
-    }
-
     /// <summary>
     /// 操作地址
     /// </summary>

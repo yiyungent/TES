@@ -16,7 +16,7 @@ namespace WebUI.Areas.Account
         {
             context.MapRoute(
                "Account_Profile_Index",
-               "Account/Profile-{loginAccount}",
+               "Account/Profile-{userName}",
                new { controller = "Profile", action = "Index" }
            );
 

@@ -1,22 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
 namespace WebUI.Areas.Admin.Models
 {
-    public class UserInfoForEdit
+    public class UserInfoForEditViewModel
     {
-        public int ID { get; set; }
-
         /// <summary>
-        /// 账号
+        /// UID
         /// </summary>
-        public string InputAccount { get; set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// 用户名
         /// </summary>
+        [Display(Name = "用户名")]
+        [Required(ErrorMessage = "用户名不能为空")]
+        public string InputUserName { get; set; }
+
+        /// <summary>
+        /// 展示名
+        /// </summary>
+        [Display(Name = "展示名")]
+        [Required(ErrorMessage = "展示名不能为空")]
         public string InputName { get; set; }
 
         /// <summary>
@@ -27,8 +35,11 @@ namespace WebUI.Areas.Admin.Models
         /// <summary>
         /// 邮箱
         /// </summary>
+        [Display(Name = "邮箱")]
         public string InputEmail { get; set; }
 
+        [Display(Name = "描述")]
+        public string InputDescription { get; set; }
 
         public List<RoleOption> RoleOptions { get; set; }
     }

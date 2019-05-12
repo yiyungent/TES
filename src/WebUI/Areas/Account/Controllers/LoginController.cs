@@ -85,7 +85,7 @@ namespace WebUI.Areas.Account.Controllers
             {
                 var dbUser = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
                 {
-                    Expression.Eq("LoginAccount", model.LoginAccount)
+                    Expression.Eq("UserName", model.LoginAccount)
                 }).FirstOrDefault();
                 if (dbUser == null)
                 {

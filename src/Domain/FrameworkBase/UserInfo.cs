@@ -9,19 +9,12 @@ namespace Domain
     public partial class UserInfo
     {
         /// <summary>
-        /// 用户名(不唯一，可改，不可作为登录使用)
-        /// </summary>
-        [Display(Name = "用户名")]
-        [Property(Length = 30, NotNull = true)]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 账号(唯一，一经创建不可改，可作为登录使用)
+        /// 用户名(唯一，一经创建不可改，可作为登录使用)
         /// </summary>
         [Display(Name = "账号")]
         [Property(Length = 30, NotNull = true, Unique = true)]
         [Required(ErrorMessage = "请输入账号")]
-        public string LoginAccount { get; set; }
+        public string UserName { get; set; }
 
         /// <summary>
         /// 密码

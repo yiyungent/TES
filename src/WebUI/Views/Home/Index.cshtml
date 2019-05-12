@@ -1,6 +1,5 @@
 ﻿@using Domain
 @using Framework.Models
-@using Framework.Infrastructure.Concrete
 @model CurrentAccountModel
 @{
 	ViewBag.Title = "教学评价系统 - TES";
@@ -18,7 +17,7 @@
 <section class="content">
 	<div class="row">
 		<div class="col-md-12">
-			@{ Html.RenderAction("ProfileBoxPartial", "Control", new { area = "Account", loginAccount = currentUserInfo.LoginAccount }); }
+			@{ Html.RenderAction("ProfileBoxPartial", "Control", new { area = "Account", userName = currentUserInfo.UserName }); }
 		</div>
 	</div>
 </section>

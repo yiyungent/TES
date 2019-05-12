@@ -16,16 +16,16 @@ namespace WebUI.Areas.Account.Controllers
     {
 
         #region loadProfileBox
-        public PartialViewResult ProfileBoxPartial(string loginAccount)
+        public PartialViewResult ProfileBoxPartial(string userName)
         {
             UserInfo model = null;
-            if (loginAccount == "guest")
+            if (userName == "guest")
             {
                 model = UserInfo_Guest.Instance;
             }
             else
             {
-                model = AccountManager.GetUserInfoByLoginAccount(loginAccount);
+                model = AccountManager.GetUserInfoByUserName(userName);
                 if (model == null)
                 {
                     model = new UserInfo

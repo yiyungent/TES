@@ -34,6 +34,6 @@ namespace Framework.Infrastructure.Abstract
 
         IList<FunctionInfo> GetFunctionInfoListByIds(params int[] ids);
 
-        UserInfo GetUserInfoByLoginAccount(string loginAccount);
+        UserInfo GetUserInfoByUserName(string loginAccount);
     }
 }

@@ -13,6 +13,13 @@ namespace Domain
     public partial class UserInfo : BaseEntity<UserInfo>
     {
         /// <summary>
+        /// 展示名(不唯一，可改，不可作为登录使用)
+        /// </summary>
+        [Display(Name = "用户名")]
+        [Property(Length = 30, NotNull = true)]
+        public string Name { get; set; }
+
+        /// <summary>
         /// 用户头像Url地址
         /// </summary>
         [Display(Name = "头像")]

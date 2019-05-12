@@ -27,7 +27,7 @@ namespace Framework.Infrastructure.Concrete
                     UserInfo guest = new UserInfo
                     {
                         Name = "游客(未登录)",
-                        LoginAccount = "guest",
+                        UserName = "guest",
                         Avatar = "/images/guest-avatar.jpg",
                         RoleInfoList = new List<RoleInfo>
                         {

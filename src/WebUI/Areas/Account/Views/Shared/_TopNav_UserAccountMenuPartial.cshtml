@@ -53,16 +53,16 @@
 			@if (!currentAccount.IsGuest)
 			{
 				<div class="pull-left">
-					<a href="@Url.Action("Index", "Profile", new { area = "Account", loginAccount = currentUserInfo.LoginAccount })" class="btn btn-default btn-flat">个人中心</a>
+					<a href="@Url.Action("Index", "Profile", new { area = "Account", loginAccount = currentUserInfo.UserName })" class="btn btn-default btn-flat">个人中心</a>
 				</div>
 				<div class="pull-right">
 					<a href="@Url.Action("Exit", "Login", new { area = "Account", returnUrl = Request.Url.AbsoluteUri })" class="btn btn-default btn-flat">退出</a>
 				</div>
 				if (Html.HasAuth("Admin.Home.Index"))
 				{
-				<div class="pull-right">
-					<a href="@Url.Action("Index", "Home", new { area = "Admin" })" class="btn btn-default btn-flat"><i class="fa fa-gear"></i><span>管理中心</span></a>
-				</div>
+					<div class="pull-right">
+						<a href="@Url.Action("Index", "Home", new { area = "Admin" })" class="btn btn-default btn-flat"><i class="fa fa-gear"></i><span>管理中心</span></a>
+					</div>
 				}
 			}
 			else
@@ -71,7 +71,7 @@
 					<a href="@Url.Action("Index", "Login", new { area = "Account", returnUrl = Request.Url.AbsoluteUri })" class="btn btn-default btn-flat">登录</a>
 				</div>
 				<div class="pull-right">
-					<a href="@Url.Action("Register", "Login", new { area = "Account", returnUrl = Request.Url.AbsoluteUri })" class="btn btn-default btn-flat">注册</a>
+					<a href="@Url.Action("Index", "Register", new { area = "Account", returnUrl = Request.Url.AbsoluteUri })" class="btn btn-default btn-flat">注册</a>
 				</div>
 			}
 		</li>

@@ -135,12 +135,12 @@ namespace Framework.Infrastructure.Concrete
             return rtn;
         }
 
-        public UserInfo GetUserInfoByLoginAccount(string loginAccount)
+        public UserInfo GetUserInfoByUserName(string userName)
         {
             UserInfo rtn = null;
             rtn = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
             {
-                Expression.Eq("LoginAccount", loginAccount)
+                Expression.Eq("UserName", userName)
             }).FirstOrDefault();
 
             return rtn;

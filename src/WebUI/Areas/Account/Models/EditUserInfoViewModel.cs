@@ -6,15 +6,16 @@ using System.Web;
 
 namespace WebUI.Areas.Account.Models
 {
-    public class EditUserInfoModel
+    public class EditUserInfoViewModel
     {
         [Display(Name = "用户名")]
         [Required(ErrorMessage = "用户名不能为空")]
+        public string InputUserName { get; set; }
+
+        [Display(Name = "展示名")]
+        [Required(ErrorMessage = "展示名不能为空")]
         public string InputName { get; set; }
 
-        [Display(Name = "账号")]
-        [Required(ErrorMessage = "账号不能为空")]
-        public string InputAccount { get; set; }
 
         [Display(Name = "邮箱")]
         public string InputEmail { get; set; }

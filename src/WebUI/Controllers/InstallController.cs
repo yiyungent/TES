@@ -428,7 +428,7 @@ namespace WebUI.Controllers
                 Container.Instance.Resolve<UserInfoService>().Create(new UserInfo()
                 {
                     Name = "超级管理员admin",
-                    LoginAccount = "admin",
+                    UserName = "admin",
                     Avatar = "/images/default-avatar.jpg",
                     Password = EncryptHelper.MD5Encrypt32("admin"),
                     Status = 0,
@@ -518,7 +518,7 @@ namespace WebUI.Controllers
                     {
                         Name = name,
                         Avatar = "/images/default-avatar.jpg",
-                        LoginAccount = studentCode,
+                        UserName = studentCode,
                         Password = EncryptHelper.MD5Encrypt32("12345"),
                         RoleInfoList = allRole.Where(m => m.Name == "学生").ToList()
                     });
@@ -532,7 +532,7 @@ namespace WebUI.Controllers
                         {
                              Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
                             {
-                                Expression.Eq("LoginAccount", studentCode)
+                                Expression.Eq("UserName", studentCode)
                             }).FirstOrDefault()
                         },
                         ClazzInfo = (from m in allClazz where m.ClazzCode == "1700103" + randomNum.ToString("00") select m).FirstOrDefault()
@@ -567,7 +567,7 @@ namespace WebUI.Controllers
                     {
                         Name = name,
                         Avatar = "/images/default-avatar.jpg",
-                        LoginAccount = employeeCode,
+                        UserName = employeeCode,
                         Password = EncryptHelper.MD5Encrypt32("12345"),
                         RoleInfoList = allRole.Where(m => m.Name == "教师").ToList()
                     });
@@ -580,7 +580,7 @@ namespace WebUI.Controllers
                         {
                              Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
                             {
-                                Expression.Eq("LoginAccount", employeeCode)
+                                Expression.Eq("UserName", employeeCode)
                             }).FirstOrDefault()
                         },
                         CourseTableList = new List<CourseTable>

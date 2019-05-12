@@ -19,7 +19,14 @@
 		@Html.TextBoxFor(m => m.ID, new { @class = "form-control", @readonly = "readonly" })
 		@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
 		<div class="btn-group">
-			<a class="btn btn-default" href="@Url.Action("Index")">返回</a>
+			@if (TempData["RedirectUrl"] != null)
+			{
+				<a class="btn btn-default" href="@TempData["RedirectUrl"].ToString()">返回</a>
+			}
+			else
+			{
+				<a class="btn btn-default" href="javascript:history.go(-1);">返回</a>
+			}
 			<input class="btn btn-primary" type="submit" value="保存" />
 		</div>
 	</div>

@@ -11,26 +11,26 @@
 	// 当前登录账号
 	CurrentAccountModel currentAccount = AccountManager.GetCurrentAccount();
 	UserInfo currentUserInfo = currentAccount.UserInfo;
-	EditUserInfoModel editUserInfoModel = new EditUserInfoModel
+	EditUserInfoViewModel editUserInfoModel = new EditUserInfoViewModel
 	{
-		InputAccount = currentUserInfo.LoginAccount,
+		InputUserName = currentUserInfo.UserName,
 		InputName = currentUserInfo.Name,
 		InputDescription = currentUserInfo.Description,
 		InputEmail = currentUserInfo.Email
 	};
 	// 当前访问的个人中心是否为当前登录账号的个人中心---仅自己可见的内容
-	bool isSelf = Model.LoginAccount == currentUserInfo.LoginAccount;
+	bool isSelf = Model.ID == currentUserInfo.ID;
 }
 @section head {
 }
 @section body {
 	<script>
-		function loadProfileBox(loginAccount) {
+		function loadProfileBox(userName) {
 			loading();
 			$.ajax({
 				url: "@Url.Action("ProfileBoxPartial", "Control")",
 				type: "post",
-				data:{ loginAccount: loginAccount },
+				data:{ userName: userName },
 				dataType: "html",
 				success: function (data) {
 					// 包装数据

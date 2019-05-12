@@ -115,11 +115,11 @@ namespace Framework.Infrastructure.Concrete
         }
         #endregion
 
-        #region 根据登录账号获取UserInfo
-        public static UserInfo GetUserInfoByLoginAccount(string loginAccount)
+        #region 根据UserName获取UserInfo
+        public static UserInfo GetUserInfoByUserName(string userName)
         {
             UserInfo rtn = null;
-            rtn = _dBAccessProvider.GetUserInfoByLoginAccount(loginAccount);
+            rtn = _dBAccessProvider.GetUserInfoByUserName(userName);
 
             return rtn;
         }

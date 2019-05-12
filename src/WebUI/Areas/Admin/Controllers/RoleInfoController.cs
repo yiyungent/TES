@@ -54,6 +54,7 @@ namespace WebUI.Areas.Admin.Controllers
                     MaxLinkCount = 10
                 }
             };
+            TempData["RedirectUrl"] = Request.RawUrl;
 
             return View(model);
         }

@@ -109,10 +109,10 @@ namespace WebUI.Areas.Admin.Controllers
                     IsSelected = userInfo.RoleInfoList.Contains(role, new RoleInfoEqualityComparer())
                 });
             }
-            UserInfoForEdit model = new UserInfoForEdit
+            UserInfoForEditViewModel model = new UserInfoForEditViewModel
             {
                 ID = userInfo.ID,
-                InputAccount = userInfo.LoginAccount,
+                InputUserName = userInfo.UserName,
                 InputName = userInfo.Name,
                 InputAvatar = userInfo.Avatar,
                 InputEmail = userInfo.Email,
@@ -123,30 +123,33 @@ namespace WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult Edit(UserInfoForEdit model)
+        public JsonResult Edit(UserInfoForEditViewModel model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     UserInfo dbEntry = Container.Instance.Resolve<UserInfoService>().GetEntity(model.ID);
-                    dbEntry.Name = model.InputName.Trim();
+                    dbEntry.Name = model.InputName?.Trim();
                     //dbEntry.Avatar = model.Avatar;
-                    // 勿忘邮箱还要做检查是否已经被其它用户绑定!!!!!!!!!!!!!!!!!!!!!!!!
+
                     // 查找 已经绑定此邮箱的 (非本正编辑) 的用户
-                    UserInfo useNeedEmailUser = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+                    if (!string.IsNullOrEmpty(model.InputEmail))
+                    {
+                        UserInfo useNeedEmailUser = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
                     {
                         Expression.And(
                             Expression.Eq("Email", model.InputEmail.Trim()),
                             Expression.Not(Expression.Eq("ID", model.ID))
                         )
                     }).FirstOrDefault();
-                    if (useNeedEmailUser != null)
-                    {
-                        return Json(new { code = -3, message = "邮箱已经被其他用户绑定，请绑定其他邮箱" });
+                        if (useNeedEmailUser != null)
+                        {
+                            return Json(new { code = -3, message = "邮箱已经被其他用户绑定，请绑定其他邮箱" });
+                        }
                     }
+                    dbEntry.Email = model.InputEmail?.Trim();
 
-                    dbEntry.Email = model.InputEmail.Trim();
 
                     IList<int> roleIdList = new List<int>();
                     foreach (RoleOption option in model.RoleOptions)

@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Base;
+using Domain.FrameworkBase.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;

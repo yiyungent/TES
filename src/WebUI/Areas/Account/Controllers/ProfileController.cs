@@ -31,14 +31,14 @@ namespace WebUI.Areas.Account.Controllers
         #endregion
 
         #region 个人中心首页
-        public ActionResult Index(string loginAccount = null)
+        public ActionResult Index(string userName = null)
         {
-            if (loginAccount == null)
+            if (userName == null)
             {
                 return RedirectToAction("Index", "Home", new { area = "" });
             }
             // 此主页对应的UserInfo
-            UserInfo model = AccountManager.GetUserInfoByLoginAccount(loginAccount);
+            UserInfo model = AccountManager.GetUserInfoByUserName(userName);
             if (model == null)
             {
                 // 不存在此用户
@@ -53,7 +53,7 @@ namespace WebUI.Areas.Account.Controllers
         /// <summary>
         /// 保存(更新)当前登录用户-个人设置
         /// </summary>
-        public JsonResult Settings(EditUserInfoModel inputModel)
+        public JsonResult Settings(EditUserInfoViewModel inputModel)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace WebUI.Areas.Account.Controllers
                 // 为取到最新数据，从数据库中拿
                 UserInfo dbUserInfo = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
                 {
-                    Expression.Eq("LoginAccount", currentLoginUserInfo.LoginAccount)
+                    Expression.Eq("UserName", currentLoginUserInfo.UserName)
                 }).FirstOrDefault();
 
                 dbUserInfo.Name = inputModel.InputName;
@@ -87,6 +87,6 @@ namespace WebUI.Areas.Account.Controllers
         }
         #endregion
 
-        
+
     }
 }

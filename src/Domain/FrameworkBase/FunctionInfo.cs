@@ -1,5 +1,5 @@
 ﻿using Castle.ActiveRecord;
-using Domain.Base;
+using Domain.FrameworkBase.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain
