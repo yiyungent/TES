@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models;
@@ -75,6 +78,14 @@ namespace WebUI.Areas.Admin.Controllers
                 id = name
             };
 
+            // 解压模板文件
+            Thread thread = new Thread(() =>
+            {
+                UnZipTemplate(full);
+            })
+            { IsBackground = true };
+            thread.Start();
+
             return Json(rtnJsonObj, "text/plain", System.Text.Encoding.UTF8);
         }
         #endregion
@@ -87,8 +98,17 @@ namespace WebUI.Areas.Admin.Controllers
             public string result { get; set; }
 
             public string id { get; set; }
-        } 
+        }
         #endregion
 
+        #region 解压主题模板Zip
+        private void UnZipTemplate(string templateZipPath)
+        {
+            string sourcePath = templateZipPath;
+            string targetPath = Server.MapPath("~/Templates/");
+
+            SharpZip.DecomparessFile(sourcePath, targetPath);
+        }
+        #endregion
     }
 }
