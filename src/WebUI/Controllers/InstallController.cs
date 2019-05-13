@@ -203,8 +203,8 @@ namespace WebUI.Controllers
                 });
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
-                    Name = "课表管理",
-                    ControllerName = "TimeTable",
+                    Name = "课程表管理",
+                    ControllerName = "CourseTable",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,

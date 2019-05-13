@@ -7082,6 +7082,7 @@
     <Content Include="Areas\Admin\Views\CourseInfo\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\CourseInfo\Index.cshtml" />
     <Content Include="Areas\Admin\Views\CourseInfo\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\CourseTable\Index.cshtml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -7109,10 +7110,13 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\ControlController.cs" />
     <Compile Include="Areas\Admin\Controllers\CourseInfoController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CourseTableController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
+    <Compile Include="Areas\Admin\Models\ClazzInfoListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoListViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\CourseTableListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserInfoForEditViewModel.cs" />
