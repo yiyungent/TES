@@ -97,15 +97,17 @@
 		<!-- /.box-body -->
 
 		<div class="box-footer">
-			@if (TempData["RedirectUrl"] != null)
-			{
-				<a class="btn btn-default" href="@TempData["RedirectUrl"].ToString()">返回</a>
-			}
-			else
-			{
-				<a class="btn btn-default" href="javascript:history.go(-1);">返回</a>
-			}
-			<input class="btn btn-primary" type="submit" value="保存" />
+			<div class="btn-group">
+				@if (TempData["RedirectUrl"] != null)
+				{
+					<a class="btn btn-default" href="@TempData["RedirectUrl"].ToString()">返回</a>
+				}
+				else
+				{
+					<a class="btn btn-default" href="javascript:history.go(-1);">返回</a>
+				}
+				<input class="btn btn-primary" type="submit" value="保存" />
+			</div>
 		</div>
 	}
 </div>

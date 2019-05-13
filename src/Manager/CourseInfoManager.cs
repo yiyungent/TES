@@ -5,5 +5,6 @@ namespace Manager
 {
     public class CourseInfoManager : BaseManager<CourseInfo>
     {
+        
     }
 }

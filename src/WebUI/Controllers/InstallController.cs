@@ -177,7 +177,7 @@ namespace WebUI.Controllers
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
                     Name = "班级管理",
-                    ControllerName = "Clazz",
+                    ControllerName = "ClazzInfo",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
@@ -186,7 +186,7 @@ namespace WebUI.Controllers
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
                     Name = "学生管理",
-                    ControllerName = "Student",
+                    ControllerName = "StudentInfo",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
@@ -195,7 +195,7 @@ namespace WebUI.Controllers
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
                     Name = "课程管理",
-                    ControllerName = "Course",
+                    ControllerName = "CourseInfo",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
