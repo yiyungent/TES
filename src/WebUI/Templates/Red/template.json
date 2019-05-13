@@ -1,0 +1,10 @@
+{
+	"templateName": "Red", // 唯一
+	"title": "经典红",
+	"description": "官方推荐主题",
+	"author": [
+		"TES Office Team"
+	],
+	"version": "0.1.0",
+	"url": ""
+}

@@ -7646,6 +7646,7 @@
     <Content Include="Templates\Red\Views\Shared\_TopNav_TasksMenuPartial.cshtml" />
     <Content Include="Templates\Red\Views\Shared\_TopNav_UserAccountMenuPartial.cshtml" />
     <Content Include="Templates\Red\Views\Home\Index.cshtml" />
+    <Content Include="Templates\Red\template.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
