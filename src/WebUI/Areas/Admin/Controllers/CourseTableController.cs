@@ -2,6 +2,7 @@
 using Domain;
 using Framework.HtmlHelpers;
 using Framework.Models;
+using NHibernate.Criterion;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -66,6 +67,51 @@ namespace WebUI.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 return Json(new { code = 1, message = "删除失败" });
+            }
+        }
+        #endregion
+
+        #region 查看
+        public ViewResult Detail(int id)
+        {
+            CourseTable model = Container.Instance.Resolve<CourseTableService>().GetEntity(id);
+
+            return View(model);
+        }
+        #endregion
+
+        #region 编辑
+        [HttpGet]
+        public ViewResult Edit(int id)
+        {
+            CourseTable courseTable = Container.Instance.Resolve<CourseTableService>().GetEntity(id);
+            CourseTableForEditViewModel model = (CourseTableForEditViewModel)courseTable;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult Edit(CourseTableForEditViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    CourseTable dbEntry = Container.Instance.Resolve<CourseTableService>().GetEntity(model.ID);
+                    // continue...
+
+                    Container.Instance.Resolve<CourseTableService>().Edit(dbEntry);
+
+                    return Json(new { code = 1, message = "保存成功" });
+                }
+                else
+                {
+                    return Json(new { code = -1, message = "不合理的输入" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -2, message = "保存失败" });
             }
         }
         #endregion

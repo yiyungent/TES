@@ -1,0 +1,40 @@
+﻿@using Domain
+@model CourseTable
+@{
+	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+}
+
+<div class="box box-primary">
+	<div class="box-header with-border">
+		<h3 class="box-title">课程表 - 详细</h3>
+	</div>
+	<form>
+		<div class="box-body">
+			<div class="form-group">
+				@Html.LabelFor(m => m.Clazz.ClazzCode)
+				@Html.TextBoxFor(m => m.Clazz.ClazzCode, new { @class = "form-control", disabled = "disabled" })
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(m => m.Course.Name)
+				@Html.TextBoxFor(m => m.Course.Name, new { @class = "form-control", disabled = "disabled" })
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(m => m.Course.CourseCode)
+				@Html.TextBoxFor(m => m.Course.CourseCode, new { @class = "form-control", disabled = "disabled" })
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(m => m.Teacher.Name)
+				@Html.TextBoxFor(m => m.Teacher.Name, new { @class = "form-control", disabled = "disabled" })
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(m => m.Teacher.EmployeeCode)
+				@Html.TextBoxFor(m => m.Teacher.EmployeeCode, new { @class = "form-control", disabled = "disabled" })
+			</div>
+		</div>
+		<div class="box-footer">
+			<div class="btn-group">
+				<a class="btn btn-default" href="javascript:history.go(-1);">返回</a>
+			</div>
+		</div>
+	</form>
+</div>

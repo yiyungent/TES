@@ -7083,6 +7083,7 @@
     <Content Include="Areas\Admin\Views\CourseInfo\Index.cshtml" />
     <Content Include="Areas\Admin\Views\CourseInfo\Create.cshtml" />
     <Content Include="Areas\Admin\Views\CourseTable\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\CourseTable\Detail.cshtml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -7116,7 +7117,9 @@
     <Compile Include="Areas\Admin\Models\ClazzInfoListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoListViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\CourseTableForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseTableListViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\OptionModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserInfoForEditViewModel.cs" />
