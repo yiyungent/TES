@@ -10,10 +10,10 @@
 			var resJson = data.responseJSON;
 			if (resJson.code <= 0) {
 				$("#js-message").attr("class", "alert alert-danger").find(".message").html(resJson.message);
-				$(".form-group input").val("");
-				$(".form-group input:first").focus();
 			} else {
 				$("#js-message").attr("class", "alert alert-success").find(".message").html(resJson.message);
+				$(".form-group input").val("");
+				$(".form-group input:first").focus();
 			}
 			// 3s 后隐藏
 			setTimeout(function () {
