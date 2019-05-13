@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Core;
+using Domain;
+using Framework.Infrastructure.Concrete;
+using Service;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -42,6 +46,34 @@ namespace WebUI.Areas.Admin.Models
         public string InputDescription { get; set; }
 
         public List<RoleOption> RoleOptions { get; set; }
+
+        public static explicit operator UserInfoForEditViewModel(UserInfo userInfo)
+        {
+            IList<RoleInfo> allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
+            allRole = allRole.Where(m => m.Name != "游客").ToList();
+
+            List<RoleOption> roleOptions = new List<RoleOption>();
+            foreach (RoleInfo role in allRole)
+            {
+                roleOptions.Add(new RoleOption
+                {
+                    ID = role.ID,
+                    Text = role.Name,
+                    IsSelected = userInfo.RoleInfoList.Contains(role, new RoleInfoEqualityComparer())
+                });
+            }
+            UserInfoForEditViewModel rtnModel = new UserInfoForEditViewModel
+            {
+                ID = userInfo.ID,
+                InputUserName = userInfo.UserName,
+                InputName = userInfo.Name,
+                InputAvatar = userInfo.Avatar,
+                InputEmail = userInfo.Email,
+                RoleOptions = roleOptions
+            };
+
+            return rtnModel;
+        }
     }
 
     public class RoleOption

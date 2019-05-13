@@ -7106,7 +7106,7 @@
     <Compile Include="Areas\Admin\Controllers\ControlController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
-    <Compile Include="Areas\Admin\Models\RoleInfoForEdit.cs" />
+    <Compile Include="Areas\Admin\Models\RoleInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserInfoListViewModel.cs" />

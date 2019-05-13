@@ -96,28 +96,7 @@ namespace WebUI.Areas.Admin.Controllers
         public ViewResult Edit(int id)
         {
             UserInfo userInfo = Container.Instance.Resolve<UserInfoService>().GetEntity(id);
-            IList<RoleInfo> allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
-            allRole = allRole.Where(m => m.Name != "游客").ToList();
-
-            List<RoleOption> roleOptions = new List<RoleOption>();
-            foreach (RoleInfo role in allRole)
-            {
-                roleOptions.Add(new RoleOption
-                {
-                    ID = role.ID,
-                    Text = role.Name,
-                    IsSelected = userInfo.RoleInfoList.Contains(role, new RoleInfoEqualityComparer())
-                });
-            }
-            UserInfoForEditViewModel model = new UserInfoForEditViewModel
-            {
-                ID = userInfo.ID,
-                InputUserName = userInfo.UserName,
-                InputName = userInfo.Name,
-                InputAvatar = userInfo.Avatar,
-                InputEmail = userInfo.Email,
-                RoleOptions = roleOptions
-            };
+            UserInfoForEditViewModel model = (UserInfoForEditViewModel)userInfo;
 
             return View(model);
         }

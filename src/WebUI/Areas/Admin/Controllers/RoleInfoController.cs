@@ -89,18 +89,25 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Edit(int id)
         {
-            RoleInfo model = Container.Instance.Resolve<RoleInfoService>().GetEntity(id);
+            RoleInfo roleInfo = Container.Instance.Resolve<RoleInfoService>().GetEntity(id);
+            RoleInfoForEditViewModel model = (RoleInfoForEditViewModel)roleInfo;
 
             return View(model);
         }
 
         [HttpPost]
-        public JsonResult Edit(RoleInfoForEdit model)
+        public JsonResult Edit(RoleInfoForEditViewModel model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    // hack 游客
+                    if (model.ID == 2)
+                    {
+                        return Json(new { code = -3, message = "游客名禁止修改" });
+                    }
+
                     RoleInfo dbEntry = Container.Instance.Resolve<RoleInfoService>().GetEntity(model.ID);
                     dbEntry.Name = model.Name;
 
