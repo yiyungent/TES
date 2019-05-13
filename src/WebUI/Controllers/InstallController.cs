@@ -146,7 +146,16 @@ namespace WebUI.Controllers
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
-                    SortCode = 10,
+                    SortCode = 40,
+                });
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "主题模板",
+                    ControllerName = "ThemeTemplate",
+                    ActionName = "Index",
+                    AreaName = "Admin",
+                    ParentMenu = parentMenu,
+                    SortCode = 50,
                 });
                 #endregion
 

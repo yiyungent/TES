@@ -6502,6 +6502,9 @@
     <Content Include="dist\AdminLTE\plugins\timepicker\bootstrap-timepicker.min.js" />
     <Content Include="dist\loader\loading.css" />
     <Content Include="dist\pjax\jquery.pjax.js" />
+    <Content Include="dist\WebUploader\Uploader.swf" />
+    <Content Include="dist\WebUploader\webuploader.css" />
+    <Content Include="dist\WebUploader\webuploader.js" />
     <Content Include="dist\ztree_v3\.gitattributes" />
     <Content Include="dist\ztree_v3\api\apiCss\api.js" />
     <Content Include="dist\ztree_v3\api\apiCss\common.css" />
@@ -7084,6 +7087,8 @@
     <Content Include="Areas\Admin\Views\CourseInfo\Create.cshtml" />
     <Content Include="Areas\Admin\Views\CourseTable\Index.cshtml" />
     <Content Include="Areas\Admin\Views\CourseTable\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\ThemeTemplate\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ThemeTemplate\UploadTemplate.cshtml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -7114,6 +7119,7 @@
     <Compile Include="Areas\Admin\Controllers\CourseTableController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ThemeTemplateController.cs" />
     <Compile Include="Areas\Admin\Models\ClazzInfoListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoListViewModel.cs" />
@@ -7656,6 +7662,7 @@
     <Folder Include="GlobalShared\Models\" />
     <Folder Include="HtmlHelpers\" />
     <Folder Include="Models\" />
+    <Folder Include="Upload\Templates\" />
     <Folder Include="Views\Errors\" />
   </ItemGroup>
   <ItemGroup>
