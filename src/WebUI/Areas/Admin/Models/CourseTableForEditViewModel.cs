@@ -1,5 +1,6 @@
 ﻿using Core;
 using Domain;
+using NHibernate.Criterion;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -66,6 +67,43 @@ namespace WebUI.Areas.Admin.Models
             };
 
             return rtnModel;
+        }
+
+        public static explicit operator CourseTable(CourseTableForEditViewModel model)
+        {
+            #region 班级
+            int selectedClazzId = model.ClazzOptions[0].ID;
+            ClazzInfo selectedClazz = Container.Instance.Resolve<ClazzInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.Eq("ID", selectedClazzId)
+                    }).FirstOrDefault();
+            #endregion
+
+            #region 课程
+            int selectedCourseId = model.CourseOptions[0].ID;
+            CourseInfo selectedCourse = Container.Instance.Resolve<CourseInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.Eq("ID", selectedCourseId)
+                    }).FirstOrDefault();
+            #endregion
+
+            #region 教师
+            int selectedTeacherId = model.TeacherOptions[0].ID;
+            EmployeeInfo selectedTeacher = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.Eq("ID", selectedTeacherId)
+                    }).FirstOrDefault();
+            #endregion
+
+            CourseTable rtn = new CourseTable
+            {
+                ID = model.ID,
+                Clazz = selectedClazz,
+                Course = selectedCourse,
+                Teacher = selectedTeacher
+            };
+
+            return rtn;
         }
     }
 

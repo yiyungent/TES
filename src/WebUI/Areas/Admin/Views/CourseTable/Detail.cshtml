@@ -23,11 +23,11 @@
 				@Html.TextBoxFor(m => m.Course.CourseCode, new { @class = "form-control", disabled = "disabled" })
 			</div>
 			<div class="form-group">
-				@Html.LabelFor(m => m.Teacher.Name)
+				<label for="Teacher_Name">授课教师姓名</label>
 				@Html.TextBoxFor(m => m.Teacher.Name, new { @class = "form-control", disabled = "disabled" })
 			</div>
 			<div class="form-group">
-				@Html.LabelFor(m => m.Teacher.EmployeeCode)
+				<label for="Teacher_EmployeeCode">授课教师工号</label>
 				@Html.TextBoxFor(m => m.Teacher.EmployeeCode, new { @class = "form-control", disabled = "disabled" })
 			</div>
 		</div>

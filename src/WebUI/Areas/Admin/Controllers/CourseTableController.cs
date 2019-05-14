@@ -97,37 +97,7 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    CourseTable db = new CourseTable
-                    {
-                        ID = model.ID
-                    };
-
-                    #region 班级
-                    int selectedClazzId = model.ClazzOptions[0].ID;
-                    ClazzInfo selectedClazz = Container.Instance.Resolve<ClazzInfoService>().Query(new List<ICriterion>
-                    {
-                        Expression.Eq("ID", selectedClazzId)
-                    }).FirstOrDefault();
-                    db.Clazz = selectedClazz;
-                    #endregion
-
-                    #region 课程
-                    int selectedCourseId = model.CourseOptions[0].ID;
-                    CourseInfo selectedCourse = Container.Instance.Resolve<CourseInfoService>().Query(new List<ICriterion>
-                    {
-                        Expression.Eq("ID", selectedCourseId)
-                    }).FirstOrDefault();
-                    db.Course = selectedCourse;
-                    #endregion
-
-                    #region 教师
-                    int selectedTeacherId = model.TeacherOptions[0].ID;
-                    EmployeeInfo selectedTeacher = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>
-                    {
-                        Expression.Eq("ID", selectedTeacherId)
-                    }).FirstOrDefault();
-                    db.Teacher = selectedTeacher;
-                    #endregion
+                    CourseTable db = (CourseTable)model;
 
                     Container.Instance.Resolve<CourseTableService>().Edit(db);
 
@@ -141,6 +111,52 @@ namespace WebUI.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 return Json(new { code = -2, message = "保存失败" });
+            }
+        }
+        #endregion
+
+        #region 新增
+        [HttpGet]
+        public ViewResult Create()
+        {
+            CourseTable courseTable = new CourseTable
+            {
+                ID = 0,
+                Clazz = new ClazzInfo(),
+                Course = new CourseInfo(),
+                Teacher = new EmployeeInfo()
+            };
+            CourseTableForEditViewModel model = (CourseTableForEditViewModel)courseTable;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult Create(CourseTableForEditViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    CourseTable dbModel = (CourseTable)model;
+
+                    Container.Instance.Resolve<CourseTableService>().Create(dbModel);
+
+                    return Json(new { code = 1, message = "添加成功" });
+                }
+                else
+                {
+                    string errorMessage = string.Empty;
+                    foreach (ModelState item in ModelState.Values)
+                    {
+                        errorMessage += item.Errors.FirstOrDefault().ErrorMessage;
+                    }
+                    return Json(new { code = -1, message = "不合理的输入:" + errorMessage + ", " });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -2, message = "添加失败" });
             }
         }
         #endregion
