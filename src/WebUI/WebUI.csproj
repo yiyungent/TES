@@ -7089,6 +7089,7 @@
     <Content Include="Areas\Admin\Views\CourseTable\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\ThemeTemplate\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ThemeTemplate\UploadTemplate.cshtml" />
+    <Content Include="Areas\Admin\Views\CourseTable\Edit.cshtml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

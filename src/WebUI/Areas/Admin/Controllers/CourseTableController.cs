@@ -97,10 +97,39 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    CourseTable dbEntry = Container.Instance.Resolve<CourseTableService>().GetEntity(model.ID);
-                    // continue...
+                    CourseTable db = new CourseTable
+                    {
+                        ID = model.ID
+                    };
 
-                    Container.Instance.Resolve<CourseTableService>().Edit(dbEntry);
+                    #region 班级
+                    int selectedClazzId = model.ClazzOptions[0].ID;
+                    ClazzInfo selectedClazz = Container.Instance.Resolve<ClazzInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.Eq("ID", selectedClazzId)
+                    }).FirstOrDefault();
+                    db.Clazz = selectedClazz;
+                    #endregion
+
+                    #region 课程
+                    int selectedCourseId = model.CourseOptions[0].ID;
+                    CourseInfo selectedCourse = Container.Instance.Resolve<CourseInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.Eq("ID", selectedCourseId)
+                    }).FirstOrDefault();
+                    db.Course = selectedCourse;
+                    #endregion
+
+                    #region 教师
+                    int selectedTeacherId = model.TeacherOptions[0].ID;
+                    EmployeeInfo selectedTeacher = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.Eq("ID", selectedTeacherId)
+                    }).FirstOrDefault();
+                    db.Teacher = selectedTeacher;
+                    #endregion
+
+                    Container.Instance.Resolve<CourseTableService>().Edit(db);
 
                     return Json(new { code = 1, message = "保存成功" });
                 }

@@ -13,8 +13,6 @@
 @section body {
 	<script src="~/dist/AdminLTE/bower_components/select2/dist/js/select2.full.min.js"></script>
 	<script>
-		//Initialize Select2 Elements
-		$(".select2").select2();
 
 		function onComplete(data) {
 			$("#js-message").fadeIn();
@@ -29,6 +27,9 @@
 				$("#js-message").fadeOut("slow");
 			}, 3000);
 		}
+
+		//Initialize Select2 Elements
+		$(".select2").select2();
 
 		$("#js-roleOptions").change(selectRole);
 
