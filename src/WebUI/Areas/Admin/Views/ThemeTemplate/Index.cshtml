@@ -1,24 +1,59 @@
-﻿
+﻿@using WebUI.Areas.Admin.Models.Template
+@model IList<ThemeTemplateViewModel>
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+	string currentCat = ((string)ViewBag.Cat).ToLower();
+	string[] cat = { "已启用", "已禁用", "已安装", "未安装" };
+	string[] catLink = { "open", "clsoe", "installed", "withoutinstalled" };
 }
-
 <div class="row">
-	<div class="pull-right col-md-4">
-		<div class="btn-group">
-			<a class="btn btn-primary" href="@Url.Action("UploadTemplate")">上传本地主题模板</a>
+	<div class="col-md-12">
+		<div class="pull-left">
+			<ul class="nav nav-tabs">
+				@for (int i = 0; i < cat.Length; i++)
+				{
+					string active = null;
+					if (currentCat == catLink[i])
+					{
+						active = "active";
+					}
+					<li class="@active" role="presentation"><a href="@Url.Action("Index", new { cat = catLink[i] })">@cat[i]</a></li>
+				}
+			</ul>
+		</div>
+		<div class="pull-right col-md-4">
+			<div class="btn-group">
+				<a class="btn btn-primary" href="@Url.Action("UploadTemplate")">上传本地主题模板</a>
+			</div>
 		</div>
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-6 col-md-3">
-		<div class="thumbnail">
-			<img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMjQxIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDI0MSAyMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzEwMCV4MjAwCkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPjwhW0NEQVRBWyNob2xkZXJfMTZhYWZjNWVhYzggdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMnB0IH0gXV0+PC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNmFhZmM1ZWFjOCI+PHJlY3Qgd2lkdGg9IjI0MSIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSI4OS4zNTkzNzUiIHk9IjEwNS40Ij4yNDF4MjAwPC90ZXh0PjwvZz48L2c+PC9zdmc+" alt="...">
-			<div class="caption">
-				<h3>Thumbnail label</h3>
-				<p>...</p>
-				<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+	@foreach (var item in Model)
+	{
+		string statusBtn = "启用";
+		if (item.Status == 1)
+		{
+			statusBtn = "禁用";
+		}
+		<div class="col-sm-6 col-md-3">
+			<div class="thumbnail">
+				<img src="@item.PreviewImageUrl" alt="@item.Title">
+				<div class="caption">
+					<h3>@item.Title</h3>
+					<p><span>TemplateName: </span><span>@item.TemplateName</span></p>
+					<p><span>来源: </span><span>@item.Source.GetStr()</span></p>
+					<p>
+						<span>作者:  </span>
+						@foreach (string author in item.Authors)
+						{
+							<span>@author</span>
+						}
+					</p>
+					<p><span>描述: </span><span>@item.Description</span></p>
+					<p><a href="#" class="btn btn-primary" role="button">@(item.IsDefault ? "默认" : "设置为默认")</a> <a href="#" class="btn btn-default" role="button">@statusBtn</a></p>
+				</div>
 			</div>
 		</div>
-	</div>
+	}
 </div>

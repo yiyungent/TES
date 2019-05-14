@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models;
+using WebUI.Areas.Admin.Models.Template;
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -26,9 +27,91 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
         #region 主题模板列表
-        public ActionResult Index()
+        public ActionResult Index(string cat = "open")
         {
-            return View();
+            IList<ThemeTemplateViewModel> model = new List<ThemeTemplateViewModel>();
+
+            switch (cat.ToLower())
+            {
+                case "open":                // 启用---注意:启用，一定已安装
+                    model.Add(new ThemeTemplateViewModel
+                    {
+                        Source = Source.Upload,
+                        ServerPath = "~/Upload/Templates/Red.zip",
+                        TemplateName = "Red",
+                        Title = "经典红",
+                        Description = "官方推荐主题-经典红",
+                        Authors = new List<string> { "TES Office Team" },
+                        Url = "",
+                        Version = "0.1.0",
+                        IsDefault = true,
+                        Status = 1
+                    });
+                    model.Add(new ThemeTemplateViewModel
+                    {
+                        Source = Source.Upload,
+                        ServerPath = "~/Upload/Templates/Red.zip",
+                        TemplateName = "Red",
+                        Title = "经典红",
+                        Description = "官方推荐主题-经典红",
+                        Authors = new List<string> { "TES Office Team" },
+                        Url = "",
+                        Version = "0.1.0",
+                        IsDefault = false,
+                        Status = 1
+                    });
+                    model.Add(new ThemeTemplateViewModel
+                    {
+                        Source = Source.Upload,
+                        ServerPath = "~/Upload/Templates/Red.zip",
+                        TemplateName = "Red",
+                        Title = "经典红",
+                        Description = "官方推荐主题-经典红",
+                        Authors = new List<string> { "TES Office Team" },
+                        Url = "",
+                        Version = "0.1.0",
+                        IsDefault = false,
+                        Status = 1
+                    });
+                    model.Add(new ThemeTemplateViewModel
+                    {
+                        Source = Source.Upload,
+                        ServerPath = "~/Upload/Templates/Red.zip",
+                        TemplateName = "Red",
+                        Title = "经典红",
+                        Description = "官方推荐主题-经典红",
+                        Authors = new List<string> { "TES Office Team" },
+                        Url = "",
+                        Version = "0.1.0",
+                        IsDefault = false,
+                        Status = 1
+                    });
+                    model.Add(new ThemeTemplateViewModel
+                    {
+                        Source = Source.Upload,
+                        ServerPath = "~/Upload/Templates/Red.zip",
+                        TemplateName = "Red",
+                        Title = "经典红",
+                        Description = "官方推荐主题-经典红",
+                        Authors = new List<string> { "TES Office Team" },
+                        Url = "",
+                        Version = "0.1.0",
+                        IsDefault = false,
+                        Status = 1
+                    });
+                    break;
+                case "close":               // 禁用---注意：禁用，一定已安装
+                    break;
+                case "installed":           // 已安装
+                    break;
+                case "withoutinstalled":    // 未安装
+                    break;
+                default:                    // 启用
+                    break;
+            }
+            ViewBag.Cat = cat;
+
+            return View(model);
         }
         #endregion
 
@@ -42,7 +125,6 @@ namespace WebUI.Areas.Admin.Controllers
         {
             string basePath = "~/Upload/Templates/";
 
-            string name = string.Empty;
             // 如果路径含有~，即需要服务器映射为绝对路径，则进行映射
             basePath = (basePath.IndexOf("~") > -1) ? System.Web.HttpContext.Current.Server.MapPath(basePath) : basePath;
             HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
@@ -52,24 +134,10 @@ namespace WebUI.Areas.Admin.Controllers
                 Directory.CreateDirectory(basePath);
             }
 
-            string[] suffix = files[0].ContentType.Split('/');
-            // 获取文件格式
-            string _suffix = suffix[1].Equals("jpeg", StringComparison.CurrentCultureIgnoreCase) ? "" : suffix[1];
-            string _temp = System.Web.HttpContext.Current.Request["name"];
-            // 如果不修改文件名，则创建随机文件名
-            if (!string.IsNullOrEmpty(_temp))
-            {
-                name = _temp;
-            }
-            else
-            {
-                Random rand = new Random(24 * (int)DateTime.Now.Ticks);
-                name = rand.Next() + "." + _suffix;
-            }
+            string name = System.Web.HttpContext.Current.Request["name"];
             // 文件保存
-            string full = basePath + name;
-            files[0].SaveAs(full);
-            //string rtnJsonResult = "{\"jsonrpc\" : \"2.0\", \"result\" : null, \"id\" : \"" + name + "\"}";
+            string fullPath = basePath + name;
+            files[0].SaveAs(fullPath);
 
             FileResult rtnJsonObj = new FileResult
             {
@@ -78,15 +146,40 @@ namespace WebUI.Areas.Admin.Controllers
                 id = name
             };
 
-            // 解压模板文件
-            Thread thread = new Thread(() =>
-            {
-                UnZipTemplate(full);
-            })
-            { IsBackground = true };
-            thread.Start();
+            return Json(rtnJsonObj);
+        }
+        #endregion
 
-            return Json(rtnJsonObj, "text/plain", System.Text.Encoding.UTF8);
+
+
+
+        #region 安装本地主题模板
+        /// <summary>
+        /// 安装本地主题模板
+        /// </summary>
+        /// <param name="templateServerPath">eg. ~/Upload/Templates/Red.zip</param>
+        /// <returns></returns>
+        public async Task<JsonResult> InstallLocationTemplate(string templateServerPath)
+        {
+            string fullPhysicalPath = System.Web.HttpContext.Current.Server.MapPath(templateServerPath);
+            await Task.Run(() =>
+            {
+                // 解压上传的模板包 到 视图地 ~/Templates
+                UnZipTemplate(fullPhysicalPath);
+                // 将模板信息 插入数据库，默认安装完后为启用
+            });
+
+            return Json(new { code = 1, message = "安装完成" });
+        }
+        #endregion
+
+        #region 解压主题模板
+        private void UnZipTemplate(string templateZipPath)
+        {
+            string sourcePath = templateZipPath;
+            string targetPath = Server.MapPath("~/Templates/");
+
+            SharpZip.DecomparessFile(sourcePath, targetPath);
         }
         #endregion
 
@@ -98,16 +191,6 @@ namespace WebUI.Areas.Admin.Controllers
             public string result { get; set; }
 
             public string id { get; set; }
-        }
-        #endregion
-
-        #region 解压主题模板Zip
-        private void UnZipTemplate(string templateZipPath)
-        {
-            string sourcePath = templateZipPath;
-            string targetPath = Server.MapPath("~/Templates/");
-
-            SharpZip.DecomparessFile(sourcePath, targetPath);
         }
         #endregion
     }

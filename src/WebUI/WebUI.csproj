@@ -7102,6 +7102,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Templates\Red\preview.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -7128,6 +7129,7 @@
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoListViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\Template\ThemeTemplateViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserInfoListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ZNodeModel.cs" />

@@ -22,19 +22,27 @@
 				uploader;
 
 			uploader = WebUploader.create({
-
 				// 不压缩image
 				resize: false,
-
 				// swf文件路径
 				swf: '/dist/WebUploader/Uploader.swf',
-
 				// 文件接收服务端。
 				server: '/ThemeTemplate/UploadTemplateFile',
-
 				// 选择文件的按钮。可选。
 				// 内部根据当前运行是创建，可能是input元素，也可能是flash.
-				pick: '#js-picker'
+				pick: '#js-picker',
+				// 只允许选择 .zip 压缩文件
+				accept: {
+					title: '压缩包',
+					extensions: 'zip',
+					mimeTypes: 'application/zip'
+				},
+				//单个文件大小限制
+				fileSingleSizeLimit: 104857600,
+				//上传文件数量限制
+				fileNumLimit: 10,
+				//上传前不压缩
+				compress: false
 			});
 
 			// 当有文件添加进来的时候
@@ -75,6 +83,26 @@
 				$('#' + file.id).find('.progress').fadeOut();
 			});
 
+			/**
+			* 验证文件格式以及文件大小
+			*/
+			uploader.on("error", function (type) {
+				$("#js-message").fadeIn();
+				$("#js-message").attr("class", "alert alert-danger");
+				$message = $("#js-message").find(".message");
+				if (type == "Q_TYPE_DENIED") {
+					$message.html("请上传zip格式文件");
+				} else if (type == "F_EXCEED_SIZE") {
+					$message.html("单个文件大小不能超过2M");
+				} else {
+					$message.html("上传出错！请检查后重新上传！错误代码" + type);
+				}
+				// 3s 后隐藏
+				setTimeout(function () {
+					$("#js-message").fadeOut("slow");
+				}, 3000);
+			});
+
 			uploader.on('all', function (type) {
 				if (type === 'startUpload') {
 					state = 'uploading';
@@ -110,6 +138,7 @@
 	<!-- /.box-header -->
 	<!-- form start -->
 	<div class="box-body">
+		@{ Html.RenderPartial("_MessagePartial"); }
 		<div class="form-group">
 			<div id="js-uploader">
 				<!-- 用来存放文件信息 -->
@@ -131,7 +160,7 @@
 			{
 				<a class="btn btn-default" href="javascript:history.go(-1);">返回</a>
 			}
-			<button id="js-upload-btn" class="btn btn-default">开始上传</button>
+			<button id="js-upload-btn" class="btn btn-primary">开始上传</button>
 		</div>
 	</div>
 </div>

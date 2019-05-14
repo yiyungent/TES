@@ -2,7 +2,7 @@
 	"templateName": "Red", // 唯一
 	"title": "经典红",
 	"description": "官方推荐主题",
-	"author": [
+	"authors": [
 		"TES Office Team"
 	],
 	"version": "0.1.0",
