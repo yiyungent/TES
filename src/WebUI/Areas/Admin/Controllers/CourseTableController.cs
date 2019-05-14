@@ -10,6 +10,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models;
+using WebUI.Areas.Admin.Models.Common;
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -30,25 +31,28 @@ namespace WebUI.Areas.Admin.Controllers
         #region 列表
         public ActionResult Index(CurrentAccountModel currentAccount, int pageIndex = 1, int pageSize = 6)
         {
-            IList<CourseTable> list = Container.Instance.Resolve<CourseTableService>().GetAll();
-            // 当前页号超过总页数，则显示最后一页
-            int lastPageIndex = (int)Math.Ceiling((double)list.Count / pageSize);
-            pageIndex = pageIndex <= lastPageIndex ? pageIndex : lastPageIndex;
+            #region 废弃
+            //IList<CourseTable> list = Container.Instance.Resolve<CourseTableService>().GetAll();
+            //// 当前页号超过总页数，则显示最后一页
+            //int lastPageIndex = (int)Math.Ceiling((double)list.Count / pageSize);
+            //pageIndex = pageIndex <= lastPageIndex ? pageIndex : lastPageIndex;
 
-            var data = (from m in list
-                        orderby m.ID descending
-                        select m).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-            CourseTableListViewModel model = new CourseTableListViewModel
-            {
-                CourseTables = data.ToList(),
-                PageInfo = new PageInfo
-                {
-                    PageIndex = pageIndex,
-                    PageSize = pageSize,
-                    TotalRecordCount = list.Count,
-                    MaxLinkCount = 10
-                }
-            };
+            //var data = (from m in list
+            //            orderby m.ID descending
+            //            select m).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            //CourseTableListViewModel model = new CourseTableListViewModel
+            //{
+            //    CourseTables = data.ToList(),
+            //    PageInfo = new PageInfo
+            //    {
+            //        PageIndex = pageIndex,
+            //        PageSize = pageSize,
+            //        TotalRecordCount = list.Count,
+            //        MaxLinkCount = 10
+            //    }
+            //}; 
+            #endregion
+            ListViewModel<CourseTable> model = new ListViewModel<CourseTable>(pageIndex: pageIndex, pageSize: pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
 
             return View(model);

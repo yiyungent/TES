@@ -1,7 +1,7 @@
 ﻿@using Framework.HtmlHelpers
-@using WebUI.Areas.Admin.Models
+@using WebUI.Areas.Admin.Models.Common
 @using Domain
-@model CourseTableListViewModel
+@model ListViewModel<CourseTable>
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
 }
@@ -107,7 +107,7 @@
 				<th>教师</th>
 				<th>操作</th>
 			</tr>
-			@foreach (var item in Model.CourseTables)
+			@foreach (var item in Model.List)
 			{
 				<tr data-tr-id="@item.ID">
 					<td>@item.ID</td>

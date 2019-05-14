@@ -1,7 +1,7 @@
 ﻿@using Framework.HtmlHelpers
-@using WebUI.Areas.Admin.Models
+@using WebUI.Areas.Admin.Models.Common
 @using Domain
-@model UserInfoListViewModel
+@model ListViewModel<UserInfo>
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
 
@@ -115,7 +115,7 @@
 				<th>绑定账号</th>
 				<th>操作</th>
 			</tr>
-			@foreach (var cat in Model.UserInfos)
+			@foreach (var cat in Model.List)
 			{
 				<tr data-tr-id="@cat.ID">
 					<td>@cat.ID</td>

@@ -1,6 +1,7 @@
 ﻿@using Framework.HtmlHelpers
-@using WebUI.Areas.Admin.Models
-@model RoleInfoListViewModel
+@using WebUI.Areas.Admin.Models.Common
+@using Domain
+@model ListViewModel<RoleInfo>
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_SimpleTableList.cshtml";
 
@@ -57,7 +58,7 @@
 		<th>角色名</th>
 		<th>操作</th>
 	</tr>
-	@foreach (var cat in Model.RoleInfos)
+	@foreach (var cat in Model.DyList)
 	{
 		<tr data-tr-id="@cat.ID">
 			<td>@cat.ID</td>

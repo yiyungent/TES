@@ -7117,13 +7117,14 @@
     <Compile Include="Areas\Account\Models\EditUserInfoViewModel.cs" />
     <Compile Include="Areas\Account\Models\RedirectViewModel.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ClazzInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\ControlController.cs" />
     <Compile Include="Areas\Admin\Controllers\CourseInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\CourseTableController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\ThemeTemplateController.cs" />
-    <Compile Include="Areas\Admin\Models\ClazzInfoListViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\Common\ListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseTableForEditViewModel.cs" />
@@ -7661,6 +7662,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Account\Views\Control\" />
+    <Folder Include="Areas\Admin\Models\Clazz\" />
+    <Folder Include="Areas\Admin\Views\ClazzInfo\" />
     <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="Areas\Admin\Views\Dashboard\" />
     <Folder Include="Areas\Admin\Views\SysMenu\" />

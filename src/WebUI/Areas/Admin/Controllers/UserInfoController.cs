@@ -14,6 +14,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models;
+using WebUI.Areas.Admin.Models.Common;
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -35,32 +36,31 @@ namespace WebUI.Areas.Admin.Controllers
         #region 首页-列表
         public ViewResult Index(CurrentAccountModel currentAccount, int pageIndex = 1, int pageSize = 6)
         {
-            IList<UserInfo> list = Container.Instance.Resolve<UserInfoService>().GetAll();
-            // 当前页号超过总页数，则显示最后一页
-            int lastPageIndex = (int)Math.Ceiling((double)list.Count / pageSize);
-            pageIndex = pageIndex <= lastPageIndex ? pageIndex : lastPageIndex;
+            #region 废弃
+            //IList<UserInfo> list = Container.Instance.Resolve<UserInfoService>().GetAll();
+            //// 当前页号超过总页数，则显示最后一页
+            //int lastPageIndex = (int)Math.Ceiling((double)list.Count / pageSize);
+            //pageIndex = pageIndex <= lastPageIndex ? pageIndex : lastPageIndex;
 
-            // 使用 Skip 还顺便解决了 若 pageIndex <= 0 的错误情况
-            var data = (from m in list
-                        orderby m.ID descending
-                        select m).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-            UserInfoListViewModel model = new UserInfoListViewModel
-            {
-                UserInfos = data.ToList(),
-                PageInfo = new PageInfo
-                {
-                    PageIndex = pageIndex,
-                    PageSize = pageSize,
-                    TotalRecordCount = list.Count,
-                    MaxLinkCount = 10
-                }
-            };
-            TempData["RedirectUrl"] = Request.RawUrl;
-
-            #region MyRegion
-            //ViewBag.LoginAccount = currentAccount.UserInfo;
-            //ViewBag.MenuList = this.AuthManager.GetMenuListByUserInfo(currentAccount.UserInfo);
+            //// 使用 Skip 还顺便解决了 若 pageIndex <= 0 的错误情况
+            //var data = (from m in list
+            //            orderby m.ID descending
+            //            select m).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            //UserInfoListViewModel model = new UserInfoListViewModel
+            //{
+            //    UserInfos = data.ToList(),
+            //    PageInfo = new PageInfo
+            //    {
+            //        PageIndex = pageIndex,
+            //        PageSize = pageSize,
+            //        TotalRecordCount = list.Count,
+            //        MaxLinkCount = 10
+            //    }
+            //}; 
             #endregion
+
+            ListViewModel<UserInfo> model = new ListViewModel<UserInfo>(pageIndex: pageIndex, pageSize: pageSize);
+            TempData["RedirectUrl"] = Request.RawUrl;
 
             return View(model);
         }
