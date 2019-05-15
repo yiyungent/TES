@@ -7092,6 +7092,8 @@
     <Content Include="Areas\Admin\Views\CourseTable\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\CourseTable\Create.cshtml" />
     <Content Include="Areas\Admin\Views\ClazzInfo\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ClazzInfo\AssignCourse.cshtml" />
+    <Content Include="json.json" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -7125,6 +7127,8 @@
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\ThemeTemplateController.cs" />
+    <Compile Include="Areas\Admin\Models\Clazz\OptionItem.cs" />
+    <Compile Include="Areas\Admin\Models\Clazz\ClazzForAssignCourseViewModel.cs" />
     <Compile Include="Areas\Admin\Models\Common\ListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoListViewModel.cs" />
@@ -7663,7 +7667,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Account\Views\Control\" />
-    <Folder Include="Areas\Admin\Models\Clazz\" />
     <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="Areas\Admin\Views\Dashboard\" />
     <Folder Include="Areas\Admin\Views\SysMenu\" />

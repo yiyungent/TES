@@ -1,0 +1,38 @@
+[
+	{
+		"TeacherSelect": [
+			{
+				"val": 1,
+				"selected": "",
+				"text": "教师1 (120010000)"
+			},
+			{
+				"val": 1,
+				"selected": "",
+				"text": "教师1 (120010000)"
+			},
+			{
+				"val": 1,
+				"selected": "",
+				"text": "教师1 (120010000)"
+			}
+		],
+		"CourseSelect": [
+			{
+				"val": 1,
+				"selected": "",
+				"text": "教师1 (120010000)"
+			},
+			{
+				"val": 1,
+				"selected": "",
+				"text": "教师1 (120010000)"
+			},
+			{
+				"val": 1,
+				"selected": "",
+				"text": "教师1 (120010000)"
+			}
+		]
+	}
+]
