@@ -37,8 +37,8 @@ namespace WebUI.Controllers
             InitFunction();
             InitRole();
             InitUser();
-            InitCourse();
             InitClazz();
+            InitCourse();
             InitStudent();
             InitEmployee();
             InitCourseTable();
@@ -361,6 +361,14 @@ namespace WebUI.Controllers
                     Name = "角色管理-授权",
                     Sys_Menu = roleInfo_Sys_Menu
                 });
+                // 班级管理菜单 增加 调课操作
+                Sys_Menu clazzInfo_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "ClazzInfo") }).FirstOrDefault();
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.ClazzInfo.AssignCourse",
+                    Name = "角色管理-授权",
+                    Sys_Menu = clazzInfo_Sys_Menu
+                });
 
 
                 ShowMessage("成功");
@@ -544,7 +552,7 @@ namespace WebUI.Controllers
                                 Expression.Eq("UserName", studentCode)
                             }).FirstOrDefault()
                         },
-                        ClazzInfo = (from m in allClazz where m.ClazzCode == "1700103" + randomNum.ToString("00") select m).FirstOrDefault()
+                        ClazzInfo = (from m in allClazz where m.ClazzCode == "17001" + randomNum.ToString("00") select m).FirstOrDefault()
                     });
                 }
 
@@ -620,14 +628,18 @@ namespace WebUI.Controllers
                 IList<CourseInfo> allCourse = Container.Instance.Resolve<CourseInfoService>().GetAll();
                 IList<EmployeeInfo> allEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetAll();
 
+                Random random = new Random();
                 for (int i = 0; i < allClazz.Count; i++)
                 {
-                    Container.Instance.Resolve<CourseTableService>().Create(new CourseTable
+                    for (int j = 0; j < allCourse.Count; j++)
                     {
-                        Clazz = allClazz[i],
-                        Teacher = allEmployee[i % allEmployee.Count],
-                        Course = allCourse[i % allCourse.Count]
-                    });
+                        Container.Instance.Resolve<CourseTableService>().Create(new CourseTable
+                        {
+                            Clazz = allClazz[i],
+                            Teacher = allEmployee[random.Next(0, allEmployee.Count)],
+                            Course = allCourse[j]
+                        });
+                    }
                 }
 
                 ShowMessage("成功");

@@ -29,7 +29,7 @@ namespace Domain
         public IList<StudentInfo> StudentList { get; set; }
 
         [Display(Name = "课程表列表")]
-        [HasMany(ColumnKey = "CourseId")]
+        [HasMany(ColumnKey = "ClazzId")]
         public IList<CourseTable> CourseTableList { get; set; }
 
         #endregion
@@ -45,7 +45,7 @@ namespace Domain
             {
                 return StudentList.Count;
             }
-        } 
+        }
 
         #endregion
     }

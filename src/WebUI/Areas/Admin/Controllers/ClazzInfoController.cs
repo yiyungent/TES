@@ -38,7 +38,12 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
 
-
+        #region 调课
+        public ViewResult AssignCourse()
+        {
+            return View();
+        }
+        #endregion
 
     }
 }

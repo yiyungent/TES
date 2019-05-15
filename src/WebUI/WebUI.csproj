@@ -7091,6 +7091,7 @@
     <Content Include="Areas\Admin\Views\ThemeTemplate\UploadTemplate.cshtml" />
     <Content Include="Areas\Admin\Views\CourseTable\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\CourseTable\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\ClazzInfo\Index.cshtml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -7663,7 +7664,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Account\Views\Control\" />
     <Folder Include="Areas\Admin\Models\Clazz\" />
-    <Folder Include="Areas\Admin\Views\ClazzInfo\" />
     <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="Areas\Admin\Views\Dashboard\" />
     <Folder Include="Areas\Admin\Views\SysMenu\" />
