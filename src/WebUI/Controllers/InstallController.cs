@@ -366,7 +366,7 @@ namespace WebUI.Controllers
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
                     AuthKey = "Admin.ClazzInfo.AssignCourse",
-                    Name = "角色管理-授权",
+                    Name = "班级管理-调课",
                     Sys_Menu = clazzInfo_Sys_Menu
                 });
 
