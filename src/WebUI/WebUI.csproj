@@ -7098,6 +7098,7 @@
     <Content Include="Areas\Admin\Views\ClazzInfo\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ClazzInfo\AssignCourse.cshtml" />
     <Content Include="json.json" />
+    <Content Include="Areas\Admin\Views\ClazzInfo\Edit.cshtml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -7132,6 +7133,7 @@
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\ThemeTemplateController.cs" />
     <Compile Include="Areas\Admin\Models\Clazz\ClazzAssignCourseItemJson.cs" />
+    <Compile Include="Areas\Admin\Models\Clazz\ClazzInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\Clazz\CourseTableTr.cs" />
     <Compile Include="Areas\Admin\Models\Common\ListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoForEditViewModel.cs" />

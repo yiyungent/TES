@@ -41,6 +41,57 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 编辑
+        [HttpGet]
+        public ViewResult Edit(int id)
+        {
+            ClazzInfo clazzInfo = Container.Instance.Resolve<ClazzInfoService>().GetEntity(id);
+            ClazzInfoForEditViewModel model = (ClazzInfoForEditViewModel)clazzInfo;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult Edit(ClazzInfoForEditViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ClazzInfo dbEntry = Container.Instance.Resolve<ClazzInfoService>().GetEntity(model.ID);
+
+                    // 查找 已经有此班级代号的 (非本正编辑) 的用户
+                    if (!string.IsNullOrEmpty(model.InputClazzCode))
+                    {
+                        ClazzInfo use = Container.Instance.Resolve<ClazzInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.And(
+                            Expression.Eq("ClazzCode", model.InputClazzCode.Trim()),
+                            Expression.Not(Expression.Eq("ID", model.ID))
+                        )
+                    }).FirstOrDefault();
+                        if (use != null)
+                        {
+                            return Json(new { code = -3, message = "班级代号已有，请使用其他班级代号" });
+                        }
+                    }
+                    dbEntry.ClazzCode = model.InputClazzCode?.Trim();
+
+                    Container.Instance.Resolve<ClazzInfoService>().Edit(dbEntry);
+
+                    return Json(new { code = 1, message = "保存成功" });
+                }
+                else
+                {
+                    return Json(new { code = -1, message = "不合理的输入" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -2, message = "保存失败" });
+            }
+        }
+        #endregion
 
         #region 调课
         /// <summary>
