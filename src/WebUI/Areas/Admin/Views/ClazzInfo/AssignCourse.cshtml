@@ -23,37 +23,9 @@
 		};
 
 		// start 删除
-		function deleteOp(id) {
-			$("#js-id").val(id);
-			$('#deleteModal').modal();
-		}
-		function deleteCourseTable() {
-			var id = $("#js-id").val();
-			$.ajax({
-				type: 'POST',
-				url: '/Admin/CourseTable/Delete',
-				data: { id: id },
-				dataType: 'json',
-				success: function (data) {
-					if (data.code <= 0) {
-						// 删除失败
-						$("#js-message").attr("class", "alert alert-danger").find(".message").html(data.message);
-					} else {
-						// 删除成功
-						$("#js-message").attr("class", "alert alert-success").find(".message").html(data.message);
-						$(".table").find("tr[data-tr-id='" + id + "']").remove();
-						// 检查当前当前页面是否已经全部删除完，若是，则点击当前页码，重新加载
-						var trNum = $(".table").find("tr").length - 1;
-						if (trNum == 0) {
-							$("#js-page").find("li[class*='active']>a")[0].click();
-						}
-					}
-					// 3s 后隐藏
-					setTimeout(function () {
-						$("#js-message").fadeOut("slow");
-					}, 3000);
-				}
-			});
+		function deleteOp(obj) {
+			var $deletedTr = $(obj).parent("td").parent("tr");
+			$deletedTr.remove();
 		}
 		// end 删除
 
@@ -71,12 +43,12 @@
 				}
 			});
 		}
-		
+
 		function writeCourseTableList(data) {
 			var allHtml = "";
 			for (var i = 0; i < data.length; i++) {
 				var trHtml = '';
-				trHtml += '<tr class="js-data-list">'
+				trHtml += '<tr class="js-data-list" data-coursetable-id="{0}">'.format(data[i].courseTableId);
 
 				// start 课程
 				trHtml += '<td>'
@@ -104,7 +76,7 @@
 
 				// start 删除
 				trHtml += '<td>'
-				trHtml += '<button class="btn btn-danger">删除</button>'
+				trHtml += '<button class="btn btn-danger" onclick="deleteOp(this)">删除</button>'
 				trHtml += '</td>'
 				// end 删除
 
@@ -118,6 +90,93 @@
 			$(".select2").select2();
 		}
 
+		function saveCourseTableList(clazzId) {
+			var listJson = [];
+			var $trList = $("#js-table tr.js-data-list");
+			for (var i = 0; i < $trList.length; i++) {
+				$optionList = $trList.eq(i).find("select option:selected");
+				var trJson = {
+					courseTableId: parseInt($trList.eq(i).data("coursetable-id")),
+					courseId: parseInt($optionList.eq(0).val()),
+					teacherId: parseInt($optionList.eq(1).val())
+				};
+				listJson.push(trJson);
+			}
+			console.log(listJson);
+			$.ajax({
+				url: "/ClazzInfo/SaveCourseTableList",
+				type: "post",
+				dataType: "json",
+				data: { clazzId: clazzId, listJson: listJson },
+				success: function (data) {
+					$("#js-message").fadeIn();
+					if (data.code <= 0) {
+						$("#js-message").attr("class", "alert alert-danger").find(".message").html(data.message)
+					} else {
+						$("#js-message").attr("class", "alert alert-success").find(".message").html(data.message);
+					}
+					// 3s 后隐藏
+					setTimeout(function () {
+						$("#js-message").fadeOut("slow");
+					}, 3000);
+				}
+			});
+		}
+
+		function loadAllCourseAndTeacherJson() {
+			$.ajax({
+				url: "/ClazzInfo/GetAllCourseJson",
+				type: "post",
+				dataType: "json",
+				async: false,
+				success: function (data) {
+					$("#js-all-course-json").html(JSON.stringify(data));
+				}
+			});
+			$.ajax({
+				url: "/ClazzInfo/GetAllTeacherJson",
+				type: "post",
+				dataType: "json",
+				async: false,
+				success: function (data) {
+					$("#js-all-teacher-json").html(JSON.stringify(data));
+				}
+			});
+		}
+
+		function addCourseTable() {
+			var allCourseJson = JSON.parse($("#js-all-course-json").html());
+			var allTeacherJson = JSON.parse($("#js-all-teacher-json").html());
+			var trHtml = '';
+			trHtml += '<tr class="js-data-list" data-coursetable-id="0">';
+
+			trHtml += '<td>';
+			trHtml += '<select class="form-control select2" data-placeholder="选择课程" style="width: 220px">';
+			for (var i = 0; i < allCourseJson.length; i++) {
+				trHtml += '<option value="{0}">{1}</option>'.format(allCourseJson[i].val, allCourseJson[i].text);
+			}
+			trHtml += '</select>'
+			trHtml += '</td>';
+
+			trHtml += '<td>';
+			trHtml += '<select class="form-control select2" data-placeholder="选择教师" style="width: 220px">';
+			for (var i = 0; i < allTeacherJson.length; i++) {
+				trHtml += '<option value="{0}">{1}</option>'.format(allTeacherJson[i].val, allTeacherJson[i].text);
+			}
+			trHtml += '</select>'
+			trHtml += '</td>';
+
+			trHtml += '<td>'
+			trHtml += '<button class="btn btn-danger" onclick="deleteOp(this)">删除</button>'
+			trHtml += '</td>'
+
+			trHtml += '</tr>'
+			$("#js-table").append(trHtml);
+
+			//Initialize Select2 Elements
+			$(".select2").select2();
+		}
+
 		function cancel() {
 			loadCourseTableList(@currentClazz.ID);
 		}
@@ -126,46 +185,22 @@
 			var clazzId = @currentClazz.ID;
 			// 初始化该班级已有课表
 			loadCourseTableList(clazzId);
+
+			loadAllCourseAndTeacherJson();
 		});
 
 
 	</script>
 }
 
-<!-- start 删除确认框 -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-				<h4 class="modal-title">确认框</h4>
-			</div>
-			<div class="modal-body">
-				<form>
-					<div class="form-group">
-						<label for="message-text" class="control-label">确定要删除？</label>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
-				<button onclick="deleteSubmit()" type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- end 删除确认框 -->
 <!-- start 提示框 -->
 @{ Html.RenderPartial("_MessagePartial"); }
 <!-- end 提示框 -->
-
-<input id="js-id" type="hidden" />
-
 <!-- start .box -->
 <div class="box">
 	<!-- start .box-header -->
 	<div class="box-header">
-		<h3 class="box-title">@currentClazz.ClazzCode - 调课</h3>
+		<h3 class="box-title">@currentClazz.ClazzCode 班 - 调课</h3>
 
 		<div class="box-tools">
 			<div class="input-group input-group-sm" style="width: 150px;">
@@ -181,6 +216,8 @@
 	<!-- start .box-body -->
 	<!-- start 简单表格 -->
 	<div class="box-body table-responsive no-padding">
+		<div id="js-all-course-json" style="display: none;"></div>
+		<div id="js-all-teacher-json" style="display: none;"></div>
 		<table id="js-table" class="table table-hover">
 			<tr>
 				<th>课程</th>
@@ -188,7 +225,8 @@
 				<th>删除</th>
 			</tr>
 			<tr id="js-waiting">
-				<td class="center-block" col="3">载入中，请稍等...<td>
+				<td>载入中，请稍等...
+				<td>
 			<tr>
 		</table>
 	</div>
@@ -197,8 +235,17 @@
 	<!-- start .box-footer -->
 	<div class="box-footer clearfix">
 		<div class="btn-group pull-left">
-			<button class="btn btn-primary" onclick="addCourseTable()">添加课程</button>
-			<button class="btn btn-info" onclick="cancel()">取消</button>
+			@if (TempData["RedirectUrl"] != null)
+			{
+				<a class="btn btn-default" href="@TempData["RedirectUrl"].ToString()">返回</a>
+			}
+			else
+			{
+				<a class="btn btn-default" href="javascript:history.go(-1);">返回</a>
+			}
+			<button class="btn btn-default" onclick="cancel()">取消</button>
+			<button class="btn btn-success" onclick="addCourseTable()">添加</button>
+			<button class="btn btn-primary" onclick="saveCourseTableList(@currentClazz.ID)">保存</button>
 		</div>
 	</div>
 	<!-- end .box-footer -->

@@ -16,11 +16,13 @@ namespace WebUI.Areas.Admin.Models.Clazz
 
     public class CourseTableTr
     {
+        public int courseTableId { get; set; }
+
         public IList<OptionItem> teacherSelect { get; set; }
 
         public IList<OptionItem> courseSelect { get; set; }
     }
 
-    
+
 
 }

@@ -59,7 +59,7 @@ namespace Domain
         public Department Department { get; set; }
 
         [Display(Name = "课程表列表")]
-        [HasMany(ColumnKey = "TeacherId")]
+        [HasMany(ColumnKey = "TeacherId", Cascade = ManyRelationCascadeEnum.All)]
         public IList<CourseTable> CourseTableList { get; set; }
 
         #endregion

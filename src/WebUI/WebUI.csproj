@@ -82,6 +82,10 @@
     <Reference Include="mysql.data">
       <HintPath>..\..\libs\mysql.data.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\..\libs\NHibernate.dll</HintPath>
     </Reference>
@@ -7127,8 +7131,8 @@
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\ThemeTemplateController.cs" />
-    <Compile Include="Areas\Admin\Models\Clazz\OptionItem.cs" />
-    <Compile Include="Areas\Admin\Models\Clazz\ClazzForAssignCourseViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\Clazz\ClazzAssignCourseItemJson.cs" />
+    <Compile Include="Areas\Admin\Models\Clazz\CourseTableTr.cs" />
     <Compile Include="Areas\Admin\Models\Common\ListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoListViewModel.cs" />

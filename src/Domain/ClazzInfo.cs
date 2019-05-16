@@ -29,7 +29,7 @@ namespace Domain
         public IList<StudentInfo> StudentList { get; set; }
 
         [Display(Name = "课程表列表")]
-        [HasMany(ColumnKey = "ClazzId")]
+        [HasMany(ColumnKey = "ClazzId", Cascade = ManyRelationCascadeEnum.All)]
         public IList<CourseTable> CourseTableList { get; set; }
 
         #endregion

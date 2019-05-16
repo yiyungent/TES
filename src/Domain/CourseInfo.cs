@@ -32,7 +32,7 @@ namespace Domain
         public IList<ClazzInfo> ClazzInfoList { get; set; }
 
         [Display(Name = "课程表列表")]
-        [HasMany(ColumnKey = "CourseId")]
+        [HasMany(ColumnKey = "CourseId", Cascade = ManyRelationCascadeEnum.All)]
         public IList<CourseTable> CourseTableList { get; set; }
 
         #endregion

@@ -15,15 +15,15 @@ namespace Domain
         #region Relationship
 
         [Display(Name = "教师")]
-        [BelongsTo(Column = "TeacherId")]
+        [BelongsTo(Column = "TeacherId"/*, Cascade = CascadeEnum.All*/)]
         public EmployeeInfo Teacher { get; set; }
 
         [Display(Name = "课程")]
-        [BelongsTo(Column = "CourseId")]
+        [BelongsTo(Column = "CourseId"/*, Cascade = CascadeEnum.All*/)]
         public CourseInfo Course { get; set; }
 
         [Display(Name = "班级")]
-        [BelongsTo(Column = "ClazzId")]
+        [BelongsTo(Column = "ClazzId"/*, Cascade = CascadeEnum.All*/)]
         public ClazzInfo Clazz { get; set; }
 
         #endregion

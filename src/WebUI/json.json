@@ -1,38 +1,14 @@
 [
 	{
-		"TeacherSelect": [
-			{
-				"val": 1,
-				"selected": "",
-				"text": "教师1 (120010000)"
-			},
-			{
-				"val": 1,
-				"selected": "",
-				"text": "教师1 (120010000)"
-			},
-			{
-				"val": 1,
-				"selected": "",
-				"text": "教师1 (120010000)"
-			}
-		],
-		"CourseSelect": [
-			{
-				"val": 1,
-				"selected": "",
-				"text": "教师1 (120010000)"
-			},
-			{
-				"val": 1,
-				"selected": "",
-				"text": "教师1 (120010000)"
-			},
-			{
-				"val": 1,
-				"selected": "",
-				"text": "教师1 (120010000)"
-			}
-		]
+		"courseId": 12,
+		"teacherId": 34
+	},
+	{
+		"courseId": 12,
+		"teacherId": 34
+	},
+	{
+		"courseId": 12,
+		"teacherId": 34
 	}
 ]
