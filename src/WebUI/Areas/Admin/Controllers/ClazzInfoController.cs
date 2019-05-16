@@ -41,7 +41,7 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
-        #region 编辑
+        #region 修改
         [HttpGet]
         public ViewResult Edit(int id)
         {
@@ -89,6 +89,58 @@ namespace WebUI.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 return Json(new { code = -2, message = "保存失败" });
+            }
+        }
+        #endregion
+
+        #region 新增
+        [HttpGet]
+        public ViewResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult Create(ClazzInfoForEditViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ClazzInfo dbModel = (ClazzInfo)model;
+                    // 查找 已经有此班级代号的 (非本正编辑) 的用户
+                    if (!string.IsNullOrEmpty(model.InputClazzCode))
+                    {
+                        ClazzInfo use = Container.Instance.Resolve<ClazzInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.And(
+                            Expression.Eq("ClazzCode", model.InputClazzCode.Trim()),
+                            Expression.Not(Expression.Eq("ID", model.ID))
+                        )
+                    }).FirstOrDefault();
+                        if (use != null)
+                        {
+                            return Json(new { code = -3, message = "班级代号已有，请使用其他班级代号" });
+                        }
+                    }
+
+                    Container.Instance.Resolve<ClazzInfoService>().Create(dbModel);
+
+                    return Json(new { code = 1, message = "添加成功" });
+                }
+                else
+                {
+                    string errorMessage = string.Empty;
+                    foreach (ModelState item in ModelState.Values)
+                    {
+                        errorMessage += item.Errors.FirstOrDefault().ErrorMessage;
+                    }
+                    return Json(new { code = -1, message = "不合理的输入:" + errorMessage + ", " });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -2, message = "添加失败" });
             }
         }
         #endregion

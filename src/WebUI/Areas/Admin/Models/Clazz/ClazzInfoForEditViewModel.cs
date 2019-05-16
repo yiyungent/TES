@@ -12,6 +12,7 @@ namespace WebUI.Areas.Admin.Models.Clazz
         public int ID { get; set; }
 
         [Required]
+        [Display(Name = "班级代号")]
         public string InputClazzCode { get; set; }
 
         public static explicit operator ClazzInfoForEditViewModel(ClazzInfo clazzInfo)
@@ -23,6 +24,15 @@ namespace WebUI.Areas.Admin.Models.Clazz
             };
 
             return model;
+        }
+
+        public static explicit operator ClazzInfo(ClazzInfoForEditViewModel model)
+        {
+            ClazzInfo rtnModel = new ClazzInfo();
+            rtnModel.ID = model.ID;
+            rtnModel.ClazzCode = model.InputClazzCode?.Trim();
+
+            return rtnModel;
         }
     }
 }
