@@ -142,7 +142,7 @@ namespace WebUI.Controllers
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
                     Name = "菜单管理",
-                    ControllerName = "Menu",
+                    ControllerName = "SysMenu",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
