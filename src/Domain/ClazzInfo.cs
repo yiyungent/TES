@@ -40,6 +40,7 @@ namespace Domain
         /// <summary>
         /// 改班学生人数
         /// </summary>
+        [Display(Name = "学生人数")]
         public int StudentCount
         {
             get

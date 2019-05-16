@@ -145,6 +145,31 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 查看
+        public ViewResult Detail(int id)
+        {
+            ClazzInfo model = Container.Instance.Resolve<ClazzInfoService>().GetEntity(id);
+
+            return View(model);
+        }
+        #endregion
+
+        #region 删除
+        public JsonResult Delete(int id)
+        {
+            try
+            {
+                Container.Instance.Resolve<ClazzInfoService>().Delete(id);
+
+                return Json(new { code = 1, message = "删除成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = 1, message = "删除失败" });
+            }
+        }
+        #endregion
+
         #region 调课
         /// <summary>
         /// 调课
