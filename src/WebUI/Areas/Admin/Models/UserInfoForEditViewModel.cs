@@ -1,6 +1,8 @@
 ﻿using Core;
 using Domain;
+using Framework.Common;
 using Framework.Infrastructure.Concrete;
+using NHibernate.Criterion;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -45,6 +47,15 @@ namespace WebUI.Areas.Admin.Models
         [Display(Name = "描述")]
         public string InputDescription { get; set; }
 
+        [Display(Name = "密码")]
+        public string InputPassword { get; set; }
+
+        [Display(Name = "绑定员工工号")]
+        public string InputEmployeeCode { get; set; }
+
+        [Display(Name = "绑定学生学号")]
+        public string InputStudentCode { get; set; }
+
         public List<RoleOption> RoleOptions { get; set; }
 
         public static explicit operator UserInfoForEditViewModel(UserInfo userInfo)
@@ -69,8 +80,70 @@ namespace WebUI.Areas.Admin.Models
                 InputName = userInfo.Name,
                 InputAvatar = userInfo.Avatar,
                 InputEmail = userInfo.Email,
-                RoleOptions = roleOptions
+                RoleOptions = roleOptions,
+                InputEmployeeCode = userInfo.EmployeeInfo?.EmployeeCode,
+                InputStudentCode = userInfo.StudentInfo?.StudentCode
             };
+
+            return rtnModel;
+        }
+
+        public static explicit operator UserInfo(UserInfoForEditViewModel model)
+        {
+            UserInfo rtnModel = new UserInfo
+            {
+                ID = model.ID,
+                UserName = model.InputUserName,
+                Name = model.InputName,
+                Avatar = model.InputAvatar,
+                Email = model.InputEmail,
+                Description = model.InputDescription
+            };
+            if (!string.IsNullOrEmpty(model.InputPassword))
+            {
+                rtnModel.Password = EncryptHelper.MD5Encrypt32(model.InputPassword);
+            }
+            if (model.RoleOptions != null)
+            {
+                IList<int> roleIdList = new List<int>();
+                foreach (RoleOption option in model.RoleOptions)
+                {
+                    roleIdList.Add(option.ID);
+                }
+                IList<RoleInfo> selectedRole = Container.Instance.Resolve<RoleInfoService>().Query(new List<ICriterion>
+                {
+                    Expression.In("ID", roleIdList.ToArray())
+                });
+                rtnModel.RoleInfoList = selectedRole;
+            }
+            else
+            {
+                rtnModel.RoleInfoList = null;
+            }
+
+            if (!string.IsNullOrEmpty(model.InputStudentCode))
+            {
+                rtnModel.StudentInfo = Container.Instance.Resolve<StudentInfoService>().Query(new List<ICriterion>()
+                {
+                    Expression.Eq("StudentCode", model.InputStudentCode)
+                }).FirstOrDefault();
+            }
+            else
+            {
+                rtnModel.StudentInfo = null;
+            }
+            if (!string.IsNullOrEmpty(model.InputEmployeeCode))
+            {
+                rtnModel.EmployeeInfo = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>()
+                {
+                    Expression.Eq("EmployeeCode", model.InputEmployeeCode)
+                }).FirstOrDefault();
+            }
+            else
+            {
+                rtnModel.EmployeeInfo = null;
+            }
+
 
             return rtnModel;
         }

@@ -14,12 +14,13 @@
 	<script src="~/dist/AdminLTE/bower_components/select2/dist/js/select2.full.min.js"></script>
 	<script>
 
-		function onSuccess(data) {
+		function onComplete(data) {
 			$("#js-message").fadeIn();
-			if (data.code <= 0) {
-				$("#js-message").attr("class", "alert alert-danger").find(".message").html(data.message)
+			var resJson = data.responseJSON;
+			if (resJson.code <= 0) {
+				$("#js-message").attr("class", "alert alert-danger").find(".message").html(resJson.message)
 			} else {
-				$("#js-message").attr("class", "alert alert-success").find(".message").html(data.message);
+				$("#js-message").attr("class", "alert alert-success").find(".message").html(resJson.message);
 			}
 			// 3s 后隐藏
 			setTimeout(function () {
@@ -42,21 +43,6 @@
 			$("#js-selectedRoleInput").html(inputHtmlStr);
 		}
 
-		function saveData() {
-			selectRole();
-			$.ajax({
-				url: "/UserInfo/Edit",
-				type: "post",
-				dataType: "json",
-				data: $("#js-form").serialize(),
-				success: onSuccess
-			});
-		}
-
-		$(function () {
-			selectRole();
-		});
-
 	</script>
 }
 
@@ -66,16 +52,21 @@
 <!-- general form elements -->
 <div class="box box-primary">
 	<div class="box-header with-border">
-		<h3 class="box-title">用户资料 - 修改</h3>
+		<h3 class="box-title">用户 - 创建</h3>
 	</div>
 	<!-- /.box-header -->
 	<!-- form start -->
-	<form id="js-form">
+	@using (Ajax.BeginForm("Create", new AjaxOptions
+	{
+		HttpMethod = "Post",
+		OnComplete = "onComplete"
+	}))
+	{
 		@Html.HiddenFor(m => m.ID)
 		<div class="box-body">
 			<div class="form-group">
 				<label for="InputUserName">用户名</label>
-				@Html.TextBoxFor(m => m.InputUserName, new { @class = "form-control", @readonly = "readonly" })
+				@Html.TextBoxFor(m => m.InputUserName, new { @class = "form-control" })
 			</div>
 			<div class="form-group">
 				<label for="InputName">展示名</label>
@@ -92,6 +83,10 @@
 			<div class="form-group">
 				<label for="InputEmail">绑定员工 - 工号</label>
 				@Html.TextBoxFor(m => m.InputEmployeeCode, new { @class = "form-control", placeholder = "请输入绑定员工 - 工号", type = "text" })
+			</div>
+			<div class="form-group">
+				<label for="InputPassword">密码</label>
+				@Html.TextBoxFor(m => m.InputPassword, new { @class = "form-control", placeholder = "请输入密码", type = "password" })
 			</div>
 			@*<div class="form-group">
 					<label for="exampleInputFile">头像上传</label>
@@ -124,9 +119,9 @@
 				{
 					<a class="btn btn-default" href="javascript:history.go(-1);">返回</a>
 				}
-				<input class="btn btn-primary" type="submit" onclick="return saveData();" value="保存" />
+				<input class="btn btn-primary" type="submit" value="保存" />
 			</div>
 		</div>
-	</form>
+	}
 </div>
 <!-- /.box -->

@@ -130,16 +130,9 @@ namespace WebUI.Areas.Admin.Controllers
                     dbEntry.Email = model.InputEmail?.Trim();
 
 
-                    IList<int> roleIdList = new List<int>();
-                    foreach (RoleOption option in model.RoleOptions)
-                    {
-                        roleIdList.Add(option.ID);
-                    }
-                    IList<RoleInfo> selectedRole = Container.Instance.Resolve<RoleInfoService>().Query(new List<ICriterion>
-                    {
-                        Expression.In("ID", roleIdList.ToArray())
-                    });
-                    dbEntry.RoleInfoList = selectedRole;
+                    dbEntry.EmployeeInfo = ((UserInfo)model).EmployeeInfo;
+                    dbEntry.StudentInfo = ((UserInfo)model).StudentInfo;
+                    dbEntry.RoleInfoList = ((UserInfo)model).RoleInfoList;
 
                     Container.Instance.Resolve<UserInfoService>().Edit(dbEntry);
 
@@ -153,6 +146,88 @@ namespace WebUI.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 return Json(new { code = -2, message = "保存失败" });
+            }
+        }
+        #endregion
+
+        #region 新增
+        [HttpGet]
+        public ViewResult Create()
+        {
+            UserInfoForEditViewModel model = new UserInfoForEditViewModel()
+            {
+                RoleOptions = new List<RoleOption>()
+            };
+            IList<RoleInfo> allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
+            foreach (RoleInfo item in allRole)
+            {
+                model.RoleOptions.Add(new RoleOption
+                {
+                    ID = item.ID,
+                    IsSelected = false,
+                    Text = item.Name
+                });
+            }
+            //model.RoleOptions.Insert(0, new RoleOption
+            //{
+            //    ID = 0,
+            //    IsSelected = true,
+            //    Text = "请选择角色"
+            //});
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult Create(UserInfoForEditViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    UserInfo dbModel = (UserInfo)model;
+                    // 查找 已经有此用户名的用户
+                    if (!string.IsNullOrEmpty(model.InputUserName))
+                    {
+                        UserInfo use = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+                        {
+                            Expression.Eq("UserName", model.InputUserName.Trim())
+                        }).FirstOrDefault();
+                        if (use != null)
+                        {
+                            return Json(new { code = -3, message = "用户名已有，请使用其他用户名" });
+                        }
+                    }
+                    // 查找 已经绑定此邮箱的 (非本正编辑) 的用户
+                    if (!string.IsNullOrEmpty(model.InputEmail))
+                    {
+                        UserInfo use = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+                    {
+                            Expression.Eq("Email", model.InputEmail.Trim()),
+                    }).FirstOrDefault();
+                        if (use != null)
+                        {
+                            return Json(new { code = -3, message = "邮箱已经被其他用户绑定，请绑定其他邮箱" });
+                        }
+                    }
+
+                    Container.Instance.Resolve<UserInfoService>().Create(dbModel);
+
+                    return Json(new { code = 1, message = "添加成功" });
+                }
+                else
+                {
+                    string errorMessage = string.Empty;
+                    foreach (ModelState item in ModelState.Values)
+                    {
+                        errorMessage += item.Errors.FirstOrDefault().ErrorMessage;
+                    }
+                    return Json(new { code = -1, message = "不合理的输入:" + errorMessage + ", " });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -2, message = "添加失败" });
             }
         }
         #endregion
