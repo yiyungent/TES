@@ -44,6 +44,7 @@
       <HintPath>..\..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -59,12 +60,16 @@
     <Compile Include="Attributes\AuthFilterAttribute.cs" />
     <Compile Include="Attributes\LoginAccountFilterAttribute.cs" />
     <Compile Include="Common\CacheHelper.cs" />
+    <Compile Include="Common\CommonHelper.cs" />
     <Compile Include="Common\EncryptHelper.cs" />
     <Compile Include="Common\HttpAide.cs" />
     <Compile Include="Common\HttpTemplate.cs" />
+    <Compile Include="Common\IWebHelper.cs" />
     <Compile Include="Common\Tools.cs" />
+    <Compile Include="Common\WebHelper.cs" />
     <Compile Include="Config\AppConfig.cs" />
     <Compile Include="Config\FrameworkConfig.cs" />
+    <Compile Include="Core\FrameworkException.cs" />
     <Compile Include="Factories\AuthManagerFactory.cs" />
     <Compile Include="Factories\DBAccessProviderFactory.cs" />
     <Compile Include="Factories\HttpOneRequestFactory.cs" />
@@ -85,7 +90,12 @@
     <Compile Include="Models\ErrorRedirectViewModel.cs" />
     <Compile Include="Mvc\BaseController.cs" />
     <Compile Include="Mvc\ViewEngines\GlobalShared\GlobalSharedViewEngine.cs" />
+    <Compile Include="Mvc\ViewEngines\Templates\ITemplateContext.cs" />
+    <Compile Include="Mvc\ViewEngines\Templates\ITemplateProvider.cs" />
     <Compile Include="Mvc\ViewEngines\Templates\TemplateBuildManagerViewEngine.cs" />
+    <Compile Include="Mvc\ViewEngines\Templates\TemplateConfiguration.cs" />
+    <Compile Include="Mvc\ViewEngines\Templates\TemplateContext.cs" />
+    <Compile Include="Mvc\ViewEngines\Templates\TemplateProvider.cs" />
     <Compile Include="Mvc\ViewEngines\Templates\TemplateViewEngine.cs" />
     <Compile Include="Mvc\ViewEngines\Templates\TemplateVirtualPathProviderViewEngine.cs" />
     <Compile Include="Mvc\ViewEngines\Templates\WebViewPage.cs" />
@@ -115,7 +125,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
