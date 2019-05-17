@@ -7201,7 +7201,6 @@
     <Content Include="Areas\Admin\Views\CourseTable\Create.cshtml" />
     <Content Include="Areas\Admin\Views\ClazzInfo\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ClazzInfo\AssignCourse.cshtml" />
-    <Content Include="json.json" />
     <Content Include="Areas\Admin\Views\ClazzInfo\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ClazzInfo\Create.cshtml" />
     <Content Include="Areas\Admin\Views\ClazzInfo\Detail.cshtml" />

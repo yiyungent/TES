@@ -23,12 +23,5 @@ namespace Domain
         [Display(Name = "排序码")]
         [Property(NotNull = true)]
         public int SortCode { get; set; }
-
-        ///<summary>
-        /// 权重
-        /// </summary>
-        [Display(Name = "权重")]
-        [Property(NotNull = true)]
-        public int Weight { get; set; }
     }
 }
