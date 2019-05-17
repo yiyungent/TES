@@ -61,13 +61,13 @@ namespace Framework.Mvc.ViewEngines.Templates
                 //template = _storeInformationSettings.DefaultStoreTheme;
 
                 //ensure that template exists
-                if (!_templateProvider.ThemeConfigurationExists(template))
+                if (!_templateProvider.TemplateConfigurationExists(template))
                 {
-                    var templateInstance = _templateProvider.GetThemeConfigurations()
+                    var templateInstance = _templateProvider.GetTemplateConfigurations()
                         .FirstOrDefault();
                     if (templateInstance == null)
-                        throw new Exception("No theme could be loaded");
-                    template = templateInstance.ThemeName;
+                        throw new Exception("No template could be loaded");
+                    template = templateInstance.TemplateName;
                 }
 
                 //cache theme

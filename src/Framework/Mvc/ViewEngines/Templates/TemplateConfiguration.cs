@@ -16,7 +16,10 @@ namespace Framework.Mvc.ViewEngines.Templates
             this.Path = path;
 
             Dictionary<string, object> jsonDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonStr);
-            this.PreviewImageUrl = path + "/" + "preview.png";
+            if (jsonDic.ContainsKey("previewImageUrl"))
+            {
+                this.PreviewImageUrl = jsonDic["PreviewImageUrl"].ToString();
+            }
             if (jsonDic.ContainsKey("description"))
             {
                 this.Description = jsonDic["description"].ToString();
@@ -36,8 +39,15 @@ namespace Framework.Mvc.ViewEngines.Templates
             }
         }
 
+        /// <summary>
+        /// 绝对物理路径
+        /// <para>F:\Com\me\Repos\TES\WebUI\Templates\DefaultClean</para>
+        /// </summary>
         public string Path { get; protected set; }
 
+        /// <summary>
+        /// ~/Templates/DefaultClean/preview.jpg
+        /// </summary>
         public string PreviewImageUrl { get; protected set; }
 
         public string Description { get; protected set; }

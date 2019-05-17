@@ -10,7 +10,7 @@ namespace Framework.Mvc.ViewEngines.Templates
     {
         TemplateConfiguration GetTemplateConfiguration(string templateName);
 
-        IList<TempalteConfiguration> GetTemplateConfigurations();
+        IList<TemplateConfiguration> GetTemplateConfigurations();
 
         bool TemplateConfigurationExists(string templateName);
     }

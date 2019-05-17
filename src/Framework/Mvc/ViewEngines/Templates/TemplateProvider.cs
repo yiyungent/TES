@@ -1,10 +1,9 @@
 ﻿using Framework.Common;
-using Framework.Config;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
 
 namespace Framework.Mvc.ViewEngines.Templates
 {
@@ -19,10 +18,61 @@ namespace Framework.Mvc.ViewEngines.Templates
 
         #region Constructors
 
-        public TemplateProvider(AppConfig appConfig, IWebHelper webHelper)
+        public TemplateProvider(IWebHelper webHelper)
         {
-            _basePath = webHelper.MapPath(appConfig.ThemeBasePath);
+            this._basePath = webHelper.MapPath("~/Templates/");
             LoadConfigurations();
+        }
+
+        #endregion
+
+        #region IThemeProvider
+
+        public TemplateConfiguration GetTemplateConfiguration(string templateName)
+        {
+            return _templateConfigurations
+                .SingleOrDefault(x => x.TemplateName.Equals(templateName, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public IList<TemplateConfiguration> GetTemplateConfigurations()
+        {
+            return _templateConfigurations;
+        }
+
+        public bool TemplateConfigurationExists(string templateName)
+        {
+            return GetTemplateConfigurations().Any(configuration => configuration.TemplateName.Equals(templateName, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        #endregion
+
+        #region Utility
+
+        private void LoadConfigurations()
+        {
+            //TODO:Use IFileStorage?
+            foreach (string templatePath in Directory.GetDirectories(_basePath))
+            {
+                var configuration = CreateTemplateConfiguration(templatePath);
+                if (configuration != null)
+                {
+                    _templateConfigurations.Add(configuration);
+                }
+            }
+        }
+
+        private TemplateConfiguration CreateTemplateConfiguration(string templatePath)
+        {
+            var templateDirectory = new DirectoryInfo(templatePath);
+            var templateConfigFile = new FileInfo(Path.Combine(templateDirectory.FullName, "template.config"));
+
+            if (templateConfigFile.Exists)
+            {
+                string jsonStr = File.ReadAllText(templateConfigFile.FullName);
+                return new TemplateConfiguration(templateDirectory.Name, templateDirectory.FullName, jsonStr);
+            }
+
+            return null;
         }
 
         #endregion
