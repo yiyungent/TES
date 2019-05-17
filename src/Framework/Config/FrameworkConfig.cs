@@ -12,6 +12,8 @@ namespace Framework.Config
     {
         public static void Register()
         {
+            MvcHandler.DisableMvcResponseHeader = true;
+
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
             RegisterModelBinder(ModelBinders.Binders);

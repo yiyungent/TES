@@ -652,6 +652,25 @@ namespace WebUI.Controllers
         }
         #endregion
 
+        #region 初始化评价指标选项
+        private void InitOptions()
+        {
+            try
+            {
+                ShowMessage("开始初始化评价指标选项");
+
+                
+
+                ShowMessage("成功");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("失败");
+                ShowMessage(ex.Message);
+            }
+        }
+        #endregion
+
         #region 输出消息
         private void ShowMessage(string message)
         {

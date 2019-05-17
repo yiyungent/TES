@@ -52,7 +52,13 @@
     <Compile Include="CourseInfoComponent.cs" />
     <Compile Include="CourseTableComponent.cs" />
     <Compile Include="DepartmentComponent.cs" />
+    <Compile Include="EvaRecordComponent.cs" />
+    <Compile Include="EvaResultComponent.cs" />
+    <Compile Include="EvaTaskComponent.cs" />
     <Compile Include="FunctionInfoComponent.cs" />
+    <Compile Include="NormTargetComponent.cs" />
+    <Compile Include="NormTypeComponent.cs" />
+    <Compile Include="OptionsComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleInfoComponent.cs" />
     <Compile Include="SettingComponent.cs" />
