@@ -655,623 +655,937 @@ namespace WebUI.Controllers
         }
         #endregion
 
-        #region 初始化评价指标选项
-        private void InitOptions()
-        {
-            try
-            {
-                ShowMessage("开始初始化评价指标选项");
-
-                NormTarget normTarget = null;
-                string[] contents = { };
-                decimal[] scores = { };
-
-
-                #region 教师工作评价指标体系（学生用）
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "概念的讲解")
-                }).FirstOrDefault();
-
-                contents = new string[] { "语言精练，深入浅出，讲解准确", "讲解清晰，容易接受", "讲解基本准确，但不易接受", "概念紊乱，时有差错" };
-                scores = new decimal[] { 1M, 0.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "重点和难点")
-                }).FirstOrDefault();
-
-                contents = new string[] { "重点突出，讲清难点，举一反三", "能把握重点、难点，但讲解不够明确", "重点不明显，难点讲不透", "重点一言而过，难点草率了事" };
-                scores = new decimal[] { 10.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "逻辑性和条理性")
-                }).FirstOrDefault();
-
-                contents = new string[] { "层次分明，融会贯通", "条目较清楚，有分析归纳", "平淡叙述，缺乏连贯性", "杂乱无章，前后矛盾" };
-                scores = new decimal[] { 10.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "趣味性和生动性")
-                }).FirstOrDefault();
-
-                contents = new string[] { "讲解方法新颖，举例生动，有吸引力", "讲解较熟练，语言通俗", "讲解平淡，语言单调", "讲解生疏，远离课题，语言枯燥" };
-                scores = new decimal[] { 1M, 0.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "板书")
-                }).FirstOrDefault();
-
-                contents = new string[] { "简繁适度，清楚醒目", "条目明白，书写整洁", "布局较差，详略失当", "次序凌乱，书写潦草" };
-                scores = new decimal[] { 1M, 0.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "辅导（阅读指导）")
-                }).FirstOrDefault();
-
-                contents = new string[] { "辅导及时、并指导课外阅读", "定期辅导，并布置课外阅读", "辅导较少", "没有辅导" };
-                scores = new decimal[] { 1M, 0.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "作业与批改")
-                }).FirstOrDefault();
-
-                contents = new string[] { "选题得当，批改及时，注意讲评", "作业适量，批改及时", "作业量时轻时重，批改不够及时", "选题随便，批改马虎" };
-                scores = new decimal[] { 1M, 0.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "能力培养")
-                }).FirstOrDefault();
-
-                contents = new string[] { "思路开阔，鼓励创新，注意能力培养、效果明显", "注意学生能力培养，并在教学中有所体现", "能提出能力培养的要求，但缺乏具体的办法", "忽视能力培养，单纯灌输书本知识" };
-                scores = new decimal[] { 1M, 0.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "教书育人")
-                }).FirstOrDefault();
-
-                contents = new string[] { "全面关心学生，经常接触学生，亲切、严格", "关心学生的学业，引导学生学好本门课程", "单纯完成上课任务，与同学接触较少", "对学生漠不关心，放任自流" };
-                scores = new decimal[] { 1M, 0.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "为人师表")
-                }).FirstOrDefault();
-
-                contents = new string[] { "严于律己，以身作则，堪称楷模", "举止文明，待人热情", "注意礼貌，待人和气", "要求不严，言谈失当" };
-                scores = new decimal[] { 1M, 0.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-                #endregion
-
-
-                #region 教师工作评价指标体系（教研室主任用）
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "概念的讲解")
-                }).FirstOrDefault();
-
-                contents = new string[] { "语言精练，深入浅出，讲解准确", "讲解清晰，容易接受", "讲解基本准确，但不易接受", "概念紊乱，时有差错" };
-                scores = new decimal[] { 1M, 0.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "重点和难点")
-                }).FirstOrDefault();
-
-                contents = new string[] { "重点突出，讲清难点，举一反三", "能把握重点、难点，但讲解不够明确", "重点不明显，难点讲不透", "重点一言而过，难点草率了事" };
-                scores = new decimal[] { 10.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "逻辑性和条理性")
-                }).FirstOrDefault();
-
-                contents = new string[] { "层次分明，融会贯通", "条目较清楚，有分析归纳", "平淡叙述，缺乏连贯性", "杂乱无章，前后矛盾" };
-                scores = new decimal[] { 10.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "趣味性和生动性")
-                }).FirstOrDefault();
-
-                contents = new string[] { "讲解方法新颖，举例生动，有吸引力", "讲解较熟练，语言通俗", "讲解平淡，语言单调", "讲解生疏，远离课题，语言枯燥" };
-                scores = new decimal[] { 1M, 0.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "板书")
-                }).FirstOrDefault();
-
-                contents = new string[] { "简繁适度，清楚醒目", "条目明白，书写整洁", "布局较差，详略失当", "次序凌乱，书写潦草" };
-                scores = new decimal[] { 1M, 0.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "能力培养")
-                }).FirstOrDefault();
-
-                contents = new string[] { "思路开阔，鼓励创新，注意能力培养、效果明显", "注意学生能力培养，并在教学中有所体现", "能提出能力培养的要求，但缺乏具体的办法", "忽视能力培养，单纯灌输书本知识" };
-                scores = new decimal[] { 1M, 0.85M, 0.65M, 0.45M };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "理论联系实际")
-                }).FirstOrDefault();
-
-                contents = new string[] { "理论紧密联系当前实际", "理论能联系具体事例", "联系实际较勉强", "只有理论没有实际" };
-                scores = new decimal[] { };
-
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
-
-                #endregion
-
-                ShowMessage("成功");
-            }
-            catch (Exception ex)
-            {
-                ShowMessage("失败");
-                ShowMessage(ex.Message);
-            }
-        }
-        #endregion
-
-        #region 初始化评价指标
+        #region 初始化指标
         private void InitNormTarget()
         {
             try
             {
-                ShowMessage("开始初始化评价指标");
-
+                Response.Write("初始化指标<br />");
                 #region 一级指标
-
-
-                string[] names = { "学生方面", "系（部）方面", "教研室方面", "同行方面（领导、督导）", "教师个人方面" };
-                decimal[] weights = { 0.3M, 0.25M, 0.20M, 0.15M, 0.10M };
-                for (int i = 0; i < names.Length; i++)
+                string[] TargetNames = new string[] { "学生方面", "系部方面", "教研室方面", "同行方面", "教师个人方面" };
+                decimal[] TargetWeight = new decimal[] { 0.30m, 0.25m, 0.20m, 0.15m, 0.10m };
+                for (int i = 0; i < TargetNames.Length; i++)
                 {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
                     {
-                        Name = names[i],
-                        Weight = weights[i],
-                        ParentTarget = null,
-                        SortCode = 10 * (i + 1)
+                        Name = TargetNames[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = TargetWeight[i],
                     });
                 }
-
-
-                #endregion 一级指标
-
-                NormTarget parentNormTarget = null;
-
-                #region 二级指标
-
-
-                parentNormTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                #endregion
+                NormTarget ParentTarget = null;
+                #region 学生方面的二级指标
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(1);
+                string[] STargetName = new string[] { "概念的讲解", "重点和难点", "逻辑性和条理性", "趣味性和生动性", "板书", "辅导（阅读指导）", "作业与批改", "能力培养", "教书育人", "为人师表" };
+                decimal[] STargetweight = new decimal[] { 0.15m, 0.15m, 0.10m, 0.10m, 0.05m, 0.08m, 0.10m, 0.10m, 0.10m, 0.07m };
+                for (int i = 0; i < STargetName.Length; i++)
                 {
-                    Expression.Eq("Name", "学生方面")
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
+                    {
+                        Name = STargetName[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = STargetweight[i],
+                        ParentTarget = ParentTarget,
+                    });
+                }
+                #endregion
+                #region 系部的二级指标
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(2);
+                string[] DTargetName = new string[] { "量考核", "质考核" };
+                decimal[] DTargetweight = new decimal[] { 0.30m, 0.70m };
+                for (int i = 0; i < DTargetName.Length; i++)
+                {
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
+                    {
+                        Name = DTargetName[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = DTargetweight[i],
+                        ParentTarget = ParentTarget,
+                    });
+                }
+                #endregion
+                #region 教研室的二级指标
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(3);
+                string[] TargetName = new string[] { "教学环节", "接受任务的态度", "汲取新技术", "学术与研究水平", "参加教研活动" };
+                decimal[] Targetweight = new decimal[] { 0.60m, 0.05m, 0.05m, 0.10m, 0.20m };
+                for (int i = 0; i < TargetName.Length; i++)
+                {
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
+                    {
+                        Name = TargetName[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = Targetweight[i],
+                        ParentTarget = ParentTarget,
+                    });
+                }
+                #endregion
+                #region 同行方面的二级指标
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(4);
+                string[] TTargetName = new string[] { "组织教学", "教学内容与教学要求", "概念讲解", "重点和难点", "趣味性与生动性", "直观教学与板书", "智力能力的培养", "理论联系实际", "教材处理" };
+                decimal[] TTargetweight = new decimal[] { 0.15m, 0.15m, 0.10m, 0.10m, 0.08m, 0.07m, 0.10m, 0.10m, 0.15m };
+                for (int i = 0; i < TTargetName.Length; i++)
+                {
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
+                    {
+                        Name = TTargetName[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = TTargetweight[i],
+                        ParentTarget = ParentTarget,
+                    });
+                }
+                #endregion
+                #region 教师个人方面的二级指标
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(5);
+                string[] ETargetName = new string[] { "自我评价", "自我评价的工作" };
+                decimal[] ETargetweight = new decimal[] { 0.5m, 0.5m };
+                for (int i = 0; i < ETargetName.Length; i++)
+                {
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
+                    {
+                        Name = ETargetName[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = ETargetweight[i],
+                        ParentTarget = ParentTarget,
+                    });
+                }
+                #endregion
+                #region 教学环节的三级指标
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(18);//18
+                string[] name = new string[] { "概念的讲解", "重点和难点", "逻辑性、条理性", "趣味性、生动性", "板书", "能力培养", "理论联系实际", "辅导（阅读指导）", "作业与批改" };
+                decimal[] weight = new decimal[] { 0.15m, 0.15m, 0.10m, 0.10m, 0.05m, 0.15m, 0.10m, 0.10m, 0.10m };
+                for (int i = 0; i < name.Length; i++)
+                {
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
+                    {
+                        Name = name[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = weight[i],
+                        ParentTarget = ParentTarget,
+                    });
+                }
+                #endregion
+                #region 量考核的三级指标
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(16);//18
+                string[] Lname = new string[] { "教学工作量", "社会工作量", "任课班级" };
+                decimal[] Lweight = new decimal[] { 0.75m, 0.15m, 0.10m };
+                for (int i = 0; i < Lname.Length; i++)
+                {
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
+                    {
+                        Name = Lname[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = Lweight[i],
+                        ParentTarget = ParentTarget,
+                    });
+                }
+                #endregion
+                #region 质考核的三级指标
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(17);//18
+                string[] Zname = new string[] { "工作态度", "学术与研究水平", "完成任务情况", "教学水平变化", "教学反映", "能力培养", "汲取新信息新技术", "考试命题" };
+                decimal[] Zweight = new decimal[] { 0.40m, 0.15m, 0.05m, 0.05m, 0.15m, 0.10m, 0.05m, 0.05m };
+                for (int i = 0; i < Zname.Length; i++)
+                {
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
+                    {
+                        Name = Zname[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = Zweight[i],
+                        ParentTarget = ParentTarget,
+                    });
+                }
+                #endregion
+                #region 工作态度的四级指标
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(46);
+                string[] Gname = new string[] { "接受任务态度", "教学常规" };
+                decimal[] Gweight = new decimal[] { 0.10m, 0.90m };
+                for (int i = 0; i < Gname.Length; i++)
+                {
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
+                    {
+                        Name = Gname[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = Gweight[i],
+                        ParentTarget = ParentTarget,
+                    });
+                }
+                #endregion
+                #region 学术与研究水平的四级指标
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(47);
+                string[] XGname = new string[] { "职称", "运用新知识、新技术能力", "论文撰写、教材编写能力" };
+                decimal[] XGweight = new decimal[] { 0.10m, 0.40m, 0.50m };
+                for (int i = 0; i < Gname.Length; i++)
+                {
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
+                    {
+                        Name = XGname[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = XGweight[i],
+                        ParentTarget = ParentTarget,
+                    });
+                }
+                #endregion
+                #region 教学常规的五级指标
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(55);
+                string[] Jname = new string[] { "授课计划的制定", "教案首页、备课余量", "教学日志手册的填写", "教学表格的填写", "辅导", "教学秩序的掌握" };
+                decimal[] Jweight = new decimal[] { 0.10m, 0.20m, 0.10m, 0.10m, 0.10m, 0.20m, 0.20m };
+                for (int i = 0; i < Jname.Length; i++)
+                {
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
+                    {
+                        Name = Jname[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = Jweight[i],
+                        ParentTarget = ParentTarget,
+                    });
+                }
+                #endregion
+                Response.Write("初始化指标成功！<br />");
+            }
+            catch (Exception)
+            {
+                Response.Write(".........初始化指标失败Error<br/>");
+            }
+        }
+        #endregion
+
+        #region 初始化指标选项
+        private void InitOptions()
+        {
+            try
+            {
+                Response.Write("初始化指标选项<br />");
+                string[] contents = { };
+                decimal[] scores = { };
+                NormTarget normTarget = null;
+                #region 概念的讲解的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "概念的讲解")
                 }).FirstOrDefault();
-
-                names = new string[] { "概念的讲解", "重点和难点", "逻辑性和条理性", "趣味性和生动性", "板书", "辅导（阅读指导）", "作业与批改", "能力培养", "教书育人", "为人师表" };
-                weights = new decimal[] { 0.15M, 0.15M, 0.10M, 0.10M, 0.05M, 0.08M, 0.10M, 0.10M, 0.10M, 0.07M };
-
-                for (int i = 0; i < names.Length; i++)
+                contents = new string[] { "语言精练，深入浅出，讲解准确", "讲解清晰，容易接受", "讲解基本准确，但不易接受", "概念紊乱，时有差错" };
+                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                for (int i = 0; i < contents.Length; i++)
                 {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
                     {
-                        Name = names[i],
-                        Weight = weights[i],
-                        ParentTarget = parentNormTarget,
-                        SortCode = 10 * (i + 1)
+                        Content = contents[i],
+                        Score = scores[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
                     });
                 }
-
-                parentNormTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                #endregion
+                #region 重点和难点的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {
-                    Expression.Eq("Name", "系（部）方面")
+                    Expression.Eq("Name", "重点和难点")
                 }).FirstOrDefault();
-
-                names = new string[] { "量考核", "质考核", "教学环节", "接受任务的态度", "汲取新技术", "学术与研究水平", "参加教研活动" };
-                weights = new decimal[] { 0.30M, 0.70M, 0.60M, 0.05M, 0.05M, 0.10M, 0.20M };
-
-                for (int i = 0; i < names.Length; i++)
+                contents = new string[] { "重点突出，讲清难点，举一反三", "能把握重点、难点，但讲解不够明确", "重点不明显，难点讲不透", "重点一言而过，难点草率了事" };
+                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                for (int i = 0; i < contents.Length; i++)
                 {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
                     {
-                        Name = names[i],
-                        Weight = weights[i],
-                        ParentTarget = parentNormTarget,
-                        SortCode = 10 * (i + 1)
+                        Content = contents[i],
+                        Score = scores[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
                     });
                 }
-
-                parentNormTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                #endregion
+                #region 逻辑性和条理性的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {
-                    Expression.Eq("Name", "教研室方面")
+                    Expression.Eq("Name", "逻辑性和条理性")
                 }).FirstOrDefault();
-
-                names = new string[] { "教学环节", "接受任务的态度", "汲取新技术", "学术与研究水平", "参加教研活动" };
-                weights = new decimal[] { 0.60M, 0.05M, 0.05M, 0.10M, 0.20M };
-
-                for (int i = 0; i < names.Length; i++)
+                contents = new string[] { "层次分明，融会贯通", "条目较清楚，有分析归纳", "平淡叙述，缺乏连贯性", "杂乱无章，前后矛盾" };
+                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                for (int i = 0; i < contents.Length; i++)
                 {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
                     {
-                        Name = names[i],
-                        Weight = weights[i],
-                        ParentTarget = parentNormTarget,
-                        SortCode = 10 * (i + 1)
+                        Content = contents[i],
+                        Score = scores[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
                     });
                 }
-
-                parentNormTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                #endregion
+                #region 趣味性和生动性的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {
-                    Expression.Eq("Name", "同行方面（领导、督导）")
+                    Expression.Eq("Name", "趣味性和生动性")
                 }).FirstOrDefault();
-
-                names = new string[] { "组织教学", "教学内容与教学要求", "概念讲解", "重点和难点", "趣味性与生动性", "直观教学与板书", "智力能力的培养", "理论联系实际", "教材处理" };
-                weights = new decimal[] { 0.15M, 0.15M, 0.10M, 0.10M, 0.08M, 0.07M, 0.10M, 0.10M, 0.15M };
-
-                for (int i = 0; i < names.Length; i++)
+                contents = new string[] { "讲解方法新颖，举例生动，有吸引力", "讲解较熟练，语言通俗", "讲解平淡，语言单调", "讲解生疏，远离课题，语言枯燥" };
+                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                for (int i = 0; i < contents.Length; i++)
                 {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
                     {
-                        Name = names[i],
-                        Weight = weights[i],
-                        ParentTarget = parentNormTarget,
-                        SortCode = 10 * (i + 1)
+                        Content = contents[i],
+                        Score = scores[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
                     });
                 }
-
-                parentNormTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                #endregion
+                #region 板书的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {
-                    Expression.Eq("Name", "教师个人方面")
+                    Expression.Eq("Name", "板书")
                 }).FirstOrDefault();
-
-                names = new string[] { "自我评价", "自我评价的工作" };
-                weights = new decimal[] { 0.1M, 0.2M };
-
-                for (int i = 0; i < names.Length; i++)
+                contents = new string[] { "简繁适度，清楚醒目", "条目明白，书写整洁", "布局较差，详略失当", "次序凌乱，书写潦草" };
+                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                for (int i = 0; i < contents.Length; i++)
                 {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
                     {
-                        Name = names[i],
-                        Weight = weights[i],
-                        ParentTarget = parentNormTarget,
-                        SortCode = 10 * (i + 1)
+                        Content = contents[i],
+                        Score = scores[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
                     });
                 }
-
-                #endregion 二级指标
-
-
-
-                #region 三级指标
-
-                parentNormTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                #endregion
+                #region 辅导（阅读指导）的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {
-                    Expression.Eq("Name", "量考核")
+                    Expression.Eq("Name", "辅导（阅读指导）")
                 }).FirstOrDefault();
-
-                names = new string[] { "教学工作量", "社会工作量", "任课班级" };
-                weights = new decimal[] { 0.75M, 0.15M, 0.10M };
-
-                for (int i = 0; i < names.Length; i++)
+                contents = new string[] { "辅导及时、并指导课外阅读", "定期辅导，并布置课外阅读", "辅导较少", "没有辅导" };
+                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                for (int i = 0; i < contents.Length; i++)
                 {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
                     {
-                        Name = names[i],
-                        Weight = weights[i],
-                        ParentTarget = parentNormTarget,
-                        SortCode = 10 * (i + 1)
+                        Content = contents[i],
+                        Score = scores[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
                     });
                 }
-
-                parentNormTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                #endregion
+                #region 作业与批改的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {
-                    Expression.Eq("Name", "质考核")
+                    Expression.Eq("Name", "作业与批改")
                 }).FirstOrDefault();
-
-                names = new string[] { "工作态度", "学术与研究水平", "完成任务情况", "教学水平变化", "教学反映", "能力培养", "汲取新信息新技术", "考试命题" };
-                weights = new decimal[] { 0.15M, 0.05M, 0.05M, 0.15M, 0.10M, 0.05M, 0.05M };
-
-                for (int i = 0; i < names.Length; i++)
+                contents = new string[] { "选题得当，批改及时，注意讲评", "作业适量，批改及时", "作业量时轻时重，批改不够及时", "选题随便，批改马虎" };
+                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                for (int i = 0; i < contents.Length; i++)
                 {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
                     {
-                        Name = names[i],
-                        Weight = weights[i],
-                        ParentTarget = parentNormTarget,
-                        SortCode = 10 * (i + 1)
+                        Content = contents[i],
+                        Score = scores[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
                     });
                 }
-
-                parentNormTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                #endregion
+                #region 能力培养的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {
-                    Expression.Eq("Name", "教学环节")
+                    Expression.Eq("Name", "能力培养")
                 }).FirstOrDefault();
-
-                names = new string[] { "概念的讲解", "重点和难点", "逻辑性、条理性", "趣味性、生动性", "板书", "能力培养", "理论联系实际", "辅导（阅读指导）", "作业与批改" };
-                weights = new decimal[] { 0.15M, 0.15M, 0.10M, 0.10M, 0.05M, 0.15M, 0.10M, 0.10M, 0.10M };
-
-                for (int i = 0; i < names.Length; i++)
+                contents = new string[] { "思路开阔，鼓励创新，注意能力培养、效果明显", "注意学生能力培养，并在教学中有所体现", "能提出能力培养的要求，但缺乏具体的办法", "忽视能力培养，单纯灌输书本知识" };
+                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                for (int i = 0; i < contents.Length; i++)
                 {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
                     {
-                        Name = names[i],
-                        Weight = weights[i],
-                        ParentTarget = parentNormTarget,
-                        SortCode = 10 * (i + 1)
+                        Content = contents[i],
+                        Score = scores[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
                     });
                 }
-
-                #endregion 三级指标
-
-                #region 四级指标
-
-                parentNormTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                #endregion
+                #region 教书育人的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {
-                    Expression.Eq("Name", "工作态度")
+                    Expression.Eq("Name", "教书育人")
                 }).FirstOrDefault();
-
-                names = new string[] { "接受任务态度", "教学常规" };
-                weights = new decimal[] { 0.10M, 0.90M };
-
-                for (int i = 0; i < names.Length; i++)
+                contents = new string[] { "全面关心学生，经常接触学生，亲切、严格", "关心学生的学业，引导学生学好本门课程", "单纯完成上课任务，与同学接触较少", "对学生漠不关心，放任自流" };
+                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                for (int i = 0; i < contents.Length; i++)
                 {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
                     {
-                        Name = names[i],
-                        Weight = weights[i],
-                        ParentTarget = parentNormTarget,
-                        SortCode = 10 * (i + 1)
+                        Content = contents[i],
+                        Score = scores[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
                     });
                 }
-
-                parentNormTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                #endregion
+                #region 为人师表的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "为人师表")
+                }).FirstOrDefault();
+                contents = new string[] { "严于律己，以身作则，堪称楷模", "举止文明，待人热情", "注意礼貌，待人和气", "要求不严，言谈失当" };
+                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        Score = scores[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 理论联系实际的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "理论联系实际")
+                }).FirstOrDefault();
+                contents = new string[] { "理论紧密联系当前实际", "理论能联系具体事例", "联系实际较勉强", "只有理论没有实际" };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 接受任务的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "接受任务")
+                }).FirstOrDefault();
+                contents = new string[] { "勇挑重担", "主动承担", "一般", "较差" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 汲取新信息技术情况的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "汲取新信息技术情况")
+                }).FirstOrDefault();
+                contents = new string[] { "及时在教学中体现", "教学中注意联系新信息新技术", "教学中联系新信息新技术不够", "教学中根本不联系新信息新技术" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 学术与研究水平的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {
                     Expression.Eq("Name", "学术与研究水平")
                 }).FirstOrDefault();
-
-                names = new string[] { "职称", "运用新知识、新技术能力", "论文撰写、教材编写能力" };
-                weights = new decimal[] { 0.10M, 0.40M, 0.50M };
-
-                for (int i = 0; i < names.Length; i++)
+                contents = new string[] { "开出有一定水平的选修课、讲座、院级公开课或指导兴趣小组有成效", "开出选修课、讲座、系内公开课或指导兴趣小组活动", "承担室内研究课、协助开出讲座或配合指导学生课外活动", "无" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
                 {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
                     {
-                        Name = names[i],
-                        Weight = weights[i],
-                        ParentTarget = parentNormTarget,
-                        SortCode = 10 * (i + 1)
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
                     });
                 }
-
                 #endregion
-
-                #region 五级指标
-                parentNormTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                #region 参加教研活动的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {
-                    Expression.Eq("Name", "教学常规")
+                    Expression.Eq("Name", "参加教研活动")
                 }).FirstOrDefault();
-
-                names = new string[] { "授课计划的制定", "教案首页", "备课余量", "教学日志手册的填写", "教学表格的填写", "辅导", "教学秩序的掌握" };
-                weights = new decimal[] { 0.10M, 0.20M, 0.10M, 0.10M, 0.10M, 0.20M, 0.20M };
-
-                for (int i = 0; i < names.Length; i++)
+                contents = new string[] { "出主意、提建议、协助室主任搞好教研活动", "积极参加讨论", "能按时参加活动", "参加活动不正常" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
                 {
-                    //Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
-                    //{
-                    //    Name = names[i],
-                    //    Weight = weights[i],
-                    //    ParentTarget = parentNormTarget,
-                    //    SortCode = 10 * (i + 1)
-                    //});
-
-                    NormTarget norm = new NormTarget();
-                    norm.Name = names[i];
-                    norm.Weight = weights[i];
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
                 }
                 #endregion
-
-                ShowMessage("成功");
+                #region 教学工作量的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "教学工作量")
+                }).FirstOrDefault();
+                contents = new string[] { "超工作量", "满工作量", "接近完成（70%）", "差距较大" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 社会工作量的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "社会工作量")
+                }).FirstOrDefault();
+                contents = new string[] { "担任教研室主任", "担任办公室、工作室主任", "担任专业班主任（辅导员）等其他工作", "未承担" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 任课班级的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "任课班级")
+                }).FirstOrDefault();
+                contents = new string[] { "任4个班级以上，或双进度", "任3个班级", "任2个班级", "任1个班级" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 接受任务态度的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "接受任务态度")
+                }).FirstOrDefault();
+                contents = new string[] { "勇挑重担", "主动承担", "一般", "较差" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 授课计划制定的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "授课计划制定")
+                }).FirstOrDefault();
+                contents = new string[] { "清晰", "完整", "一般", "潦草" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 教案首页的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "教案首页")
+                }).FirstOrDefault();
+                contents = new string[] { "完整", "缺一项", "缺二项", "缺二项以上" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 备课余量的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "备课余量")
+                }).FirstOrDefault();
+                contents = new string[] { "一周以上", "一周", "接近一周", "没有余量" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 教学日志的填写的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "教学日志的填写")
+                }).FirstOrDefault();
+                contents = new string[] { "清楚、准确", "正确、及时", "填写缺项", "填写马虎" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 教学表格的填写的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "教学表格的填写")
+                }).FirstOrDefault();
+                contents = new string[] { "认真且有见解", "详尽、整洁", "正确", "潦草、拖拉" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 辅导、作业的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "辅导、作业")
+                }).FirstOrDefault();
+                contents = new string[] { "每周有辅导", "辅导较经常", "辅导较少", "不辅导" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 教学秩序的掌握的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "教学秩序的掌握")
+                }).FirstOrDefault();
+                contents = new string[] { "严格", "较严格", "一般", "出现教学事故" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 职称的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "教学秩序的掌握")
+                }).FirstOrDefault();
+                contents = new string[] { "副教授", "讲师", "助教", "未评职称" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 运用新知识、新技术能力的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "运用新知识、新技术能力")
+                }).FirstOrDefault();
+                contents = new string[] { "开出有一定水平的选修课、讲座、院级公开课或指导兴趣小组有成效", "开出选修课、讲座、科内公开课或指导兴趣小组活动", "承担室内研究课、协助开出讲座或配合指导学生课外活动", "无" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 论文撰写、教材编写能力的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "论文撰写、教材编写能力")
+                }).FirstOrDefault();
+                contents = new string[] { "在核心刊物上发表、教材正式出版（三年内）", "在公开刊物上发表，教材兄弟院校使用（二年内）", "在内部刊上发表，教材在校内使用（一年内）", "无" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 完成任务情况的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "完成任务情况")
+                }).FirstOrDefault();
+                contents = new string[] { "高质量完成", "及时完成", "基本完成", "完不成" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 教学水平变化的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "教学水平变化")
+                }).FirstOrDefault();
+                contents = new string[] { "显著提高", "有所提高", "变化很小", "下降" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 教学（效果）反映的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "教学（效果）反映")
+                }).FirstOrDefault();
+                contents = new string[] { "优秀", "良好", "一般", "较差" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 汲取新信息技术情况的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "汲取新信息技术情况")
+                }).FirstOrDefault();
+                contents = new string[] { "及时在教学中体现", "教学中注意联系新信息新技术", "教学中联系新信息新技术不够", "教学中根本不联系新信息新技术" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 考试命题的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "考试命题")
+                }).FirstOrDefault();
+                contents = new string[] { "试题的水平、题型、题量、分布、覆盖面符合教学目标的要求；难度适中，区分度适当；表述准确、严密、简洁。", "有2项不符合要求", "有3项不符合要求", "有3项以上（不含3项）不符合要求" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 组织教学的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "考试命题")
+                }).FirstOrDefault();
+                contents = new string[] { "教学组织安排得当，气氛活跃，纪律良好", "注意学生动态，教学有条不紊", "忽视教学步骤，师生双边活动较差", "只顾自己讲，不管学生情况" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 教学要求、教学内容的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "教学要求、教学内容")
+                }).FirstOrDefault();
+                contents = new string[] { "切合教学大纲要求与实际，内容组织科学严密", "符合教学大纲要求，内容正确", "基本达到教学大纲要求，内容偶有差错", "降低教学标准，内容时有差错" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 概念讲解的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "概念讲解")
+                }).FirstOrDefault();
+                contents = new string[] { "语言精练，深入浅出，讲解准确", "讲解清晰，容易接受", "讲解基本准确，但不易接受", "概念紊乱，时有差错" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 重点和难点的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "重点和难点")
+                }).FirstOrDefault();
+                contents = new string[] { "重点突出，讲清难点，举一反三", "能把握重点、难点，但讲解不够明确", "重点不明显，难点讲不透", "重点一言而过，难点草率了事" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 直观教学与板书的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "直观教学与板书")
+                }).FirstOrDefault();
+                contents = new string[] { "教具使用合理，板书清晰，示教形象、直观", "注意直观教学，板书条目明白、整洁", "教具使用失当，板书布局较差", "忽视直观教学，板书凌乱" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 智力能力的培养的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "智力能力的培养")
+                }).FirstOrDefault();
+                contents = new string[] { "运用各种方法，调动学生积极思维，注重能力培养", "注意调动学生思维和能力培养，方法和效果欠佳", "缺乏启发式方法和能力培养手段", "照本宣科，不搞启发式教学" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 理论联系实际的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "理论联系实际")
+                }).FirstOrDefault();
+                contents = new string[] { "理论与实例、实验、实际密切结合", "理论能结合实际进行教学", "理论与实际结合不理想", "理论与实际严重脱节" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                #region 教材处理的选项
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "教材处理")
+                }).FirstOrDefault();
+                contents = new string[] { "科学的处理教材，繁简增删适当，收事半功倍之效", "对教材的处理，有助于学生理解和掌握内在联系", "基本按照教材讲课，没有给学生什么新东西", "对教材毫无处理，完全重复课本内容" };
+                scores = new decimal[] { };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+                #endregion
+                Response.Write("初始化指标成功!<br />");
             }
             catch (Exception ex)
             {
-                ShowMessage("失败");
-                ShowMessage(ex.Message);
+                Response.Write(".........初始化指标选项失败Error<br/>");
             }
         }
         #endregion
