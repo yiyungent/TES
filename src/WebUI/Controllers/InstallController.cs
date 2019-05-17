@@ -1252,13 +1252,17 @@ namespace WebUI.Controllers
 
                 for (int i = 0; i < names.Length; i++)
                 {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
-                    {
-                        Name = names[i],
-                        Weight = weights[i],
-                        ParentTarget = parentNormTarget,
-                        SortCode = 10 * (i + 1)
-                    });
+                    //Container.Instance.Resolve<NormTargetService>().Create(new NormTarget
+                    //{
+                    //    Name = names[i],
+                    //    Weight = weights[i],
+                    //    ParentTarget = parentNormTarget,
+                    //    SortCode = 10 * (i + 1)
+                    //});
+
+                    NormTarget norm = new NormTarget();
+                    norm.Name = names[i];
+                    norm.Weight = weights[i];
                 }
                 #endregion
 
