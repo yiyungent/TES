@@ -58,9 +58,12 @@ namespace WebUI.Areas.Admin.Controllers
             //    }
             //}; 
             #endregion
-
+            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
             ListViewModel<UserInfo> model = new ListViewModel<UserInfo>(pageIndex: pageIndex, pageSize: pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
+            stopwatch.Stop();
+            TimeSpan timeSpan = stopwatch.Elapsed;// 1s
 
             return View(model);
         }
@@ -95,8 +98,16 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Edit(int id)
         {
+            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
             UserInfo userInfo = Container.Instance.Resolve<UserInfoService>().GetEntity(id);
+            stopwatch.Stop();
+            TimeSpan t1 = stopwatch.Elapsed; // 1s
+            stopwatch.Reset();
+            stopwatch.Start();
             UserInfoForEditViewModel model = (UserInfoForEditViewModel)userInfo;
+            stopwatch.Stop();
+            TimeSpan t2 = stopwatch.Elapsed; // 1s
 
             return View(model);
         }
@@ -129,10 +140,10 @@ namespace WebUI.Areas.Admin.Controllers
                     }
                     dbEntry.Email = model.InputEmail?.Trim();
 
-
-                    dbEntry.EmployeeInfo = ((UserInfo)model).EmployeeInfo;
-                    dbEntry.StudentInfo = ((UserInfo)model).StudentInfo;
-                    dbEntry.RoleInfoList = ((UserInfo)model).RoleInfoList;
+                    UserInfo userInfo = (UserInfo)model;
+                    dbEntry.EmployeeInfo = userInfo.EmployeeInfo;
+                    dbEntry.StudentInfo = userInfo.StudentInfo;
+                    dbEntry.RoleInfoList = userInfo.RoleInfoList;
 
                     Container.Instance.Resolve<UserInfoService>().Edit(dbEntry);
 

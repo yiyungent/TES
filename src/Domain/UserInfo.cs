@@ -50,14 +50,14 @@ namespace Domain
         /// 绑定学生
         /// </summary>
         [Display(Name = "绑定学生")]
-        [BelongsTo(Column = "StudentId")]
+        [BelongsTo(Column = "StudentId"/*, Lazy = FetchWhen.OnInvoke*/)]
         public StudentInfo StudentInfo { get; set; }
 
         /// <summary>
         /// 绑定员工
         /// </summary>
         [Display(Name = "绑定员工")]
-        [BelongsTo(Column = "EmployeeId")]
+        [BelongsTo(Column = "EmployeeId"/*, Lazy = FetchWhen.OnInvoke*/)]
         public EmployeeInfo EmployeeInfo { get; set; }
 
         #endregion

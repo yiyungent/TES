@@ -7252,6 +7252,8 @@
     <Content Include="dist\push.js\LICENSE.md" />
     <Content Include="dist\push.js\package.json" />
     <Content Include="dist\push.js\README.md" />
+    <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Demos\NotificationDemo.html" />
     <Content Include="Scripts\bootstrap.js" />

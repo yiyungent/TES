@@ -30,7 +30,7 @@ namespace Domain
         ///     多对多关系
         /// </summary>
         [Display(Name = "用户列表")]
-        [HasAndBelongsToMany(Table = "Role_User", ColumnKey = "RoleId", ColumnRef = "UserId")]
+        [HasAndBelongsToMany(Table = "Role_User", ColumnKey = "RoleId", ColumnRef = "UserId"/*, Lazy = true*/)]
         public IList<UserInfo> UserInfoList { get; set; }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Domain
         ///     多对多关系
         /// </summary>
         [Display(Name = "角色菜单权限")]
-        [HasAndBelongsToMany(Table = "Role_Menu", ColumnKey = "RoleId", ColumnRef = "MenuId")]
+        [HasAndBelongsToMany(Table = "Role_Menu", ColumnKey = "RoleId", ColumnRef = "MenuId"/*, Lazy = true*/)]
         public IList<Sys_Menu> Sys_MenuList { get; set; }
 
         /// <summary>
@@ -46,8 +46,8 @@ namespace Domain
         ///     多对多关系
         /// </summary>
         [Display(Name = "角色操作权限")]
-        [HasAndBelongsToMany(Table = "Role_Function", ColumnKey = "RoleId", ColumnRef = "FunctionId")]
-        public IList<FunctionInfo> FunctionInfoList { get; set; } 
+        [HasAndBelongsToMany(Table = "Role_Function", ColumnKey = "RoleId", ColumnRef = "FunctionId"/*, Lazy = true*/)]
+        public IList<FunctionInfo> FunctionInfoList { get; set; }
 
         #endregion
     }

@@ -42,7 +42,11 @@ namespace WebUI.Areas.Admin.Models.Common
                     tempAllList = Container.Instance.Resolve<CourseTableService>().GetAll();
                     break;
                 case "Domain.UserInfo":
+                    System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                    stopwatch.Start();
                     tempAllList = Container.Instance.Resolve<UserInfoService>().GetAll();
+                    stopwatch.Stop();
+                    TimeSpan t1 = stopwatch.Elapsed; // 1s
                     break;
                 case "Domain.RoleInfo":
                     tempAllList = Container.Instance.Resolve<RoleInfoService>().GetAll();

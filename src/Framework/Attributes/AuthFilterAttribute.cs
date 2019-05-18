@@ -36,8 +36,12 @@ namespace Framework.Attributes
                 base.OnActionExecuting(filterContext);
                 return;
             }
-
+            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
             this.CheckLoginAccount(filterContext);
+            stopwatch.Stop();
+            TimeSpan t1 = stopwatch.Elapsed;// TotalSeconds	0.08653849999999999	double
+
             base.OnActionExecuting(filterContext);
         }
 

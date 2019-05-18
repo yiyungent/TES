@@ -60,9 +60,15 @@ namespace WebUI.Areas.Admin.Models
 
         public static explicit operator UserInfoForEditViewModel(UserInfo userInfo)
         {
+            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
             IList<RoleInfo> allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
             allRole = allRole.Where(m => m.Name != "游客").ToList();
+            stopwatch.Stop();
+            TimeSpan t1 = stopwatch.Elapsed; // 1s
 
+            stopwatch.Reset();
+            stopwatch.Start();
             List<RoleOption> roleOptions = new List<RoleOption>();
             foreach (RoleInfo role in allRole)
             {
@@ -84,6 +90,8 @@ namespace WebUI.Areas.Admin.Models
                 InputEmployeeCode = userInfo.EmployeeInfo?.EmployeeCode,
                 InputStudentCode = userInfo.StudentInfo?.StudentCode
             };
+            stopwatch.Stop();
+            TimeSpan t2 = stopwatch.Elapsed; // 0s
 
             return rtnModel;
         }
