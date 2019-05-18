@@ -78,13 +78,27 @@
     <Reference Include="log4net">
       <HintPath>..\..\libs\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Core.2.4.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.1\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Host.SystemWeb.2.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
     <Reference Include="mysql.data">
       <HintPath>..\..\libs\mysql.data.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Bin\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\..\libs\NHibernate.dll</HintPath>
@@ -98,6 +112,10 @@
     <Reference Include="NPOI">
       <HintPath>..\..\libs\NPOI.dll</HintPath>
     </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -6610,6 +6628,12 @@
     <Content Include="dist\layui\lay\modules\util.js" />
     <Content Include="dist\loader\loading.css" />
     <Content Include="dist\pjax\jquery.pjax.js" />
+    <Content Include="dist\push.js\bin\push.js" />
+    <Content Include="dist\push.js\bin\push.min.js" />
+    <Content Include="dist\push.js\bin\serviceWorker.min.js" />
+    <Content Include="dist\push.js\browserstack.png" />
+    <Content Include="dist\push.js\logo.png" />
+    <Content Include="dist\push.js\push.min.js" />
     <Content Include="dist\WebUploader\Uploader.swf" />
     <Content Include="dist\WebUploader\webuploader.css" />
     <Content Include="dist\WebUploader\webuploader.js" />
@@ -7138,6 +7162,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="images\default-notify.jpg" />
     <Content Include="images\notexist-avatar.jpg" />
     <Content Include="images\guest-avatar.jpg" />
     <Content Include="images\default-avatar.jpg" />
@@ -7209,12 +7234,25 @@
     <Content Include="dist\layui\font\iconfont.eot" />
     <Content Include="dist\layui\font\iconfont.ttf" />
     <Content Include="dist\layui\font\iconfont.woff" />
+    <Content Include="dist\push.js\bin\push.js.map" />
+    <Content Include="dist\push.js\bin\push.min.js.map" />
+    <Content Include="dist\push.js\bin\serviceWorker.min.js.map" />
+    <Content Include="dist\push.js\CONTRIBUTING.md" />
+    <Content Include="dist\push.js\LICENSE.md" />
+    <Content Include="dist\push.js\package.json" />
+    <Content Include="dist\push.js\README.md" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
+    <Content Include="NotificationDemo.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.12.0.js" />
     <Content Include="Scripts\jquery-1.12.0.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.4.js" />
+    <Content Include="Scripts\jquery-1.6.4.min.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.1.js" />
+    <Content Include="Scripts\jquery.signalR-2.4.1.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -7263,6 +7301,7 @@
     <Compile Include="Controllers\InstallController.cs" />
     <Compile Include="Areas\Admin\Controllers\SysMenuController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserInfoController.cs" />
+    <Compile Include="Controllers\NotificationDemoController.cs" />
     <Compile Include="Extensions\DateTimeExt.cs" />
     <Compile Include="Extensions\RequestExt.cs" />
     <Compile Include="Global.asax.cs">
@@ -7271,7 +7310,10 @@
     <Compile Include="Areas\Admin\Models\AdminWebBaseInfoViewModel.cs" />
     <Compile Include="Areas\Admin\Models\BreadcrumbItem.cs" />
     <Compile Include="HtmlHelpers\CollapseMenu.cs" />
+    <Compile Include="MessageHubs\NotificationHub.cs" />
+    <Compile Include="MessageHubs\NotificationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -7754,7 +7796,9 @@
     <Content Include="dist\AdminLTE\dist\css\adminlte.min.css.map" />
     <Content Include="dist\AdminLTE\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="dist\AdminLTE\plugins\input-mask\phone-codes\phone-codes.json" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Scripts\jquery-1.12.0.min.map" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Install\Index.cshtml" />
@@ -7790,6 +7834,7 @@
     <Folder Include="Models\" />
     <Folder Include="Upload\Templates\" />
     <Folder Include="Views\Errors\" />
+    <Folder Include="Views\NotificationDemo\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
@@ -7819,6 +7864,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="dist\AdminLTE\bower_components\moment\moment.d.ts" />
+    <TypeScriptCompile Include="dist\push.js\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

@@ -607,12 +607,12 @@ namespace Framework.Common
         /// <returns>Query string value</returns>
         public virtual T QueryString<T>(string name)
         {
-            string queryParam = null;
-            if (IsRequestAvailable(_httpContext) && _httpContext.Request.QueryString[name] != null)
-                queryParam = _httpContext.Request.QueryString[name];
+            //string queryParam = null;
+            //if (IsRequestAvailable(_httpContext) && _httpContext.Request.QueryString[name] != null)
+            //    queryParam = _httpContext.Request.QueryString[name];
 
-            if (!String.IsNullOrEmpty(queryParam))
-                return CommonHelper.To<T>(queryParam);
+            //if (!String.IsNullOrEmpty(queryParam))
+            //    return CommonHelper.To<T>(queryParam);
 
             return default(T);
         }
