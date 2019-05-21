@@ -7301,15 +7301,11 @@
     <Compile Include="Areas\Admin\Models\Clazz\CourseTableTr.cs" />
     <Compile Include="Areas\Admin\Models\Common\ListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoForEditViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\CourseInfoListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseTableForEditViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\CourseTableListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEditViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\RoleInfoListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\Template\ThemeTemplateViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserInfoForEditViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\UserInfoListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ZNodeModel.cs" />
     <Compile Include="Controllers\ErrorsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />

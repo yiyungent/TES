@@ -455,6 +455,21 @@ namespace WebUI.Controllers
                     RoleInfoList = (from m in allRole where m.ID == 1 select m).ToList(),
                     RegTime = DateTime.Now
                 });
+                //for (int i = 0; i < 200; i++)
+                //{
+                //    string name = "学生" + (i + 1);
+                //    string studentCode = "170010" + i.ToString("000");
+                //    // 创建其绑定用户
+                //    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo()
+                //    {
+                //        Name = name,
+                //        Avatar = "/images/default-avatar.jpg",
+                //        UserName = studentCode,
+                //        Password = EncryptHelper.MD5Encrypt32("12345"),
+                //        RoleInfoList = allRole.Where(m => m.Name == "学生").ToList()
+                //    });
+                //}
+
 
                 ShowMessage("成功");
             }
@@ -660,7 +675,7 @@ namespace WebUI.Controllers
         {
             try
             {
-                Response.Write("初始化指标<br />");
+                ShowMessage("开始初始化指标");
                 #region 一级指标
                 string[] TargetNames = new string[] { "学生方面", "系部方面", "教研室方面", "同行方面", "教师个人方面" };
                 decimal[] TargetWeight = new decimal[] { 0.30m, 0.25m, 0.20m, 0.15m, 0.10m };
@@ -840,11 +855,11 @@ namespace WebUI.Controllers
                     });
                 }
                 #endregion
-                Response.Write("初始化指标成功！<br />");
+                ShowMessage("成功");
             }
             catch (Exception)
             {
-                Response.Write(".........初始化指标失败Error<br/>");
+                ShowMessage("失败");
             }
         }
         #endregion
@@ -854,7 +869,7 @@ namespace WebUI.Controllers
         {
             try
             {
-                Response.Write("初始化指标选项<br />");
+                ShowMessage("开始初始化指标选项");
                 string[] contents = { };
                 decimal[] scores = { };
                 NormTarget normTarget = null;
@@ -1581,11 +1596,11 @@ namespace WebUI.Controllers
                     });
                 }
                 #endregion
-                Response.Write("初始化指标成功!<br />");
+                ShowMessage("成功");
             }
             catch (Exception ex)
             {
-                Response.Write(".........初始化指标选项失败Error<br/>");
+                ShowMessage("失败");
             }
         }
         #endregion

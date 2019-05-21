@@ -29,32 +29,11 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
         #region 列表
-        public ActionResult Index(CurrentAccountModel currentAccount, int pageIndex = 1, int pageSize = 6)
+        public ActionResult Index(int pageIndex = 1, int pageSize = 6)
         {
-            #region 废弃
-            //IList<CourseInfo> list = Container.Instance.Resolve<CourseInfoService>().GetAll();
-            //// 当前页号超过总页数，则显示最后一页
-            //int lastPageIndex = (int)Math.Ceiling((double)list.Count / pageSize);
-            //pageIndex = pageIndex <= lastPageIndex ? pageIndex : lastPageIndex;
+            IList<ICriterion> queryConditions = new List<ICriterion>();
 
-            //// 使用 Skip 还顺便解决了 若 pageIndex <= 0 的错误情况
-            //var data = (from m in list
-            //            orderby m.ID descending
-            //            select m).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-            //CourseInfoListViewModel model = new CourseInfoListViewModel
-            //{
-            //    CourseInfos = data.ToList(),
-            //    PageInfo = new PageInfo
-            //    {
-            //        PageIndex = pageIndex,
-            //        PageSize = pageSize,
-            //        TotalRecordCount = list.Count,
-            //        MaxLinkCount = 10
-            //    }
-            //}; 
-            #endregion
-
-            ListViewModel<CourseInfo> model = new ListViewModel<CourseInfo>(pageIndex: pageIndex, pageSize: pageSize);
+            ListViewModel<CourseInfo> model = new ListViewModel<CourseInfo>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
 
             return View(model);

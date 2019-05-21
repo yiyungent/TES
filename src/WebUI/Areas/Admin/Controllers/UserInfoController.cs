@@ -34,36 +34,12 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
         #region 首页-列表
-        public ViewResult Index(CurrentAccountModel currentAccount, int pageIndex = 1, int pageSize = 6)
+        public ViewResult Index(int pageIndex = 1, int pageSize = 6)
         {
-            #region 废弃
-            //IList<UserInfo> list = Container.Instance.Resolve<UserInfoService>().GetAll();
-            //// 当前页号超过总页数，则显示最后一页
-            //int lastPageIndex = (int)Math.Ceiling((double)list.Count / pageSize);
-            //pageIndex = pageIndex <= lastPageIndex ? pageIndex : lastPageIndex;
+            IList<ICriterion> queryConditions = new List<ICriterion>();
 
-            //// 使用 Skip 还顺便解决了 若 pageIndex <= 0 的错误情况
-            //var data = (from m in list
-            //            orderby m.ID descending
-            //            select m).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-            //UserInfoListViewModel model = new UserInfoListViewModel
-            //{
-            //    UserInfos = data.ToList(),
-            //    PageInfo = new PageInfo
-            //    {
-            //        PageIndex = pageIndex,
-            //        PageSize = pageSize,
-            //        TotalRecordCount = list.Count,
-            //        MaxLinkCount = 10
-            //    }
-            //}; 
-            #endregion
-            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-            stopwatch.Start();
-            ListViewModel<UserInfo> model = new ListViewModel<UserInfo>(pageIndex: pageIndex, pageSize: pageSize);
+            ListViewModel<UserInfo> model = new ListViewModel<UserInfo>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
-            stopwatch.Stop();
-            TimeSpan timeSpan = stopwatch.Elapsed;// 1s
 
             return View(model);
         }
@@ -126,14 +102,7 @@ namespace WebUI.Areas.Admin.Controllers
                     // 查找 已经绑定此邮箱的 (非本正编辑) 的用户
                     if (!string.IsNullOrEmpty(model.InputEmail))
                     {
-                        UserInfo use = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
-                    {
-                        Expression.And(
-                            Expression.Eq("Email", model.InputEmail.Trim()),
-                            Expression.Not(Expression.Eq("ID", model.ID))
-                        )
-                    }).FirstOrDefault();
-                        if (use != null)
+                        if (IsExistEmail(model.InputEmail, model.ID))
                         {
                             return Json(new { code = -3, message = "邮箱已经被其他用户绑定，请绑定其他邮箱" });
                         }
@@ -246,11 +215,11 @@ namespace WebUI.Areas.Admin.Controllers
         #region Helpers
 
         #region 检查邮箱是否已(被其它用户)绑定
-        public bool IsExistEmail(string email, string userId = null)
+        public bool IsExistEmail(string email, int userId = 0)
         {
             bool isExist = false;
             IList<ICriterion> criteria = null;
-            if (userId == null)
+            if (userId == 0)
             {
                 criteria = new List<ICriterion>
                 {

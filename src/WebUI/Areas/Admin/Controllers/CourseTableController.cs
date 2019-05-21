@@ -29,30 +29,11 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
         #region 列表
-        public ActionResult Index(CurrentAccountModel currentAccount, int pageIndex = 1, int pageSize = 6)
+        public ActionResult Index(int pageIndex = 1, int pageSize = 6)
         {
-            #region 废弃
-            //IList<CourseTable> list = Container.Instance.Resolve<CourseTableService>().GetAll();
-            //// 当前页号超过总页数，则显示最后一页
-            //int lastPageIndex = (int)Math.Ceiling((double)list.Count / pageSize);
-            //pageIndex = pageIndex <= lastPageIndex ? pageIndex : lastPageIndex;
+            IList<ICriterion> queryConditions = new List<ICriterion>();
 
-            //var data = (from m in list
-            //            orderby m.ID descending
-            //            select m).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-            //CourseTableListViewModel model = new CourseTableListViewModel
-            //{
-            //    CourseTables = data.ToList(),
-            //    PageInfo = new PageInfo
-            //    {
-            //        PageIndex = pageIndex,
-            //        PageSize = pageSize,
-            //        TotalRecordCount = list.Count,
-            //        MaxLinkCount = 10
-            //    }
-            //}; 
-            #endregion
-            ListViewModel<CourseTable> model = new ListViewModel<CourseTable>(pageIndex: pageIndex, pageSize: pageSize);
+            ListViewModel<CourseTable> model = new ListViewModel<CourseTable>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
 
             return View(model);

@@ -4,17 +4,10 @@
 @model ListViewModel<UserInfo>
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
-
-	ViewBag.Title = "用户列表 - 后台管理";
 }
 @section head {
-	@*<!-- DataTables -->
-		<link href="~/dist/AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />*@
 }
 @section body {
-	@*<!-- DataTables -->
-		<script src="~/dist/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-		<script src="~/dist/AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>*@
 	<script>
 		// start 删除
 		function deleteOp(id) {

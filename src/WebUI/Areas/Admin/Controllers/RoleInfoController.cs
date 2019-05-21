@@ -6,6 +6,7 @@ using Framework.Infrastructure.Abstract;
 using Framework.Infrastructure.Concrete;
 using Framework.Models;
 using Framework.Mvc;
+using NHibernate.Criterion;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -33,32 +34,11 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
         #region 首页-列表
-        public ViewResult Index(CurrentAccountModel currentAccount, int pageIndex = 1, int pageSize = 6)
+        public ViewResult Index(int pageIndex = 1, int pageSize = 6)
         {
-            #region 废弃
-            //IList<RoleInfo> list = Container.Instance.Resolve<RoleInfoService>().GetAll();
-            //// 当前页号超过总页数，则显示最后一页
-            //int lastPageIndex = (int)Math.Ceiling((double)list.Count / pageSize);
-            //pageIndex = pageIndex <= lastPageIndex ? pageIndex : lastPageIndex;
+            IList<ICriterion> queryConditions = new List<ICriterion>();
 
-            //// 使用 Skip 还顺便解决了 若 pageIndex <= 0 的错误情况
-            //var data = (from m in list
-            //            orderby m.ID descending
-            //            select m).Skip((pageIndex - 1) * pageSize).Take(pageSize);
-            //RoleInfoListViewModel model = new RoleInfoListViewModel
-            //{
-            //    RoleInfos = data.ToList(),
-            //    PageInfo = new PageInfo
-            //    {
-            //        PageIndex = pageIndex,
-            //        PageSize = pageSize,
-            //        TotalRecordCount = list.Count,
-            //        MaxLinkCount = 10
-            //    }
-            //}; 
-            #endregion
-
-            ListViewModel<RoleInfo> model = new ListViewModel<RoleInfo>(pageIndex: pageIndex, pageSize: pageSize);
+            ListViewModel<RoleInfo> model = new ListViewModel<RoleInfo>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
 
             return View(model);

@@ -32,9 +32,11 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
         #region 列表
-        public ActionResult Index(CurrentAccountModel currentAccount, int pageIndex = 1, int pageSize = 6)
+        public ActionResult Index(int pageIndex = 1, int pageSize = 6)
         {
-            ListViewModel<ClazzInfo> model = new ListViewModel<ClazzInfo>(pageIndex: pageIndex, pageSize: pageSize);
+            IList<ICriterion> queryConditions = new List<ICriterion>();
+
+            ListViewModel<ClazzInfo> model = new ListViewModel<ClazzInfo>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
 
             return View(model);
