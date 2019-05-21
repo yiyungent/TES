@@ -15,7 +15,7 @@ namespace Domain
         /// <summary>
         /// 展示名(不唯一，可改，不可作为登录使用)
         /// </summary>
-        [Display(Name = "用户名")]
+        [Display(Name = "展示名")]
         [Property(Length = 30, NotNull = true)]
         public string Name { get; set; }
 

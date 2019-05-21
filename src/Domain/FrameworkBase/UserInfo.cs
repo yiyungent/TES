@@ -11,7 +11,7 @@ namespace Domain
         /// <summary>
         /// 用户名(唯一，一经创建不可改，可作为登录使用)
         /// </summary>
-        [Display(Name = "账号")]
+        [Display(Name = "用户名")]
         [Property(Length = 30, NotNull = true, Unique = true)]
         [Required(ErrorMessage = "请输入账号")]
         public string UserName { get; set; }

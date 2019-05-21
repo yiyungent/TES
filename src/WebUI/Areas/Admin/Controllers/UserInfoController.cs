@@ -126,14 +126,14 @@ namespace WebUI.Areas.Admin.Controllers
                     // 查找 已经绑定此邮箱的 (非本正编辑) 的用户
                     if (!string.IsNullOrEmpty(model.InputEmail))
                     {
-                        UserInfo useNeedEmailUser = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+                        UserInfo use = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
                     {
                         Expression.And(
                             Expression.Eq("Email", model.InputEmail.Trim()),
                             Expression.Not(Expression.Eq("ID", model.ID))
                         )
                     }).FirstOrDefault();
-                        if (useNeedEmailUser != null)
+                        if (use != null)
                         {
                             return Json(new { code = -3, message = "邮箱已经被其他用户绑定，请绑定其他邮箱" });
                         }
@@ -241,6 +241,42 @@ namespace WebUI.Areas.Admin.Controllers
                 return Json(new { code = -2, message = "添加失败" });
             }
         }
+        #endregion
+
+        #region Helpers
+
+        #region 检查邮箱是否已(被其它用户)绑定
+        public bool IsExistEmail(string email, string userId = null)
+        {
+            bool isExist = false;
+            IList<ICriterion> criteria = null;
+            if (userId == null)
+            {
+                criteria = new List<ICriterion>
+                {
+                    Expression.Eq("Email", email)
+                };
+            }
+            else
+            {
+                criteria = new List<ICriterion>
+                {
+                     Expression.And(
+                        Expression.Eq("Email", email),
+                        Expression.Not(Expression.Eq("ID", userId))
+                     )
+                };
+            }
+            UserInfo exist = Container.Instance.Resolve<UserInfoService>().Query(criteria).FirstOrDefault();
+            if (exist != null)
+            {
+                isExist = true;
+            }
+
+            return isExist;
+        }
+        #endregion
+
         #endregion
 
     }
