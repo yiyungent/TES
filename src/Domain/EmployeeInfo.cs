@@ -46,14 +46,6 @@ namespace Domain
 
         #region Relationship
 
-        /// <summary>
-        /// 绑定用户账号
-        /// <para>在创建学生时，同时创建其绑定用户</para>
-        /// </summary>
-        [Display(Name = "绑定用户账号")]
-        [HasMany(ColumnKey = "EmployeeId")]
-        public IList<UserInfo> UserInfoList { get; set; }
-
         [Display(Name = "所在部门")]
         [BelongsTo(Column = "DeptId")]
         public Department Department { get; set; }
@@ -61,6 +53,11 @@ namespace Domain
         [Display(Name = "课程表列表")]
         [HasMany(ColumnKey = "TeacherId", Cascade = ManyRelationCascadeEnum.All)]
         public IList<CourseTable> CourseTableList { get; set; }
+
+        /// <summary>
+        /// 绑定用户-用户名
+        /// </summary>
+        public string UserName { get; set; }
 
         #endregion
     }

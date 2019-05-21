@@ -563,13 +563,13 @@ namespace WebUI.Controllers
                     {
                         Name = name,
                         StudentCode = studentCode,
-                        UserInfoList = new List<UserInfo>
-                        {
-                             Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
-                            {
-                                Expression.Eq("UserName", studentCode)
-                            }).FirstOrDefault()
-                        },
+                        //UserInfoList = new List<UserInfo>
+                        //{
+                        //     Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+                        //    {
+                        //        Expression.Eq("UserName", studentCode)
+                        //    }).FirstOrDefault()
+                        //},
                         ClazzInfo = (from m in allClazz where m.ClazzCode == "17001" + randomNum.ToString("00") select m).FirstOrDefault()
                     });
                 }
@@ -611,13 +611,13 @@ namespace WebUI.Controllers
                     {
                         Name = name,
                         EmployeeCode = employeeCode,
-                        UserInfoList = new List<UserInfo>
-                        {
-                             Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
-                            {
-                                Expression.Eq("UserName", employeeCode)
-                            }).FirstOrDefault()
-                        },
+                        //UserInfoList = new List<UserInfo>
+                        //{
+                        //     Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+                        //    {
+                        //        Expression.Eq("UserName", employeeCode)
+                        //    }).FirstOrDefault()
+                        //},
                         CourseTableList = new List<CourseTable>
                         {
 

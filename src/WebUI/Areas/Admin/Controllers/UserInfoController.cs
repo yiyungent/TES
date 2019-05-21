@@ -110,8 +110,8 @@ namespace WebUI.Areas.Admin.Controllers
                     dbEntry.Email = model.InputEmail?.Trim();
 
                     UserInfo userInfo = (UserInfo)model;
-                    dbEntry.EmployeeInfo = userInfo.EmployeeInfo;
-                    dbEntry.StudentInfo = userInfo.StudentInfo;
+                    //dbEntry.EmployeeInfo = userInfo.EmployeeInfo;
+                    //dbEntry.StudentInfo = userInfo.StudentInfo;
                     dbEntry.RoleInfoList = userInfo.RoleInfoList;
 
                     Container.Instance.Resolve<UserInfoService>().Edit(dbEntry);

@@ -87,8 +87,8 @@ namespace WebUI.Areas.Admin.Models
                 InputAvatar = userInfo.Avatar,
                 InputEmail = userInfo.Email,
                 RoleOptions = roleOptions,
-                InputEmployeeCode = userInfo.EmployeeInfo?.EmployeeCode,
-                InputStudentCode = userInfo.StudentInfo?.StudentCode
+                //InputEmployeeCode = userInfo.EmployeeInfo?.EmployeeCode,
+                //InputStudentCode = userInfo.StudentInfo?.StudentCode
             };
             stopwatch.Stop();
             TimeSpan t2 = stopwatch.Elapsed; // 0s
@@ -131,25 +131,25 @@ namespace WebUI.Areas.Admin.Models
 
             if (!string.IsNullOrEmpty(model.InputStudentCode))
             {
-                rtnModel.StudentInfo = Container.Instance.Resolve<StudentInfoService>().Query(new List<ICriterion>()
-                {
-                    Expression.Eq("StudentCode", model.InputStudentCode)
-                }).FirstOrDefault();
+                //rtnModel.StudentInfo = Container.Instance.Resolve<StudentInfoService>().Query(new List<ICriterion>()
+                //{
+                //    Expression.Eq("StudentCode", model.InputStudentCode)
+                //}).FirstOrDefault();
             }
             else
             {
-                rtnModel.StudentInfo = null;
+                //rtnModel.StudentInfo = null;
             }
             if (!string.IsNullOrEmpty(model.InputEmployeeCode))
             {
-                rtnModel.EmployeeInfo = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>()
-                {
-                    Expression.Eq("EmployeeCode", model.InputEmployeeCode)
-                }).FirstOrDefault();
+                //rtnModel.EmployeeInfo = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>()
+                //{
+                //    Expression.Eq("EmployeeCode", model.InputEmployeeCode)
+                //}).FirstOrDefault();
             }
             else
             {
-                rtnModel.EmployeeInfo = null;
+                //rtnModel.EmployeeInfo = null;
             }
 
 

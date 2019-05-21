@@ -29,18 +29,15 @@ namespace Domain
         #region Relationship
 
         /// <summary>
-        /// 绑定用户账号
-        /// <para>在创建学生时，同时创建其绑定用户</para>
-        /// </summary>
-        [Display(Name = "绑定用户账号")]
-        [HasMany(ColumnKey = "StudentId")]
-        public IList<UserInfo> UserInfoList { get; set; }
-
-        /// <summary>
         /// 若为学生，则为所在班级
         /// </summary>
         [BelongsTo(Column = "ClazzId")]
         public ClazzInfo ClazzInfo { get; set; }
+
+        /// <summary>
+        /// 绑定用户-用户名
+        /// </summary>
+        public string UserName { get; set; }
 
         #endregion
     }
