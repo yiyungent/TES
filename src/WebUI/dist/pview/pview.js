@@ -1,25 +1,36 @@
-﻿function Pview(options) {
+﻿function PView(options) {
 
 	this.init = function () {
 		var that = this;
 		$('[pview-btn]').on('click', function (e) {
+			console.log('init start');
 			// 阻止默认事件
 			e.preventDefault();
-			console.log('init start');
-			var goUrl = $(this).attr('href');
-			var pview = $(this).attr('pview-targets');
-			console.log(pview);
+			var goUrl = '';
+			if (this.hasAttribute('pview-url')) {
+				goUrl = this.getAttribute('pview-url');
+			} else if (this.tagName.toLowerCase() == 'a') {
+				goUrl = this.getAttribute('href');
+			} else {
+				goUrl = window.location.href;
+			}
+
+			var pview = ''
+			if (this.hasAttribute('pview-targets')) {
+				pview = this.getAttribute('pview-targets');
+			}
 
 			that.go(pview, goUrl, 'get', {});
+			console.log('init success');
 		});
 	},
 
 	/**
 	 * 前往此页面
-	 * @param {any} pview 指定要更新的区块 eg: top-nav,main-content
-	 * @param {any} url	eg: www.baidu.com
-	 * @param {any} type eg: get or post
-	 * @param {any} data 要发送的数据
+	 * @param {String} pview 指定要更新的区块 eg: top-nav,main-content
+	 * @param {String} url	eg: www.baidu.com
+	 * @param {String} type eg: get or post
+	 * @param {String | Object} data 要发送的数据
 	 */
 	this.go = function (pview, url, type, data) {
 		$.ajax({
@@ -31,10 +42,14 @@
 			success: function (data) {
 				// 包装数据
 				var $dataObj = $('<code></code>').append($(data));
+				console.log($dataObj);
 
 				// 需要更新的区块
 				var updatePviews = [];
-				var updatePviewNames = pview.split(',');
+				var updatePviewNames = [];
+				if (pview != null && pview.trim() != '') {
+					updatePviewNames = pview.split(',');
+				}
 				for (var i = 0; i < updatePviewNames.length; i++) {
 					updatePviews[i] = $('[pview="' + updatePviewNames[i] + '"]')[0]; // 注意：每个是一个 js对象
 				}
