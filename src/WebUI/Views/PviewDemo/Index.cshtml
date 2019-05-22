@@ -1,0 +1,36 @@
+﻿
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>Index</title>
+</head>
+<body>
+	<div pview="p1">我是p1 @DateTime.Now.ToString()</div>
+	<div pview="p2">我是p2 @DateTime.Now.ToString()</div>
+	<div pview="p3">我是p3 @DateTime.Now.ToString()</div>
+	<div pview="p4">我是p4 @DateTime.Now.ToString()</div>
+	<div pview="p5">我是p5 @DateTime.Now.ToString()</div>
+	<div>
+		<div>哈哈哈哈</div>
+		<div>
+			<a href="?p=1" pview-btn pview-targets="p1">前往P1</a>
+			<a href="?p=2" pview-btn pview-targets="p2">前往P2</a>
+			<a href="?p=3" pview-btn pview-targets="p3">前往P3</a>
+			<a href="?p=4" pview-btn pview-targets="p4">前往P4</a>
+			<a href="?p=5" pview-btn pview-targets="p5">前往P5</a>
+		</div>
+	</div>
+	<script src="~/Scripts/jquery-1.12.0.min.js"></script>
+	<script src="~/dist/pview/pview.js"></script>
+	<script>
+		var pview = new Pview();
+		pview.init();
+	</script>
+</body>
+</html>

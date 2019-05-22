@@ -6645,6 +6645,7 @@
     <Content Include="dist\push.js\browserstack.png" />
     <Content Include="dist\push.js\logo.png" />
     <Content Include="dist\push.js\push.min.js" />
+    <Content Include="dist\pview\pview.js" />
     <Content Include="dist\WebUploader\Uploader.swf" />
     <Content Include="dist\WebUploader\webuploader.css" />
     <Content Include="dist\WebUploader\webuploader.js" />
@@ -7317,6 +7318,7 @@
     <Compile Include="Areas\Admin\Controllers\SysMenuController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserInfoController.cs" />
     <Compile Include="Controllers\NotificationDemoController.cs" />
+    <Compile Include="Controllers\PviewDemoController.cs" />
     <Compile Include="Controllers\WSController.cs" />
     <Compile Include="Extensions\DateTimeExt.cs" />
     <Compile Include="Extensions\DomainExt.cs" />
@@ -7836,6 +7838,7 @@
     <Content Include="Templates\Red\Views\Shared\_TopNav_UserAccountMenuPartial.cshtml" />
     <Content Include="Templates\Red\Views\Home\Index.cshtml" />
     <Content Include="Templates\Red\template.json" />
+    <Content Include="Views\PviewDemo\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
