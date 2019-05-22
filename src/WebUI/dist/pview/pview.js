@@ -23,6 +23,11 @@
 			that.go(pview, goUrl, 'get', {});
 			console.log('init success');
 		});
+
+		window.addEventListener('popstate', function(event) {
+			console.log('location: ' + document.location);
+			console.log(event.state);
+		});
 	},
 
 	/**
@@ -40,6 +45,11 @@
 			data: data,
 			dataType: 'html',
 			success: function (data) {
+				// 改页面 url
+				if (!!(window.history && history.pushState)) {
+					history.pushState(null, '', url);
+				}
+
 				// html字符串转dom对象
 				var dataObj = document.createElement("code");
 				dataObj.innerHTML = data;
