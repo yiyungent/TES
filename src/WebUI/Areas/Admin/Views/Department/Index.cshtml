@@ -1,0 +1,16 @@
+﻿@using WebUI.HtmlHelpers
+@{
+	ViewBag.Title = "Index";
+	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+}
+@section head {
+	<link href="~/dist/layui/css/layui.css" rel="stylesheet" />
+}
+@section body {
+	<script src="~/dist/layui/layui.all.js"></script>
+}
+
+<div>
+	@Html.GenerateCollapseDept()
+</div>
+

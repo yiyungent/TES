@@ -1,6 +1,5 @@
 ﻿@using WebUI.HtmlHelpers
 @{
-    ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
 }
 @section head {
@@ -8,6 +7,28 @@
 }
 @section body {
 	<script src="~/dist/layui/layui.all.js"></script>
+	<script>
+		var layer;
+		layui.use(['layer'], function () {
+            layer = layui.layer;
+        });
+
+		function onEdit(id) {
+			layer.open({
+                type: 2,
+                closeBtn: 1,
+                anim: 4,
+                title: "修改",
+                shade: 0.4,
+                shadeClose: false,
+                area: ['800px', '420px'],
+                content: ['/Admin/SysMenu/Edit?id=' + id, 'yes'],
+                end: function () {
+                    location.href = location.href; // 刷新页面
+                }
+            });
+		}
+	</script>
 }
 <div>
 	@Html.GenerateCollapseMenu()

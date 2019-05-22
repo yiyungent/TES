@@ -34,7 +34,7 @@ namespace WebUI.HtmlHelpers
                 // 折叠菜单项 layui-colla-item
                 sbMenuHtml.Append("<div class=\"layui-colla-item\">");
                 // 此菜单项标题 layui-colla-title
-                sbMenuHtml.AppendFormat("<h2 class=\"layui-colla-title\">{0}<button class='layui-btn layui-btn-sm' onclick='onEdit()'>修改</button></h2>", firstMenuItem.Name);
+                sbMenuHtml.AppendFormat("<h2 class=\"layui-colla-title\"><button class='layui-btn layui-btn-sm' onclick='onEdit({0})'>修改</button>{1}</h2>", firstMenuItem.ID, firstMenuItem.Name);
 
                 // 此菜单项内容:  1. 无子项---<p></p>   2. 有子项---折叠菜单
                 sbMenuHtml.Append("<div class=\"layui-colla-content\">");
@@ -74,7 +74,7 @@ namespace WebUI.HtmlHelpers
             foreach (var menuItem in subMenuList)
             {
                 sbMenuHtml.Append("<div class=\"layui-colla-item\">");
-                sbMenuHtml.AppendFormat("<h2 class=\"layui-colla-title\">{0}<button class='layui-btn layui-btn-sm' onclick='onEdit()'>修改</button></h2>", menuItem.Name);
+                sbMenuHtml.AppendFormat("<h2 class=\"layui-colla-title\"><button class='layui-btn layui-btn-sm' onclick='onEdit({0})'>修改</button>{1}</h2>", menuItem.ID, menuItem.Name);
 
                 sbMenuHtml.Append("<div class=\"layui-colla-content\">");
                 // 注意：如果当前菜单项已经无子项，则为 <p></p>，否则  继续向里递归寻找
