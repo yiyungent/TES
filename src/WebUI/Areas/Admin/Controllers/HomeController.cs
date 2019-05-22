@@ -15,14 +15,20 @@ using WebUI.Areas.Admin.Models;
 
 namespace WebUI.Areas.Admin.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController : Controller
     {
+        private IAuthManager _authManager;
 
         public HomeController()
         {
+            this._authManager = HttpOneRequestFactory.Get<IAuthManager>();
             ViewBag.PageHeader = "TES";
             ViewBag.PageHeaderDescription = "教学评价系统";
             ViewBag.BreadcrumbList = new List<BreadcrumbItem>();
+
+            UserInfo currentUserInfo = AccountManager.GetCurrentUserInfo();
+            ViewBag.CurrentUserInfo = currentUserInfo;
+            ViewBag.MenuList = this._authManager.GetMenuListByUserInfo(currentUserInfo);
         }
 
         #region 后台框架
@@ -41,7 +47,7 @@ namespace WebUI.Areas.Admin.Controllers
 
         public PartialViewResult LeftMenuPartial()
         {
-            ViewBag.AllMenuList = AuthManager.GetMenuListByUserInfo(AccountManager.GetCurrentUserInfo());
+            ViewBag.AllMenuList = this._authManager.GetMenuListByUserInfo(AccountManager.GetCurrentUserInfo());
 
             return PartialView("_LeftMenuPartial");
         }

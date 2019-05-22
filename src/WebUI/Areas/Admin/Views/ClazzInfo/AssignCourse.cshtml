@@ -91,6 +91,7 @@
 		}
 
 		function saveCourseTableList(clazzId) {
+			$("#js-btn-save").html("保存中").attr("disabled", "disabled");
 			var listJson = [];
 			var $trList = $("#js-table tr.js-data-list");
 			for (var i = 0; i < $trList.length; i++) {
@@ -109,6 +110,7 @@
 				dataType: "json",
 				data: { clazzId: clazzId, listJson: listJson },
 				success: function (data) {
+					$("#js-btn-save").html("保存").removeAttr("disabled");
 					$("#js-message").fadeIn();
 					if (data.code <= 0) {
 						$("#js-message").attr("class", "alert alert-danger").find(".message").html(data.message)
@@ -145,6 +147,10 @@
 		}
 
 		function addCourseTable() {
+			if ($("#js-all-course-json").html().trim() == '' || $("#js-all-teacher-json").html().trim() == '') {
+				loadAllCourseAndTeacherJson();
+			}
+
 			var allCourseJson = JSON.parse($("#js-all-course-json").html());
 			var allTeacherJson = JSON.parse($("#js-all-teacher-json").html());
 			var trHtml = '';
@@ -185,8 +191,6 @@
 			var clazzId = @currentClazz.ID;
 			// 初始化该班级已有课表
 			loadCourseTableList(clazzId);
-
-			loadAllCourseAndTeacherJson();
 		});
 
 
@@ -245,7 +249,7 @@
 			}
 			<button class="btn btn-default" onclick="cancel()">取消</button>
 			<button class="btn btn-success" onclick="addCourseTable()">添加</button>
-			<button class="btn btn-primary" onclick="saveCourseTableList(@currentClazz.ID)">保存</button>
+			<button id="js-btn-save" class="btn btn-primary" onclick="saveCourseTableList(@currentClazz.ID, this)">保存</button>
 		</div>
 	</div>
 	<!-- end .box-footer -->

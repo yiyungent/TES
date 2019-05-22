@@ -4,5 +4,6 @@ namespace Service
 {
     public interface EmployeeInfoService : BaseService<EmployeeInfo>
     {
+        bool Exists(string employeeCode);
     }
 }

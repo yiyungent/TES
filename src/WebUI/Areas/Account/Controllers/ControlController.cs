@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace WebUI.Areas.Account.Controllers
 {
-    public class ControlController : BaseController
+    public class ControlController : Controller
     {
 
         #region loadProfileBox

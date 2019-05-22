@@ -455,20 +455,6 @@ namespace WebUI.Controllers
                     RoleInfoList = (from m in allRole where m.ID == 1 select m).ToList(),
                     RegTime = DateTime.Now
                 });
-                //for (int i = 0; i < 200; i++)
-                //{
-                //    string name = "学生" + (i + 1);
-                //    string studentCode = "170010" + i.ToString("000");
-                //    // 创建其绑定用户
-                //    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo()
-                //    {
-                //        Name = name,
-                //        Avatar = "/images/default-avatar.jpg",
-                //        UserName = studentCode,
-                //        Password = EncryptHelper.MD5Encrypt32("12345"),
-                //        RoleInfoList = allRole.Where(m => m.Name == "学生").ToList()
-                //    });
-                //}
 
 
                 ShowMessage("成功");
@@ -563,14 +549,8 @@ namespace WebUI.Controllers
                     {
                         Name = name,
                         StudentCode = studentCode,
-                        //UserInfoList = new List<UserInfo>
-                        //{
-                        //     Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
-                        //    {
-                        //        Expression.Eq("UserName", studentCode)
-                        //    }).FirstOrDefault()
-                        //},
-                        ClazzInfo = (from m in allClazz where m.ClazzCode == "17001" + randomNum.ToString("00") select m).FirstOrDefault()
+                        ClazzInfo = (from m in allClazz where m.ClazzCode == "17001" + randomNum.ToString("00") select m).FirstOrDefault(),
+                        UID = 2 + i
                     });
                 }
 
@@ -611,17 +591,8 @@ namespace WebUI.Controllers
                     {
                         Name = name,
                         EmployeeCode = employeeCode,
-                        //UserInfoList = new List<UserInfo>
-                        //{
-                        //     Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
-                        //    {
-                        //        Expression.Eq("UserName", employeeCode)
-                        //    }).FirstOrDefault()
-                        //},
-                        CourseTableList = new List<CourseTable>
-                        {
-
-                        }
+                        CourseTableList = new List<CourseTable>(),
+                        UID = 102 + i
                     });
                 }
 

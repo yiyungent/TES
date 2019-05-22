@@ -1,4 +1,6 @@
 ﻿using Domain;
+using Framework.Infrastructure.Concrete;
+using Framework.Models;
 using Framework.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,14 +11,16 @@ using WebUI.MessageHubs;
 
 namespace WebUI.Controllers
 {
-    public class NotificationDemoController : BaseController
+    public class NotificationDemoController : Controller
     {
+
         public void Test(string message)
         {
             NotificationManager notificationManager = new NotificationManager();
-            if (!CurrentAccount.IsGuest)
+            CurrentAccountModel currentAccount = AccountManager.GetCurrentAccount();
+            if (!currentAccount.IsGuest)
             {
-                UserInfo currentUser = CurrentAccount.UserInfo;
+                UserInfo currentUser = currentAccount.UserInfo;
                 notificationManager.Push(currentUser.ID, "测试推送", "测试推送内容:" + message);
             }
             else

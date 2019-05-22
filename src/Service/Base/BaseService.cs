@@ -45,17 +45,19 @@ namespace Service.Base
         /// </summary>
         T GetEntity(int id);
 
+        int Count(params ICriterion[] criteria);
+
         //分页区和取对象集合
         IList<T> GetPaged(IList<ICriterion> queryConditions, IList<Order> orderList, int pageIndex, int pageSize, out int count);
 
-             /// <summary>
-             /// 根据查询条件分页获取实体
-             /// </summary>
-             /// <param name="queryConditions">查询条件集合</param>
-             /// <param name="pageIndex">当前页码，从1开始</param>
-             /// <param name="pageSize">页面大小</param>
-             /// <param name="count">返回满足查询条件</param>
-             /// <returns>返回满足查询条件的实体</returns>
+        /// <summary>
+        /// 根据查询条件分页获取实体
+        /// </summary>
+        /// <param name="queryConditions">查询条件集合</param>
+        /// <param name="pageIndex">当前页码，从1开始</param>
+        /// <param name="pageSize">页面大小</param>
+        /// <param name="count">返回满足查询条件</param>
+        /// <returns>返回满足查询条件的实体</returns>
         IList<T> GetPaged(IList<KeyValuePair<string, string>> queryConditions, int pageIndex, int pageSize, out int count);
     }
 }

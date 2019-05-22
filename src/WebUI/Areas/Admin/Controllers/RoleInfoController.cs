@@ -18,12 +18,15 @@ using WebUI.Areas.Admin.Models.Common;
 
 namespace WebUI.Areas.Admin.Controllers
 {
-    public class RoleInfoController : BaseController
+    public class RoleInfoController : Controller
     {
+        private IAuthManager _authManager;
 
         #region Ctor
         public RoleInfoController()
         {
+            this._authManager = HttpOneRequestFactory.Get<IAuthManager>();
+
             ViewBag.PageHeader = "角色管理";
             ViewBag.PageHeaderDescription = "角色管理";
             ViewBag.BreadcrumbList = new List<BreadcrumbItem>
@@ -151,7 +154,7 @@ namespace WebUI.Areas.Admin.Controllers
                     {
                         funcIdList.Add(Convert.ToInt32(idStr));
                     }
-                    bool isSuccess = AuthManager.AssignPower(id, menuIdList, funcIdList);
+                    bool isSuccess = this._authManager.AssignPower(id, menuIdList, funcIdList);
 
                     if (isSuccess)
                     {
@@ -190,12 +193,12 @@ namespace WebUI.Areas.Admin.Controllers
 
             RoleInfo roleInfo = Container.Instance.Resolve<RoleInfoService>().GetEntity(id);
 
-            IList<Sys_Menu> allMenuList = AuthManager.AllMenuList();
-            IList<FunctionInfo> allFuncList = AuthManager.AllFuncList();
+            IList<Sys_Menu> allMenuList = this._authManager.AllMenuList();
+            IList<FunctionInfo> allFuncList = this._authManager.AllFuncList();
             // 排除抽象的特殊操作（只要拥有系统菜单下的任一权限，即会拥有进入管理中心，即拥有此操作权限）
             allFuncList = allFuncList.Where(m => m.Name != "(后台)管理中心(框架)").ToList();
-            IList<Sys_Menu> roleMenuList = AuthManager.GetMenuListByRole(roleInfo);
-            IList<FunctionInfo> roleFuncList = AuthManager.GetFuncListByRole(roleInfo);
+            IList<Sys_Menu> roleMenuList = this._authManager.GetMenuListByRole(roleInfo);
+            IList<FunctionInfo> roleFuncList = this._authManager.GetFuncListByRole(roleInfo);
 
             foreach (Sys_Menu menu in allMenuList)
             {

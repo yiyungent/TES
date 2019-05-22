@@ -75,6 +75,11 @@ namespace Component.Base
             return manager.GetEntity(id);
         }
 
+        public int Count(params ICriterion[] criteria)
+        {
+            return manager.Count(criteria);
+        }
+
         //分页区和取对象集合
         public IList<T> GetPaged(IList<ICriterion> queryConditions, IList<Order> orderList, int pageIndex, int pageSize, out int count)
         {

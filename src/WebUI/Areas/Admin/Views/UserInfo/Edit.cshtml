@@ -103,7 +103,7 @@
 			<div class="form-group">
 				<label>角色</label>
 				<select id="js-roleOptions" class="form-control select2" multiple data-placeholder="选择角色" style="width: 100%;">
-					@foreach (RoleOption option in Model.RoleOptions)
+					@foreach (OptionModel option in Model.RoleOptions)
 					{
 						string selectedStr = option.IsSelected ? "selected" : "";
 						<option value="@option.ID" @selectedStr>@option.Text</option>

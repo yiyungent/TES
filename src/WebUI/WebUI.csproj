@@ -7316,6 +7316,7 @@
     <Compile Include="Controllers\NotificationDemoController.cs" />
     <Compile Include="Controllers\WSController.cs" />
     <Compile Include="Extensions\DateTimeExt.cs" />
+    <Compile Include="Extensions\DomainExt.cs" />
     <Compile Include="Extensions\RequestExt.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

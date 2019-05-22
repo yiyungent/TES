@@ -1,6 +1,7 @@
 ﻿@using Framework.HtmlHelpers
 @using WebUI.Areas.Admin.Models.Common
 @using Domain
+@using WebUI.Extensions
 @model ListViewModel<ClazzInfo>
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
@@ -112,7 +113,7 @@
 				<tr data-tr-id="@item.ID">
 					<td>@item.ID</td>
 					<td>@item.ClazzCode</td>
-					<td>@item.StudentCount</td>
+					<td>@item.StudentCount()</td>
 					<td>@item.CourseTableList.Count</td>
 					<td>
 						<div class="btn-group" role="group" data-pjax>

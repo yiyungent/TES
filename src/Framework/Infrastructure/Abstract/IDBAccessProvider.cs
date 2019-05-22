@@ -35,5 +35,7 @@ namespace Framework.Infrastructure.Abstract
         IList<FunctionInfo> GetFunctionInfoListByIds(params int[] ids);
 
         UserInfo GetUserInfoByUserName(string loginAccount);
+
+        IList<FunctionInfo> GetFunctionListBySys_MenuId(int sys_menuId);
     }
 }

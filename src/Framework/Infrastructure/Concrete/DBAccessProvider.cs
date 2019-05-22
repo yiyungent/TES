@@ -145,5 +145,16 @@ namespace Framework.Infrastructure.Concrete
 
             return rtn;
         }
+
+        public IList<FunctionInfo> GetFunctionListBySys_MenuId(int sys_menuId)
+        {
+            IList<FunctionInfo> rtn = null;
+            rtn = Container.Instance.Resolve<FunctionInfoService>().Query(new List<ICriterion>
+            {
+                Expression.Eq("Sys_Menu.ID", sys_menuId)
+            });
+
+            return rtn;
+        }
     }
 }

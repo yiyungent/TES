@@ -290,7 +290,12 @@ namespace WebUI.Areas.Admin.Controllers
             try
             {
                 // 筛选出当前班级的 所有课程表
-                IList<CourseTable> clazzCourseTableList = Container.Instance.Resolve<CourseTableService>().GetAll().Where(m => m.Clazz.ID == id).ToList();
+                //IList<CourseTable> clazzCourseTableList = Container.Instance.Resolve<CourseTableService>().GetAll().Where(m => m.Clazz.ID == id).ToList();
+                IList<CourseTable> clazzCourseTableList = Container.Instance.Resolve<CourseTableService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Clazz.ID", id)
+                });
+
                 IList<CourseInfo> allCourseList = Container.Instance.Resolve<CourseInfoService>().GetAll();
                 IList<EmployeeInfo> allEmployeeList = Container.Instance.Resolve<EmployeeInfoService>().GetAll();
 

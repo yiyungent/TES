@@ -12,7 +12,7 @@ using WebUI.Areas.Admin.Models;
 
 namespace WebUI.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController : Controller
     {
         #region Ctor
         public HomeController()

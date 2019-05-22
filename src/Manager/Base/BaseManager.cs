@@ -77,6 +77,11 @@ namespace Manager.Base
             return (T)ActiveRecordBase.FindByPrimaryKey(typeof(T), id);
         }
 
+        public new int Count(params ICriterion[] criteria)
+        {
+            return ActiveRecordBase.Count(typeof(T), criteria);
+        }
+
         //分页区和取对象集合
         public IList<T> GetPaged(IList<ICriterion> queryConditions, IList<Order> orderList, int pageIndex, int pageSize, out int count)
         {

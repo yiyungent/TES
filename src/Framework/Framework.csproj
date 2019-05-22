@@ -71,6 +71,7 @@
     <Compile Include="Config\AppConfig.cs" />
     <Compile Include="Config\FrameworkConfig.cs" />
     <Compile Include="Core\FrameworkException.cs" />
+    <Compile Include="Extensions\DomainExt.cs" />
     <Compile Include="Factories\AuthManagerFactory.cs" />
     <Compile Include="Factories\DBAccessProviderFactory.cs" />
     <Compile Include="Factories\HttpOneRequestFactory.cs" />
@@ -85,12 +86,12 @@
     <Compile Include="Infrastructure\Concrete\CommonEqualityComparer.cs" />
     <Compile Include="Infrastructure\Concrete\CurrentAccountModelBinder.cs" />
     <Compile Include="Infrastructure\Concrete\DBAccessProvider.cs" />
+    <Compile Include="Infrastructure\Concrete\DomainExt.cs" />
     <Compile Include="Infrastructure\Concrete\UserInfo_Guest.cs" />
     <Compile Include="Infrastructure\DependencyResolverProvider.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\CurrentAccountModel.cs" />
     <Compile Include="Models\ErrorRedirectViewModel.cs" />
-    <Compile Include="Mvc\BaseController.cs" />
     <Compile Include="Mvc\ViewEngines\GlobalShared\GlobalSharedViewEngine.cs" />
     <Compile Include="Mvc\ViewEngines\Templates\ITemplateContext.cs" />
     <Compile Include="Mvc\ViewEngines\Templates\ITemplateProvider.cs" />
@@ -127,8 +128,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

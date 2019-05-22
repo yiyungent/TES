@@ -1,5 +1,6 @@
 ﻿@using Framework.HtmlHelpers
 @using WebUI.Areas.Admin.Models.Common
+@using WebUI.Extensions
 @using Domain
 @model ListViewModel<UserInfo>
 @{
@@ -105,7 +106,6 @@
 				<th>用户名</th>
 				<th>展示名</th>
 				<th>角色</th>
-				<th>绑定账号</th>
 				<th>操作</th>
 			</tr>
 			@foreach (var cat in Model.List)
@@ -128,23 +128,9 @@
 							}
 							else
 							{
-								<span class="label label-@colors[i%colors.Length]">@cat.RoleInfoList[i].Name</span>
+								<span class="label label-@colors[i % colors.Length]">@cat.RoleInfoList[i].Name</span>
 							}
 						}
-					</td>
-					<td>
-						@*@if (cat.EmployeeInfo != null)
-						{
-							<span class="label label-success">员工: @cat.EmployeeInfo.Name -  @cat.EmployeeInfo.EmployeeCode</span>
-						}
-						else if (cat.StudentInfo != null)
-						{
-							<span class="label label-info">学生: @cat.StudentInfo.Name -  @cat.StudentInfo.StudentCode</span>
-						}
-						else
-						{
-							<span class="label label-default">无</span>
-						}*@
 					</td>
 					<td>
 						<div class="btn-group" role="group" data-pjax>

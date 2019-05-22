@@ -24,13 +24,6 @@ namespace Domain
 
         #region Relationship
 
-        /// <summary>
-        /// 有此课程的班级列表
-        /// </summary>
-        [Display(Name = "有此课程的班级列表")]
-        [HasAndBelongsToMany(Table = "Course_ClazzInfo", ColumnKey = "CourseId", ColumnRef = "ClazzId")]
-        public IList<ClazzInfo> ClazzInfoList { get; set; }
-
         [Display(Name = "课程表列表")]
         [HasMany(ColumnKey = "CourseId", Cascade = ManyRelationCascadeEnum.All)]
         public IList<CourseTable> CourseTableList { get; set; }

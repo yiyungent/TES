@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using WebUI.Extensions;
 
 namespace WebUI.Areas.Admin.Models
 {
@@ -56,30 +57,24 @@ namespace WebUI.Areas.Admin.Models
         [Display(Name = "绑定学生学号")]
         public string InputStudentCode { get; set; }
 
-        public List<RoleOption> RoleOptions { get; set; }
+        public List<OptionModel> RoleOptions { get; set; }
 
         public static explicit operator UserInfoForEditViewModel(UserInfo userInfo)
         {
-            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-            stopwatch.Start();
             IList<RoleInfo> allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
-            stopwatch.Stop();
-            TimeSpan t1 = stopwatch.Elapsed; // 1s
             allRole = allRole.Where(m => m.Name != "游客").ToList();
 
-            stopwatch.Reset();
-            stopwatch.Start();
-            List<RoleOption> roleOptions = new List<RoleOption>();
+            List<OptionModel> roleOptions = new List<OptionModel>();
             foreach (RoleInfo role in allRole)
             {
-                roleOptions.Add(new RoleOption
+                roleOptions.Add(new OptionModel
                 {
                     ID = role.ID,
                     Text = role.Name,
                     IsSelected = userInfo.RoleInfoList.Contains(role, new RoleInfoEqualityComparer())
                 });
             }
-            UserInfoForEditViewModel rtnModel = new UserInfoForEditViewModel
+            UserInfoForEditViewModel rtn = new UserInfoForEditViewModel
             {
                 ID = userInfo.ID,
                 InputUserName = userInfo.UserName,
@@ -87,18 +82,16 @@ namespace WebUI.Areas.Admin.Models
                 InputAvatar = userInfo.Avatar,
                 InputEmail = userInfo.Email,
                 RoleOptions = roleOptions,
-                //InputEmployeeCode = userInfo.EmployeeInfo?.EmployeeCode,
-                //InputStudentCode = userInfo.StudentInfo?.StudentCode
+                InputEmployeeCode = userInfo.GetBindEmployee()?.EmployeeCode ?? "",
+                InputStudentCode = userInfo.GetBindStudent()?.StudentCode ?? ""
             };
-            stopwatch.Stop();
-            TimeSpan t2 = stopwatch.Elapsed; // 0s
 
-            return rtnModel;
+            return rtn;
         }
 
         public static explicit operator UserInfo(UserInfoForEditViewModel model)
         {
-            UserInfo rtnModel = new UserInfo
+            UserInfo rtn = new UserInfo
             {
                 ID = model.ID,
                 UserName = model.InputUserName,
@@ -109,12 +102,12 @@ namespace WebUI.Areas.Admin.Models
             };
             if (!string.IsNullOrEmpty(model.InputPassword))
             {
-                rtnModel.Password = EncryptHelper.MD5Encrypt32(model.InputPassword);
+                rtn.Password = EncryptHelper.MD5Encrypt32(model.InputPassword);
             }
             if (model.RoleOptions != null)
             {
                 IList<int> roleIdList = new List<int>();
-                foreach (RoleOption option in model.RoleOptions)
+                foreach (OptionModel option in model.RoleOptions)
                 {
                     roleIdList.Add(option.ID);
                 }
@@ -122,43 +115,33 @@ namespace WebUI.Areas.Admin.Models
                 {
                     Expression.In("ID", roleIdList.ToArray())
                 });
-                rtnModel.RoleInfoList = selectedRole;
+                rtn.RoleInfoList = selectedRole;
             }
             else
             {
-                rtnModel.RoleInfoList = null;
+                rtn.RoleInfoList = null;
             }
 
             if (!string.IsNullOrEmpty(model.InputStudentCode))
             {
-                //rtnModel.StudentInfo = Container.Instance.Resolve<StudentInfoService>().Query(new List<ICriterion>()
-                //{
-                //    Expression.Eq("StudentCode", model.InputStudentCode)
-                //}).FirstOrDefault();
+                // 为此学生绑定上此用户
+                rtn.BindStudent(model.InputStudentCode);
             }
             else
             {
-                //rtnModel.StudentInfo = null;
+                rtn.UnBindStudent();
             }
             if (!string.IsNullOrEmpty(model.InputEmployeeCode))
             {
-                //rtnModel.EmployeeInfo = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>()
-                //{
-                //    Expression.Eq("EmployeeCode", model.InputEmployeeCode)
-                //}).FirstOrDefault();
+                // 为此员工绑定上此用户
+                rtn.BindEmployee(model.InputEmployeeCode);
             }
             else
             {
-                //rtnModel.EmployeeInfo = null;
+                rtn.UnBindEmployee();
             }
 
-
-            return rtnModel;
+            return rtn;
         }
-    }
-
-    public class RoleOption : OptionModel
-    {
-
     }
 }

@@ -16,7 +16,7 @@ using WebUI.Areas.Admin.Models;
 
 namespace WebUI.Areas.Account.Controllers
 {
-    public class ProfileController : BaseController
+    public class ProfileController : Controller
     {
         #region Ctor
         public ProfileController()

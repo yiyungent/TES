@@ -44,6 +44,12 @@ namespace Domain
         [Property(NotNull = false)]
         public int Sex { get; set; }
 
+        /// <summary>
+        /// 绑定用户-用户ID
+        /// </summary>
+        [Property]
+        public int? UID { get; set; }
+
         #region Relationship
 
         [Display(Name = "所在部门")]
@@ -53,11 +59,6 @@ namespace Domain
         [Display(Name = "课程表列表")]
         [HasMany(ColumnKey = "TeacherId", Cascade = ManyRelationCascadeEnum.All)]
         public IList<CourseTable> CourseTableList { get; set; }
-
-        /// <summary>
-        /// 绑定用户-用户名
-        /// </summary>
-        public string UserName { get; set; }
 
         #endregion
     }

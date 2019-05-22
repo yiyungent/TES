@@ -21,13 +21,13 @@ namespace Domain
 
         #region Relationship
 
-        /// <summary>
-        /// 学生列表
-        ///     一对多关系
-        /// </summary>
-        [Display(Name = "学生列表")]
-        [HasMany(ColumnKey = "ClazzId")]
-        public IList<StudentInfo> StudentList { get; set; }
+        ///// <summary>
+        ///// 学生列表
+        /////     一对多关系
+        ///// </summary>
+        //[Display(Name = "学生列表")]
+        //[HasMany(ColumnKey = "ClazzId")]
+        //public IList<StudentInfo> StudentList { get; set; }
 
         [Display(Name = "课程表列表")]
         [HasMany(ColumnKey = "ClazzId", Cascade = ManyRelationCascadeEnum.All)]
@@ -37,17 +37,17 @@ namespace Domain
 
         #region Helper
 
-        /// <summary>
-        /// 改班学生人数
-        /// </summary>
-        [Display(Name = "学生人数")]
-        public int StudentCount
-        {
-            get
-            {
-                return StudentList.Count;
-            }
-        }
+        ///// <summary>
+        ///// 改班学生人数
+        ///// </summary>
+        //[Display(Name = "学生人数")]
+        //public int StudentCount
+        //{
+        //    get
+        //    {
+        //        return StudentList.Count;
+        //    }
+        //}
 
         #endregion
     }
