@@ -2,10 +2,16 @@
 
 	this.init = function () {
 		var that = this;
-		$('[pview-btn], [pview-btn-group] a').on('click', function (e) {
+		$('[pview-btn], [pview-btn-group] [pview-btn], [pview-btn-group] a').on('click', function (event) {
 			console.log('init start');
 			// 阻止默认事件
-			e.preventDefault();
+			event = event || window.event;
+			if (event.preventDefault) {
+				event.preventDefault();
+			} else {
+				event.returnValue = false;
+			}
+
 			var goUrl = '';
 			if (this.hasAttribute('pview-url')) {
 				goUrl = this.getAttribute('pview-url');
@@ -14,13 +20,14 @@
 			} else {
 				goUrl = window.location.href;
 			}
+			console.log('goUrl', goUrl);
 
 			var pview = '';
 			if (this.hasAttribute('pview-targets')) {
 				pview = this.getAttribute('pview-targets');
-			} else if(this.parentNode.hasAttribute('pview-targets')) {
+			} else if (this.parentNode.hasAttribute('pview-targets')) {
 				pview = this.parentNode.getAttribute('pview-targets');
-			} else if(this.parentNode.parentNode.hasAttribute('pview-targets')) {
+			} else if (this.parentNode.parentNode.hasAttribute('pview-targets')) {
 				pview = this.parentNode.parentNode.getAttribute('pview-targets');
 			}
 
@@ -28,26 +35,28 @@
 			console.log('init success');
 		});
 
-		window.addEventListener('popstate', function(event) {
+		window.addEventListener('popstate', function (event) {
 			console.log('location: ' + document.location);
 			console.log(event.state);
 		});
 	},
 
 	/**
-	 * 前往此页面
-	 * @param {String} pview 指定要更新的区块 eg: top-nav,main-content
-	 * @param {String} url	eg: www.baidu.com
-	 * @param {String} type eg: get or post
-	 * @param {String | Object} data 要发送的数据
-	 */
+		* 前往此页面
+		* @param {String} pview 指定要更新的区块 eg: top-nav,main-content
+		* @param {String} url	eg: www.baidu.com
+		* @param {String} type eg: get or post
+		* @param {String | Object} data 要发送的数据
+		*/
 	this.go = function (pview, url, type, data) {
+		var that = this;
 		$.ajax({
 			url: url,
 			type: type,
 			headers: { "pview": pview },
 			data: data,
 			dataType: 'html',
+			timeout: 2000,
 			success: function (data) {
 				// 改页面 url
 				if (!!(window.history && history.pushState)) {
@@ -88,6 +97,8 @@
 						console.log('----update success-----');
 					}
 				}
+				// 重新绑定 btn, 防止 btn 位于更新的区块，而引起的未绑定点击事件
+				that.init();
 			}
 		});
 	}
