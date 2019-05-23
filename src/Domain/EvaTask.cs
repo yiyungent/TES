@@ -17,6 +17,13 @@ namespace Domain
         [Property(Length = 30, NotNull = true)]
         public string Name { get; set; }
 
+        /// <summary>
+        /// 任务号
+        /// </summary>
+        [Display(Name = "任务号")]
+        [Property(Length = 30, NotNull = true)]
+        public string EvaTaskCode { get; set; }
+
         ///<summary>
         /// 开始时间
         /// </summary>
@@ -38,7 +45,7 @@ namespace Domain
         ///      1：评价结束
         /// </summary>
         [Display(Name = "状态")]
-        [Property( NotNull = true)]
+        [Property(NotNull = true)]
         public int Status { get; set; }
     }
 }
