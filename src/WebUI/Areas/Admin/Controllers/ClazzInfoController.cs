@@ -35,11 +35,33 @@ namespace WebUI.Areas.Admin.Controllers
         public ActionResult Index(int pageIndex = 1, int pageSize = 6)
         {
             IList<ICriterion> queryConditions = new List<ICriterion>();
+            Query(queryConditions);
 
             ListViewModel<ClazzInfo> model = new ListViewModel<ClazzInfo>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
 
             return View(model);
+        }
+
+        private void Query(IList<ICriterion> queryConditions)
+        {
+            // 输入的查询关键词
+            string query = Request["q"]?.Trim() ?? "";
+            // 查询类型
+            string queryType = Request["type"]?.Trim() ?? "";
+            switch (queryType.ToLower())
+            {
+                case "clazzcode":
+                    queryConditions.Add(Expression.Like("ClazzCode", query, MatchMode.Anywhere));
+                    break;
+                case "id":
+                    queryConditions.Add(Expression.Eq("ID", int.Parse(query)));
+                    break;
+                default:
+                    queryConditions.Add(Expression.Like("ClazzCode", query, MatchMode.Anywhere));
+                    break;
+            }
+            ViewBag.Query = query;
         }
         #endregion
 

@@ -9,6 +9,7 @@
 @section head {
 }
 @section body {
+	<script src="~/dist/pview/pview.js"></script>
 	<script>
 		// start 删除
 		function deleteOp(id) {
@@ -45,8 +46,25 @@
 		}
 		// end 删除
 
-		$(function () {
+		function search() {
+			var query = $('#js-search-input').val();
+			var queryType = 'clazzCode';
+			window.location.href = window.location.origin + window.location.pathname + '?q=' + query + '&type=' + queryType;
+		}
 
+		var pview;
+		$(function () {
+			pview = new PView();
+			pview.init();
+
+			$('#js-search-input').on('keypress', function (event) {
+				if (event.keyCode == "13") {
+					search();
+				}
+			});
+			$('#js-search-btn').on('click', function () {
+				search();
+			});
 		});
 	</script>
 }
@@ -88,10 +106,10 @@
 
 		<div class="box-tools">
 			<div class="input-group input-group-sm" style="width: 150px;">
-				<input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+				<input id="js-search-input" type="text" name="table_search" class="form-control pull-right" placeholder="班级代号" value="@ViewBag.Query">
 
 				<div class="input-group-btn">
-					<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+					<button id="js-search-btn" type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
 				</div>
 			</div>
 		</div>
@@ -100,7 +118,7 @@
 	<!-- start .box-body -->
 	<!-- start 简单表格 -->
 	<div class="box-body table-responsive no-padding">
-		<table id="js-table" class="table table-hover">
+		<table id="js-table" class="table table-hover" pview="table">
 			<tr>
 				<th>ID</th>
 				<th>班级代号</th>
@@ -147,9 +165,9 @@
 			<a class="btn btn-primary" href="@Url.Action("Create")">添加班级</a>
 		</div>
 		<!-- start 分页 -->
-		<div id="js-page" data-pjax>
-			<ul class="pagination pull-right">
-				@Html.PageLinks(Model.PageInfo, i => Url.Action("Index", new { pageIndex = i }))
+		<div id="js-page" data-pjax pview="pages">
+			<ul class="pagination pull-right" pview-btn-group pview-targets="table,pages">
+				@Html.PageLinks(Model.PageInfo, i => Url.Action("Index", new { pageIndex = i, q = Request["q"], type = Request["type"] }))
 			</ul>
 		</div>
 		<!-- end 分页 -->

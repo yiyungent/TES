@@ -7304,6 +7304,7 @@
     <Compile Include="Areas\Admin\Models\Clazz\ClazzInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\Clazz\CourseTableTr.cs" />
     <Compile Include="Areas\Admin\Models\Common\ListViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\Common\QueryType.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseTableForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />

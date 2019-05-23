@@ -38,11 +38,42 @@ namespace WebUI.Areas.Admin.Controllers
         public ViewResult Index(int pageIndex = 1, int pageSize = 6)
         {
             IList<ICriterion> queryConditions = new List<ICriterion>();
+            Query(queryConditions);
 
             ListViewModel<UserInfo> model = new ListViewModel<UserInfo>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
 
             return View(model);
+        }
+
+        private void Query(IList<ICriterion> queryConditions)
+        {
+            // 输入的查询关键词
+            string query = Request["q"]?.Trim() ?? "";
+            // 查询类型
+            QueryType queryType = new QueryType();
+            queryType.Val = Request["type"]?.Trim() ?? "username";
+            switch (queryType.Val.ToLower())
+            {
+                case "username":
+                    queryType.Text = "用户名";
+                    queryConditions.Add(Expression.Like("UserName", query, MatchMode.Anywhere));
+                    break;
+                case "name":
+                    queryType.Text = "展示名";
+                    queryConditions.Add(Expression.Like("Name", query, MatchMode.Anywhere));
+                    break;
+                case "id":
+                    queryType.Text = "ID";
+                    queryConditions.Add(Expression.Eq("ID", int.Parse(query)));
+                    break;
+                default:
+                    queryType.Text = "用户名";
+                    queryConditions.Add(Expression.Like("UserName", query, MatchMode.Anywhere));
+                    break;
+            }
+            ViewBag.Query = query;
+            ViewBag.QueryType = queryType;
         }
         #endregion
 

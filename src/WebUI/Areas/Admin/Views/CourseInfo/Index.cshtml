@@ -8,6 +8,7 @@
 @section head {
 }
 @section body {
+	<script src="~/dist/pview/pview.js"></script>
 	<script>
 		// start 删除
 		function deleteOp(id) {
@@ -43,9 +44,10 @@
 			});
 		}
 		// end 删除
-
+		var pview;
 		$(function () {
-
+			pview = new PView();
+			pview.init();
 		});
 	</script>
 }
@@ -99,7 +101,7 @@
 	<!-- start .box-body -->
 	<!-- start 简单表格 -->
 	<div class="box-body table-responsive no-padding">
-		<table id="js-table" class="table table-hover">
+		<table id="js-table" class="table table-hover" pview="table">
 			<tr>
 				<th>ID</th>
 				<th>课程名</th>
@@ -138,8 +140,8 @@
 			<a class="btn btn-primary" href="@Url.Action("Create")">添加课程</a>
 		</div>
 		<!-- start 分页 -->
-		<div id="js-page" data-pjax>
-			<ul class="pagination pull-right">
+		<div id="js-page" data-pjax pview="pages">
+			<ul class="pagination pull-right" pview-btn-group pview-targets="table,pages">
 				@Html.PageLinks(Model.PageInfo, i => Url.Action("Index", new { pageIndex = i }))
 			</ul>
 		</div>
