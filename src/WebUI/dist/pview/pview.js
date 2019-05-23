@@ -2,7 +2,7 @@
 
 	this.init = function () {
 		var that = this;
-		$('[pview-btn]').on('click', function (e) {
+		$('[pview-btn], [pview-btn-group] a').on('click', function (e) {
 			console.log('init start');
 			// 阻止默认事件
 			e.preventDefault();
@@ -15,9 +15,13 @@
 				goUrl = window.location.href;
 			}
 
-			var pview = ''
+			var pview = '';
 			if (this.hasAttribute('pview-targets')) {
 				pview = this.getAttribute('pview-targets');
+			} else if(this.parentNode.hasAttribute('pview-targets')) {
+				pview = this.parentNode.getAttribute('pview-targets');
+			} else if(this.parentNode.parentNode.hasAttribute('pview-targets')) {
+				pview = this.parentNode.parentNode.getAttribute('pview-targets');
 			}
 
 			that.go(pview, goUrl, 'get', {});
