@@ -83,5 +83,14 @@ namespace WebUI.Areas.Admin.Controllers
             }
         }
         #endregion
+
+        #region 查看
+        public ViewResult Detail(int id)
+        {
+            NormType model = Container.Instance.Resolve<NormTypeService>().GetEntity(id);
+
+            return View(model);
+        }
+        #endregion
     }
 }

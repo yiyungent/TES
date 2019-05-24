@@ -7256,6 +7256,7 @@
     <Content Include="Areas\Admin\Views\Department\Index.cshtml" />
     <Content Include="Areas\Admin\Views\SysMenu\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\NormType\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\NormType\Detail.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
