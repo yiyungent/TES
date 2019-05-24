@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models;
 using WebUI.Areas.Admin.Models.Common;
+using WebUI.Areas.Admin.Models.NormTypeM;
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -90,6 +91,57 @@ namespace WebUI.Areas.Admin.Controllers
             NormType model = Container.Instance.Resolve<NormTypeService>().GetEntity(id);
 
             return View(model);
+        }
+        #endregion
+
+        #region 编辑
+        [HttpGet]
+        public ViewResult Edit(int id)
+        {
+            NormType dbModel = Container.Instance.Resolve<NormTypeService>().GetEntity(id);
+            NormTypeForEditViewModel viewModel = (NormTypeForEditViewModel)dbModel;
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public JsonResult Edit(NormTypeForEditViewModel inputModel)
+        {
+            try
+            {
+                // 数据格式效验
+                if (ModelState.IsValid)
+                {
+                    #region 数据有效效验
+                    // 查找 已经有此代码的 (非本正编辑) 的
+                    if (Container.Instance.Resolve<NormTypeService>().Exists(inputModel.InputNormTypeCode, inputModel.ID))
+                    {
+                        return Json(new { code = -3, message = "代码已经存在, 请更换" });
+                    }
+                    #endregion
+
+                    #region 输入模型 -> 数据库模型
+                    NormType dbModel = Container.Instance.Resolve<NormTypeService>().GetEntity(inputModel.ID);
+                    dbModel.Name = inputModel.InputName?.Trim();
+                    dbModel.Color = inputModel.InputColor?.Trim();
+                    dbModel.SortCode = inputModel.InputSortCode;
+                    dbModel.Weight = inputModel.InputWeight;
+                    dbModel.NormTypeCode = inputModel.InputNormTypeCode;
+                    #endregion
+
+                    Container.Instance.Resolve<NormTypeService>().Edit(dbModel);
+
+                    return Json(new { code = 1, message = "保存成功" });
+                }
+                else
+                {
+                    return Json(new { code = -1, message = "不合理的输入" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -2, message = "保存失败" });
+            }
         }
         #endregion
     }
