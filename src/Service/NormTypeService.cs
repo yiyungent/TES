@@ -5,6 +5,6 @@ namespace Service
 {
     public interface NormTypeService : BaseService<NormType>
     {
-        bool Exists(string normTypeCode, int exceptId = 0);
+        bool Exist(string normTypeCode, int exceptId = 0);
     }
 }

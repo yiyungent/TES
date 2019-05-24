@@ -55,7 +55,17 @@ namespace WebUI.Areas.Admin.Controllers
                     break;
                 case "id":
                     queryType.Text = "ID";
-                    queryConditions.Add(Expression.Eq("ID", int.Parse(query)));
+                    if (!string.IsNullOrEmpty(query))
+                    {
+                        if (int.TryParse(query, out int id))
+                        {
+                            queryConditions.Add(Expression.Eq("ID", id));
+                        }
+                        else
+                        {
+                            queryConditions.Add(Expression.Eq("ID", 0));
+                        }
+                    }
                     break;
                 case "normtypecode":
                     queryType.Text = "评价类型代码";
@@ -115,7 +125,7 @@ namespace WebUI.Areas.Admin.Controllers
                 {
                     #region 数据有效效验
                     // 查找 已经有此代码的 (非本正编辑) 的
-                    if (Container.Instance.Resolve<NormTypeService>().Exists(inputModel.InputNormTypeCode, inputModel.ID))
+                    if (Container.Instance.Resolve<NormTypeService>().Exist(inputModel.InputNormTypeCode, inputModel.ID))
                     {
                         return Json(new { code = -3, message = "代码已经存在, 请更换" });
                     }
@@ -161,7 +171,7 @@ namespace WebUI.Areas.Admin.Controllers
                 {
                     #region 数据有效效验
                     // 查找 已经有此代码的
-                    if (Container.Instance.Resolve<NormTypeService>().Exists(inputModel.InputNormTypeCode))
+                    if (Container.Instance.Resolve<NormTypeService>().Exist(inputModel.InputNormTypeCode))
                     {
                         return Json(new { code = -3, message = "代码已经存在, 请更换" });
                     }

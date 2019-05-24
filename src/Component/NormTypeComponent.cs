@@ -7,9 +7,9 @@ namespace Component
 {
     public class NormTypeComponent : BaseComponent<NormType, NormTypeManager>, NormTypeService
     {
-        public bool Exists(string normTypeCode, int exceptId = 0)
+        public bool Exist(string normTypeCode, int exceptId = 0)
         {
-            return manager.Exists(normTypeCode: normTypeCode, exceptId: exceptId);
+            return manager.Exist(normTypeCode: normTypeCode, exceptId: exceptId);
         }
     }
 }

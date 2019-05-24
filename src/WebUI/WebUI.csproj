@@ -6646,6 +6646,7 @@
     <Content Include="dist\push.js\logo.png" />
     <Content Include="dist\push.js\push.min.js" />
     <Content Include="dist\pview\pview.js" />
+    <Content Include="dist\tagHelper\tagHelper.js" />
     <Content Include="dist\WebUploader\Uploader.swf" />
     <Content Include="dist\WebUploader\webuploader.css" />
     <Content Include="dist\WebUploader\webuploader.js" />
@@ -7261,6 +7262,7 @@
     <Content Include="Areas\Admin\Views\NormType\Create.cshtml" />
     <Content Include="Areas\Admin\Views\EvaTask\Index.cshtml" />
     <Content Include="Areas\Admin\Views\EvaTask\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\EvaTask\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
@@ -7315,6 +7317,7 @@
     <Compile Include="Areas\Admin\Models\Common\QueryType.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseTableForEditViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\EvaTaskVM\EvaTaskForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\NormTypeVM\NormTypeForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEditViewModel.cs" />
@@ -7860,7 +7863,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Account\Views\Control\" />
-    <Folder Include="Areas\Admin\Models\EvaTaskVM\" />
     <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="Areas\Admin\Views\Dashboard\" />
     <Folder Include="GlobalShared\Models\" />

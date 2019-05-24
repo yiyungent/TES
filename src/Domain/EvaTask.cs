@@ -40,9 +40,9 @@ namespace Domain
 
         ///<summary>
         /// 状态
-        ///      0：待开启
-        ///      1：正在评价
-        ///      2：评价结束
+        ///      1：待开启
+        ///      2：正在评价
+        ///      3：评价结束
         /// </summary>
         [Display(Name = "状态")]
         [Property(NotNull = true)]

@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models;
 using WebUI.Areas.Admin.Models.Common;
+using WebUI.Areas.Admin.Models.EvaTaskVM;
+using WebUI.Extensions;
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -53,7 +55,17 @@ namespace WebUI.Areas.Admin.Controllers
                     break;
                 case "id":
                     queryType.Text = "ID";
-                    queryConditions.Add(Expression.Eq("ID", int.Parse(query)));
+                    if (!string.IsNullOrEmpty(query))
+                    {
+                        if (int.TryParse(query, out int id))
+                        {
+                            queryConditions.Add(Expression.Eq("ID", id));
+                        }
+                        else
+                        {
+                            queryConditions.Add(Expression.Eq("ID", 0));
+                        }
+                    }
                     break;
                 case "evataskcode":
                     queryType.Text = "任务号";
@@ -90,6 +102,52 @@ namespace WebUI.Areas.Admin.Controllers
             EvaTask viewModel = Container.Instance.Resolve<EvaTaskService>().GetEntity(id);
 
             return View(viewModel);
+        }
+        #endregion
+
+        #region 编辑
+        [HttpGet]
+        public ViewResult Edit(int id)
+        {
+            EvaTask dbModel = Container.Instance.Resolve<EvaTaskService>().GetEntity(id);
+            EvaTaskForEditViewModel viewModel = (EvaTaskForEditViewModel)dbModel;
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public JsonResult Edit(EvaTaskForEditViewModel inputModel)
+        {
+            try
+            {
+                // 数据格式效验
+                if (ModelState.IsValid)
+                {
+                    #region 数据有效效验
+                    if (Container.Instance.Resolve<EvaTaskService>().Exist(inputModel.InputEvaTaskCode.Trim(), inputModel.ID))
+                    {
+                        return Json(new { code = -1, message = "此任务号已被其它任务使用，请更换" });
+                    }
+                    #endregion
+
+                    #region 输入模型 -> 数据库模型
+                    EvaTask dbModel = (EvaTask)inputModel;
+                    #endregion
+
+                    Container.Instance.Resolve<EvaTaskService>().Edit(dbModel);
+
+                    return Json(new { code = 1, message = "保存成功" });
+                }
+                else
+                {
+                    string errorMessage = ModelState.GetErrorMessage();
+                    return Json(new { code = -1, message = "不合理的输入:" + errorMessage });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -2, message = "保存失败" });
+            }
         }
         #endregion
 

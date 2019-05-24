@@ -6,7 +6,7 @@ namespace Manager
 {
     public class NormTypeManager : BaseManager<NormType>
     {
-        public bool Exists(string normTypeCode, int exceptId = 0)
+        public bool Exist(string normTypeCode, int exceptId = 0)
         {
             bool isExist = Count(Expression.And(
                                 Expression.Eq("NormTypeCode", normTypeCode),
