@@ -242,8 +242,8 @@ namespace WebUI.Controllers
 
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
-                    Name = "评价指标",
-                    ControllerName = "EvaluationIndex",
+                    Name = "评价类型",
+                    ControllerName = "NormType",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
@@ -252,7 +252,7 @@ namespace WebUI.Controllers
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
                     Name = "评价选项",
-                    ControllerName = "EvaluationOperation",
+                    ControllerName = "NormOptions",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
@@ -261,7 +261,7 @@ namespace WebUI.Controllers
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
                     Name = "评价任务",
-                    ControllerName = "EvaluationTask",
+                    ControllerName = "NormTask",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
