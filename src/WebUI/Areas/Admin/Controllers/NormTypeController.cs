@@ -159,7 +159,7 @@ namespace WebUI.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     #region 数据有效效验
-                    // 查找 已经有此代码的 (非本正编辑) 的
+                    // 查找 已经有此代码的
                     if (Container.Instance.Resolve<NormTypeService>().Exists(inputModel.InputNormTypeCode))
                     {
                         return Json(new { code = -3, message = "代码已经存在, 请更换" });
