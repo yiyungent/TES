@@ -42,7 +42,7 @@ namespace Domain
         /// 状态
         ///      0：待开启
         ///      1：正在评价
-        ///      1：评价结束
+        ///      2：评价结束
         /// </summary>
         [Display(Name = "状态")]
         [Property(NotNull = true)]

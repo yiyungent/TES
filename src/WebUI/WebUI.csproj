@@ -7259,6 +7259,7 @@
     <Content Include="Areas\Admin\Views\NormType\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\NormType\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\NormType\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\EvaTask\Index.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
@@ -7860,7 +7861,6 @@
     <Folder Include="Areas\Account\Views\Control\" />
     <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="Areas\Admin\Views\Dashboard\" />
-    <Folder Include="Areas\Admin\Views\EvaTask\" />
     <Folder Include="GlobalShared\Models\" />
     <Folder Include="Models\" />
     <Folder Include="Upload\Templates\" />

@@ -48,11 +48,7 @@ namespace WebUI.Areas.Admin.Models.Common
                     tempAllList = Container.Instance.Resolve<CourseTableService>().GetPaged(queryConditions, orderList, pageIndex, pageSize, out totalCount);
                     break;
                 case "Domain.UserInfo":
-                    System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-                    stopwatch.Start();
                     tempAllList = Container.Instance.Resolve<UserInfoService>().GetPaged(queryConditions, orderList, pageIndex, pageSize, out totalCount);
-                    stopwatch.Stop();
-                    TimeSpan t1 = stopwatch.Elapsed; // 1s
                     break;
                 case "Domain.RoleInfo":
                     tempAllList = Container.Instance.Resolve<RoleInfoService>().GetPaged(queryConditions, orderList, pageIndex, pageSize, out totalCount);
@@ -68,6 +64,9 @@ namespace WebUI.Areas.Admin.Models.Common
                     break;
                 case "Domain.NormType":
                     tempAllList = Container.Instance.Resolve<NormTypeService>().GetPaged(queryConditions, orderList, pageIndex, pageSize, out totalCount);
+                    break;
+                case "Domain.EvaTask":
+                    tempAllList = Container.Instance.Resolve<EvaTaskService>().GetPaged(queryConditions, orderList, pageIndex, pageSize, out totalCount);
                     break;
             }
             IList<dynamic> allList = tempAllList;
