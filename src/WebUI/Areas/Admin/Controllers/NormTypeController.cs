@@ -121,12 +121,7 @@ namespace WebUI.Areas.Admin.Controllers
                     #endregion
 
                     #region 输入模型 -> 数据库模型
-                    NormType dbModel = Container.Instance.Resolve<NormTypeService>().GetEntity(inputModel.ID);
-                    dbModel.Name = inputModel.InputName?.Trim();
-                    dbModel.Color = inputModel.InputColor?.Trim();
-                    dbModel.SortCode = inputModel.InputSortCode;
-                    dbModel.Weight = inputModel.InputWeight;
-                    dbModel.NormTypeCode = inputModel.InputNormTypeCode;
+                    NormType dbModel = (NormType)(inputModel);
                     #endregion
 
                     Container.Instance.Resolve<NormTypeService>().Edit(dbModel);
@@ -135,7 +130,8 @@ namespace WebUI.Areas.Admin.Controllers
                 }
                 else
                 {
-                    return Json(new { code = -1, message = "不合理的输入" });
+                    string errorMessage = GetModelStateErrorMessages();
+                    return Json(new { code = -1, message = "不合理的输入:" + errorMessage });
                 }
             }
             catch (Exception ex)
@@ -143,6 +139,71 @@ namespace WebUI.Areas.Admin.Controllers
                 return Json(new { code = -2, message = "保存失败" });
             }
         }
+        #endregion
+
+        #region 新增
+        [HttpGet]
+        public ViewResult Create()
+        {
+            NormTypeForEditViewModel viewModel = new NormTypeForEditViewModel();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public JsonResult Create(NormTypeForEditViewModel inputModel)
+        {
+            try
+            {
+                // 数据格式效验
+                if (ModelState.IsValid)
+                {
+                    #region 数据有效效验
+                    // 查找 已经有此代码的 (非本正编辑) 的
+                    if (Container.Instance.Resolve<NormTypeService>().Exists(inputModel.InputNormTypeCode))
+                    {
+                        return Json(new { code = -3, message = "代码已经存在, 请更换" });
+                    }
+                    #endregion
+
+                    #region 输入模型 -> 数据库模型
+                    NormType dbModel = (NormType)inputModel;
+                    #endregion
+
+                    Container.Instance.Resolve<NormTypeService>().Create(dbModel);
+
+                    return Json(new { code = 1, message = "添加成功" });
+                }
+                else
+                {
+                    string errorMessage = GetModelStateErrorMessages();
+                    return Json(new { code = -1, message = "不合理的输入:" + errorMessage });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -2, message = "添加失败" });
+            }
+        }
+
+
+        #endregion
+
+        #region Helpers
+
+        #region 获取模型格式错误
+        private string GetModelStateErrorMessages()
+        {
+            string errorMessage = string.Empty;
+            foreach (ModelState item in ModelState.Values)
+            {
+                errorMessage += item.Errors.FirstOrDefault().ErrorMessage;
+            }
+
+            return errorMessage;
+        }
+        #endregion 
+
         #endregion
     }
 }

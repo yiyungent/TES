@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Core;
 using Domain;
+using Service;
 
 namespace WebUI.Areas.Admin.Models.NormTypeM
 {
@@ -49,11 +51,12 @@ namespace WebUI.Areas.Admin.Models.NormTypeM
         [Required]
         public string InputNormTypeCode { get; set; }
 
+        #region 数据库模型->输入\视图模型
         public static explicit operator NormTypeForEditViewModel(NormType dbModel)
         {
-            NormTypeForEditViewModel rtn = null;
+            NormTypeForEditViewModel viewModel = null;
 
-            rtn = new NormTypeForEditViewModel
+            viewModel = new NormTypeForEditViewModel
             {
                 ID = dbModel.ID,
                 InputColor = dbModel.Color,
@@ -63,7 +66,32 @@ namespace WebUI.Areas.Admin.Models.NormTypeM
                 InputWeight = dbModel.Weight
             };
 
-            return rtn;
+            return viewModel;
         }
+        #endregion
+
+        #region 输入模型->数据库模型
+        public static explicit operator NormType(NormTypeForEditViewModel inputModel)
+        {
+            NormType dbModel = null;
+            if (inputModel.ID == 0)
+            {
+                // 创建
+                dbModel = new NormType();
+            }
+            else
+            {
+                // 修改
+                dbModel = Container.Instance.Resolve<NormTypeService>().GetEntity(inputModel.ID);
+            }
+            dbModel.Name = inputModel.InputName?.Trim();
+            dbModel.Color = inputModel.InputColor?.Trim();
+            dbModel.SortCode = inputModel.InputSortCode;
+            dbModel.Weight = inputModel.InputWeight;
+            dbModel.NormTypeCode = inputModel.InputNormTypeCode;
+
+            return dbModel;
+        }
+        #endregion
     }
 }
