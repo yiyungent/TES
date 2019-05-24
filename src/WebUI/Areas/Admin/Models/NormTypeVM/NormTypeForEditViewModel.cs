@@ -11,6 +11,8 @@ namespace WebUI.Areas.Admin.Models.NormTypeVM
 {
     public class NormTypeForEditViewModel
     {
+        #region Properties
+
         /// <summary>
         /// ID
         /// </summary>
@@ -50,6 +52,10 @@ namespace WebUI.Areas.Admin.Models.NormTypeVM
         [Display(Name = "评价类型代码")]
         [Required]
         public string InputNormTypeCode { get; set; }
+
+        #endregion
+
+        #region Methods
 
         #region 数据库模型->输入\视图模型
         public static explicit operator NormTypeForEditViewModel(NormType dbModel)
@@ -92,6 +98,8 @@ namespace WebUI.Areas.Admin.Models.NormTypeVM
 
             return dbModel;
         }
+        #endregion 
+
         #endregion
     }
 }

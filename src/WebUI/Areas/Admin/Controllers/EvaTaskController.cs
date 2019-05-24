@@ -34,10 +34,10 @@ namespace WebUI.Areas.Admin.Controllers
             IList<ICriterion> queryConditions = new List<ICriterion>();
             Query(queryConditions);
 
-            ListViewModel<EvaTask> model = new ListViewModel<EvaTask>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
+            ListViewModel<EvaTask> viewModel = new ListViewModel<EvaTask>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
 
-            return View(model);
+            return View(viewModel);
         }
 
         private void Query(IList<ICriterion> queryConditions)
@@ -72,6 +72,7 @@ namespace WebUI.Areas.Admin.Controllers
                     queryConditions.Add(Expression.Like("EvaTaskCode", query, MatchMode.Anywhere));
                     break;
                 default:
+                    queryType.Text = "任务名称";
                     queryConditions.Add(Expression.Like("Name", query, MatchMode.Anywhere));
                     break;
             }
@@ -91,7 +92,7 @@ namespace WebUI.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { code = 1, message = "删除失败" });
+                return Json(new { code = -1, message = "删除失败" });
             }
         }
         #endregion
@@ -147,6 +148,52 @@ namespace WebUI.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 return Json(new { code = -2, message = "保存失败" });
+            }
+        }
+        #endregion
+
+        #region 新增
+        [HttpGet]
+        public ViewResult Create()
+        {
+            EvaTaskForEditViewModel viewModel = new EvaTaskForEditViewModel();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public JsonResult Create(EvaTaskForEditViewModel inputModel)
+        {
+            try
+            {
+                // 数据格式效验
+                if (ModelState.IsValid)
+                {
+                    #region 数据有效效验
+                    // 查找 已经有此代码的
+                    if (Container.Instance.Resolve<EvaTaskService>().Exist(inputModel.InputEvaTaskCode))
+                    {
+                        return Json(new { code = -3, message = "代码已经存在, 请更换" });
+                    }
+                    #endregion
+
+                    #region 输入模型 -> 数据库模型
+                    EvaTask dbModel = (EvaTask)inputModel;
+                    #endregion
+
+                    Container.Instance.Resolve<EvaTaskService>().Create(dbModel);
+
+                    return Json(new { code = 1, message = "添加成功" });
+                }
+                else
+                {
+                    string errorMessage = ModelState.GetErrorMessage();
+                    return Json(new { code = -1, message = "不合理的输入:" + errorMessage });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -2, message = "添加失败" });
             }
         }
         #endregion

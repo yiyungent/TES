@@ -7263,6 +7263,7 @@
     <Content Include="Areas\Admin\Views\EvaTask\Index.cshtml" />
     <Content Include="Areas\Admin\Views\EvaTask\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\EvaTask\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\EvaTask\Create.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />

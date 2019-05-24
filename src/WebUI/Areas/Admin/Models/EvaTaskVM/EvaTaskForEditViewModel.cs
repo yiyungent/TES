@@ -12,6 +12,8 @@ namespace WebUI.Areas.Admin.Models.EvaTaskVM
 {
     public class EvaTaskForEditViewModel
     {
+        #region Properties
+
         [Display(Name = "编号")]
         public int ID { get; set; }
 
@@ -52,7 +54,19 @@ namespace WebUI.Areas.Admin.Models.EvaTaskVM
         /// <summary>
         /// 仅作接收, 被选中的状态
         /// </summary>
-        public int SelectedStatusVal { get; set; }
+        public int SelectedValForStatus { get; set; }
+
+        #endregion
+
+        #region Ctor
+        public EvaTaskForEditViewModel()
+        {
+            this.SelectListForStatus = InitSelectListForStatus(0);
+            this.SelectedValForStatus = 0;
+        }
+        #endregion
+
+        #region Methods
 
         #region 数据库模型->视图模型
         public static explicit operator EvaTaskForEditViewModel(EvaTask dbModel)
@@ -73,7 +87,7 @@ namespace WebUI.Areas.Admin.Models.EvaTaskVM
                 // 无论是否有For的版本，都注意第一个生成id,name值的参数，
                 // 如果m模型中有相同名属性，则会与它相关联，可能导致无法仅根据 第二个参数 生成正确的选中项
                 // 解决BUG， 为此属性同样赋值上应该选中的项的值
-                SelectedStatusVal = dbModel.Status
+                SelectedValForStatus = dbModel.Status
             };
 
             return viewModel;
@@ -98,12 +112,11 @@ namespace WebUI.Areas.Admin.Models.EvaTaskVM
             dbModel.StartDate = inputModel.InputStartDate;
             dbModel.EndDate = inputModel.InputEndDate;
             dbModel.EvaTaskCode = inputModel.InputEvaTaskCode?.Trim();
-            dbModel.Status = inputModel.SelectedStatusVal;
+            dbModel.Status = inputModel.SelectedValForStatus;
 
             return dbModel;
         }
         #endregion
-
 
         #region 初始化选项列表-状态
         /// <summary>
@@ -136,6 +149,8 @@ namespace WebUI.Areas.Admin.Models.EvaTaskVM
 
             return ret;
         }
+        #endregion 
+
         #endregion
     }
 }
