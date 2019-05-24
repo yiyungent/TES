@@ -84,6 +84,14 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 查看
+        public ViewResult Detail(int id)
+        {
+            EvaTask viewModel = Container.Instance.Resolve<EvaTaskService>().GetEntity(id);
+
+            return View(viewModel);
+        }
+        #endregion
 
     }
 }
