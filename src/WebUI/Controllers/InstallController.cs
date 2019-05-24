@@ -20,6 +20,14 @@ namespace WebUI.Controllers
         }
         #endregion
 
+        #region 输出消息
+        private void ShowMessage(string message)
+        {
+            Response.Write(message + "<br>");
+            Response.Flush();
+        }
+        #endregion
+
         #region 开始安装
         public ViewResult StartInstall()
         {
@@ -44,7 +52,7 @@ namespace WebUI.Controllers
             InitCourseTable();
             InitNormType();
             InitNormTarget();
-            InitOptions();
+            //InitOptions();
             InitEvaTask();
         }
         #endregion
@@ -1412,19 +1420,19 @@ namespace WebUI.Controllers
                 }
                 #endregion
                 #region 辅导、作业
-                normTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(64);
-                contents = new string[] { "每周有辅导", "辅导较经常", "辅导较少", "不辅导" };
-                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
-                for (int i = 0; i < contents.Length; i++)
-                {
-                    Container.Instance.Resolve<OptionsService>().Create(new Options
-                    {
-                        Content = contents[i],
-                        Score = scores[i],
-                        SortCode = 10 * (i + 1),
-                        NormTarget = normTarget
-                    });
-                }
+                //normTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(64);
+                //contents = new string[] { "每周有辅导", "辅导较经常", "辅导较少", "不辅导" };
+                //scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                //for (int i = 0; i < contents.Length; i++)
+                //{
+                //    Container.Instance.Resolve<OptionsService>().Create(new Options
+                //    {
+                //        Content = contents[i],
+                //        Score = scores[i],
+                //        SortCode = 10 * (i + 1),
+                //        NormTarget = normTarget
+                //    });
+                //}
                 #endregion
                 #region 教学秩序的掌握
                 normTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(65);
@@ -1728,7 +1736,7 @@ namespace WebUI.Controllers
         {
             try
             {
-                Response.Write("开始初始化评价任务");
+                ShowMessage("开始初始化评价任务");
                 string time = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-01")).AddMonths(1).ToShortDateString();
                 for (int i = 1; i <= 5; i++)
                 {
@@ -1745,17 +1753,10 @@ namespace WebUI.Controllers
             }
             catch (Exception)
             {
-                Response.Write("失败");
+                ShowMessage("失败");
             }
         }
         #endregion
 
-        #region 输出消息
-        private void ShowMessage(string message)
-        {
-            Response.Write(message + "<br>");
-            Response.Flush();
-        }
-        #endregion
     }
 }
