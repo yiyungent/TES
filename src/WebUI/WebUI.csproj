@@ -72,6 +72,10 @@
     <Reference Include="EntityFramework">
       <HintPath>..\..\libs\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\Framework.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\libs\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -108,6 +112,10 @@
     </Reference>
     <Reference Include="NHibernate.Search">
       <HintPath>..\..\libs\NHibernate.Search.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>..\..\libs\NPOI.dll</HintPath>
@@ -7875,10 +7883,6 @@
     <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{a533e3d6-d54f-4141-ac04-6171dff64e26}</Project>
       <Name>Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Framework\Framework.csproj">
-      <Project>{133de7b4-457d-46b4-94ed-3ca0379644ae}</Project>
-      <Name>Framework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Service\Service.csproj">
       <Project>{f6e2082c-eb59-4fe6-85bb-ca618b85314e}</Project>

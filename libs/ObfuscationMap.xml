@@ -1,0 +1,543 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AgileDotNet Version="6.4.0.31" Time="5/24/2019 8:45:45">
+  <Module N="Framework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Type N="&lt;Module&gt;" />
+    <Type N="&lt;&gt;f__AnonymousType0`3">
+      <Method N="Void .ctor(!0 code, !1 message, !2 returnUrl)" />
+      <Method N="Boolean Equals(Object value)" />
+      <Method N="Int32 GetHashCode()" />
+      <Method N="String ToString()" />
+    </Type>
+    <Type N="&lt;&gt;f__AnonymousType1`2">
+      <Method N="Void .ctor(!0 area, !1 returnUrl)" />
+      <Method N="Boolean Equals(Object value)" />
+      <Method N="Int32 GetHashCode()" />
+      <Method N="String ToString()" />
+    </Type>
+    <Type N="&lt;&gt;f__AnonymousType2`1">
+      <Method N="Void .ctor(!0 area)" />
+      <Method N="Boolean Equals(Object value)" />
+      <Method N="Int32 GetHashCode()" />
+      <Method N="String ToString()" />
+    </Type>
+    <Type N="Framework.RequestResult.CommonResult">
+      <Method N="Void .ctor()" />
+      <Field N="&lt;Code&gt;k__BackingField" ON="oRM=" />
+      <Field N="&lt;Message&gt;k__BackingField" ON="ohM=" />
+    </Type>
+    <Type N="Framework.RequestResult.LoginTimeOutResultProvider">
+      <Method N="System.Web.Mvc.ActionResult Get(Boolean isAjax, String returnUrl)" />
+      <Method N="System.Web.Mvc.ActionResult Get(System.Web.HttpRequestBase requestBase)" />
+      <Method N="System.Web.Mvc.ActionResult Get()" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.RequestResult.Redirect_LoginTimeOutResult">
+      <Method N="Void .ctor(String returnUrl)" />
+      <Method N="Void ExecuteResult(System.Web.Mvc.ControllerContext context)" />
+      <Field N="&lt;ReturnUrl&gt;k__BackingField" ON="oxM=" />
+      <Field N="&lt;RouteValues&gt;k__BackingField" ON="pBM=" />
+    </Type>
+    <Type N="Framework.RequestResult.Ajax_LoginTimeOutResult">
+      <Method N="Void .ctor(String returnUrl)" />
+      <Field N="&lt;ReturnUrl&gt;k__BackingField" ON="oxM=" />
+    </Type>
+    <Type N="Framework.RequestResult.NeedLoginResultProvider">
+      <Method N="System.Web.Mvc.ActionResult Get(Boolean isAjax, String returnUrl)" />
+      <Method N="System.Web.Mvc.ActionResult Get(System.Web.HttpRequestBase requestBase)" />
+      <Method N="System.Web.Mvc.ActionResult Get()" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.RequestResult.Redirect_NeedLoginResult">
+      <Method N="Void .ctor(String returnUrl)" />
+      <Method N="Void ExecuteResult(System.Web.Mvc.ControllerContext context)" />
+      <Field N="&lt;ReturnUrl&gt;k__BackingField" ON="oxM=" />
+      <Field N="&lt;RouteValues&gt;k__BackingField" ON="pBM=" />
+    </Type>
+    <Type N="Framework.RequestResult.View_NeedLoginResult">
+      <Method N="Void .ctor(String returnUrl)" />
+      <Field N="&lt;ReturnUrl&gt;k__BackingField" ON="oxM=" />
+    </Type>
+    <Type N="Framework.RequestResult.Ajax_NeedLoginResult">
+      <Method N="Void .ctor(String returnUrl)" />
+      <Field N="&lt;ReturnUrl&gt;k__BackingField" ON="oxM=" />
+    </Type>
+    <Type N="Framework.RequestResult.View_NotExistAccountResult">
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.RequestResult.WithoutAuthResultProvider">
+      <Method N="System.Web.Mvc.ActionResult Get(Boolean isAjax, String returnUrl)" />
+      <Method N="System.Web.Mvc.ActionResult Get(System.Web.HttpRequestBase requestBase)" />
+      <Method N="System.Web.Mvc.ActionResult Get()" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.RequestResult.Redirect_WithoutAuthResult">
+      <Method N="Void .ctor(String returnUrl)" />
+      <Method N="Void ExecuteResult(System.Web.Mvc.ControllerContext context)" />
+      <Field N="&lt;ReturnUrl&gt;k__BackingField" ON="oxM=" />
+      <Field N="&lt;RouteValues&gt;k__BackingField" ON="pBM=" />
+    </Type>
+    <Type N="Framework.RequestResult.Ajax_WithoutAuthResult">
+      <Method N="Void .ctor(String returnUrl)" />
+      <Field N="&lt;ReturnUrl&gt;k__BackingField" ON="oxM=" />
+    </Type>
+    <Type N="Framework.Mvc.WebViewPages.Auth.WebViewPage`1">
+      <Method N="String Auth(String authKey)" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Mvc.WebViewPages.Auth.WebViewPage">
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.ITemplateContext" />
+    <Type N="Framework.Mvc.ViewEngines.Templates.ITemplateProvider">
+      <Method N="Framework.Mvc.ViewEngines.Templates.TemplateConfiguration GetTemplateConfiguration(String templateName)" />
+      <Method N="System.Collections.Generic.IList&lt;Framework.Mvc.ViewEngines.Templates.TemplateConfiguration&gt; GetTemplateConfigurations()" />
+      <Method N="Boolean TemplateConfigurationExists(String templateName)" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.TemplateBuildManagerViewEngine">
+      <Method N="Boolean FileExists(System.Web.Mvc.ControllerContext controllerContext, String virtualPath)" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.TemplateConfiguration">
+      <Method N="Void .ctor(String templateName, String path, String jsonStr)" />
+      <Field N="&lt;Path&gt;k__BackingField" ON="pRM=" />
+      <Field N="&lt;PreviewImageUrl&gt;k__BackingField" ON="phM=" />
+      <Field N="&lt;Description&gt;k__BackingField" ON="pxM=" />
+      <Field N="&lt;Authors&gt;k__BackingField" ON="qBM=" />
+      <Field N="&lt;TemplateName&gt;k__BackingField" ON="qRM=" />
+      <Field N="&lt;TemplateTitle&gt;k__BackingField" ON="qhM=" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.TemplateContext">
+      <Method N="Void .ctor(Framework.Mvc.ViewEngines.Templates.ITemplateProvider templateProvider)" />
+      <Field N="_templateProvider" ON="qxM=" />
+      <Field N="_templateIsCached" ON="rBM=" />
+      <Field N="_cachedTemplateName" ON="rRM=" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.TemplateProvider">
+      <Method N="Void .ctor(Framework.Common.IWebHelper webHelper)" />
+      <Method N="Framework.Mvc.ViewEngines.Templates.TemplateConfiguration GetTemplateConfiguration(String templateName)" />
+      <Method N="System.Collections.Generic.IList&lt;Framework.Mvc.ViewEngines.Templates.TemplateConfiguration&gt; GetTemplateConfigurations()" />
+      <Method N="Boolean TemplateConfigurationExists(String templateName)" />
+      <Method N="Void LoadConfigurations()" ON="sBM=" />
+      <Method N="Framework.Mvc.ViewEngines.Templates.TemplateConfiguration CreateTemplateConfiguration(String templatePath)" ON="sRM=" />
+      <Field N="_templateConfigurations" ON="rhM=" />
+      <Field N="_basePath" ON="rxM=" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.TemplateViewEngine">
+      <Method N="Void .ctor()" />
+      <Method N="System.Web.Mvc.IView CreatePartialView(System.Web.Mvc.ControllerContext controllerContext, String partialPath)" />
+      <Method N="System.Web.Mvc.IView CreateView(System.Web.Mvc.ControllerContext controllerContext, String viewPath, String masterPath)" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.TemplateVirtualPathProviderViewEngine">
+      <Method N="Void .ctor()" />
+      <Method N="String GetPath(System.Web.Mvc.ControllerContext controllerContext, String[] locations, String[] areaLocations, String locationsPropertyName, String name, String controllerName, String cacheKeyPrefix, Boolean useCache, String[]&amp; searchedLocations)" />
+      <Method N="Boolean FilePathIsSupported(String virtualPath)" />
+      <Method N="String GetPathFromSpecificName(System.Web.Mvc.ControllerContext controllerContext, String name, String cacheKey, String[]&amp; searchedLocations)" />
+      <Method N="String GetPathFromGeneralName(System.Web.Mvc.ControllerContext controllerContext, System.Collections.Generic.List&lt;Framework.Mvc.ViewEngines.Templates.TemplateVirtualPathProviderViewEngine+TemplateViewLocation&gt; locations, String name, String controllerName, String areaName, String templateName, String cacheKey, String[]&amp; searchedLocations)" />
+      <Method N="String CreateCacheKey(String prefix, String name, String controllerName, String areaName, String templateName)" />
+      <Method N="String GetAreaName(System.Web.Routing.RouteData routeData)" />
+      <Method N="String GetAreaName(System.Web.Routing.RouteBase route)" />
+      <Method N="System.Collections.Generic.List&lt;Framework.Mvc.ViewEngines.Templates.TemplateVirtualPathProviderViewEngine+TemplateViewLocation&gt; GetViewLocations(String[] viewLocationFormats, String[] areaViewLocationFormats)" />
+      <Method N="Boolean IsSpecificPath(String name)" />
+      <Method N="String GetCurrentTemplate(System.Web.Mvc.ControllerContext controllerContext)" />
+      <Method N="System.Web.Mvc.ViewEngineResult FindView(System.Web.Mvc.ControllerContext controllerContext, String viewName, String masterName, Boolean useCache)" />
+      <Method N="System.Web.Mvc.ViewEngineResult FindPartialView(System.Web.Mvc.ControllerContext controllerContext, String partialViewName, Boolean useCache)" />
+      <Field N="GetExtensionThunk" ON="shM=" />
+      <Field N="_emptyLocations" ON="sxM=" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.WebViewPage`1">
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.WebViewPage">
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.GlobalShared.GlobalSharedViewEngine">
+      <Method N="Void .ctor()" />
+      <Method N="Void .ctor(System.Web.Mvc.IViewPageActivator viewPageActivator)" />
+    </Type>
+    <Type N="Framework.Models.CurrentAccountModel">
+      <Method N="Void .ctor()" />
+      <Field N="&lt;UserInfo&gt;k__BackingField" ON="tBM=" />
+      <Field N="&lt;IsGuest&gt;k__BackingField" ON="tRM=" />
+    </Type>
+    <Type N="Framework.Models.ErrorRedirectViewModel">
+      <Method N="Void .ctor()" />
+      <Field N="&lt;Title&gt;k__BackingField" ON="thM=" />
+      <Field N="&lt;Message&gt;k__BackingField" ON="ohM=" />
+      <Field N="&lt;RedirectUrl&gt;k__BackingField" ON="txM=" />
+      <Field N="&lt;RedirectUrlName&gt;k__BackingField" ON="uBM=" />
+      <Field N="&lt;WaitSecond&gt;k__BackingField" ON="uRM=" />
+    </Type>
+    <Type N="Framework.Infrastructure.DependencyResolverProvider">
+      <Method N="!0 Get()" />
+      <Method N="Object Get(System.Type type)" />
+      <Method N="Framework.Infrastructure.NinjectDependencyResolver CreateInstance()" ON="uxM=" />
+      <Method N="Void .ctor()" />
+      <Field N="_instance" ON="uhM=" />
+    </Type>
+    <Type N="Framework.Infrastructure.NinjectDependencyResolver">
+      <Method N="Void .ctor(Ninject.IKernel kernel)" />
+      <Method N="Object GetService(System.Type serviceType)" />
+      <Method N="System.Collections.Generic.IEnumerable&lt;Object&gt; GetServices(System.Type serviceType)" />
+      <Method N="Void AddBindings()" ON="vRM=" />
+      <Field N="_kernel" ON="vBM=" />
+    </Type>
+    <Type N="Framework.Infrastructure.Concrete.LoginStatus" />
+    <Type N="Framework.Infrastructure.Concrete.AccountManager">
+      <Method N="Domain.UserInfo GetCurrentUserInfo()" />
+      <Method N="Framework.Models.CurrentAccountModel GetCurrentAccount()" />
+      <Method N="Domain.UserInfo GetUserInfoByUserName(String userName)" />
+      <Method N="Framework.Infrastructure.Concrete.LoginStatus CheckLoginStatus()" />
+      <Method N="Void UpdateSessionAccount()" />
+      <Method N="Void Exit()" />
+      <Method N="Void .ctor()" />
+      <Method N="Void .cctor()" />
+      <Field N="_loginAccountSessionKey" ON="vhM=" />
+      <Field N="_rememberMeTokenCookieKey" ON="vxM=" />
+      <Field N="_rememberMeDayCount" ON="wBM=" />
+      <Field N="_dBAccessProvider" ON="wRM=" />
+    </Type>
+    <Type N="Framework.Infrastructure.Concrete.AuthManager">
+      <Method N="Void .ctor(Framework.Infrastructure.Abstract.IDBAccessProvider dBAccessProvider)" />
+      <Method N="String GetAuthNameByKey(String authKey)" />
+      <Method N="Boolean HasAuth(Domain.UserInfo userInfo, String authKey)" />
+      <Method N="Boolean HasAuth(String authKey)" />
+      <Method N="Boolean HasAuth(Domain.UserInfo userInfo, String areaName, String controllerName, String actionName)" />
+      <Method N="Boolean HasAuth(Domain.UserInfo userInfo, String controllerName, String actionName)" />
+      <Method N="Boolean HasAuth(String areaName, String controllerName, String actionName)" />
+      <Method N="Boolean HasAuth(String controllerName, String actionName)" />
+      <Method N="String GetAuthKey(String areaName, String controllerName, String actionName)" />
+      <Method N="String GetAuthKey(String controllerName, String actionName)" />
+      <Method N="Boolean NeedAuth(String authKey)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FrameworkBase.Common.AreaCAItem&gt; AllAreaCAItem()" />
+      <Method N="System.Collections.Generic.IList&lt;String&gt; AllAuthKey()" />
+      <Method N="Boolean CanPass(Domain.UserInfo userInfo, String authKey)" />
+      <Method N="Boolean CanPass(String authKey)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.Sys_Menu&gt; GetMenuListByUserInfo(Domain.UserInfo userInfo)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.Sys_Menu&gt; GetMenuListByUserInfo()" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; GetFuncListByUserInfo(Domain.UserInfo userInfo)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; GetFuncListByUserInfo()" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.Sys_Menu&gt; AllMenuList()" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; AllFuncList()" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.Sys_Menu&gt; GetMenuListByRole(Domain.RoleInfo roleInfo)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; GetFuncListByRole(Domain.RoleInfo roleInfo)" />
+      <Method N="Boolean AssignPower(Int32 roleId, System.Collections.Generic.IList&lt;Int32&gt; menuIdList, System.Collections.Generic.IList&lt;Int32&gt; funcIdList)" />
+    </Type>
+    <Type N="Framework.Infrastructure.Concrete.Sys_Menu_Compare">
+      <Method N="Boolean Equals(Domain.Sys_Menu x, Domain.Sys_Menu y)" />
+      <Method N="Int32 GetHashCode(Domain.Sys_Menu obj)" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Infrastructure.Concrete.FunctionInfo_Compare">
+      <Method N="Boolean Equals(Domain.FunctionInfo x, Domain.FunctionInfo y)" />
+      <Method N="Int32 GetHashCode(Domain.FunctionInfo obj)" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Infrastructure.Concrete.AuthKeyCompare">
+      <Method N="Boolean Equals(String x, String y)" />
+      <Method N="Int32 GetHashCode(String obj)" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Infrastructure.Concrete.RoleInfoEqualityComparer">
+      <Method N="Boolean Equals(Domain.RoleInfo x, Domain.RoleInfo y)" />
+      <Method N="Int32 GetHashCode(Domain.RoleInfo obj)" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Infrastructure.Concrete.CurrentAccountModelBinder">
+      <Method N="Object BindModel(System.Web.Mvc.ControllerContext controllerContext, System.Web.Mvc.ModelBindingContext bindingContext)" />
+      <Method N="Void .ctor()" />
+      <Field N="_loginAccountSessionKey" ON="vhM=" />
+      <Field N="_rememberMeTokenCookieKey" ON="vxM=" />
+      <Field N="_rememberMeDayCount" ON="wBM=" />
+      <Field N="_dBAccessProvider" ON="wRM=" />
+    </Type>
+    <Type N="Framework.Infrastructure.Concrete.DBAccessProvider">
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; GetAllFunctionInfo()" />
+      <Method N="Domain.FunctionInfo GetFunctionInfoByAuthKey(String authKey)" />
+      <Method N="Domain.RoleInfo GetGuestRoleInfo()" />
+      <Method N="Domain.UserInfo GetUserInfoById(Int32 id)" />
+      <Method N="Domain.UserInfo GetUserInfoByTokenCookieKey(String tokenCookieValue)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.Sys_Menu&gt; AllMenuList()" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; AllFuncList()" />
+      <Method N="Boolean EditRoleInfo(Domain.RoleInfo roleInfo)" />
+      <Method N="Domain.RoleInfo GetRoleInfoById(Int32 id)" />
+      <Method N="Domain.Sys_Menu GetSys_MenuById(Int32 id)" />
+      <Method N="Domain.FunctionInfo GetFunctionInfoById(Int32 id)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.Sys_Menu&gt; GetSys_MenuListByIds(Int32[] ids)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; GetFunctionInfoListByIds(Int32[] ids)" />
+      <Method N="Domain.UserInfo GetUserInfoByUserName(String userName)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; GetFunctionListBySys_MenuId(Int32 sys_menuId)" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Infrastructure.Concrete.DomainExt" />
+    <Type N="Framework.Infrastructure.Concrete.UserInfo_Guest">
+      <Method N="Void .ctor()" />
+      <Field N="_instance" ON="uhM=" />
+      <Field N="_dBAccessProvider" ON="wRM=" />
+    </Type>
+    <Type N="Framework.Infrastructure.Abstract.IAuthManager">
+      <Method N="Boolean CanPass(Domain.UserInfo userInfo, String authKey)" />
+      <Method N="Boolean CanPass(String authKey)" />
+      <Method N="Boolean HasAuth(Domain.UserInfo userInfo, String authKey)" />
+      <Method N="Boolean HasAuth(Domain.UserInfo userInfo, String areaName, String controllerName, String actionName)" />
+      <Method N="Boolean HasAuth(Domain.UserInfo userInfo, String controllerName, String actionName)" />
+      <Method N="Boolean HasAuth(String authKey)" />
+      <Method N="Boolean HasAuth(String areaName, String controllerName, String actionName)" />
+      <Method N="Boolean HasAuth(String controllerName, String actionName)" />
+      <Method N="String GetAuthNameByKey(String authKey)" />
+      <Method N="String GetAuthKey(String areaName, String controllerName, String actionName)" />
+      <Method N="String GetAuthKey(String controllerName, String actionName)" />
+      <Method N="Boolean NeedAuth(String authKey)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FrameworkBase.Common.AreaCAItem&gt; AllAreaCAItem()" />
+      <Method N="System.Collections.Generic.IList&lt;String&gt; AllAuthKey()" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.Sys_Menu&gt; GetMenuListByUserInfo(Domain.UserInfo userInfo)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.Sys_Menu&gt; GetMenuListByUserInfo()" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; GetFuncListByUserInfo(Domain.UserInfo userInfo)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; GetFuncListByUserInfo()" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.Sys_Menu&gt; AllMenuList()" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; AllFuncList()" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.Sys_Menu&gt; GetMenuListByRole(Domain.RoleInfo roleInfo)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; GetFuncListByRole(Domain.RoleInfo roleInfo)" />
+      <Method N="Boolean AssignPower(Int32 roleId, System.Collections.Generic.IList&lt;Int32&gt; menuIdList, System.Collections.Generic.IList&lt;Int32&gt; funcIdList)" />
+    </Type>
+    <Type N="Framework.Infrastructure.Abstract.ICacheProvider" />
+    <Type N="Framework.Infrastructure.Abstract.IDBAccessProvider">
+      <Method N="Domain.FunctionInfo GetFunctionInfoByAuthKey(String authKey)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; GetAllFunctionInfo()" />
+      <Method N="Domain.RoleInfo GetGuestRoleInfo()" />
+      <Method N="Domain.UserInfo GetUserInfoById(Int32 id)" />
+      <Method N="Domain.UserInfo GetUserInfoByTokenCookieKey(String tokenCookieValue)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.Sys_Menu&gt; AllMenuList()" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; AllFuncList()" />
+      <Method N="Boolean EditRoleInfo(Domain.RoleInfo roleInfo)" />
+      <Method N="Domain.RoleInfo GetRoleInfoById(Int32 id)" />
+      <Method N="Domain.Sys_Menu GetSys_MenuById(Int32 id)" />
+      <Method N="Domain.FunctionInfo GetFunctionInfoById(Int32 id)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.Sys_Menu&gt; GetSys_MenuListByIds(Int32[] ids)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; GetFunctionInfoListByIds(Int32[] ids)" />
+      <Method N="Domain.UserInfo GetUserInfoByUserName(String loginAccount)" />
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; GetFunctionListBySys_MenuId(Int32 sys_menuId)" />
+    </Type>
+    <Type N="Framework.HtmlHelpers.AuthTagHelper">
+      <Method N="Void .cctor()" />
+      <Method N="System.Web.Mvc.MvcHtmlString AuthTag(System.Web.Mvc.HtmlHelper html, String authKey, String tagName, String innerHtml, Object htmlAttributes, System.Web.Mvc.TagRenderMode tagRenderMode)" />
+      <Method N="System.Web.Mvc.MvcHtmlString AuthTag(System.Web.Mvc.HtmlHelper html, String areaName, String controllerName, String actionName, String tagName, String innerHtml, Object htmlAttributes, System.Web.Mvc.TagRenderMode tagRenderMode)" />
+      <Method N="System.Web.Mvc.MvcHtmlString AuthTag(System.Web.Mvc.HtmlHelper html, String controllerName, String actionName, String tagName, String innerHtml, Object htmlAttributes, System.Web.Mvc.TagRenderMode tagRenderMode)" />
+      <Method N="System.Web.Mvc.MvcHtmlString AuthButton(System.Web.Mvc.HtmlHelper html, String authKey, Object htmlAttributes)" />
+      <Method N="System.Web.Mvc.MvcHtmlString AuthDoubleTag(System.Web.Mvc.HtmlHelper html)" />
+      <Method N="System.Web.Mvc.MvcHtmlString AuthSingleTag(System.Web.Mvc.HtmlHelper html)" />
+      <Method N="Boolean HasAuth(System.Web.Mvc.HtmlHelper html, String authKey)" />
+      <Method N="Boolean HasAuth(System.Web.Mvc.HtmlHelper html, String areaName, String controllerName, String actionName)" />
+      <Method N="Boolean HasAuth(System.Web.Mvc.HtmlHelper html, String controllerName, String actionName)" />
+      <Field N="&lt;AuthManager&gt;k__BackingField" ON="whM=" />
+    </Type>
+    <Type N="Framework.HtmlHelpers.PageHelper">
+      <Method N="System.Web.Mvc.MvcHtmlString PageLinks(System.Web.Mvc.HtmlHelper value, Framework.HtmlHelpers.PageInfo pageInfo, System.Func&lt;Int32, String&gt; pageUrl)" />
+    </Type>
+    <Type N="Framework.HtmlHelpers.PageInfo">
+      <Method N="Void .ctor()" />
+      <Field N="&lt;TotalRecordCount&gt;k__BackingField" ON="wxM=" />
+      <Field N="&lt;PageSize&gt;k__BackingField" ON="xBM=" />
+      <Field N="&lt;PageIndex&gt;k__BackingField" ON="xRM=" />
+      <Field N="&lt;MaxLinkCount&gt;k__BackingField" ON="xhM=" />
+    </Type>
+    <Type N="Framework.HtmlHelpers.PViewPageHelper">
+      <Method N="System.Web.Mvc.MvcHtmlString PViewPageLinks(System.Web.Mvc.HtmlHelper value, Framework.HtmlHelpers.PageInfo pageInfo, System.Func&lt;Int32, String&gt; pageUrl)" />
+    </Type>
+    <Type N="Framework.Factories.AuthManagerFactory">
+      <Method N="Framework.Infrastructure.Abstract.IAuthManager Get()" />
+      <Method N="Void .ctor()" />
+      <Field N="_instance" ON="uhM=" />
+    </Type>
+    <Type N="Framework.Factories.DBAccessProviderFactory">
+      <Method N="Framework.Infrastructure.Abstract.IDBAccessProvider Get()" />
+      <Method N="Void .ctor()" />
+      <Field N="_instance" ON="uhM=" />
+    </Type>
+    <Type N="Framework.Factories.HttpOneRequestFactory">
+      <Method N="Object Get(System.Type type)" />
+      <Method N="!0 Get()" />
+    </Type>
+    <Type N="Framework.Extensions.DomainExt">
+      <Method N="System.Collections.Generic.IList&lt;Domain.FunctionInfo&gt; FunctionInfoList(Domain.Sys_Menu sys_Menu)" />
+    </Type>
+    <Type N="Framework.Core.FrameworkException">
+      <Method N="Void .ctor()" />
+      <Method N="Void .ctor(String message)" />
+      <Method N="Void .ctor(String messageFormat, Object[] args)" />
+      <Method N="Void .ctor(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)" />
+      <Method N="Void .ctor(String message, System.Exception innerException)" />
+    </Type>
+    <Type N="Framework.Config.AppConfig">
+      <Method N="Void .ctor()" />
+      <Method N="Void .cctor()" />
+      <Field N="&lt;LoginAccountSessionKey&gt;k__BackingField" ON="xxM=" />
+      <Field N="&lt;RememberMeTokenCookieKey&gt;k__BackingField" ON="yBM=" />
+      <Field N="&lt;RememberMeDayCount&gt;k__BackingField" ON="yRM=" />
+    </Type>
+    <Type N="Framework.Config.FrameworkConfig">
+      <Method N="Void Register()" />
+      <Method N="Void RegisterGlobalFilters(System.Web.Mvc.GlobalFilterCollection filters)" />
+      <Method N="Void RegisterRoutes(System.Web.Routing.RouteCollection routes)" />
+      <Method N="Void RegisterModelBinder(System.Web.Mvc.ModelBinderDictionary binders)" />
+      <Method N="Void RegisterViewEngine(System.Web.Mvc.ViewEngineCollection viewEngines)" />
+    </Type>
+    <Type N="Framework.Common.CacheHelper">
+      <Method N="Object GetCache(String CacheKey)" />
+      <Method N="Void SetCache(String CacheKey, Object objObject)" />
+      <Method N="Void SetCache(String CacheKey, Object objObject, System.TimeSpan Timeout)" />
+      <Method N="Void SetCache(String CacheKey, Object objObject, System.DateTime absoluteExpiration, System.TimeSpan slidingExpiration)" />
+      <Method N="Void RemoveAllCache(String CacheKey)" />
+      <Method N="Void RemoveAllCache()" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Common.CommonHelper">
+      <Method N="String EnsureSubscriberEmailOrThrow(String email)" />
+      <Method N="Boolean IsValidEmail(String email)" />
+      <Method N="String GenerateRandomDigitCode(Int32 length)" />
+      <Method N="Int32 GenerateRandomInteger(Int32 min, Int32 max)" />
+      <Method N="String EnsureMaximumLength(String str, Int32 maxLength, String postfix)" />
+      <Method N="String EnsureNumericOnly(String str)" />
+      <Method N="String EnsureNotNull(String str)" />
+      <Method N="Boolean AreNullOrEmpty(String[] stringsToValidate)" />
+      <Method N="Boolean ArraysEqual(!0[] a1, !0[] a2)" />
+      <Method N="System.Web.AspNetHostingPermissionLevel GetTrustLevel()" />
+      <Method N="Void .ctor()" />
+      <Field N="_trustLevel" ON="yhM=" />
+    </Type>
+    <Type N="Framework.Common.EncryptHelper">
+      <Method N="String MD5Encrypt32(String password)" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Common.HttpAide">
+      <Method N="String HttpGet(String url, System.Text.StringBuilder responseHeadersSb, String[] headers, System.Net.WebProxy proxy)" />
+      <Method N="String HttpPost(String url, String postDataStr, System.Text.StringBuilder responseHeadersSb, String[] headers, System.Net.WebProxy proxy)" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Common.HttpTemplate">
+      <Method N="!0 GetUseGet(String url)" />
+      <Method N="!0 GetUsePost(String url, String postDataStr)" />
+      <Method N="Void .ctor()" />
+    </Type>
+    <Type N="Framework.Common.IWebHelper">
+      <Method N="String GetUrlReferrer()" />
+      <Method N="String GetCurrentIpAddress()" />
+      <Method N="String GetThisPageUrl(Boolean includeQueryString)" />
+      <Method N="String GetThisPageUrl(Boolean includeQueryString, Boolean useSsl)" />
+      <Method N="Boolean IsCurrentConnectionSecured()" />
+      <Method N="String ServerVariables(String name)" />
+      <Method N="String GetStoreHost(Boolean useSsl)" />
+      <Method N="String GetStoreLocation()" />
+      <Method N="String GetStoreLocation(Boolean useSsl)" />
+      <Method N="Boolean IsStaticResource(System.Web.HttpRequest request)" />
+      <Method N="String MapPath(String path)" />
+      <Method N="String ModifyQueryString(String url, String queryStringModification, String anchor)" />
+      <Method N="String RemoveQueryString(String url, String queryString)" />
+      <Method N="!0 QueryString(String name)" />
+      <Method N="Void RestartAppDomain(Boolean makeRedirect, String redirectUrl)" />
+    </Type>
+    <Type N="Framework.Common.Tools">
+      <Method N="System.Collections.Generic.Dictionary&lt;String, String&gt; ObjectToDictionary(Object attribute)" />
+      <Method N="Void SetSession(String key, Object value)" />
+      <Method N="!0 GetSession(String key)" />
+      <Method N="String MD5Encrypt(String str)" />
+      <Method N="String Encode(String source, String _DESKey)" />
+      <Method N="String Decode(String source, String sKey)" />
+      <Method N="String GetSJS(Int32 j)" />
+      <Method N="String Post(String url, Object parameter)" />
+      <Method N="String GetWeekByDate(System.DateTime dt)" />
+      <Method N="Int32 GetWeekNumInMonth(System.DateTime daytime)" />
+      <Method N="Void SetCookie(String key, String value, System.Nullable&lt;Int32&gt; expires)" />
+      <Method N="String GetCookie(String key)" />
+      <Method N="Void RemoveCookie(String key)" />
+      <Method N="Void .ctor()" />
+      <Method N="Void .cctor()" />
+    </Type>
+    <Type N="Framework.Common.WebHelper">
+      <Method N="Boolean IsRequestAvailable(System.Web.HttpContextBase httpContext)" />
+      <Method N="Boolean TryWriteWebConfig()" />
+      <Method N="Boolean TryWriteGlobalAsax()" />
+      <Method N="Void .ctor(System.Web.HttpContextBase httpContext)" />
+      <Method N="String GetUrlReferrer()" />
+      <Method N="String GetCurrentIpAddress()" />
+      <Method N="String GetThisPageUrl(Boolean includeQueryString)" />
+      <Method N="String GetThisPageUrl(Boolean includeQueryString, Boolean useSsl)" />
+      <Method N="Boolean IsCurrentConnectionSecured()" />
+      <Method N="String ServerVariables(String name)" />
+      <Method N="String GetStoreHost(Boolean useSsl)" />
+      <Method N="String GetStoreLocation()" />
+      <Method N="String GetStoreLocation(Boolean useSsl)" />
+      <Method N="Boolean IsStaticResource(System.Web.HttpRequest request)" />
+      <Method N="String MapPath(String path)" />
+      <Method N="String ModifyQueryString(String url, String queryStringModification, String anchor)" />
+      <Method N="String RemoveQueryString(String url, String queryString)" />
+      <Method N="!0 QueryString(String name)" />
+      <Method N="Void RestartAppDomain(Boolean makeRedirect, String redirectUrl)" />
+      <Method N="String &lt;GetCurrentIpAddress&gt;b__6_1(String k)" />
+      <Field N="_httpContext" ON="yxM=" />
+    </Type>
+    <Type N="Framework.Attributes.AuthFilterAttribute">
+      <Method N="Void .ctor()" />
+      <Method N="Void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)" />
+      <Method N="Void CheckLoginAccount(System.Web.Mvc.ActionExecutingContext filterContext)" ON="zRM=" />
+      <Method N="Boolean CheckRequestNeedAuth(System.Web.Mvc.ActionExecutingContext filterContext)" ON="zhM=" />
+      <Method N="Boolean CheckAuthSufficient(Domain.UserInfo userInfo, System.Web.Mvc.ActionExecutingContext filterContext)" ON="zxM=" />
+      <Method N="Void CheckAuthSufficientAndProcess(Framework.Models.CurrentAccountModel currentAccount, System.Web.Mvc.ActionExecutingContext filterContext)" ON="0BM=" />
+      <Method N="Void RedirectToLogin(System.Web.Mvc.ActionExecutingContext filterContext)" ON="0RM=" />
+      <Method N="Void GetAreaControllerActionName(System.Web.Mvc.ActionExecutingContext filterContext, String&amp; areaName, String&amp; controllerName, String&amp; actionName)" ON="0hM=" />
+      <Field N="_authManger" ON="zBM=" />
+    </Type>
+    <Type N="Framework.Attributes.LoginAccountFilterAttribute">
+      <Method N="Void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)" />
+      <Method N="Void CheckRememberMe(System.Web.Mvc.ActionExecutingContext filterContext)" ON="1RM=" />
+      <Method N="Void .ctor()" />
+      <Method N="Void .cctor()" />
+      <Field N="_sessionKeyLoginAccount" ON="0xM=" />
+      <Field N="_cookieKeyToken" ON="1BM=" />
+      <Field N="_rememberMeDayCount" ON="wBM=" />
+      <Field N="_dBAccessProvider" ON="wRM=" />
+    </Type>
+    <Type N="&lt;PrivateImplementationDetails&gt;">
+      <Method N="UInt32 ComputeStringHash(String s)" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.TemplateProvider+&lt;&gt;c__DisplayClass3_0">
+      <Method N="Void .ctor()" />
+      <Method N="Boolean &lt;GetTemplateConfiguration&gt;b__0(Framework.Mvc.ViewEngines.Templates.TemplateConfiguration x)" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.TemplateProvider+&lt;&gt;c__DisplayClass5_0">
+      <Method N="Void .ctor()" />
+      <Method N="Boolean &lt;TemplateConfigurationExists&gt;b__0(Framework.Mvc.ViewEngines.Templates.TemplateConfiguration configuration)" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.TemplateVirtualPathProviderViewEngine+TemplateAreaAwareViewLocation">
+      <Method N="Void .ctor(String virtualPathFormatString)" />
+      <Method N="String Format(String viewName, String controllerName, String areaName, String templateName)" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.TemplateVirtualPathProviderViewEngine+TemplateViewLocation">
+      <Method N="Void .ctor(String virtualPathFormatString)" />
+      <Method N="String Format(String viewName, String controllerName, String areaName, String templateName)" />
+    </Type>
+    <Type N="Framework.Mvc.ViewEngines.Templates.TemplateVirtualPathProviderViewEngine+&lt;&gt;c">
+      <Method N="Void .cctor()" />
+      <Method N="Void .ctor()" />
+      <Method N="Framework.Mvc.ViewEngines.Templates.TemplateVirtualPathProviderViewEngine+TemplateAreaAwareViewLocation &lt;GetViewLocations&gt;b__11_0(String s)" />
+      <Method N="Framework.Mvc.ViewEngines.Templates.TemplateVirtualPathProviderViewEngine+TemplateViewLocation &lt;GetViewLocations&gt;b__11_1(String s)" />
+    </Type>
+    <Type N="Framework.Infrastructure.Concrete.AuthManager+&lt;&gt;c">
+      <Method N="Void .cctor()" />
+      <Method N="Void .ctor()" />
+      <Method N="String &lt;HasAuth&gt;b__3_0(Domain.FunctionInfo m)" />
+      <Method N="String &lt;AllAuthKey&gt;b__13_0(Domain.FunctionInfo m)" />
+    </Type>
+    <Type N="Framework.Common.CommonHelper+&lt;&gt;c__DisplayClass7_0">
+      <Method N="Void .ctor()" />
+      <Method N="Void &lt;AreNullOrEmpty&gt;b__0(String str)" />
+    </Type>
+    <Type N="Framework.Common.WebHelper+&lt;&gt;c__DisplayClass6_0">
+      <Method N="Void .ctor()" />
+      <Method N="Boolean &lt;GetCurrentIpAddress&gt;b__0(String x)" />
+    </Type>
+    <Type N="&lt;PrivateImplementationDetails&gt;+__StaticArrayInitTypeSize=20" ON="&lt;PrivateImplementationDetails&gt;+1hM=" />
+    <Type N="SecureTeam.Attributes.ObfuscatedByAgileDotNetAttribute">
+      <Method N="Void .ctor()" />
+    </Type>
+  </Module>
+</AgileDotNet>
