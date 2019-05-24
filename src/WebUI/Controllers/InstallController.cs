@@ -48,6 +48,7 @@ namespace WebUI.Controllers
             InitClazz();
             InitCourse();
             InitStudent();
+            InitDepartment();
             InitEmployee();
             InitCourseTable();
             InitNormType();
@@ -569,6 +570,123 @@ namespace WebUI.Controllers
             {
                 ShowMessage("失败");
                 ShowMessage(ex.Message);
+            }
+        }
+        #endregion
+
+        #region 初始化部门
+        private void InitDepartment()
+        {
+            try
+            {
+                ShowMessage("开始初始化部门");
+
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "软件学院",
+                    SortCode = 10,
+                    ParentDept = null
+                });
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "传媒学院",
+                    SortCode = 20,
+                    ParentDept = null
+                });
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "管理学院",
+                    SortCode = 30,
+                    ParentDept = null
+                });
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "通识学院",
+                    SortCode = 40,
+                    ParentDept = null
+                });
+
+                Department parentDept = null;
+                // 二级学院
+                parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "软件学院")
+                }).FirstOrDefault();
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "软件工程系",
+                    SortCode = 10,
+                    ParentDept = parentDept
+                });
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "移动应用开发系",
+                    SortCode = 20,
+                    ParentDept = parentDept
+                });
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "多媒体与游戏互联系",
+                    SortCode = 30,
+                    ParentDept = parentDept
+                });
+
+                parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "传媒学院")
+                }).FirstOrDefault();
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "数字艺术系",
+                    SortCode = 10,
+                    ParentDept = parentDept
+                });
+
+                parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "管理学院")
+                }).FirstOrDefault();
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "电子商务系",
+                    SortCode = 10,
+                    ParentDept = parentDept
+                });
+
+                parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "通识学院")
+                }).FirstOrDefault();
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "外语系",
+                    SortCode = 10,
+                    ParentDept = parentDept
+                });
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "数学系",
+                    SortCode = 20,
+                    ParentDept = parentDept
+                });
+
+
+                ShowMessage("成功");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("失败");
             }
         }
         #endregion
