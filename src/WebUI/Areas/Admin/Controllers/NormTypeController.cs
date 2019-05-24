@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using WebUI.Areas.Admin.Models;
 using WebUI.Areas.Admin.Models.Common;
 using WebUI.Areas.Admin.Models.NormTypeM;
+using WebUI.Extensions;
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -130,7 +131,7 @@ namespace WebUI.Areas.Admin.Controllers
                 }
                 else
                 {
-                    string errorMessage = GetModelStateErrorMessages();
+                    string errorMessage = ModelState.GetErrorMessage();
                     return Json(new { code = -1, message = "不合理的输入:" + errorMessage });
                 }
             }
@@ -176,7 +177,7 @@ namespace WebUI.Areas.Admin.Controllers
                 }
                 else
                 {
-                    string errorMessage = GetModelStateErrorMessages();
+                    string errorMessage = ModelState.GetErrorMessage();
                     return Json(new { code = -1, message = "不合理的输入:" + errorMessage });
                 }
             }
@@ -191,18 +192,7 @@ namespace WebUI.Areas.Admin.Controllers
 
         #region Helpers
 
-        #region 获取模型格式错误
-        private string GetModelStateErrorMessages()
-        {
-            string errorMessage = string.Empty;
-            foreach (ModelState item in ModelState.Values)
-            {
-                errorMessage += item.Errors.FirstOrDefault().ErrorMessage;
-            }
 
-            return errorMessage;
-        }
-        #endregion 
 
         #endregion
     }
