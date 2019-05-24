@@ -7,7 +7,7 @@ using Core;
 using Domain;
 using Service;
 
-namespace WebUI.Areas.Admin.Models.NormTypeM
+namespace WebUI.Areas.Admin.Models.NormTypeVM
 {
     public class NormTypeForEditViewModel
     {

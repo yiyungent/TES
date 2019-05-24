@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models;
 using WebUI.Areas.Admin.Models.Common;
-using WebUI.Areas.Admin.Models.NormTypeM;
+using WebUI.Areas.Admin.Models.NormTypeVM;
 using WebUI.Extensions;
 
 namespace WebUI.Areas.Admin.Controllers

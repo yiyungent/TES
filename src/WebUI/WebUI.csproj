@@ -7314,7 +7314,7 @@
     <Compile Include="Areas\Admin\Models\Common\QueryType.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseTableForEditViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\NormTypeM\NormTypeForEditViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\NormTypeVM\NormTypeForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\Template\ThemeTemplateViewModel.cs" />
@@ -7859,6 +7859,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Account\Views\Control\" />
+    <Folder Include="Areas\Admin\Models\EvaTaskVM\" />
     <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="Areas\Admin\Views\Dashboard\" />
     <Folder Include="GlobalShared\Models\" />
