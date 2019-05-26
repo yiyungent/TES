@@ -7175,6 +7175,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="HtmlPage1.html" />
     <Content Include="images\default-notify.jpg" />
     <Content Include="images\notexist-avatar.jpg" />
     <Content Include="images\guest-avatar.jpg" />
@@ -7266,6 +7267,7 @@
     <Content Include="Areas\Admin\Views\EvaTask\Create.cshtml" />
     <Content Include="Areas\Admin\Views\NormTarget\Index.cshtml" />
     <Content Include="Areas\Admin\Views\NormTarget\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\NormTarget\Sort.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />

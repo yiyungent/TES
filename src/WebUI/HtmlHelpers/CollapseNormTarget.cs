@@ -14,6 +14,8 @@ namespace WebUI.HtmlHelpers
     {
         private static IList<NormTarget> _allList;
 
+        private const string _btnGroupFormat = "<div class='layui-btn-group' style='float: right;'><button class='layui-btn layui-btn-sm' onclick='onEdit({1})'>修改</button><button class='layui-btn layui-btn-sm' onclick='onSort({1})'>排序</button></div>";
+
         #region 产生树形列表
         public static MvcHtmlString GenerateCollapseNormTarget(this HtmlHelper value)
         {
@@ -34,7 +36,7 @@ namespace WebUI.HtmlHelpers
                 // 折叠菜单项 layui-colla-item
                 sbItemHtml.Append("<div class=\"layui-colla-item\">");
                 // 此菜单项标题 layui-colla-title
-                sbItemHtml.AppendFormat("<h2 class=\"layui-colla-title\">{1}<button class='layui-btn layui-btn-sm' onclick='onEdit({0})' style='float: right;'>修改</button></h2>", firstItem.ID, firstItem.Name);
+                sbItemHtml.AppendFormat("<h2 class=\"layui-colla-title\">{0}" + _btnGroupFormat + "</h2>", firstItem.Name, firstItem.ID);
 
                 // 此菜单项内容:  1. 无子项---<p></p>   2. 有子项---折叠菜单
                 sbItemHtml.Append("<div class=\"layui-colla-content\">");
@@ -74,7 +76,7 @@ namespace WebUI.HtmlHelpers
             foreach (var item in suDeptList)
             {
                 sbItemHtml.Append("<div class=\"layui-colla-item\">");
-                sbItemHtml.AppendFormat("<h2 class=\"layui-colla-title\">{1}<button class='layui-btn layui-btn-sm' onclick='onEdit({0})' style='float: right;'>修改</button></h2>", item.ID, item.Name);
+                sbItemHtml.AppendFormat("<h2 class=\"layui-colla-title\">{0}" + _btnGroupFormat + "</h2>", item.Name, item.ID);
 
                 sbItemHtml.Append("<div class=\"layui-colla-content\">");
                 // 注意：如果当前菜单项已经无子项，则为 <p></p>，否则  继续向里递归寻找

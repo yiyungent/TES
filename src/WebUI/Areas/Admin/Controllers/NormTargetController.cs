@@ -1,5 +1,6 @@
 ﻿using Core;
 using Domain;
+using NHibernate.Criterion;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -25,9 +26,53 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
         #region 列表
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
+        }
+        #endregion
+
+        #region 排序
+        /// <summary>
+        /// 对子项排序
+        /// </summary>
+        /// <param name="id">父项ID</param>
+        /// <returns></returns>
+        [HttpGet]
+        public ViewResult Sort(int id)
+        {
+            IList<NormTarget> viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+            {
+                Expression.Eq("ParentTarget.ID", id)
+            }).OrderBy(m => m.SortCode).ToList();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public JsonResult Sort(string ids)
+        {
+            try
+            {
+                string[] idArr = ids.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                NormTarget item;
+                for (int i = 0; i < idArr.Length; i++)
+                {
+                    item = Container.Instance.Resolve<NormTargetService>().GetEntity(int.Parse(idArr[i]));
+                    if (item != null)
+                    {
+                        item.SortCode = (i + 1) * 10;
+                        Container.Instance.Resolve<NormTargetService>().Edit(item);
+                    }
+                }
+
+                return Json(new { code = 1, message = "保存成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "保存失败" });
+            }
         }
         #endregion
 
