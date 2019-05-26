@@ -37,8 +37,9 @@ namespace WebUI.Areas.Admin.Controllers
         {
             NormTarget viewModel = Container.Instance.Resolve<NormTargetService>().GetEntity(id);
             int parentId = viewModel.ParentTarget?.ID ?? 0;
+            int normTypeId = viewModel.NormType?.ID ?? 0;
             ViewBag.DDLParent = InitDDLForParent(viewModel, parentId);
-            //ViewBag.DDLNormType = Init
+            ViewBag.DDLNormType = InitDDLForNormType(viewModel, normTypeId);
 
             return View(viewModel);
         }
@@ -54,11 +55,16 @@ namespace WebUI.Areas.Admin.Controllers
                 {
                     inputModel.ParentTarget = null;
                 }
+                // 指标类型
+                if (inputModel.NormType.ID == 0)
+                {
+                    inputModel.NormType = null;
+                }
                 // 设置修改后的值
                 dbModel.Name = inputModel.Name;
                 dbModel.SortCode = inputModel.SortCode;
                 dbModel.ParentTarget = inputModel.ParentTarget;
-                //dbModel.NormType = inputModel.NormType;
+                dbModel.NormType = inputModel.NormType;
 
                 Container.Instance.Resolve<NormTargetService>().Edit(dbModel);
 
@@ -72,6 +78,7 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
         #region Helpers
+
         private IList<SelectListItem> InitDDLForParent(NormTarget self, int parentId)
         {
             IList<SelectListItem> ret = new List<SelectListItem>();
@@ -155,6 +162,30 @@ namespace WebUI.Areas.Admin.Controllers
                 GetIdRange(item, idRange, all);
             }
         }
+
+        private IList<SelectListItem> InitDDLForNormType(NormTarget self, int selectedVal)
+        {
+            IList<SelectListItem> ret = new List<SelectListItem>();
+            ret.Add(new SelectListItem()
+            {
+                Text = "请选择",
+                Value = "0",
+                Selected = (0 == selectedVal),
+            });
+            IList<NormType> allList = Container.Instance.Resolve<NormTypeService>().GetAll();
+            foreach (var item in allList)
+            {
+                ret.Add(new SelectListItem()
+                {
+                    Text = item.Name,
+                    Value = item.ID.ToString(),
+                    Selected = (item.ID == selectedVal)
+                });
+            }
+
+            return ret;
+        }
+
         #endregion
 
 

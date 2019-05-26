@@ -33,6 +33,12 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
+			@Html.LabelFor(m => m.NormType, new { @class = "layui-form-label" })
+			<div class="layui-input-block">
+				@Html.DropDownListFor(model => model.NormType.ID, (IList<SelectListItem>)ViewBag.DDLNormType)
+			</div>
+		</div>
+		<div class="layui-form-item">
 			<div class="layui-input-block">
 				<button class="layui-btn" onclick="return saveData();">保存</button>
 			</div>
