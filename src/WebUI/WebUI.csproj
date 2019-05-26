@@ -7268,6 +7268,7 @@
     <Content Include="Areas\Admin\Views\NormTarget\Index.cshtml" />
     <Content Include="Areas\Admin\Views\NormTarget\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\NormTarget\Sort.cshtml" />
+    <Content Include="Areas\Admin\Views\NormTarget\Create.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />

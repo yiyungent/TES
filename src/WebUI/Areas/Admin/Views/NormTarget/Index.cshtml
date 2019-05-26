@@ -55,6 +55,21 @@
 			});
 		}
 
+		function onCreate() {
+			layer.open({
+				type: 2,
+				closeBtn: 1,
+				anim: 4,
+				title: "添加",
+				shade: 0.4,
+				shadeClose: false,
+				area: ['800px', '420px'],
+				content: ['/Admin/NormTarget/Create', 'yes'],
+				end: function () {
+				}
+			});
+		}
+
 		// start 删除
 		function deleteOp(id) {
 			$("#js-id").val(id);
@@ -113,5 +128,8 @@
 <!-- end 提示框 -->
 <input id="js-id" type="hidden" />
 <div class="layui-fluid">
+	<div class="layui-btn-group">
+		<button class="layui-btn layui-btn-sm layui-btn-normal" onclick="onCreate()">添加</button>
+	</div>
 	@Html.GenerateCollapseNormTarget()
 </div>

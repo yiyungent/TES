@@ -138,6 +138,49 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 新增
+        [HttpGet]
+        public ViewResult Create()
+        {
+            NormTarget viewModel = new NormTarget();
+            ViewBag.DDLParent = InitDDLForParent(viewModel, 0);
+            ViewBag.DDLNormType = InitDDLForNormType(viewModel, 0);
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public JsonResult Create(NormTarget inputModel)
+        {
+            try
+            {
+                // 上级
+                if (inputModel.ParentTarget.ID == 0)
+                {
+                    inputModel.ParentTarget = null;
+                }
+                // 指标类型
+                if (inputModel.NormType.ID == 0)
+                {
+                    inputModel.NormType = null;
+                }
+                // 设置修改后的值
+                inputModel.Name = inputModel.Name;
+                inputModel.SortCode = inputModel.SortCode;
+                inputModel.ParentTarget = inputModel.ParentTarget;
+                inputModel.NormType = inputModel.NormType;
+
+                Container.Instance.Resolve<NormTargetService>().Create(inputModel);
+
+                return Json(new { code = 1, message = "添加成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "添加失败" });
+            }
+        }
+        #endregion
+
         #region Helpers
 
         private IList<SelectListItem> InitDDLForParent(NormTarget self, int parentId)
