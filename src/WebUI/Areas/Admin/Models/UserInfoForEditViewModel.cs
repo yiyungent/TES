@@ -9,12 +9,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using WebUI.Extensions;
 
 namespace WebUI.Areas.Admin.Models
 {
     public class UserInfoForEditViewModel
     {
+        #region Properties
+
         /// <summary>
         /// UID
         /// </summary>
@@ -57,9 +60,37 @@ namespace WebUI.Areas.Admin.Models
         [Display(Name = "绑定学生学号")]
         public string InputStudentCode { get; set; }
 
-        public List<OptionModel> RoleOptions { get; set; }
+        [Display(Name = "角色")]
+        public List<OptionModel> RoleOptions { get; set; } 
 
-        public static explicit operator UserInfoForEditViewModel(UserInfo userInfo)
+        #endregion
+
+        #region Ctor
+        public UserInfoForEditViewModel()
+        {
+            this.RoleOptions = new List<OptionModel>();
+            //this.RoleOptions.Add(new OptionModel
+            //{
+            //    ID = 0,
+            //    IsSelected = true,
+            //    Text = "请选择角色"
+            //});
+            IList<RoleInfo> allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
+            allRole = allRole.Where(m => m.Name != "游客").ToList();
+            foreach (RoleInfo item in allRole)
+            {
+                this.RoleOptions.Add(new OptionModel
+                {
+                    ID = item.ID,
+                    IsSelected = false,
+                    Text = item.Name
+                });
+            }
+        }
+        #endregion
+
+        #region 数据库模型->视图模型
+        public static explicit operator UserInfoForEditViewModel(UserInfo dbModel)
         {
             IList<RoleInfo> allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
             allRole = allRole.Where(m => m.Name != "游客").ToList();
@@ -71,43 +102,50 @@ namespace WebUI.Areas.Admin.Models
                 {
                     ID = role.ID,
                     Text = role.Name,
-                    IsSelected = userInfo.RoleInfoList.Contains(role, new RoleInfoEqualityComparer())
+                    IsSelected = dbModel.RoleInfoList.Contains(role, new RoleInfoEqualityComparer())
                 });
             }
-            UserInfoForEditViewModel rtn = new UserInfoForEditViewModel
+            UserInfoForEditViewModel viewModel = new UserInfoForEditViewModel
             {
-                ID = userInfo.ID,
-                InputUserName = userInfo.UserName,
-                InputName = userInfo.Name,
-                InputAvatar = userInfo.Avatar,
-                InputEmail = userInfo.Email,
+                ID = dbModel.ID,
+                InputUserName = dbModel.UserName,
+                InputName = dbModel.Name,
+                InputAvatar = dbModel.Avatar,
+                InputEmail = dbModel.Email,
                 RoleOptions = roleOptions,
-                InputEmployeeCode = userInfo.GetBindEmployee()?.EmployeeCode ?? "",
-                InputStudentCode = userInfo.GetBindStudent()?.StudentCode ?? ""
+                InputEmployeeCode = dbModel.GetBindEmployee()?.EmployeeCode ?? "",
+                InputStudentCode = dbModel.GetBindStudent()?.StudentCode ?? ""
             };
 
-            return rtn;
+            return viewModel;
         }
+        #endregion
 
-        public static explicit operator UserInfo(UserInfoForEditViewModel model)
+        #region 输入模型->数据库模型
+        public static explicit operator UserInfo(UserInfoForEditViewModel inputModel)
         {
-            UserInfo rtn = new UserInfo
+            UserInfo dbModel = null;
+            if (inputModel.ID == 0)
             {
-                ID = model.ID,
-                UserName = model.InputUserName,
-                Name = model.InputName,
-                Avatar = model.InputAvatar,
-                Email = model.InputEmail,
-                Description = model.InputDescription
-            };
-            if (!string.IsNullOrEmpty(model.InputPassword))
-            {
-                rtn.Password = EncryptHelper.MD5Encrypt32(model.InputPassword);
+                // 创建
+                dbModel = new UserInfo();
+                dbModel.RegTime = DateTime.Now;
             }
-            if (model.RoleOptions != null)
+            else
+            {
+                // 修改
+                dbModel = Container.Instance.Resolve<UserInfoService>().GetEntity(inputModel.ID);
+            }
+            #region 赋值转换
+            if (!string.IsNullOrEmpty(inputModel.InputPassword))
+            {
+                dbModel.Password = EncryptHelper.MD5Encrypt32(inputModel.InputPassword);
+            }
+            #region 角色选项
+            if (inputModel.RoleOptions != null)
             {
                 IList<int> roleIdList = new List<int>();
-                foreach (OptionModel option in model.RoleOptions)
+                foreach (OptionModel option in inputModel.RoleOptions)
                 {
                     roleIdList.Add(option.ID);
                 }
@@ -115,33 +153,48 @@ namespace WebUI.Areas.Admin.Models
                 {
                     Expression.In("ID", roleIdList.ToArray())
                 });
-                rtn.RoleInfoList = selectedRole;
+                dbModel.RoleInfoList = selectedRole;
             }
             else
             {
-                rtn.RoleInfoList = null;
+                dbModel.RoleInfoList = null;
             }
-
-            if (!string.IsNullOrEmpty(model.InputStudentCode))
+            #endregion
+            #region 绑定学号，工号
+            if (!string.IsNullOrEmpty(inputModel.InputStudentCode?.Trim()))
             {
                 // 为此学生绑定上此用户
-                rtn.BindStudent(model.InputStudentCode);
+                dbModel.BindStudent(inputModel.InputStudentCode?.Trim());
             }
             else
             {
-                rtn.UnBindStudent();
+                if (inputModel.ID != 0)
+                {
+                    dbModel.UnBindStudent();
+                }
             }
-            if (!string.IsNullOrEmpty(model.InputEmployeeCode))
+            if (!string.IsNullOrEmpty(inputModel.InputEmployeeCode?.Trim()))
             {
                 // 为此员工绑定上此用户
-                rtn.BindEmployee(model.InputEmployeeCode);
+                dbModel.BindEmployee(inputModel.InputEmployeeCode?.Trim());
             }
             else
             {
-                rtn.UnBindEmployee();
+                if (inputModel.ID != 0)
+                {
+                    dbModel.UnBindEmployee();
+                }
             }
+            #endregion
+            dbModel.UserName = inputModel.InputUserName?.Trim();
+            dbModel.Name = inputModel.InputName?.Trim();
+            dbModel.Avatar = inputModel.InputAvatar?.Trim();
+            dbModel.Email = inputModel.InputEmail?.Trim();
+            dbModel.Description = inputModel.InputDescription?.Trim();
+            #endregion
 
-            return rtn;
+            return dbModel;
         }
+        #endregion
     }
 }

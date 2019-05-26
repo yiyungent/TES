@@ -34,16 +34,16 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
-        #region 首页-列表
+        #region 列表
         public ViewResult Index(int pageIndex = 1, int pageSize = 6)
         {
             IList<ICriterion> queryConditions = new List<ICriterion>();
             Query(queryConditions);
 
-            ListViewModel<UserInfo> model = new ListViewModel<UserInfo>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
+            ListViewModel<UserInfo> viewModel = new ListViewModel<UserInfo>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
 
-            return View(model);
+            return View(viewModel);
         }
 
         private void Query(IList<ICriterion> queryConditions)
@@ -96,9 +96,9 @@ namespace WebUI.Areas.Admin.Controllers
         #region 查看
         public ViewResult Detail(int id)
         {
-            UserInfo model = Container.Instance.Resolve<UserInfoService>().GetEntity(id);
+            UserInfo viewModel = Container.Instance.Resolve<UserInfoService>().GetEntity(id);
 
-            return View(model);
+            return View(viewModel);
         }
         #endregion
 
@@ -106,111 +106,79 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Edit(int id)
         {
-            UserInfo userInfo = Container.Instance.Resolve<UserInfoService>().GetEntity(id);
-            UserInfoForEditViewModel model = (UserInfoForEditViewModel)userInfo;
+            UserInfo dbModel = Container.Instance.Resolve<UserInfoService>().GetEntity(id);
+            UserInfoForEditViewModel viewModel = (UserInfoForEditViewModel)dbModel;
 
-            return View(model);
+            return View(viewModel);
         }
 
         [HttpPost]
-        public JsonResult Edit(UserInfoForEditViewModel model)
+        public JsonResult Edit(UserInfoForEditViewModel inputModel)
         {
             try
             {
+                // 数据格式效验
                 if (ModelState.IsValid)
                 {
-                    UserInfo dbEntry = Container.Instance.Resolve<UserInfoService>().GetEntity(model.ID);
-                    dbEntry.Name = model.InputName?.Trim();
-                    //dbEntry.Avatar = model.Avatar;
 
+                    #region 数据有效效验
+
+                    #region 绑定邮箱
                     // 查找 已经绑定此邮箱的 (非本正编辑) 的用户
-                    if (!string.IsNullOrEmpty(model.InputEmail))
+                    if (!string.IsNullOrEmpty(inputModel.InputEmail))
                     {
-                        if (IsExistEmail(model.InputEmail, model.ID))
+                        if (IsExistEmail(inputModel.InputEmail, inputModel.ID))
                         {
                             return Json(new { code = -3, message = "邮箱已经被其他用户绑定，请绑定其他邮箱" });
                         }
                     }
-                    dbEntry.Email = model.InputEmail?.Trim();
-                    #region 绑定与解绑员工号
-                    if (!string.IsNullOrEmpty(model.InputEmployeeCode?.Trim()))
+                    #endregion
+
+                    #region 绑定员工号
+                    if (!string.IsNullOrEmpty(inputModel.InputEmployeeCode?.Trim()))
                     {
                         // 有输入 EmployeeCode
-                        // 验证是否已经被其它用户绑定
-                        EmployeeInfo use = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>
+                        if (!Container.Instance.Resolve<EmployeeInfoService>().Exist(inputModel.InputEmployeeCode?.Trim()))
                         {
-                            Expression.And(
-                                Expression.Eq("EmployeeCode", model.InputEmployeeCode),
-                                Expression.Not(Expression.Eq("UID", model.ID))
-                            )
-                        }).FirstOrDefault();
-                        if (use != null)
+                            return Json(new { code = -4, message = "工号不存在，请更换" });
+                        }
+                        else if (Container.Instance.Resolve<EmployeeInfoService>().IsBindUser(inputModel.InputEmployeeCode?.Trim(), inputModel.ID))
                         {
+                            // 验证是否已经被其它用户绑定
                             return Json(new { code = -3, message = "工号已经被其它用户绑定，请更换" });
                         }
-                        else
-                        {
-                            if (!Container.Instance.Resolve<EmployeeInfoService>().Exists(model.InputEmployeeCode))
-                            {
-                                return Json(new { code = -4, message = "工号不存在，请更换" });
-                            }
-                            else
-                            {
-                                dbEntry.BindEmployee(model.InputEmployeeCode.Trim());
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // 未输入 EmployeeCode - 解绑
-                        dbEntry.UnBindEmployee();
                     }
                     #endregion
-                    #region 绑定与解绑学号
-                    if (!string.IsNullOrEmpty(model.InputStudentCode?.Trim()))
+
+                    #region 绑定学号
+                    if (!string.IsNullOrEmpty(inputModel.InputStudentCode?.Trim()))
                     {
                         // 有输入 StudentCode
-                        // 验证是否已经被其它用户绑定
-                        StudentInfo use = Container.Instance.Resolve<StudentInfoService>().Query(new List<ICriterion>
+                        if (!Container.Instance.Resolve<StudentInfoService>().Exist(inputModel.InputStudentCode?.Trim()))
                         {
-                            Expression.And(
-                                Expression.Eq("StudentCode", model.InputStudentCode),
-                                Expression.Not(Expression.Eq("UID", model.ID))
-                            )
-                        }).FirstOrDefault();
-                        if (use != null)
+                            return Json(new { code = -4, message = "学号不存在，请更换" });
+                        }
+                        else if (Container.Instance.Resolve<StudentInfoService>().IsBindUser(inputModel.InputStudentCode?.Trim(), inputModel.ID))
                         {
+                            // 验证是否已经被其它用户绑定
                             return Json(new { code = -3, message = "学号已经被其它用户绑定，请更换" });
                         }
-                        else
-                        {
-                            if (!Container.Instance.Resolve<StudentInfoService>().Exists(model.InputStudentCode))
-                            {
-                                return Json(new { code = -4, message = "学号不存在，请更换" });
-                            }
-                            else
-                            {
-                                dbEntry.BindEmployee(model.InputStudentCode.Trim());
-                            }
-                        }
                     }
-                    else
-                    {
-                        // 未输入 EmployeeCode - 解绑
-                        dbEntry.UnBindEmployee();
-                    }
+                    #endregion 
+
                     #endregion
 
-                    UserInfo userInfo = (UserInfo)model;
-                    dbEntry.RoleInfoList = userInfo.RoleInfoList;
+                    // 输入模型->数据库模型
+                    UserInfo dbModel = (UserInfo)inputModel;
 
-                    Container.Instance.Resolve<UserInfoService>().Edit(dbEntry);
+                    Container.Instance.Resolve<UserInfoService>().Edit(dbModel);
 
                     return Json(new { code = 1, message = "保存成功" });
                 }
                 else
                 {
-                    return Json(new { code = -1, message = "不合理的输入" });
+                    string errorMessage = ModelState.GetErrorMessage();
+                    return Json(new { code = -1, message = errorMessage });
                 }
             }
             catch (Exception ex)
@@ -224,62 +192,41 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Create()
         {
-            UserInfoForEditViewModel model = new UserInfoForEditViewModel()
-            {
-                RoleOptions = new List<OptionModel>()
-            };
-            IList<RoleInfo> allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
-            foreach (RoleInfo item in allRole)
-            {
-                model.RoleOptions.Add(new OptionModel
-                {
-                    ID = item.ID,
-                    IsSelected = false,
-                    Text = item.Name
-                });
-            }
-            //model.RoleOptions.Insert(0, new RoleOption
-            //{
-            //    ID = 0,
-            //    IsSelected = true,
-            //    Text = "请选择角色"
-            //});
+            UserInfoForEditViewModel viewModel = new UserInfoForEditViewModel();
 
-            return View(model);
+            return View(viewModel);
         }
 
         [HttpPost]
-        public JsonResult Create(UserInfoForEditViewModel model)
+        public JsonResult Create(UserInfoForEditViewModel inputModel)
         {
             try
             {
+                // 数据格式效验
                 if (ModelState.IsValid)
                 {
-                    UserInfo dbModel = (UserInfo)model;
-                    // 查找 已经有此用户名的用户
-                    if (!string.IsNullOrEmpty(model.InputUserName))
+                    #region 数据有效效验
+                    if (string.IsNullOrEmpty(inputModel.InputPassword?.Trim()))
                     {
-                        UserInfo use = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
-                        {
-                            Expression.Eq("UserName", model.InputUserName.Trim())
-                        }).FirstOrDefault();
-                        if (use != null)
-                        {
-                            return Json(new { code = -3, message = "用户名已有，请使用其他用户名" });
-                        }
+                        return Json(new { code = -2, message = "请填写初始密码" });
+                    }
+                    // 查找 已经有此用户名的用户
+                    if (Container.Instance.Resolve<UserInfoService>().Exist(inputModel.InputUserName?.Trim()))
+                    {
+                        return Json(new { code = -3, message = "用户名已存在，请使用其他用户名" });
                     }
                     // 查找 已经绑定此邮箱的 (非本正编辑) 的用户
-                    if (!string.IsNullOrEmpty(model.InputEmail))
+                    if (!string.IsNullOrEmpty(inputModel.InputEmail))
                     {
-                        UserInfo use = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
-                    {
-                            Expression.Eq("Email", model.InputEmail.Trim()),
-                    }).FirstOrDefault();
-                        if (use != null)
+                        bool isExist = Container.Instance.Resolve<UserInfoService>().Count(Expression.Eq("Email", inputModel.InputEmail?.Trim())) > 0;
+                        if (isExist)
                         {
-                            return Json(new { code = -3, message = "邮箱已经被其他用户绑定，请绑定其他邮箱" });
+                            return Json(new { code = -3, message = "邮箱已经被其他用户绑定，请绑定其它邮箱" });
                         }
                     }
+                    #endregion
+
+                    UserInfo dbModel = (UserInfo)inputModel;
 
                     Container.Instance.Resolve<UserInfoService>().Create(dbModel);
 
@@ -287,12 +234,8 @@ namespace WebUI.Areas.Admin.Controllers
                 }
                 else
                 {
-                    string errorMessage = string.Empty;
-                    foreach (ModelState item in ModelState.Values)
-                    {
-                        errorMessage += item.Errors.FirstOrDefault().ErrorMessage;
-                    }
-                    return Json(new { code = -1, message = "不合理的输入:" + errorMessage + ", " });
+                    string errorMessage = ModelState.GetErrorMessage();
+                    return Json(new { code = -1, message = errorMessage });
                 }
             }
             catch (Exception ex)
@@ -305,11 +248,11 @@ namespace WebUI.Areas.Admin.Controllers
         #region Helpers
 
         #region 检查邮箱是否已(被其它用户)绑定
-        public bool IsExistEmail(string email, int userId = 0)
+        public bool IsExistEmail(string email, int exceptUserId = 0)
         {
             bool isExist = false;
             IList<ICriterion> criteria = null;
-            if (userId == 0)
+            if (exceptUserId == 0)
             {
                 criteria = new List<ICriterion>
                 {
@@ -322,7 +265,7 @@ namespace WebUI.Areas.Admin.Controllers
                 {
                      Expression.And(
                         Expression.Eq("Email", email),
-                        Expression.Not(Expression.Eq("ID", userId))
+                        Expression.Not(Expression.Eq("ID", exceptUserId))
                      )
                 };
             }

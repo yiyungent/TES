@@ -11,6 +11,7 @@
 @section body {
 	<script src="~/dist/pview/pview.js"></script>
 	<script>
+
 		// start 删除
 		function deleteOp(id) {
 			$("#js-id").val(id);
@@ -72,6 +73,7 @@
 				$('#js-search-type').html(typeName);
 			});
 		});
+
 	</script>
 }
 
@@ -108,7 +110,7 @@
 <div class="box">
 	<!-- start .box-header -->
 	<div class="box-header">
-		<h3 class="box-title">用户列表</h3>
+		<h3 class="box-title">列表</h3>
 
 		<div class="box-tools">
 			<div class="input-group input-group-sm" style="width: 250px;">
@@ -190,7 +192,7 @@
 	<!-- start .box-footer -->
 	<div class="box-footer clearfix">
 		<div class="btn-group pull-left">
-			<a class="btn btn-primary" href="@Url.Action("Create")">添加用户</a>
+			<a class="btn btn-primary" href="@Url.Action("Create")">添加</a>
 		</div>
 		<!-- start 分页 -->
 		<div id="js-page" pview="pages">

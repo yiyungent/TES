@@ -14,8 +14,13 @@ namespace WebUI.Extensions
             string errorMessage = string.Empty;
             foreach (ModelState item in modelStateDictionary.Values)
             {
-                errorMessage += item.Errors.FirstOrDefault().ErrorMessage;
+                if (item.Errors != null && item.Errors.Count > 0)
+                {
+                    errorMessage += item.Errors.FirstOrDefault().ErrorMessage + ", ";
+                }
             }
+            // 移除末尾 ", "
+            errorMessage = "不合理的输入: " + errorMessage.Remove(errorMessage.Length - 2);
 
             return errorMessage;
         }
