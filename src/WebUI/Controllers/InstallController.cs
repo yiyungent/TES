@@ -85,22 +85,22 @@ namespace WebUI.Controllers
                 #region 一级菜单
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
-                    Name = "系统管理",
+                    Name = "仪表盘",
                     SortCode = 10,
                 });
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
-                    Name = "业务管理",
+                    Name = "系统管理",
                     SortCode = 20,
                 });
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
-                    Name = "评价管理",
+                    Name = "业务管理",
                     SortCode = 30,
                 });
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
-                    Name = "仪表盘",
+                    Name = "评价管理",
                     SortCode = 40,
                 });
 
@@ -118,6 +118,22 @@ namespace WebUI.Controllers
                 // 一级菜单项---二级菜单的父菜单项
                 Sys_Menu parentMenu = null;
 
+                #region 仪表盘的二级菜单
+                parentMenu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "仪表盘")
+                }).FirstOrDefault();
+
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "仪表盘-1",
+                    ControllerName = "Dashboard",
+                    ActionName = "One",
+                    AreaName = "Admin",
+                    ParentMenu = parentMenu,
+                    SortCode = 10,
+                });
+                #endregion
 
                 #region 系统管理的二级菜单
                 parentMenu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion>
@@ -163,12 +179,21 @@ namespace WebUI.Controllers
                 });
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
+                    Name = "操作管理",
+                    ControllerName = "FunctionInfo",
+                    ActionName = "Index",
+                    AreaName = "Admin",
+                    ParentMenu = parentMenu,
+                    SortCode = 50,
+                });
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
                     Name = "主题模板",
                     ControllerName = "ThemeTemplate",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
-                    SortCode = 50,
+                    SortCode = 60,
                 });
                 #endregion
 
@@ -178,10 +203,11 @@ namespace WebUI.Controllers
                     Expression.Eq("Name", "业务管理")
                 }).FirstOrDefault();
 
+               
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
-                    Name = "操作管理",
-                    ControllerName = "FunctionInfo",
+                    Name = "学生管理",
+                    ControllerName = "StudentInfo",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
@@ -189,8 +215,8 @@ namespace WebUI.Controllers
                 });
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
-                    Name = "部门管理",
-                    ControllerName = "Department",
+                    Name = "员工管理",
+                    ControllerName = "EmployeeInfo",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
@@ -207,8 +233,8 @@ namespace WebUI.Controllers
                 });
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
-                    Name = "学生管理",
-                    ControllerName = "StudentInfo",
+                    Name = "部门管理",
+                    ControllerName = "Department",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
@@ -251,8 +277,8 @@ namespace WebUI.Controllers
                 });
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
-                    Name = "评价选项",
-                    ControllerName = "NormOptions",
+                    Name = "评价任务",
+                    ControllerName = "EvaTask",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
@@ -260,29 +286,30 @@ namespace WebUI.Controllers
                 });
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
-                    Name = "评价任务",
-                    ControllerName = "NormTask",
+                    Name = "评价结果",
+                    ControllerName = "EvaResult",
                     ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 30,
                 });
-                #endregion
-
-                #region 仪表盘的二级菜单
-                parentMenu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("Name", "仪表盘")
-                }).FirstOrDefault();
-
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
-                    Name = "仪表盘-1",
-                    ControllerName = "Dashboard",
-                    ActionName = "One",
+                    Name = "评价记录",
+                    ControllerName = "EvaRecord",
+                    ActionName = "Index",
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
-                    SortCode = 10,
+                    SortCode = 40,
+                });
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "评价指标",
+                    ControllerName = "NormTarget",
+                    ActionName = "Index",
+                    AreaName = "Admin",
+                    ParentMenu = parentMenu,
+                    SortCode = 40,
                 });
                 #endregion
 
