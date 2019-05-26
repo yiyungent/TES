@@ -53,7 +53,7 @@ namespace WebUI.Controllers
             InitCourseTable();
             InitNormType();
             InitNormTarget();
-            //InitOptions();
+            InitOptions();
             InitEvaTask();
         }
         #endregion
@@ -774,6 +774,7 @@ namespace WebUI.Controllers
             try
             {
                 ShowMessage("开始初始化指标");
+
                 #region 一级指标
                 string[] TargetNames = new string[] { "学生方面", "系部方面", "教研室方面", "同行方面", "教师个人方面" };
                 decimal[] TargetWeight = new decimal[] { 0.30m, 0.25m, 0.20m, 0.15m, 0.10m };
@@ -784,12 +785,14 @@ namespace WebUI.Controllers
                         Name = TargetNames[i],
                         SortCode = (i + 1) * 10,
                         Weight = TargetWeight[i],
+                        NormType = Container.Instance.Resolve<NormTypeService>().GetEntity(i + 1),
                     });
                 }
                 #endregion
                 NormTarget ParentTarget = null;
                 #region 学生方面的二级指标
                 ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(1);
+                NormType normType = Container.Instance.Resolve<NormTypeService>().GetEntity(1);
                 string[] STargetName = new string[] { "概念的讲解", "重点和难点", "逻辑性和条理性", "趣味性和生动性", "板书", "辅导（阅读指导）", "作业与批改", "能力培养", "教书育人", "为人师表" };
                 decimal[] STargetweight = new decimal[] { 0.15m, 0.15m, 0.10m, 0.10m, 0.05m, 0.08m, 0.10m, 0.10m, 0.10m, 0.07m };
                 for (int i = 0; i < STargetName.Length; i++)
@@ -800,11 +803,13 @@ namespace WebUI.Controllers
                         SortCode = (i + 1) * 10,
                         Weight = STargetweight[i],
                         ParentTarget = ParentTarget,
+                        NormType = normType,
                     });
                 }
                 #endregion
                 #region 系部的二级指标
                 ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(2);
+                NormType xnormType = Container.Instance.Resolve<NormTypeService>().GetEntity(2);
                 string[] DTargetName = new string[] { "量考核", "质考核" };
                 decimal[] DTargetweight = new decimal[] { 0.30m, 0.70m };
                 for (int i = 0; i < DTargetName.Length; i++)
@@ -815,11 +820,13 @@ namespace WebUI.Controllers
                         SortCode = (i + 1) * 10,
                         Weight = DTargetweight[i],
                         ParentTarget = ParentTarget,
+                        NormType = xnormType,
                     });
                 }
                 #endregion
                 #region 教研室的二级指标
                 ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(3);
+                NormType jnormType = Container.Instance.Resolve<NormTypeService>().GetEntity(3);
                 string[] TargetName = new string[] { "教学环节", "接受任务的态度", "汲取新技术", "学术与研究水平", "参加教研活动" };
                 decimal[] Targetweight = new decimal[] { 0.60m, 0.05m, 0.05m, 0.10m, 0.20m };
                 for (int i = 0; i < TargetName.Length; i++)
@@ -830,11 +837,13 @@ namespace WebUI.Controllers
                         SortCode = (i + 1) * 10,
                         Weight = Targetweight[i],
                         ParentTarget = ParentTarget,
+                        NormType = jnormType,
                     });
                 }
                 #endregion
                 #region 同行方面的二级指标
                 ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(4);
+                NormType tnormType = Container.Instance.Resolve<NormTypeService>().GetEntity(4);
                 string[] TTargetName = new string[] { "组织教学", "教学内容与教学要求", "概念讲解", "重点和难点", "趣味性与生动性", "直观教学与板书", "智力能力的培养", "理论联系实际", "教材处理" };
                 decimal[] TTargetweight = new decimal[] { 0.15m, 0.15m, 0.10m, 0.10m, 0.08m, 0.07m, 0.10m, 0.10m, 0.15m };
                 for (int i = 0; i < TTargetName.Length; i++)
@@ -845,11 +854,13 @@ namespace WebUI.Controllers
                         SortCode = (i + 1) * 10,
                         Weight = TTargetweight[i],
                         ParentTarget = ParentTarget,
+                        NormType = tnormType,
                     });
                 }
                 #endregion
                 #region 教师个人方面的二级指标
                 ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(5);
+                NormType norm = Container.Instance.Resolve<NormTypeService>().GetEntity(5);
                 string[] ETargetName = new string[] { "自我评价", "自我评价的工作" };
                 decimal[] ETargetweight = new decimal[] { 0.5m, 0.5m };
                 for (int i = 0; i < ETargetName.Length; i++)
@@ -860,26 +871,13 @@ namespace WebUI.Controllers
                         SortCode = (i + 1) * 10,
                         Weight = ETargetweight[i],
                         ParentTarget = ParentTarget,
+                        NormType = norm,
                     });
                 }
                 #endregion
-                #region 教学环节的三级指标
-                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(18);//18
-                string[] name = new string[] { "概念的讲解", "重点和难点", "逻辑性、条理性", "趣味性、生动性", "板书", "能力培养", "理论联系实际", "辅导（阅读指导）", "作业与批改" };
-                decimal[] weight = new decimal[] { 0.15m, 0.15m, 0.10m, 0.10m, 0.05m, 0.15m, 0.10m, 0.10m, 0.10m };
-                for (int i = 0; i < name.Length; i++)
-                {
-                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
-                    {
-                        Name = name[i],
-                        SortCode = (i + 1) * 10,
-                        Weight = weight[i],
-                        ParentTarget = ParentTarget,
-                    });
-                }
-                #endregion
-                #region 量考核的三级指标
-                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(16);//18
+                #region 系部的三级指标---量考核
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(16);
+                NormType normo = Container.Instance.Resolve<NormTypeService>().GetEntity(2);
                 string[] Lname = new string[] { "教学工作量", "社会工作量", "任课班级" };
                 decimal[] Lweight = new decimal[] { 0.75m, 0.15m, 0.10m };
                 for (int i = 0; i < Lname.Length; i++)
@@ -890,11 +888,13 @@ namespace WebUI.Controllers
                         SortCode = (i + 1) * 10,
                         Weight = Lweight[i],
                         ParentTarget = ParentTarget,
+                        NormType = normo,
                     });
                 }
                 #endregion
-                #region 质考核的三级指标
-                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(17);//18
+                #region 系部的三级指标---质考核
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(17);
+                NormType normt = Container.Instance.Resolve<NormTypeService>().GetEntity(2);
                 string[] Zname = new string[] { "工作态度", "学术与研究水平", "完成任务情况", "教学水平变化", "教学反映", "能力培养", "汲取新信息新技术", "考试命题" };
                 decimal[] Zweight = new decimal[] { 0.40m, 0.15m, 0.05m, 0.05m, 0.15m, 0.10m, 0.05m, 0.05m };
                 for (int i = 0; i < Zname.Length; i++)
@@ -905,11 +905,30 @@ namespace WebUI.Controllers
                         SortCode = (i + 1) * 10,
                         Weight = Zweight[i],
                         ParentTarget = ParentTarget,
+                        NormType = normt
                     });
                 }
                 #endregion
-                #region 工作态度的四级指标
-                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(46);
+                #region 教研室的三级指标---教学环节
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(18);
+                NormType normr = Container.Instance.Resolve<NormTypeService>().GetEntity(3);
+                string[] name = new string[] { "概念的讲解", "重点和难点", "逻辑性、条理性", "趣味性、生动性", "板书", "能力培养", "理论联系实际", "辅导（阅读指导）", "作业与批改" };
+                decimal[] weight = new decimal[] { 0.15m, 0.15m, 0.10m, 0.10m, 0.05m, 0.15m, 0.10m, 0.10m, 0.10m };
+                for (int i = 0; i < name.Length; i++)
+                {
+                    Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
+                    {
+                        Name = name[i],
+                        SortCode = (i + 1) * 10,
+                        Weight = weight[i],
+                        ParentTarget = ParentTarget,
+                        NormType = normr,
+                    });
+                }
+                #endregion
+                #region 系部的四级指标---工作态度
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(37);
+                NormType norms = Container.Instance.Resolve<NormTypeService>().GetEntity(2);
                 string[] Gname = new string[] { "接受任务态度", "教学常规" };
                 decimal[] Gweight = new decimal[] { 0.10m, 0.90m };
                 for (int i = 0; i < Gname.Length; i++)
@@ -920,14 +939,16 @@ namespace WebUI.Controllers
                         SortCode = (i + 1) * 10,
                         Weight = Gweight[i],
                         ParentTarget = ParentTarget,
+                        NormType = norms
                     });
                 }
                 #endregion
-                #region 学术与研究水平的四级指标
-                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(47);
+                #region 系部的四级指标---学术与研究水平
+                ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(38);
+                NormType no = Container.Instance.Resolve<NormTypeService>().GetEntity(2);
                 string[] XGname = new string[] { "职称", "运用新知识、新技术能力", "论文撰写、教材编写能力" };
                 decimal[] XGweight = new decimal[] { 0.10m, 0.40m, 0.50m };
-                for (int i = 0; i < Gname.Length; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     Container.Instance.Resolve<NormTargetService>().Create(new NormTarget()
                     {
@@ -935,12 +956,14 @@ namespace WebUI.Controllers
                         SortCode = (i + 1) * 10,
                         Weight = XGweight[i],
                         ParentTarget = ParentTarget,
+                        NormType = no,
                     });
                 }
                 #endregion
-                #region 教学常规的五级指标
+                #region 系部的五级指标---教学常规
                 ParentTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(55);
-                string[] Jname = new string[] { "授课计划的制定", "教案首页、备课余量", "教学日志手册的填写", "教学表格的填写", "辅导", "教学秩序的掌握" };
+                NormType t = Container.Instance.Resolve<NormTypeService>().GetEntity(2);
+                string[] Jname = new string[] { "授课计划的制定", "教案首页", "备课余量", "教学日志手册的填写", "教学表格的填写", "辅导、作业", "教学秩序的掌握" };
                 decimal[] Jweight = new decimal[] { 0.10m, 0.20m, 0.10m, 0.10m, 0.10m, 0.20m, 0.20m };
                 for (int i = 0; i < Jname.Length; i++)
                 {
@@ -950,9 +973,11 @@ namespace WebUI.Controllers
                         SortCode = (i + 1) * 10,
                         Weight = Jweight[i],
                         ParentTarget = ParentTarget,
+                        NormType = t
                     });
                 }
                 #endregion
+
                 ShowMessage("成功");
             }
             catch (Exception)
@@ -1538,19 +1563,19 @@ namespace WebUI.Controllers
                 }
                 #endregion
                 #region 辅导、作业
-                //normTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(64);
-                //contents = new string[] { "每周有辅导", "辅导较经常", "辅导较少", "不辅导" };
-                //scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
-                //for (int i = 0; i < contents.Length; i++)
-                //{
-                //    Container.Instance.Resolve<OptionsService>().Create(new Options
-                //    {
-                //        Content = contents[i],
-                //        Score = scores[i],
-                //        SortCode = 10 * (i + 1),
-                //        NormTarget = normTarget
-                //    });
-                //}
+                normTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(64);
+                contents = new string[] { "每周有辅导", "辅导较经常", "辅导较少", "不辅导" };
+                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        Score = scores[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
                 #endregion
                 #region 教学秩序的掌握
                 normTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(65);
@@ -1838,7 +1863,7 @@ namespace WebUI.Controllers
                         NormTarget = normTarget
                     });
                 }
-                #endregion
+                #endregion                                      
 
                 ShowMessage("成功");
             }

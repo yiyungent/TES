@@ -7175,7 +7175,6 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="HtmlPage1.html" />
     <Content Include="images\default-notify.jpg" />
     <Content Include="images\notexist-avatar.jpg" />
     <Content Include="images\guest-avatar.jpg" />
