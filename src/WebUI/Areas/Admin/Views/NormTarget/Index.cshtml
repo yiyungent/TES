@@ -9,6 +9,22 @@
 	<script src="~/dist/layui/layui.all.js"></script>
 	<script>
 
+		function showMessage(message, type) {
+			$("#js-message").fadeIn();
+			switch (type) {
+				case -1:
+					$("#js-message").attr("class", "alert alert-danger").find(".message").html(message);
+					break;
+				case 1:
+					$("#js-message").attr("class", "alert alert-success").find(".message").html(message);
+					break;
+			}
+			// 3s 后隐藏
+			setTimeout(function () {
+				$("#js-message").fadeOut("slow");
+			}, 3000);
+		}
+
 		function onEdit(id) {
 			layer.open({
 				type: 2,
@@ -39,9 +55,63 @@
 			});
 		}
 
+		// start 删除
+		function deleteOp(id) {
+			$("#js-id").val(id);
+			$('#deleteModal').modal();
+			console.log(11111111);
+		}
+
+		function deleteSubmit() {
+			var id = $("#js-id").val();
+			$.ajax({
+				type: 'POST',
+				url: '/Admin/NormTarget/Delete',
+				data: { id: id },
+				dataType: 'json',
+				success: function (data) {
+					if (data.code <= 0) {
+						// 删除失败
+						showMessage(data.message, -1);
+					} else {
+						// 删除成功
+						window.location.href = window.location.href;
+					}
+				}
+			});
+		}
+		// end 删除
+
 	</script>
 }
 
+<!-- start 删除确认框 -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<h4 class="modal-title">确认框</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="message-text" class="control-label">确定要删除？</label>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+				<button onclick="deleteSubmit()" type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end 删除确认框 -->
+<!-- start 提示框 -->
+@{ Html.RenderPartial("_MessagePartial"); }
+<!-- end 提示框 -->
+<input id="js-id" type="hidden" />
 <div class="layui-fluid">
 	@Html.GenerateCollapseNormTarget()
 </div>

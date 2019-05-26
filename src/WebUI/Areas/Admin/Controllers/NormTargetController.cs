@@ -122,6 +122,22 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 删除
+        public JsonResult Delete(int id)
+        {
+            try
+            {
+                Container.Instance.Resolve<NormTargetService>().Delete(id);
+
+                return Json(new { code = 1, message = "删除成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "删除失败" });
+            }
+        }
+        #endregion
+
         #region Helpers
 
         private IList<SelectListItem> InitDDLForParent(NormTarget self, int parentId)
