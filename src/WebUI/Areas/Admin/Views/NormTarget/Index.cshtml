@@ -70,6 +70,21 @@
 			});
 		}
 
+		function onOption(id) {
+			layer.open({
+				type: 2,
+				closeBtn: 1,
+				anim: 4,
+				title: "选项列表",
+				shade: 0.4,
+				shadeClose: false,
+				area: ['1000px', '500px'],
+				content: ['/Admin/NormTarget/OptionList?id=' + id, 'yes'],
+				end: function () {
+				}
+			});
+		}
+
 		// start 删除
 		function deleteOp(id) {
 			$("#js-id").val(id);

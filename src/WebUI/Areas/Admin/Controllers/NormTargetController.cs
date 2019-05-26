@@ -192,6 +192,71 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 选项列表
+        /// <summary>
+        /// 选项列表
+        /// </summary>
+        /// <param name="id">选项所属的指标ID</param>
+        public ViewResult OptionList(int id)
+        {
+            IList<Options> viewModel = Container.Instance.Resolve<OptionsService>().Query(new List<ICriterion>
+            {
+                Expression.Eq("NormTarget.ID", id)
+            }).OrderBy(m => m.SortCode).ToList();
+            if (viewModel == null)
+            {
+                viewModel = new List<Options>();
+            }
+
+            return View(viewModel);
+        }
+        #endregion
+
+        #region 选项排序
+        /// <summary>
+        /// 选项排序
+        /// </summary>
+        public JsonResult OptionSort(string ids)
+        {
+            try
+            {
+                string[] idArr = ids.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                Options item;
+                for (int i = 0; i < idArr.Length; i++)
+                {
+                    item = Container.Instance.Resolve<OptionsService>().GetEntity(int.Parse(idArr[i]));
+                    if (item != null)
+                    {
+                        item.SortCode = (i + 1) * 10;
+                        Container.Instance.Resolve<OptionsService>().Edit(item);
+                    }
+                }
+
+                return Json(new { code = 1, message = "保存排序成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "保存排序失败" });
+            }
+        }
+        #endregion
+
+        #region 选项删除
+        public JsonResult OptionDelete(int id)
+        {
+            try
+            {
+                Container.Instance.Resolve<OptionsService>().Delete(id);
+
+                return Json(new { code = 1, message = "删除成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "删除失败" });
+            }
+        }
+        #endregion
+
         #region Helpers
 
         private IList<SelectListItem> InitDDLForParent(NormTarget self, int parentId)

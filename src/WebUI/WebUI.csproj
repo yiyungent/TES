@@ -135,6 +135,9 @@
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -144,9 +147,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Web.Razor">
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.4\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Webpages">
       <HintPath>..\..\packages\Microsoft.AspNet.Webpages.3.2.4\lib\net45\System.Web.Webpages.dll</HintPath>
     </Reference>
@@ -7268,6 +7268,7 @@
     <Content Include="Areas\Admin\Views\NormTarget\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\NormTarget\Sort.cshtml" />
     <Content Include="Areas\Admin\Views\NormTarget\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\NormTarget\OptionList.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
