@@ -42,10 +42,21 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Sort(int id)
         {
-            IList<NormTarget> viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+            IList<NormTarget> viewModel = null;
+            if (id == 0)
             {
-                Expression.Eq("ParentTarget.ID", id)
-            }).OrderBy(m => m.SortCode).ToList();
+                viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.IsNull("ParentTarget.ID")
+                }).OrderBy(m => m.SortCode).ToList();
+            }
+            else
+            {
+                viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("ParentTarget.ID", id)
+                }).OrderBy(m => m.SortCode).ToList();
+            }
 
             return View(viewModel);
         }
