@@ -7264,6 +7264,8 @@
     <Content Include="Areas\Admin\Views\EvaTask\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\EvaTask\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\EvaTask\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\NormTarget\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\NormTarget\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
@@ -7308,6 +7310,7 @@
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\DepartmentController.cs" />
     <Compile Include="Areas\Admin\Controllers\EvaTaskController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NormTargetController.cs" />
     <Compile Include="Areas\Admin\Controllers\NormTypeController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\ThemeTemplateController.cs" />
@@ -7345,6 +7348,7 @@
     <Compile Include="Areas\Admin\Models\BreadcrumbItem.cs" />
     <Compile Include="HtmlHelpers\CollapseDept.cs" />
     <Compile Include="HtmlHelpers\CollapseMenu.cs" />
+    <Compile Include="HtmlHelpers\CollapseNormTarget.cs" />
     <Compile Include="MessageHubs\NotificationHub.cs" />
     <Compile Include="MessageHubs\NotificationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
