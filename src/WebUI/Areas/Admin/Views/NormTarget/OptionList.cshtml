@@ -7,7 +7,10 @@
 <link href="~/dist/layui/css/layui.css" rel="stylesheet" />
 <div class="layui-fluid">
 	<div>
-		<h2>@(Model[0].NormTarget?.Name ?? "(无所属指标)") 的选项列表</h2>
+		@if (Model != null)
+		{
+			<h2>@(Model[0].NormTarget?.Name ?? "(无所属指标)") 的选项列表</h2>
+		}
 		<table class="layui-table">
 			<colgroup>
 				<col>
@@ -23,22 +26,25 @@
 				</tr>
 			</thead>
 			<tbody>
-				@if (Model != null && Model.Count > 0)
-				{
-					foreach (var item in Model)
+				@{
+					if (Model != null)
 					{
-						<tr id="js-tr-@item.ID">
-							<td>@item.Content</td>
-							<td>@item.Score</td>
-							<td>
-								<div class="layui-btn-group">
-									<button class="layui-btn" onclick="onUp(this)">↑</button>
-									<button class="layui-btn" onclick="onDown(this)">↓</button>
-									<a class="layui-btn" href="/Admin/NormTarget/OptionEdit?id=@item.ID">修改</a>
-									<button class="layui-btn layui-btn-danger" onclick="onDelete(@item.ID)">删除</button>
-								</div>
-							</td>
-						</tr>
+						for (int i = 0; i < Model.Count; i++)
+						{
+							var item = Model[i];
+							<tr id="js-tr-@item.ID">
+								<td>@item.Content</td>
+								<td>@item.Score</td>
+								<td>
+									<div class="layui-btn-group">
+										<button class="layui-btn" onclick="onUp(this)">↑</button>
+										<button class="layui-btn" onclick="onDown(this)">↓</button>
+										<a class="layui-btn" href="/Admin/NormTarget/OptionEdit?id=@item.ID">修改</a>
+										<button class="layui-btn layui-btn-danger" onclick="onDelete(@item.ID)">删除</button>
+									</div>
+								</td>
+							</tr>
+						}
 					}
 				}
 			</tbody>

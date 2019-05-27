@@ -203,9 +203,9 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 Expression.Eq("NormTarget.ID", id)
             }).OrderBy(m => m.SortCode).ToList();
-            if (viewModel == null)
+            if (viewModel == null || viewModel.Count <= 1)
             {
-                viewModel = new List<Options>();
+                viewModel = null;
             }
 
             return View(viewModel);

@@ -29,7 +29,7 @@ namespace WebUI.Areas.Admin.Controllers
             });
 
             // 按评价人排序
-            allRecord = allRecord.OrderBy(m => m.SysUser.ID).ToList();
+            //allRecord = allRecord.OrderBy(m => m.SysUser.ID).ToList();
 
             // 计算分数和+参评人员
             int personCount = 0; // 参评人数
@@ -38,12 +38,12 @@ namespace WebUI.Areas.Admin.Controllers
             decimal avgScore = 0;
             foreach (var item in allRecord)
             {
-                if (item.SysUser.ID != userId)
-                {
-                    personCount = personCount + 1;
+                //if (item.SysUser.ID != userId)
+                //{
+                //    personCount = personCount + 1;
 
-                    userId = item.SysUser.ID;
-                }
+                //    userId = item.SysUser.ID;
+                //}
                 // 递归确定权重（含归一化处理）
                 decimal weight = GetWeight(item.NormTarget, allTarget);
 
