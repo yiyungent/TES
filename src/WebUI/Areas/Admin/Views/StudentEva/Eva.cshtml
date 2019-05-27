@@ -31,12 +31,11 @@
 		}
 
 		function saveData() {
-			selectRole();
 			$.ajax({
 				url: "/Admin/StudentEva/Eva",
 				type: "post",
 				dataType: "json",
-				data: $("#js-form").serialize(),
+				data: $("#js-form input").serialize(),
 				success: onSuccess
 			});
 		}

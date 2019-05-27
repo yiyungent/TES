@@ -70,7 +70,7 @@ namespace WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult Eva(int teacherId, bool flag)
+        public JsonResult Eva(int teacherId, bool flag = false)
         {
             try
             {
