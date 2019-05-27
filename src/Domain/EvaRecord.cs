@@ -11,13 +11,6 @@ namespace Domain
     public class EvaRecord : BaseEntity<EvaRecord>
     {
         ///<summary>
-        /// 评价人
-        /// </summary>
-        [Display(Name = "评价人")]
-        [BelongsTo(Column = "UserId")]
-        public UserInfo SysUser { get; set; }
-
-        ///<summary>
         /// 被评价人
         /// </summary>
         [Display(Name = "被评价人")]
