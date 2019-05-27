@@ -1,4 +1,5 @@
-﻿@using WebUI.HtmlHelpers
+﻿@using Framework.HtmlHelpers
+@using WebUI.HtmlHelpers
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
 }
@@ -144,8 +145,14 @@
 <input id="js-id" type="hidden" />
 <div class="layui-fluid">
 	<div class="layui-btn-group">
+		@Html.HasAuth("Admin", "NormTarget", "Create")
+		{
 		<button class="layui-btn layui-btn-sm layui-btn-normal" onclick="onCreate()">添加</button>
+		}
+		@Html.HasAuth("Admin", "NormTarget", "Sort")
+		{
 		<button class="layui-btn layui-btn-sm layui-btn-normal" onclick="onSort(0)">排序</button>
+		}
 	</div>
 	@Html.GenerateCollapseNormTarget()
 </div>

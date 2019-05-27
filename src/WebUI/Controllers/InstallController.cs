@@ -410,6 +410,100 @@ namespace WebUI.Controllers
                     Sys_Menu = clazzInfo_Sys_Menu
                 });
 
+                #region NormTarget
+                Sys_Menu normTarget_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "NormTarget") }).FirstOrDefault();
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.NormTarget.Index",
+                    Name = "评价指标-列表",
+                    Sys_Menu = normTarget_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.NormTarget.Create",
+                    Name = "评价指标-创建",
+                    Sys_Menu = normTarget_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.NormTarget.Sort",
+                    Name = "评价指标-排序",
+                    Sys_Menu = normTarget_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.NormTarget.Delete",
+                    Name = "评价指标-删除",
+                    Sys_Menu = normTarget_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.NormTarget.Edit",
+                    Name = "评价指标-修改",
+                    Sys_Menu = normTarget_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.NormTarget.OptionList",
+                    Name = "评价指标-选项列表",
+                    Sys_Menu = normTarget_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.NormTarget.OptionSort",
+                    Name = "评价指标-选项排序",
+                    Sys_Menu = normTarget_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.NormTarget.OptionDelete",
+                    Name = "评价指标-选项删除",
+                    Sys_Menu = normTarget_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.NormTarget.OptionCreate",
+                    Name = "评价指标-选项创建",
+                    Sys_Menu = normTarget_Sys_Menu
+                });
+                #endregion
+
+                #region EvaTask
+                Sys_Menu evaTask_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "EvaTask") }).FirstOrDefault();
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EvaTask.Edit",
+                    Name = "评价任务-修改",
+                    Sys_Menu = evaTask_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EvaTask.Sort",
+                    Name = "评价任务-排序",
+                    Sys_Menu = evaTask_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EvaTask.Delete",
+                    Name = "评价任务-删除",
+                    Sys_Menu = evaTask_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EvaTask.Create",
+                    Name = "评价任务-添加",
+                    Sys_Menu = evaTask_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EvaTask.Detail",
+                    Name = "评价任务-查看",
+                    Sys_Menu = evaTask_Sys_Menu
+                }); 
+                #endregion
+
+
+
 
                 ShowMessage("成功");
             }

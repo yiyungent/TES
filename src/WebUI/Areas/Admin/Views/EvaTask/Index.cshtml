@@ -188,15 +188,15 @@
 					</td>
 					<td>
 						<div class="btn-group" role="group" data-pjax>
-							@if (Html.HasAuth("Admin", "UserInfo", "Detail"))
+							@if (Html.HasAuth("Admin", "EvaTask", "Detail"))
 							{
 								<a class="btn btn-success" href="@Url.Action("Detail")?id=@cat.ID">查看</a>
 							}
-							@if (Html.HasAuth("Admin", "UserInfo", "Delete"))
+							@if (Html.HasAuth("Admin", "EvaTask", "Delete"))
 							{
 								<button class="btn btn-danger" type="button" onclick="deleteOp(@cat.ID)">删除</button>
 							}
-							@if (Html.HasAuth("Admin", "UserInfo", "Edit"))
+							@if (Html.HasAuth("Admin", "EvaTask", "Edit"))
 							{
 								<a class="btn btn-warning" href="@Url.Action("Edit")?id=@cat.ID">修改</a>
 							}
