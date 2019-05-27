@@ -55,6 +55,7 @@ namespace WebUI.Areas.Admin.Controllers
         /// </summary>
         /// <param name="id">课表ID</param>
         /// <returns></returns>
+        [HttpGet]
         public ViewResult Eva(int id)
         {
             // 学生评价教师 使用 "学生评价" 类型的指标
@@ -67,9 +68,41 @@ namespace WebUI.Areas.Admin.Controllers
 
             return View(viewModel);
         }
+
+        [HttpPost]
+        public JsonResult Eva(int teacherId, bool flag)
+        {
+            try
+            {
+                // "学生方面" 指标
+                IList<NormTarget> normTargetList = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("NormType.ID", 1)
+                });
+                foreach (var item in normTargetList)
+                {
+                    if (int.TryParse(Request["normTarget_" + item.ID], out int selectedOptionId))
+                    {
+                        Container.Instance.Resolve<EvaRecordService>().Create(new EvaRecord
+                        {
+                            EvaDate = DateTime.Now,
+                            NormTarget = item,
+                            NormType = new NormType { ID = 1 },
+                            Options = new Options { ID = selectedOptionId },
+                            Teacher = new EmployeeInfo { ID = teacherId },
+                            EvaluateTask = null
+                        });
+                    }
+                }
+
+                return Json(new { code = 1, message = "提交评价成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "提交评价失败" });
+            }
+        }
         #endregion
-
-
 
 
     }

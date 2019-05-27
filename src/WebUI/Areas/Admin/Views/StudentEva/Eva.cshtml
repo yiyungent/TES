@@ -30,6 +30,25 @@
 			}, 3000);
 		}
 
+		function saveData() {
+			selectRole();
+			$.ajax({
+				url: "/Admin/StudentEva/Eva",
+				type: "post",
+				dataType: "json",
+				data: $("#js-form").serialize(),
+				success: onSuccess
+			});
+		}
+
+		function onSuccess(data) {
+			if (data.code <= 0) {
+				showMessage(data.message, -1);
+			} else {
+				showMessage(data.message, 1);
+			}
+		}
+
 		$(function () {
 			//iCheck for checkbox and radio inputs
 			$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -59,7 +78,8 @@
 	<!-- end .box-header -->
 	<!-- start .box-body -->
 	<div class="box-body no-padding">
-		<div class="panel-group" role="tablist" aria-multiselectable="true">
+		<div id="js-form" class="panel-group" role="tablist" aria-multiselectable="true">
+			@Html.Hidden("teacherId", courseTable.Teacher.ID)
 			@foreach (var item in Model)
 			{
 				if (item.ChildTargetList == null || item.ChildTargetList.Count <= 0)
@@ -90,7 +110,7 @@
 									{
 										<div class="radio">
 											<label>
-												<input class="minimal" type="radio" name="option_group_@item.ID" value="@option.ID">
+												<input class="minimal" type="radio" name="normTarget_@item.ID" value="@option.ID">
 												@option.Content
 											</label>
 											<span class="pull-right"><i class="fa fa-heart text-primary"></i> @option.Score</span>
@@ -108,7 +128,7 @@
 	<!-- start .box-footer -->
 	<div class="box-footer clearfix">
 		<div class="btn-group col-md-4 col-md-offset-4 col-xs-12">
-			<button class="btn btn-primary btn-lg btn-block">提交</button>
+			<button class="btn btn-primary btn-lg btn-block" onclick="saveData()">提交</button>
 			@if (TempData["RedirectUrl"] != null)
 			{
 				<a class="btn btn-default btn-lg btn-block" href="@TempData["RedirectUrl"].ToString()">返回</a>
