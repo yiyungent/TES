@@ -7270,6 +7270,9 @@
     <Content Include="Areas\Admin\Views\NormTarget\Create.cshtml" />
     <Content Include="Areas\Admin\Views\NormTarget\OptionList.cshtml" />
     <Content Include="Areas\Admin\Views\NormTarget\OptionCreate.cshtml" />
+    <Content Include="Areas\Admin\Views\StudentEva\NormTargetListByType.cshtml" />
+    <Content Include="Areas\Admin\Views\StudentEva\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\StudentEva\Eva.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
@@ -7318,6 +7321,7 @@
     <Compile Include="Areas\Admin\Controllers\NormTargetController.cs" />
     <Compile Include="Areas\Admin\Controllers\NormTypeController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
+    <Compile Include="Areas\Admin\Controllers\StudentEvaController.cs" />
     <Compile Include="Areas\Admin\Controllers\ThemeTemplateController.cs" />
     <Compile Include="Areas\Admin\Models\Clazz\ClazzAssignCourseItemJson.cs" />
     <Compile Include="Areas\Admin\Models\Clazz\ClazzInfoForEditViewModel.cs" />

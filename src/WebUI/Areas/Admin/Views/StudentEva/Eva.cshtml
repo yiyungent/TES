@@ -1,0 +1,124 @@
+﻿@using Framework.HtmlHelpers
+@using WebUI.Areas.Admin.Models.Common
+@using WebUI.Extensions
+@using Domain
+@model IList<NormTarget>
+@{
+	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+	CourseTable courseTable = ViewBag.CourseTable;
+}
+@section head {
+	<link href="~/dist/AdminLTE/plugins/iCheck/all.css" rel="stylesheet" />
+}
+@section body {
+	<script src="~/dist/AdminLTE/plugins/iCheck/icheck.min.js"></script>
+	<script>
+
+		function showMessage(message, type) {
+			$("#js-message").fadeIn();
+			switch (type) {
+				case -1:
+					$("#js-message").attr("class", "alert alert-danger").find(".message").html(message);
+					break;
+				case 1:
+					$("#js-message").attr("class", "alert alert-success").find(".message").html(message);
+					break;
+			}
+			// 3s 后隐藏
+			setTimeout(function () {
+				$("#js-message").fadeOut("slow");
+			}, 3000);
+		}
+
+		$(function () {
+			//iCheck for checkbox and radio inputs
+			$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+				checkboxClass: 'icheckbox_minimal-blue',
+				radioClass: 'iradio_minimal-blue'
+			});
+		});
+	</script>
+}
+
+
+<!-- start 提示框 -->
+@{ Html.RenderPartial("_MessagePartial"); }
+<!-- end 提示框 -->
+<!-- start .box -->
+<div class="box">
+	<!-- start .box-header -->
+	<div class="box-header">
+		<h3 class="box-title col-sm-12">
+			<span class="col-xs-12 col-md-4">班级: @courseTable.Clazz.ClazzCode</span>
+			<span class="col-xs-12 col-md-4">课程: @courseTable.Course.Name（@courseTable.Course.CourseCode）</span>
+			<span class="col-xs-12 col-md-4">授课教师: @courseTable.Teacher.Name（@courseTable.Teacher.EmployeeCode）</span>
+		</h3>
+
+		<div class="box-tools"></div>
+	</div>
+	<!-- end .box-header -->
+	<!-- start .box-body -->
+	<div class="box-body no-padding">
+		<div class="panel-group" role="tablist" aria-multiselectable="true">
+			@foreach (var item in Model)
+			{
+				if (item.ChildTargetList == null || item.ChildTargetList.Count <= 0)
+				{
+					// 末指标，有选项
+					<div class="panel panel-default">
+						<div id="heading-@item.ID" class="panel-heading" role="tab">
+							<h4 class="panel-title">
+								<a role="button" data-toggle="collapse" href="#collapse-@item.ID" aria-expanded="true">
+									@{
+										string title = "";
+										NormTarget currentItem = item;
+										while (currentItem != null)
+										{
+											title = currentItem.Name + " - " + title;
+											currentItem = currentItem.ParentTarget;
+										}
+									}
+									@title.Remove(title.Length - 3)
+								</a>
+							</h4>
+						</div>
+						<div id="collapse-@item.ID" class="panel-collapse collapse in" role="tabpanel">
+							<div class="panel-body">
+								<div class="form-group">
+									@{ var optionSortedList = item.OptionsList.OrderBy(m => m.SortCode); }
+									@foreach (var option in optionSortedList)
+									{
+										<div class="radio">
+											<label>
+												<input class="minimal" type="radio" name="option_group_@item.ID" value="@option.ID">
+												@option.Content
+											</label>
+											<span class="pull-right"><i class="fa fa-heart text-primary"></i> @option.Score</span>
+										</div>
+									}
+								</div>
+							</div>
+						</div>
+					</div>
+				}
+			}
+		</div>
+	</div>
+	<!-- end .box-body -->
+	<!-- start .box-footer -->
+	<div class="box-footer clearfix">
+		<div class="btn-group col-md-4 col-md-offset-4 col-xs-12">
+			<button class="btn btn-primary btn-lg btn-block">提交</button>
+			@if (TempData["RedirectUrl"] != null)
+			{
+				<a class="btn btn-default btn-lg btn-block" href="@TempData["RedirectUrl"].ToString()">返回</a>
+			}
+			else
+			{
+				<a class="btn btn-default btn-lg btn-block" href="javascript:history.go(-1);">返回</a>
+			}
+		</div>
+	</div>
+	<!-- end .box-footer -->
+</div>
+<!-- end .box -->
