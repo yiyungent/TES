@@ -257,6 +257,36 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 选项创建
+        [HttpGet]
+        public ViewResult OptionCreate(int id)
+        {
+            NormTarget normTarget = Container.Instance.Resolve<NormTargetService>().GetEntity(id);
+            ViewBag.NormTarget = normTarget;
+
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult OptionCreate(Options inputModel)
+        {
+            try
+            {
+                if (inputModel.NormTarget.ID == 0)
+                {
+                    inputModel.NormTarget = null;
+                }
+                Container.Instance.Resolve<OptionsService>().Create(inputModel);
+
+                return Json(new { code = -1, message = "添加选项成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "添加选项失败" });
+            }
+        }
+        #endregion
+
         #region Helpers
 
         private IList<SelectListItem> InitDDLForParent(NormTarget self, int parentId)

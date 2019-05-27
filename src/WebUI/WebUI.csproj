@@ -7269,6 +7269,7 @@
     <Content Include="Areas\Admin\Views\NormTarget\Sort.cshtml" />
     <Content Include="Areas\Admin\Views\NormTarget\Create.cshtml" />
     <Content Include="Areas\Admin\Views\NormTarget\OptionList.cshtml" />
+    <Content Include="Areas\Admin\Views\NormTarget\OptionCreate.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
