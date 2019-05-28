@@ -104,7 +104,14 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 查看
+        public ViewResult Detail(int id)
+        {
+            EmployeeInfo viewModel = Container.Instance.Resolve<EmployeeInfoService>().GetEntity(id);
 
+            return View(viewModel);
+        }
+        #endregion
 
     }
 }
