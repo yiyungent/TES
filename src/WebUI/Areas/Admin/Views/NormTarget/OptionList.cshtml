@@ -7,7 +7,7 @@
 <link href="~/dist/layui/css/layui.css" rel="stylesheet" />
 <div class="layui-fluid">
 	<div>
-		@if (Model != null)
+		@if (Model != null && Model.Count >= 1)
 		{
 			<h2>@(Model[0].NormTarget?.Name ?? "(无所属指标)") 的选项列表</h2>
 		}
@@ -27,7 +27,7 @@
 			</thead>
 			<tbody>
 				@{
-					if (Model != null)
+					if (Model != null && Model.Count >= 1)
 					{
 						for (int i = 0; i < Model.Count; i++)
 						{
@@ -55,7 +55,7 @@
 			<input id="js-ids" name="ids" type="hidden" />
 			<div class="layui-form-item">
 				<div class="layui-input-block">
-					<a class="layui-btn" href="/Admin/NormTarget/OptionCreate?id=@(Model[0].NormTarget.ID)">添加选项</a>
+					<a class="layui-btn" href="/Admin/NormTarget/OptionCreate?id=@ViewBag.NormTargetId">添加选项</a>
 					<button class="layui-btn" onclick="return saveData();">保存排序</button>
 					<button class="layui-btn" onclick="return flush();">刷新</button>
 				</div>

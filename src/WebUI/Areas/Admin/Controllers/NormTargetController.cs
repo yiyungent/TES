@@ -203,10 +203,7 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 Expression.Eq("NormTarget.ID", id)
             }).OrderBy(m => m.SortCode).ToList();
-            if (viewModel == null || viewModel.Count <= 1)
-            {
-                viewModel = null;
-            }
+            ViewBag.NormTargetId = id;
 
             return View(viewModel);
         }
