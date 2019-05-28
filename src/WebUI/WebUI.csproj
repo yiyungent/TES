@@ -7278,6 +7278,7 @@
     <Content Include="Areas\Admin\Views\StudentInfo\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\StudentInfo\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\StudentInfo\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\EmployeeInfo\Index.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
@@ -7321,6 +7322,7 @@
     <Compile Include="Areas\Admin\Controllers\CourseTableController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\DepartmentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\EmployeeInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\EvaResultController.cs" />
     <Compile Include="Areas\Admin\Controllers\EvaTaskController.cs" />
     <Compile Include="Areas\Admin\Controllers\NormTargetController.cs" />
