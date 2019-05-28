@@ -104,33 +104,33 @@
 			@foreach (var item in Model.List)
 			{
 				<tr data-tr-id="@item.ID">
-					<td>@item.ID</td>
-					<td>@item.Name</td>
-					<td>@item.EvaTaskCode</td>
-					<td>
+					<td style="vertical-align: middle;">@item.ID</td>
+					<td style="vertical-align: middle;">@item.Name</td>
+					<td style="vertical-align: middle;">@item.EvaTaskCode</td>
+					<td style="vertical-align: middle;">
 						<span class="label label-info">@item.StartDate</span>
 					</td>
-					<td>
+					<td style="vertical-align: middle;">
 						<span class="label label-info">@item.EndDate</span>
 					</td>
-					<td>
+					<td style="vertical-align: middle;">
 						@switch (item.Status)
 						{
 							case 1:
-								<span class="label label-info">待开启</span>
+								<span class="label label-info">@item.Status.ToEvaTaskStatus()</span>
 								break;
 							case 2:
-								<span class="label label-info">正在评价</span>
+								<span class="label label-success">@item.Status.ToEvaTaskStatus()</span>
 								break;
 							case 3:
-								<span class="label label-info">评价结束</span>
+								<span class="label label-primary">@item.Status.ToEvaTaskStatus()</span>
 								break;
 							default:
-								<span class="label label-info">未知</span>
+								<span class="label label-default">@item.Status.ToEvaTaskStatus()</span>
 								break;
 						}
 					</td>
-					<td>
+					<td style="vertical-align: middle;">
 						<div class="btn-group" role="group" data-pjax>
 							@if (Html.HasAuth("Admin", "TeacherEva", "EvaList"))
 							{

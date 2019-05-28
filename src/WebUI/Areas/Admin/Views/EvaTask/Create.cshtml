@@ -7,8 +7,13 @@
 	Html.EnableClientValidation(false);
 }
 @section head {
+	<!-- date-range-picker -->
+	<link href="~/dist/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
 }
 @section body {
+	<!-- date-range-picker -->
+	<script src="~/dist/AdminLTE/bower_components/moment/min/moment.min.js"></script>
+	<script src="~/dist/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 	<script>
 
 		function showMessage(message, type) {
@@ -47,7 +52,16 @@
 		}
 
 		$(function () {
+			// Date range picker
+			$('#js-start-end-time').daterangepicker();
 
+			$('#js-start-end-time').on('change', function () {
+				var $this = $(this);
+				var startAndEndTime = $this.val().split('-');
+				console.log(startAndEndTime);
+				$('#InputStartDate').val(startAndEndTime[0].trim());
+				$('#InputEndDate').val(startAndEndTime[1].trim());
+			});
 		});
 
 	</script>
@@ -73,13 +87,22 @@
 				@Html.LabelFor(m => m.InputEvaTaskCode)
 				@Html.TextBoxFor(m => m.InputEvaTaskCode, new { @class = "form-control", placeholder = "请输入代码" })
 			</div>
-			<div class="form-group">
+			<div class="form-group" style="display: none;">
 				@Html.LabelFor(m => m.InputStartDate)
-				@Html.TextBox("InputStartDate", Model.InputStartDate.ToString("yyyy-MM-dd"),  new { @class = "form-control", type = "date" })
+				@Html.TextBox("InputStartDate", Model.InputStartDate.ToString("yyyy-MM-dd"), new { @class = "form-control" })
+			</div>
+			<div class="form-group" style="display: none;">
+				@Html.LabelFor(m => m.InputEndDate)
+				@Html.TextBox("InputEndDate", Model.InputStartDate.ToString("yyyy-MM-dd"), new { @class = "form-control" })
 			</div>
 			<div class="form-group">
-				@Html.LabelFor(m => m.InputEndDate)
-				@Html.TextBox("InputEndDate", Model.InputStartDate.ToString("yyyy-MM-dd"),  new { @class = "form-control", type = "date" })
+				<label>开始时间 - 截止时间</label>
+				<div class="input-group">
+					<div class="input-group-addon">
+						<i class="fa fa-calendar"></i>
+					</div>
+					<input id="js-start-end-time" type="text" class="form-control pull-right">
+				</div>
 			</div>
 			<div class="form-group">
 				@Html.LabelFor(m => m.SelectListForStatus)

@@ -179,6 +179,28 @@ namespace WebUI.Extensions
 
             return meanStr;
         }
+
+        public static string ToEvaTaskStatus(this int value)
+        {
+            string meanStr = string.Empty;
+            switch (value)
+            {
+                case 1:
+                    meanStr = "待开启";
+                    break;
+                case 2:
+                    meanStr = "正在评价";
+                    break;
+                case 3:
+                    meanStr = "评价结束";
+                    break;
+                default:
+                    meanStr = "未知";
+                    break;
+            }
+
+            return meanStr;
+        }
         #endregion
 
         #region 通过路由获取系统菜单
