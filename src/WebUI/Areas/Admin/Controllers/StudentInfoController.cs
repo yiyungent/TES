@@ -100,5 +100,14 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 查看
+        public ViewResult Detail(int id)
+        {
+            StudentInfo viewModel = Container.Instance.Resolve<StudentInfoService>().GetEntity(id);
+
+            return View(viewModel);
+        }
+        #endregion
+
     }
 }
