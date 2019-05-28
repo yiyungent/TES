@@ -102,6 +102,9 @@ namespace WebUI.Areas.Admin.Controllers
             }
             ViewBag.CurrentStudent = bindStudent;
             ViewBag.CurrentClazz = bindStudent?.ClazzInfo;
+            ViewBag.EvaTaskId = id;
+            EvaTask evaTask = Container.Instance.Resolve<EvaTaskService>().GetEntity(id);
+            ViewBag.EvaTask = evaTask;
             TempData["RedirectUrl"] = Request.RawUrl;
 
             return View(viewModel);
@@ -115,7 +118,7 @@ namespace WebUI.Areas.Admin.Controllers
         /// <param name="id">课表ID</param>
         /// <returns></returns>
         [HttpGet]
-        public ViewResult Eva(int id)
+        public ViewResult Eva(int id, int evaTaskId)
         {
             // 学生评价教师 使用 "学生评价" 类型的指标
             IList<NormTarget> viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
@@ -124,12 +127,13 @@ namespace WebUI.Areas.Admin.Controllers
             });
             CourseTable courseTable = Container.Instance.Resolve<CourseTableService>().GetEntity(id);
             ViewBag.CourseTable = courseTable;
+            ViewBag.EvaTaskId = evaTaskId;
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public JsonResult Eva(int teacherId, bool flag = false)
+        public JsonResult Eva(int teacherId, int evaTaskId, bool falg = false)
         {
             try
             {
@@ -163,7 +167,7 @@ namespace WebUI.Areas.Admin.Controllers
                         NormType = new NormType { ID = 1 },
                         Options = new Options { ID = item.Value },
                         Teacher = new EmployeeInfo { ID = teacherId },
-                        EvaluateTask = null
+                        EvaluateTask = new EvaTask { ID = evaTaskId }
                     });
                 }
 

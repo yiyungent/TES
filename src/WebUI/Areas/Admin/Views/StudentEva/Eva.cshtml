@@ -6,6 +6,7 @@
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
 	CourseTable courseTable = ViewBag.CourseTable;
+	int evaTaskId = ViewBag.EvaTaskId;
 }
 @section head {
 	<link href="~/dist/AdminLTE/plugins/iCheck/all.css" rel="stylesheet" />
@@ -75,6 +76,7 @@
 	<div class="box-body no-padding">
 		<div id="js-form" class="panel-group" role="tablist" aria-multiselectable="true">
 			@Html.Hidden("teacherId", courseTable.Teacher.ID)
+			@Html.Hidden("evaTaskId", evaTaskId)
 			@foreach (var item in Model)
 			{
 				if ((item.ChildTargetList == null || item.ChildTargetList.Count <= 0) && (item.OptionsList != null && item.OptionsList.Count >= 1))

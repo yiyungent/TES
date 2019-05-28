@@ -7,6 +7,8 @@
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
 	StudentInfo currentStudent = ViewBag.CurrentStudent;
 	ClazzInfo currentClazz = ViewBag.CurrentClazz;
+	int evaTaskId = ViewBag.EvaTaskId;
+	EvaTask evaTask = ViewBag.EvaTask;
 }
 @section head {
 }
@@ -43,7 +45,15 @@
 <div class="box">
 	<!-- start .box-header -->
 	<div class="box-header">
-		<h3 class="box-title">@(currentStudent?.Name ?? "")（@(currentStudent?.StudentCode ?? "")）- @(currentClazz?.ClazzCode ?? "") 班</h3>
+		<h3 class="box-title">
+			<span class="col-xs-12" style="padding-bottom: 10px;">评价任务: @evaTask.Name</span>
+			<span class="col-xs-12" style="padding-bottom: 10px;">
+				@(currentStudent?.Name ?? "")（@(currentStudent?.StudentCode ?? "")）
+			</span>
+			<span class="col-xs-12">
+				@(currentClazz?.ClazzCode ?? "") 班
+			</span>
+		</h3>
 
 		<div class="box-tools"></div>
 	</div>
@@ -70,7 +80,7 @@
 						<td></td>
 						<td>
 							<div class="btn-group">
-								<a class="btn btn-primary" href="/Admin/StudentEva/Eva?id=@item.ID">评价</a>
+								<a class="btn btn-primary" href="/Admin/StudentEva/Eva?id=@item.ID&evaTaskId=@evaTaskId">评价</a>
 							</div>
 						</td>
 					</tr>
