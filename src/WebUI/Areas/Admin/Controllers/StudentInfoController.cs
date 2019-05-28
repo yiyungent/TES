@@ -157,5 +157,51 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 新增
+        [HttpGet]
+        public ViewResult Create()
+        {
+            StudentInfoForEditViewModel viewModel = new StudentInfoForEditViewModel();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public JsonResult Create(StudentInfoForEditViewModel inputModel)
+        {
+            try
+            {
+                // 数据格式效验
+                if (ModelState.IsValid)
+                {
+                    #region 数据有效效验
+                    // 查找 已经有此代码的
+                    if (Container.Instance.Resolve<StudentInfoService>().Exist(inputModel.InputStudentCode))
+                    {
+                        return Json(new { code = -3, message = "学号已经存在, 请更换" });
+                    }
+                    #endregion
+
+                    #region 输入模型 -> 数据库模型
+                    StudentInfo dbModel = (StudentInfo)inputModel;
+                    #endregion
+
+                    Container.Instance.Resolve<StudentInfoService>().Create(dbModel);
+
+                    return Json(new { code = 1, message = "添加成功" });
+                }
+                else
+                {
+                    string errorMessage = ModelState.GetErrorMessage();
+                    return Json(new { code = -1, message = errorMessage });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -2, message = "添加失败" });
+            }
+        }
+        #endregion
+
     }
 }

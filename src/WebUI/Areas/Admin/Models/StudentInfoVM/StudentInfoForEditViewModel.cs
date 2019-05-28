@@ -40,6 +40,14 @@ namespace WebUI.Areas.Admin.Models.StudentInfoVM
         /// </summary>
         public int SelectedValForClazz { get; set; }
 
+        #region Ctor
+        public StudentInfoForEditViewModel()
+        {
+            this.SelectListForClazz = InitSelectListForClazz(0);
+            this.SelectedValForClazz = 0;
+        }
+        #endregion
+
         #region 数据库模型->视图模型
         public static explicit operator StudentInfoForEditViewModel(StudentInfo dbModel)
         {
