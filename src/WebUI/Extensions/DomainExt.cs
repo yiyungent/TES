@@ -145,5 +145,45 @@ namespace WebUI.Extensions
             return rtn;
         }
         #endregion
+
+        #region 该部门的员工
+        public static IList<EmployeeInfo> EmployeeInfoList(this Department department)
+        {
+            IList<EmployeeInfo> rtn = new List<EmployeeInfo>();
+            rtn = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>
+            {
+                Expression.Eq("Department.ID", department.ID)
+            }).ToList();
+
+            return rtn;
+        }
+        #endregion
+
+        #region int实际意义 与 枚举转换
+        public static string ToEmployeeDuty(this int value)
+        {
+            string meanStr = string.Empty;
+            switch (value)
+            {
+                case 1:
+                    meanStr = "教师";
+                    break;
+                case 2:
+                    meanStr = "系主任";
+                    break;
+                default:
+                    meanStr = "未知";
+                    break;
+            }
+
+            return meanStr;
+        }
+        #endregion
+    }
+
+    public enum EmployeeDuty
+    {
+        教师 = 1,
+        系主任 = 2
     }
 }

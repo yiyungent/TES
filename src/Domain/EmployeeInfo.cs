@@ -45,6 +45,16 @@ namespace Domain
         public int Sex { get; set; }
 
         /// <summary>
+        /// 职位
+        /// <para>
+        /// 1: 教师
+        /// 2: 系主任
+        /// </para>
+        /// </summary>
+        [Display(Name = "职位")]
+        public int Duty { get; set; }
+
+        /// <summary>
         /// 绑定用户-用户ID
         /// </summary>
         [Property]

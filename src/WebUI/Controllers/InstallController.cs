@@ -203,7 +203,7 @@ namespace WebUI.Controllers
                     Expression.Eq("Name", "业务管理")
                 }).FirstOrDefault();
 
-               
+
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
                     Name = "学生管理",
@@ -319,6 +319,15 @@ namespace WebUI.Controllers
                     AreaName = "Admin",
                     ParentMenu = parentMenu,
                     SortCode = 40,
+                });
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "教师评价",
+                    ControllerName = "TeacherEva",
+                    ActionName = "Index",
+                    AreaName = "Admin",
+                    ParentMenu = parentMenu,
+                    SortCode = 50,
                 });
                 #endregion
 
@@ -550,8 +559,18 @@ namespace WebUI.Controllers
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
                     AuthKey = "Admin.StudentEva.EvaList",
-                    Name = "学生评价-进入评价",
+                    Name = "学生评价-进入",
                     Sys_Menu = studentEva_Sys_Menu
+                });
+                #endregion
+
+                #region TeacherEva
+                Sys_Menu teacherEva_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "TeacherEva") }).FirstOrDefault();
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.TeacherEva.EvaList",
+                    Name = "学生评价-进入",
+                    Sys_Menu = teacherEva_Sys_Menu
                 });
                 #endregion
 
@@ -871,7 +890,9 @@ namespace WebUI.Controllers
                 ShowMessage("开始初始化员工表");
 
                 var allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
+                var allDept = Container.Instance.Resolve<DepartmentService>().GetAll();
 
+                Random r = new Random();
                 for (int i = 0; i < 100; i++)
                 {
                     string name = "教师" + (i + 1);
@@ -890,6 +911,8 @@ namespace WebUI.Controllers
                     {
                         Name = name,
                         EmployeeCode = employeeCode,
+                        Duty = i % 2 + 1,
+                        Department = allDept[r.Next(allDept.Count)],
                         CourseTableList = new List<CourseTable>(),
                         UID = 102 + i
                     });

@@ -132,7 +132,7 @@
 					</td>
 					<td>
 						<div class="btn-group" role="group" data-pjax>
-							@if (Html.HasAuth("Admin", "StudentEva", "EvaList"))
+							@if (Html.HasAuth("Admin", "TeacherEva", "EvaList"))
 							{
 								<a class="btn btn-success" href="@Url.Action("EvaList")?id=@item.ID">进入</a>
 							}

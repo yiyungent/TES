@@ -8264,6 +8264,8 @@
     <Content Include="dist\echarts\README.md" />
     <Content Include="dist\echarts\src\component\axisPointer\IAxisPointer" />
     <Content Include="dist\echarts\src\coord\ICoordinateSystem" />
+    <Content Include="Areas\Admin\Views\TeacherEva\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\TeacherEva\EvaList.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
@@ -8307,6 +8309,7 @@
     <Compile Include="Areas\Admin\Controllers\CourseTableController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\DepartmentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TeacherEvaController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\EvaResultController.cs" />
     <Compile Include="Areas\Admin\Controllers\EvaTaskController.cs" />
