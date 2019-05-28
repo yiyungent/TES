@@ -119,5 +119,82 @@ namespace WebUI.Areas.Admin.Controllers
             return View(viewModel);
         }
         #endregion
+
+        #region 评价
+        /// <summary>
+        /// 评价
+        /// </summary>
+        /// <param name="id">被评价 教师ID</param>
+        /// <param name="evaTaskId">对应的 评价任务ID</param>
+        /// <returns></returns>
+        [HttpGet]
+        public ViewResult Eva(int teacherId, int evaTaskId)
+        {
+            // 教师评价 同部门教师 使用 "同行方面" 类型的指标
+            IList<NormTarget> viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+            {
+                Expression.Eq("NormType.ID", 4)
+            });
+            EmployeeInfo employee = Container.Instance.Resolve<EmployeeInfoService>().GetEntity(teacherId);
+            ViewBag.Employee = employee;
+            ViewBag.EvaTaskId = evaTaskId;
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public JsonResult Eva(int teacherId, int evaTaskId, bool falg = false)
+        {
+            try
+            {
+                // "同行方面" 类型指标
+                IList<NormTarget> needAnswerNormTargetList = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("NormType.ID", 4)
+                }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
+                Dictionary<int, int> normTargetIdAndSelectedOptionDic = new Dictionary<int, int>();
+                // 提交正确的指标选中项 计数
+                int count = 0;
+                foreach (var item in needAnswerNormTargetList)
+                {
+                    if (int.TryParse(Request["normTarget_" + item.ID], out int selectedOptionId))
+                    {
+                        normTargetIdAndSelectedOptionDic.Add(item.ID, selectedOptionId);
+                        count++;
+                    }
+                }
+                if (count < needAnswerNormTargetList.Count)
+                {
+                    return Json(new { code = -2, message = "请做完评价" });
+                }
+
+                foreach (var item in normTargetIdAndSelectedOptionDic)
+                {
+                    Container.Instance.Resolve<EvaRecordService>().Create(new EvaRecord
+                    {
+                        EvaDate = DateTime.Now,
+                        NormTarget = new NormTarget { ID = item.Key },
+                        NormType = new NormType { ID = 1 },
+                        Options = new Options { ID = item.Value },
+                        Teacher = new EmployeeInfo { ID = teacherId },
+                        EvaluateTask = new EvaTask { ID = evaTaskId }
+                    });
+                }
+
+                return Json(new { code = 1, message = "提交评价成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "提交评价失败" });
+            }
+        }
+        #endregion
+
+        #region 评价成功
+        public ViewResult EvaSuccess()
+        {
+            return View();
+        }
+        #endregion
     }
 }

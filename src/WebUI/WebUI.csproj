@@ -8266,6 +8266,8 @@
     <Content Include="dist\echarts\src\coord\ICoordinateSystem" />
     <Content Include="Areas\Admin\Views\TeacherEva\Index.cshtml" />
     <Content Include="Areas\Admin\Views\TeacherEva\EvaList.cshtml" />
+    <Content Include="Areas\Admin\Views\TeacherEva\Eva.cshtml" />
+    <Content Include="Areas\Admin\Views\TeacherEva\EvaSuccess.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
