@@ -7271,7 +7271,7 @@
     <Content Include="Areas\Admin\Views\NormTarget\OptionList.cshtml" />
     <Content Include="Areas\Admin\Views\NormTarget\OptionCreate.cshtml" />
     <Content Include="Areas\Admin\Views\StudentEva\NormTargetListByType.cshtml" />
-    <Content Include="Areas\Admin\Views\StudentEva\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\StudentEva\EvaList.cshtml" />
     <Content Include="Areas\Admin\Views\StudentEva\Eva.cshtml" />
     <Content Include="Areas\Admin\Views\StudentEva\EvaSuccess.cshtml" />
     <Content Include="Areas\Admin\Views\StudentInfo\Index.cshtml" />
@@ -7282,6 +7282,7 @@
     <Content Include="Areas\Admin\Views\EmployeeInfo\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeInfo\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeInfo\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\StudentEva\Index.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />

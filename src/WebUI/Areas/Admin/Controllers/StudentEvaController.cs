@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Account.Models;
 using WebUI.Areas.Admin.Models;
+using WebUI.Areas.Admin.Models.Common;
 using WebUI.Extensions;
 
 namespace WebUI.Areas.Admin.Controllers
@@ -30,8 +31,66 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 评价任务列表
+        public ViewResult Index(int pageIndex = 1, int pageSize = 6)
+        {
+            IList<ICriterion> queryConditions = new List<ICriterion>();
+            Query(queryConditions);
+
+            ListViewModel<EvaTask> viewModel = new ListViewModel<EvaTask>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
+            TempData["RedirectUrl"] = Request.RawUrl;
+
+            return View(viewModel);
+        }
+
+        private void Query(IList<ICriterion> queryConditions)
+        {
+            // 输入的查询关键词
+            string query = Request["q"]?.Trim() ?? "";
+            // 查询类型
+            QueryType queryType = new QueryType();
+            queryType.Val = Request["type"]?.Trim() ?? "name";
+            switch (queryType.Val.ToLower())
+            {
+                case "name":
+                    queryType.Text = "任务名称";
+                    queryConditions.Add(Expression.Like("Name", query, MatchMode.Anywhere));
+                    break;
+                case "id":
+                    queryType.Text = "ID";
+                    if (!string.IsNullOrEmpty(query))
+                    {
+                        if (int.TryParse(query, out int id))
+                        {
+                            queryConditions.Add(Expression.Eq("ID", id));
+                        }
+                        else
+                        {
+                            queryConditions.Add(Expression.Eq("ID", 0));
+                        }
+                    }
+                    break;
+                case "evataskcode":
+                    queryType.Text = "任务号";
+                    queryConditions.Add(Expression.Like("EvaTaskCode", query, MatchMode.Anywhere));
+                    break;
+                default:
+                    queryType.Text = "任务名称";
+                    queryConditions.Add(Expression.Like("Name", query, MatchMode.Anywhere));
+                    break;
+            }
+            ViewBag.Query = query;
+            ViewBag.QueryType = queryType;
+        }
+        #endregion
+
         #region 学生要评价的 课程和教师列表
-        public ActionResult Index()
+        /// <summary>
+        /// 需评价列表
+        /// </summary>
+        /// <param name="id">关联的 评价任务ID</param>
+        /// <returns></returns>
+        public ActionResult EvaList(int id)
         {
             UserInfo currentUser = AccountManager.GetCurrentUserInfo();
             StudentInfo bindStudent = currentUser.GetBindStudent();
@@ -42,7 +101,7 @@ namespace WebUI.Areas.Admin.Controllers
                 viewModel = bindStudent.ClazzInfo.CourseTableList;
             }
             ViewBag.CurrentStudent = bindStudent;
-            ViewBag.CurrentClazz = bindStudent.ClazzInfo;
+            ViewBag.CurrentClazz = bindStudent?.ClazzInfo;
             TempData["RedirectUrl"] = Request.RawUrl;
 
             return View(viewModel);

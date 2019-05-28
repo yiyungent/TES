@@ -29,7 +29,7 @@
 			</div>
 			<div class="form-group">
 				<label>绑定用户(用户名)</label>
-				@Html.TextBox("UserName", new { @class = "form-control", disabled = "disabled", Value = Model.GetBindUser()?.Name ?? "未绑定用户"})
+				@Html.TextBox("UserName", Model.GetBindUser()?.Name ?? "未绑定用户", new { @class = "form-control", disabled = "disabled"})
 			</div>
 		</div>
 		<div class="box-footer">

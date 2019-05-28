@@ -311,6 +311,15 @@ namespace WebUI.Controllers
                     ParentMenu = parentMenu,
                     SortCode = 40,
                 });
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "学生评价",
+                    ControllerName = "StudentEva",
+                    ActionName = "Index",
+                    AreaName = "Admin",
+                    ParentMenu = parentMenu,
+                    SortCode = 40,
+                });
                 #endregion
 
                 #endregion
@@ -534,6 +543,16 @@ namespace WebUI.Controllers
                 //    Name = "学生管理-查看",
                 //    Sys_Menu = studentInfo_Sys_Menu
                 //});
+                #endregion
+
+                #region StudentEva
+                Sys_Menu studentEva_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "StudentEva") }).FirstOrDefault();
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.StudentEva.EvaList",
+                    Name = "学生评价-进入评价",
+                    Sys_Menu = studentEva_Sys_Menu
+                });
                 #endregion
 
 
