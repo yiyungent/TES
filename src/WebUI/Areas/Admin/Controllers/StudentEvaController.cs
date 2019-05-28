@@ -75,24 +75,37 @@ namespace WebUI.Areas.Admin.Controllers
             try
             {
                 // "学生方面" 指标
-                IList<NormTarget> normTargetList = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                IList<NormTarget> needAnswerNormTargetList = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {
                     Expression.Eq("NormType.ID", 1)
-                });
-                foreach (var item in normTargetList)
+                }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
+                Dictionary<int, int> normTargetIdAndSelectedOptionDic = new Dictionary<int, int>();
+                // 提交正确的指标选中项 计数
+                int count = 0;
+                foreach (var item in needAnswerNormTargetList)
                 {
                     if (int.TryParse(Request["normTarget_" + item.ID], out int selectedOptionId))
                     {
-                        Container.Instance.Resolve<EvaRecordService>().Create(new EvaRecord
-                        {
-                            EvaDate = DateTime.Now,
-                            NormTarget = item,
-                            NormType = new NormType { ID = 1 },
-                            Options = new Options { ID = selectedOptionId },
-                            Teacher = new EmployeeInfo { ID = teacherId },
-                            EvaluateTask = null
-                        });
+                        normTargetIdAndSelectedOptionDic.Add(item.ID, selectedOptionId);
+                        count++;
                     }
+                }
+                if (count < needAnswerNormTargetList.Count)
+                {
+                    return Json(new { code = -2, message = "请做完评价" });
+                }
+
+                foreach (var item in normTargetIdAndSelectedOptionDic)
+                {
+                    Container.Instance.Resolve<EvaRecordService>().Create(new EvaRecord
+                    {
+                        EvaDate = DateTime.Now,
+                        NormTarget = new NormTarget { ID = item.Key },
+                        NormType = new NormType { ID = 1 },
+                        Options = new Options { ID = item.Value },
+                        Teacher = new EmployeeInfo { ID = teacherId },
+                        EvaluateTask = null
+                    });
                 }
 
                 return Json(new { code = 1, message = "提交评价成功" });
@@ -101,6 +114,13 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 return Json(new { code = -1, message = "提交评价失败" });
             }
+        }
+        #endregion
+
+        #region 评价成功
+        public ViewResult EvaSuccess()
+        {
+            return View();
         }
         #endregion
 
