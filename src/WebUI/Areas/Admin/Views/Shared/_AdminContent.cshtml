@@ -1,7 +1,34 @@
 ﻿@using WebUI.Areas.Admin.Models
 @using WebUI.Extensions
+@using Core
+@using Domain
 @{
 	Layout = null;
+	Sys_Menu currentSysMenu = null;
+	if (ViewBag.PageHeader == null || ViewBag.PageHeaderDescription == null || ViewBag.BreadcrumbList == null)
+	{
+		currentSysMenu = ViewContext.RouteData.GetSysMenuByRoute();
+	}
+	if (ViewBag.PageHeader == null)
+	{
+		ViewBag.PageHeader = currentSysMenu?.Name ?? "";
+	}
+	if (ViewBag.PageHeaderDescription == null)
+	{
+		ViewBag.PageHeaderDescription = currentSysMenu?.Name ?? "";
+	}
+	if (ViewBag.BreadcrumbList == null)
+	{
+		IList<BreadcrumbItem> breadcrumbList = new List<BreadcrumbItem>();
+		Sys_Menu menu = currentSysMenu;
+		while (menu != null)
+		{
+			breadcrumbList.Insert(0, new BreadcrumbItem(menu.Name));
+			// 循环(递归)查找父级菜单
+			menu = menu.ParentMenu;
+		}
+		ViewBag.BreadcrumbList = breadcrumbList;
+	}
 }
 
 <link rel="stylesheet" href="/dist/AdminLTE/bower_components/bootstrap/dist/css/bootstrap.min.css">

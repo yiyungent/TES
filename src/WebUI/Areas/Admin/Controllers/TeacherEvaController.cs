@@ -18,15 +18,7 @@ namespace WebUI.Areas.Admin.Controllers
     {
         #region Ctor
         public TeacherEvaController()
-        {
-            ViewBag.PageHeader = "教师评价";
-            ViewBag.PageHeaderDescription = "教师评价";
-            ViewBag.BreadcrumbList = new List<BreadcrumbItem>
-            {
-                new BreadcrumbItem("评价管理"),
-                new BreadcrumbItem("教师评价"),
-            };
-        }
+        { }
         #endregion
 
         #region 评价任务列表
