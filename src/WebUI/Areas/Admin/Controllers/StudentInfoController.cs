@@ -74,7 +74,11 @@ namespace WebUI.Areas.Admin.Controllers
                     break;
                 case "clazzcode":
                     queryType.Text = "班号";
-                    queryConditions.Add(Expression.Like("ClazzInfo.ClazzCode", query, MatchMode.Anywhere));
+                    IList<ClazzInfo> clazzInfoList = Container.Instance.Resolve<ClazzInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.Like("ClazzCode", query, MatchMode.Anywhere)
+                    }).ToList();
+                    queryConditions.Add(Expression.In("ClazzInfo.ID", clazzInfoList.Select(m => m.ID).ToArray()));
                     break;
                 default:
                     queryType.Text = "姓名";
