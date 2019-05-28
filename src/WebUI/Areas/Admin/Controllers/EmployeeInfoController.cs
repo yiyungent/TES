@@ -87,5 +87,24 @@ namespace WebUI.Areas.Admin.Controllers
             ViewBag.QueryType = queryType;
         }
         #endregion
+
+        #region 删除
+        public JsonResult Delete(int id)
+        {
+            try
+            {
+                Container.Instance.Resolve<EmployeeInfoService>().Delete(id);
+
+                return Json(new { code = 1, message = "删除成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "删除失败" });
+            }
+        }
+        #endregion
+
+
+
     }
 }
