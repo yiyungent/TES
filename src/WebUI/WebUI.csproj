@@ -7280,6 +7280,7 @@
     <Content Include="Areas\Admin\Views\StudentInfo\Create.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeInfo\Index.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeInfo\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\EmployeeInfo\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
@@ -7339,6 +7340,7 @@
     <Compile Include="Areas\Admin\Models\Common\QueryType.cs" />
     <Compile Include="Areas\Admin\Models\CourseInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\CourseTableForEditViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\EmployeeInfoVM\EmployeeInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EvaTaskVM\EvaTaskForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\NormTypeVM\NormTypeForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />

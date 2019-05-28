@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models;
 using WebUI.Areas.Admin.Models.Common;
+using WebUI.Areas.Admin.Models.EmployeeInfoVM;
+using WebUI.Extensions;
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -113,5 +115,50 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 编辑
+        [HttpGet]
+        public ViewResult Edit(int id)
+        {
+            EmployeeInfo dbModel = Container.Instance.Resolve<EmployeeInfoService>().GetEntity(id);
+            EmployeeInfoForEditViewModel viewModel = (EmployeeInfoForEditViewModel)dbModel;
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public JsonResult Edit(EmployeeInfoForEditViewModel inputModel)
+        {
+            try
+            {
+                // 数据格式效验
+                if (ModelState.IsValid)
+                {
+                    #region 数据有效效验
+                    if (Container.Instance.Resolve<EmployeeInfoService>().Exist(inputModel.InputEmployeeCode.Trim(), inputModel.ID))
+                    {
+                        return Json(new { code = -1, message = "此工号已被其它员工使用，请更换" });
+                    }
+                    #endregion
+
+                    #region 输入模型 -> 数据库模型
+                    EmployeeInfo dbModel = (EmployeeInfo)inputModel;
+                    #endregion
+
+                    Container.Instance.Resolve<EmployeeInfoService>().Edit(dbModel);
+
+                    return Json(new { code = 1, message = "保存成功" });
+                }
+                else
+                {
+                    string errorMessage = ModelState.GetErrorMessage();
+                    return Json(new { code = -1, message = errorMessage });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -2, message = "保存失败" });
+            }
+        }
+        #endregion
     }
 }
