@@ -499,10 +499,42 @@ namespace WebUI.Controllers
                     AuthKey = "Admin.EvaTask.Detail",
                     Name = "评价任务-查看",
                     Sys_Menu = evaTask_Sys_Menu
-                }); 
+                });
                 #endregion
 
-
+                #region StudentInfo
+                //Sys_Menu studentInfo_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "StudentInfo") }).FirstOrDefault();
+                //Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                //{
+                //    AuthKey = "Admin.StudentInfo.Edit",
+                //    Name = "学生管理-修改",
+                //    Sys_Menu = studentInfo_Sys_Menu
+                //});
+                //Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                //{
+                //    AuthKey = "Admin.StudentInfo.Edit",
+                //    Name = "学生管理-添加",
+                //    Sys_Menu = studentInfo_Sys_Menu
+                //});
+                //Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                //{
+                //    AuthKey = "Admin.StudentInfo.Edit",
+                //    Name = "学生管理-删除",
+                //    Sys_Menu = studentInfo_Sys_Menu
+                //});
+                //Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                //{
+                //    AuthKey = "Admin.StudentInfo.Edit",
+                //    Name = "学生管理-列表",
+                //    Sys_Menu = studentInfo_Sys_Menu
+                //});
+                //Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                //{
+                //    AuthKey = "Admin.StudentInfo.Edit",
+                //    Name = "学生管理-查看",
+                //    Sys_Menu = studentInfo_Sys_Menu
+                //});
+                #endregion
 
 
                 ShowMessage("成功");
