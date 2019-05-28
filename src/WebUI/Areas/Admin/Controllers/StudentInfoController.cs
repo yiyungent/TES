@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models;
 using WebUI.Areas.Admin.Models.Common;
+using WebUI.Areas.Admin.Models.StudentInfoVM;
+using WebUI.Extensions;
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -106,6 +108,52 @@ namespace WebUI.Areas.Admin.Controllers
             StudentInfo viewModel = Container.Instance.Resolve<StudentInfoService>().GetEntity(id);
 
             return View(viewModel);
+        }
+        #endregion
+
+        #region 编辑
+        [HttpGet]
+        public ViewResult Edit(int id)
+        {
+            StudentInfo dbModel = Container.Instance.Resolve<StudentInfoService>().GetEntity(id);
+            StudentInfoForEditViewModel viewModel = (StudentInfoForEditViewModel)dbModel;
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public JsonResult Edit(StudentInfoForEditViewModel inputModel)
+        {
+            try
+            {
+                // 数据格式效验
+                if (ModelState.IsValid)
+                {
+                    #region 数据有效效验
+                    if (Container.Instance.Resolve<StudentInfoService>().Exist(inputModel.InputStudentCode.Trim(), inputModel.ID))
+                    {
+                        return Json(new { code = -1, message = "此学号已被其它学生使用，请更换" });
+                    }
+                    #endregion
+
+                    #region 输入模型 -> 数据库模型
+                    StudentInfo dbModel = (StudentInfo)inputModel;
+                    #endregion
+
+                    Container.Instance.Resolve<StudentInfoService>().Edit(dbModel);
+
+                    return Json(new { code = 1, message = "保存成功" });
+                }
+                else
+                {
+                    string errorMessage = ModelState.GetErrorMessage();
+                    return Json(new { code = -1, message = errorMessage });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -2, message = "保存失败" });
+            }
         }
         #endregion
 

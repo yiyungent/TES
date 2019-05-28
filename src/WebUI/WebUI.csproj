@@ -7276,6 +7276,7 @@
     <Content Include="Areas\Admin\Views\StudentEva\EvaSuccess.cshtml" />
     <Content Include="Areas\Admin\Views\StudentInfo\Index.cshtml" />
     <Content Include="Areas\Admin\Views\StudentInfo\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\StudentInfo\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
@@ -7338,6 +7339,7 @@
     <Compile Include="Areas\Admin\Models\NormTypeVM\NormTypeForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEditViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\StudentInfoVM\StudentInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\Template\ThemeTemplateViewModel.cs" />
     <Compile Include="Areas\Admin\Models\UserInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ZNodeModel.cs" />
