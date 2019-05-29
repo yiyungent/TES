@@ -74,7 +74,7 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
-        #region 该任务要评价的列表
+        #region 该任务要评价的教师列表
         /// <summary>
         /// 需评价列表
         /// </summary>
@@ -87,18 +87,8 @@ namespace WebUI.Areas.Admin.Controllers
             IList<EmployeeInfo> viewModel = null;
             if (bindEmployee != null)
             {
-                switch (bindEmployee.Duty)
-                {
-                    case 1:
-                        // 教师
-
-                        break;
-                    case 2:
-                        // 系主任
-
-                        break;
-                }
-                // 该员工 所在部门的 所有员工
+                // 该员工 所在系的 所有员工
+                // 只能评价 同行（同院同系）的教师
                 viewModel = bindEmployee.Department.EmployeeInfoList();
             }
             ViewBag.CurrentEmployee = bindEmployee;

@@ -65,7 +65,14 @@
 	<!-- start .box-header -->
 	<div class="box-header">
 		<h3 class="box-title col-sm-12">
-			<span class="col-xs-12">员工: @employee.Name（@employee.EmployeeCode）</span>
+			<span class="col-xs-6">被评员工: @employee.Name（@employee.EmployeeCode）</span>
+			<span class="col-xs-6">
+				@{
+					string parentYuanName = employee.Department?.ParentDept?.Name ?? "";
+					string xiName = employee.Department?.Name ?? "";
+				}
+				@parentYuanName - @xiName
+			</span>
 		</h3>
 
 		<div class="box-tools"></div>
