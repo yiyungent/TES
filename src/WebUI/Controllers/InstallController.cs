@@ -668,7 +668,7 @@ namespace WebUI.Controllers
                 Container.Instance.Resolve<EmployeeInfoService>().Create(new EmployeeInfo()
                 {
                     Name = "超级管理员admin的绑定员工",
-                    Department = new Department { ID = 1 },
+                    Department = new Department { ID = 5 },
                     EmployeeCode = "1235513238",
                     UID = 1
                 });

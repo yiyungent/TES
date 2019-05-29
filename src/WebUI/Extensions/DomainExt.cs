@@ -213,6 +213,15 @@ namespace WebUI.Extensions
                 Expression.Like("ControllerName", controllerName, MatchMode.Anywhere),
                 Expression.Like("ActionName", actionName, MatchMode.Anywhere)
             }).FirstOrDefault();
+            if (rtn == null)
+            {
+                // 如果没有 此 ActionName 对应的系统菜单，则忽视 ActionName 重查
+                rtn = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion>
+                {
+                    Expression.Like("AreaName", areaName, MatchMode.Anywhere),
+                    Expression.Like("ControllerName", controllerName, MatchMode.Anywhere),
+                }).FirstOrDefault();
+            }
 
             return rtn;
         }

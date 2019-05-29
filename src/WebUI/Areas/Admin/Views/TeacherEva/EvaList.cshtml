@@ -51,7 +51,11 @@
 				@(currentEmployee?.Name ?? "")（@(currentEmployee?.EmployeeCode ?? "")）
 			</span>
 			<span class="col-xs-12">
-				@(currentDept?.Name ?? "")
+				@{ 
+					string parentYuanName = currentDept?.ParentDept?.Name ?? "";
+							string xiName = currentDept?.Name ?? "";
+				}
+				@parentYuanName - @xiName
 			</span>
 		</h3>
 
