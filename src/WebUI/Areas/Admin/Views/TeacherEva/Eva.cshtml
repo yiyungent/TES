@@ -88,45 +88,42 @@
 			@Html.Hidden("evaTaskId", evaTaskId)
 			@foreach (var item in Model)
 			{
-				if ((item.ChildTargetList == null || item.ChildTargetList.Count <= 0) && (item.OptionsList != null && item.OptionsList.Count >= 1))
-				{
-					// 末指标 且 有选项
-					<div class="panel panel-default">
-						<div id="heading-@item.ID" class="panel-heading" role="tab">
-							<h4 class="panel-title">
-								<a role="button" data-toggle="collapse" href="#collapse-@item.ID" aria-expanded="true">
-									@{
-										string title = "";
-										NormTarget currentItem = item;
-										while (currentItem != null)
-										{
-											title = currentItem.Name + " - " + title;
-											currentItem = currentItem.ParentTarget;
-										}
-									}
-									@title.Remove(title.Length - 3)
-								</a>
-							</h4>
-						</div>
-						<div id="collapse-@item.ID" class="panel-collapse collapse in" role="tabpanel">
-							<div class="panel-body">
-								<div class="form-group">
-									@{ var optionSortedList = item.OptionsList.OrderBy(m => m.SortCode); }
-									@foreach (var option in optionSortedList)
+				<div class="panel panel-default">
+					<div id="heading-@item.ID" class="panel-heading" role="tab">
+						<h4 class="panel-title">
+							<a role="button" data-toggle="collapse" href="#collapse-@item.ID" aria-expanded="true">
+								@{
+									// 指标链生成 eg: 学生方面 - 概念的讲解
+									string title = "";
+									NormTarget currentItem = item;
+									while (currentItem != null)
 									{
-										<div class="radio">
-											<label>
-												<input class="minimal" type="radio" name="normTarget_@item.ID" value="@option.ID">
-												@option.Content
-											</label>
-											<span class="pull-right"><i class="fa fa-heart text-primary"></i> @option.Score</span>
-										</div>
+										title = currentItem.Name + " - " + title;
+										currentItem = currentItem.ParentTarget;
 									}
-								</div>
+								}
+								@title.Remove(title.Length - 3)
+							</a>
+						</h4>
+					</div>
+					<div id="collapse-@item.ID" class="panel-collapse collapse in" role="tabpanel">
+						<div class="panel-body">
+							<div class="form-group">
+								@{ var optionSortedList = item.OptionsList.OrderBy(m => m.SortCode); }
+								@foreach (var option in optionSortedList)
+								{
+									<div class="radio">
+										<label>
+											<input class="minimal" type="radio" name="normTarget_@item.ID" value="@option.ID">
+											@option.Content
+										</label>
+										<span class="pull-right"><i class="fa fa-heart text-primary"></i> @option.Score</span>
+									</div>
+								}
 							</div>
 						</div>
 					</div>
-				}
+				</div>
 			}
 		</div>
 	</div>

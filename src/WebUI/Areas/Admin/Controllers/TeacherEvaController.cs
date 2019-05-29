@@ -91,12 +91,25 @@ namespace WebUI.Areas.Admin.Controllers
                 // 只能评价 同行（同院同系）的教师
                 viewModel = bindEmployee.Department.EmployeeInfoList();
             }
+            // 查询这些 教师中哪些是 自己已经评价过的
+            // 当前人当前评价任务 已经评价过的 教师ID 列表
+            IList<int> isEvaedTeacherList = new List<int>();
+            isEvaedTeacherList = Container.Instance.Resolve<EvaRecordService>().Query(new List<ICriterion>()
+            {
+                Expression.Eq("EvaluateTask.ID", id),
+                Expression.Eq("Evaluator.ID", currentUser.ID)
+            }).Select(m => m.ID).ToList();
+
+
+            #region 展示到视图
             ViewBag.CurrentEmployee = bindEmployee;
             ViewBag.CurrentDept = bindEmployee?.Department;
             ViewBag.EvaTaskId = id;
             EvaTask evaTask = Container.Instance.Resolve<EvaTaskService>().GetEntity(id);
             ViewBag.EvaTask = evaTask;
+            ViewBag.IsEvaedTeacherList = isEvaedTeacherList;
             TempData["RedirectUrl"] = Request.RawUrl;
+            #endregion
 
             return View(viewModel);
         }
@@ -113,73 +126,48 @@ namespace WebUI.Areas.Admin.Controllers
         public ViewResult Eva(int teacherId, int evaTaskId)
         {
             // 评价人（当前登录人）
-            EmployeeInfo employee = AccountManager.GetCurrentUserInfo().GetBindEmployee();
+            UserInfo evaor = AccountManager.GetCurrentUserInfo();
             // 被评人
             EmployeeInfo evaedEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetEntity(teacherId);
 
             IList<NormTarget> viewModel = null;
-
-            // 使用评价类型
+            // 使用的评价类型
             NormType normType = null;
+            // 根据 评价人，被评价人 选择 指标
+            viewModel = GetNormTargetsByEvaorAndEvaedor(evaor, evaedEmployee, out normType);
 
-            if (evaedEmployee.ID == employee?.ID)
-            {
-                // 被评人为: 当前登录人(自己)， 使用 "教师个人方面" 类型的指标
-                normType = Container.Instance.Resolve<NormTypeService>().GetEntity(5);
-                viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("NormType.ID", normType.ID)
-                });
-            }
-            else
-            {
-                // 被评人 非自己
-                // 职位 区别
-                switch (evaedEmployee.Duty)
-                {
-                    case 1:
-                        // 普通教师
-                        // 被评人 职位 为: "普通教师"， 使用  "系 （部） 方 面" 类型  的指标
-                        normType = Container.Instance.Resolve<NormTypeService>().GetEntity(2);
-                        viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                        {
-                            Expression.Eq("NormType.ID", normType.ID)
-                        });
-                        break;
-                    case 2:
-                        // 系主任
-                        // 被评人 职位 为: "系主任"， 使用  "同行方面（领导）"  类型的指标
-                        normType = Container.Instance.Resolve<NormTypeService>().GetEntity(4);
-                        viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                        {
-                            Expression.Eq("NormType.ID", normType.ID)
-                        });
-                        break;
-                    case 3:
-                        // 
-
-                        break;
-                }
-            }
-
-            // 展示 被评信息 到页面
+            #region 展示 被评信息 到页面
             ViewBag.EvaedEmployee = evaedEmployee;
             ViewBag.NormType = normType;
             ViewBag.EvaTaskId = evaTaskId;
+            #endregion
 
             return View(viewModel);
         }
 
+        /// <summary>
+        /// 评价答卷提交
+        /// </summary>
+        /// <param name="teacherId">被评 教师（员工）ID</param>
+        /// <param name="evaTaskId">评价任务ID</param>
+        /// <param name="falg">仅用作区别同名方法</param>
         [HttpPost]
         public JsonResult Eva(int teacherId, int evaTaskId, bool falg = false)
         {
             try
             {
-                // "同行方面" 类型指标
-                IList<NormTarget> needAnswerNormTargetList = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                // 评价人（当前登录人）
+                UserInfo evaor = AccountManager.GetCurrentUserInfo();
+                // 被评人
+                EmployeeInfo evaedEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetEntity(teacherId);
+
+                IList<NormTarget> needAnswerNormTargetList = null;
+                needAnswerNormTargetList = GetNormTargetsByEvaorAndEvaedor(evaor, evaedEmployee, out NormType normType);
+                if (needAnswerNormTargetList == null || needAnswerNormTargetList.Count <= 0)
                 {
-                    Expression.Eq("NormType.ID", 4)
-                }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
+                    return Json(new { code = -1, message = "提交评价失败，没有需要回答的指标" });
+                }
+
                 Dictionary<int, int> normTargetIdAndSelectedOptionDic = new Dictionary<int, int>();
                 // 提交正确的指标选中项 计数
                 int count = 0;
@@ -204,6 +192,7 @@ namespace WebUI.Areas.Admin.Controllers
                         NormTarget = new NormTarget { ID = item.Key },
                         NormType = new NormType { ID = 1 },
                         Options = new Options { ID = item.Value },
+                        Evaluator = new UserInfo { ID = evaor.ID },
                         Teacher = new EmployeeInfo { ID = teacherId },
                         EvaluateTask = new EvaTask { ID = evaTaskId }
                     });
@@ -223,6 +212,77 @@ namespace WebUI.Areas.Admin.Controllers
         {
             return View();
         }
+        #endregion
+
+        #region Helpers
+
+        #region 根据被评价人选择评价指标（需回答即有选项的指标）（答卷）
+        /// <summary>
+        /// 根据被评价人选择评价指标（答卷）
+        /// </summary>
+        /// <param name="evaedor">被评价员工（教师）</param>
+        /// <param name="normType">他使用的评价类型</param>
+        /// <returns>他使用的评价指标列表</returns>
+        private IList<NormTarget> GetNormTargetsByEvaedor(EmployeeInfo evaedor, out NormType normType)
+        {
+            IList<NormTarget> rtn = null;
+            normType = null;
+            // 职位 区别
+            switch (evaedor.Duty)
+            {
+                case 1:
+                    // 普通教师
+                    // 被评人 职位 为: "普通教师"， 使用  "系 （部） 方 面" 类型  的指标
+                    normType = Container.Instance.Resolve<NormTypeService>().GetEntity(2);
+                    rtn = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                        {
+                            Expression.Eq("NormType.ID", normType.ID)
+                        }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
+                    break;
+                case 2:
+                    // 系主任
+                    // 被评人 职位 为: "系主任"， 使用  "同行方面（领导）"  类型的指标
+                    normType = Container.Instance.Resolve<NormTypeService>().GetEntity(4);
+                    rtn = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                        {
+                            Expression.Eq("NormType.ID", normType.ID)
+                        }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
+                    break;
+                case 3:
+                    // 
+
+                    break;
+            }
+
+            return rtn;
+        }
+        #endregion
+
+        #region 根据评价人和被评价人选择指标（需回答即有选项的末指标）（答卷）
+        private IList<NormTarget> GetNormTargetsByEvaorAndEvaedor(UserInfo evaor, EmployeeInfo evaedor, out NormType normType)
+        {
+            IList<NormTarget> rtn = null;
+            normType = null;
+            if (evaedor.ID == evaor?.ID)
+            {
+                // 被评人为: 当前登录人(自己)， 使用 "教师个人方面" 类型的指标
+                normType = Container.Instance.Resolve<NormTypeService>().GetEntity(5);
+                rtn = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("NormType.ID", normType.ID)
+                }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
+            }
+            else
+            {
+                // 被评人 非自己
+                // 职位 区别
+                rtn = GetNormTargetsByEvaedor(evaedor, out normType);
+            }
+
+            return rtn;
+        }
+        #endregion
+
         #endregion
     }
 }

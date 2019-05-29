@@ -10,6 +10,13 @@ namespace Domain
     [ActiveRecord]
     public class EvaRecord : BaseEntity<EvaRecord>
     {
+        /// <summary>
+        /// 评价人
+        /// </summary>
+        [Display(Name = "评价人")]
+        [BelongsTo(Column = "EvaorId")]
+        public UserInfo Evaluator { get; set; }
+
         ///<summary>
         /// 被评价人
         /// </summary>
