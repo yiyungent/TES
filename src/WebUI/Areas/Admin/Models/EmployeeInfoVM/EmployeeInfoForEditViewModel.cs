@@ -133,15 +133,23 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
                 Value = "0",
                 Selected = (selectedValue == 0)
             });
-            IList<Department> list = Container.Instance.Resolve<DepartmentService>().GetAll();
-            foreach (var item in list)
+            // 所有 列表
+            IList<Department> allList = Container.Instance.Resolve<DepartmentService>().GetAll();
+            // 院级 列表
+            IList<Department> yuanList = allList.Where(m => m.ParentDept == null || m.ParentDept.ID == 0).ToList();
+            // 系级 列表
+            IList<Department> xiList = allList.Where(m => m.Children == null || m.Children.Count == 0).ToList();
+            foreach (var yuanItem in yuanList)
             {
-                ret.Add(new SelectListItem()
+                foreach (var xiItem in xiList)
                 {
-                    Text = item.Name,
-                    Value = item.ID.ToString(),
-                    Selected = (selectedValue == item.ID)
-                });
+                    ret.Add(new SelectListItem()
+                    {
+                        Text = yuanItem.Name + " - " + xiItem.Name,
+                        Value = xiItem.ID.ToString(),
+                        Selected = (selectedValue == xiItem.ID)
+                    });
+                }
             }
 
             return ret;

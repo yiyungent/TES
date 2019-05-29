@@ -906,7 +906,7 @@ namespace WebUI.Controllers
                 ShowMessage("开始初始化员工表");
 
                 var allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
-                var allDept = Container.Instance.Resolve<DepartmentService>().GetAll();
+                var allXiList = Container.Instance.Resolve<DepartmentService>().GetAll().Where(m => m.Children == null || m.Children.Count == 0).ToList();
 
                 Random r = new Random();
                 for (int i = 0; i < 100; i++)
@@ -928,7 +928,7 @@ namespace WebUI.Controllers
                         Name = name,
                         EmployeeCode = employeeCode,
                         Duty = i % 2 + 1,
-                        Department = allDept[r.Next(allDept.Count)],
+                        Department = allXiList[r.Next(allXiList.Count)],
                         CourseTableList = new List<CourseTable>(),
                         UID = 102 + i
                     });
