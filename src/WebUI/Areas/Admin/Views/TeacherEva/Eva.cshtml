@@ -66,15 +66,16 @@
 	<!-- start .box-header -->
 	<div class="box-header">
 		<h3 class="box-title col-sm-12">
-			<span class="col-xs-4">被评人: @evaedEmployee.Name（@evaedEmployee.EmployeeCode）</span>
-			<span class="col-xs-4">
+			<span class="col-xs-3">被评人: @evaedEmployee.Name（@evaedEmployee.EmployeeCode）</span>
+			<span class="col-xs-3">职位: @evaedEmployee.Duty.ToEmployeeDuty()</span>
+			<span class="col-xs-3">
 				@{
 					string parentYuanName = evaedEmployee.Department?.ParentDept?.Name ?? "";
 					string xiName = evaedEmployee.Department?.Name ?? "";
 				}
 				@parentYuanName - @xiName
 			</span>
-			<span class="col-xs-4">评价类型: @normType.Name</span>
+			<span class="col-xs-3">评价类型: @normType.Name</span>
 		</h3>
 
 		<div class="box-tools"></div>
