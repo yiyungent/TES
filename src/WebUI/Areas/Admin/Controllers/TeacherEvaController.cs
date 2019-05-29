@@ -201,7 +201,7 @@ namespace WebUI.Areas.Admin.Controllers
                     {
                         EvaDate = DateTime.Now,
                         NormTarget = new NormTarget { ID = item.Key },
-                        NormType = new NormType { ID = 1 },
+                        NormType = new NormType { ID = normType.ID },
                         Options = new Options { ID = item.Value },
                         Evaluator = new UserInfo { ID = evaor.ID },
                         Teacher = new EmployeeInfo { ID = teacherId },
