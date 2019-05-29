@@ -52,6 +52,7 @@ namespace Domain
         /// </para>
         /// </summary>
         [Display(Name = "职位")]
+        [Property]
         public int Duty { get; set; }
 
         /// <summary>
