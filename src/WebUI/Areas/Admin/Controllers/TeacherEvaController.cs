@@ -102,7 +102,7 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
-        #region 评价
+        #region 评价答卷
         /// <summary>
         /// 评价
         /// </summary>
@@ -112,13 +112,59 @@ namespace WebUI.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Eva(int teacherId, int evaTaskId)
         {
-            // 教师评价 同部门教师 使用 "同行方面" 类型的指标
-            IList<NormTarget> viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+            // 评价人（当前登录人）
+            EmployeeInfo employee = AccountManager.GetCurrentUserInfo().GetBindEmployee();
+            // 被评人
+            EmployeeInfo evaedEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetEntity(teacherId);
+
+            IList<NormTarget> viewModel = null;
+
+            // 使用评价类型
+            NormType normType = null;
+
+            if (evaedEmployee.ID == employee?.ID)
             {
-                Expression.Eq("NormType.ID", 4)
-            });
-            EmployeeInfo employee = Container.Instance.Resolve<EmployeeInfoService>().GetEntity(teacherId);
-            ViewBag.Employee = employee;
+                // 被评人为: 当前登录人(自己)， 使用 "教师个人方面" 类型的指标
+                normType = Container.Instance.Resolve<NormTypeService>().GetEntity(5);
+                viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("NormType.ID", normType.ID)
+                });
+            }
+            else
+            {
+                // 被评人 非自己
+                // 职位 区别
+                switch (evaedEmployee.Duty)
+                {
+                    case 1:
+                        // 普通教师
+                        // 被评人 职位 为: "普通教师"， 使用  "系 （部） 方 面" 类型  的指标
+                        normType = Container.Instance.Resolve<NormTypeService>().GetEntity(2);
+                        viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                        {
+                            Expression.Eq("NormType.ID", normType.ID)
+                        });
+                        break;
+                    case 2:
+                        // 系主任
+                        // 被评人 职位 为: "系主任"， 使用  "同行方面（领导）"  类型的指标
+                        normType = Container.Instance.Resolve<NormTypeService>().GetEntity(4);
+                        viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                        {
+                            Expression.Eq("NormType.ID", normType.ID)
+                        });
+                        break;
+                    case 3:
+                        // 
+
+                        break;
+                }
+            }
+
+            // 展示 被评信息 到页面
+            ViewBag.EvaedEmployee = evaedEmployee;
+            ViewBag.NormType = normType;
             ViewBag.EvaTaskId = evaTaskId;
 
             return View(viewModel);

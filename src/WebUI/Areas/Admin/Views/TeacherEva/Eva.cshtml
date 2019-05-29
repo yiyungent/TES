@@ -5,7 +5,8 @@
 @model IList<NormTarget>
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
-	EmployeeInfo employee = ViewBag.Employee;
+	EmployeeInfo evaedEmployee = ViewBag.EvaedEmployee;
+	NormType normType = ViewBag.NormType;
 	int evaTaskId = ViewBag.EvaTaskId;
 	string redirectUrl = TempData["RedirectUrl"].ToString();
 }
@@ -65,14 +66,15 @@
 	<!-- start .box-header -->
 	<div class="box-header">
 		<h3 class="box-title col-sm-12">
-			<span class="col-xs-6">被评员工: @employee.Name（@employee.EmployeeCode）</span>
-			<span class="col-xs-6">
+			<span class="col-xs-4">被评员工: @evaedEmployee.Name（@evaedEmployee.EmployeeCode）</span>
+			<span class="col-xs-4">
 				@{
-					string parentYuanName = employee.Department?.ParentDept?.Name ?? "";
-					string xiName = employee.Department?.Name ?? "";
+					string parentYuanName = evaedEmployee.Department?.ParentDept?.Name ?? "";
+					string xiName = evaedEmployee.Department?.Name ?? "";
 				}
 				@parentYuanName - @xiName
 			</span>
+			<span class="col-xs-4">评价类型: @normType.Name</span>
 		</h3>
 
 		<div class="box-tools"></div>
@@ -81,7 +83,7 @@
 	<!-- start .box-body -->
 	<div class="box-body no-padding">
 		<div id="js-form" class="panel-group" role="tablist" aria-multiselectable="true">
-			@Html.Hidden("teacherId", employee.ID)
+			@Html.Hidden("teacherId", evaedEmployee.ID)
 			@Html.Hidden("evaTaskId", evaTaskId)
 			@foreach (var item in Model)
 			{
