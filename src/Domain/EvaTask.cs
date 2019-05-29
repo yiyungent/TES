@@ -38,6 +38,18 @@ namespace Domain
         [Property(NotNull = true)]
         public DateTime EndDate { get; set; }
 
+        #region 废弃
+        /////<summary>
+        ///// 状态
+        /////      1：待开启
+        /////      2：正在评价
+        /////      3：评价结束
+        ///// </summary>
+        //[Display(Name = "状态")]
+        //[Property(NotNull = true)]
+        //public int Status { get; set; }
+        #endregion
+
         ///<summary>
         /// 状态
         ///      1：待开启
@@ -45,7 +57,29 @@ namespace Domain
         ///      3：评价结束
         /// </summary>
         [Display(Name = "状态")]
-        [Property(NotNull = true)]
-        public int Status { get; set; }
+        public int Status
+        {
+            get
+            {
+                DateTime nowTime = DateTime.Now;
+                if (nowTime < StartDate)
+                {
+                    return 1;
+                }
+                else if (nowTime < EndDate)
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 3;
+                }
+            }
+            set
+            {
+
+            }
+        }
+
     }
 }

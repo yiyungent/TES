@@ -82,10 +82,6 @@
 				@Html.LabelFor(m => m.InputEndDate)
 				@Html.TextBox("InputEndDate", Model.InputEndDate.ToString("yyyy-MM-dd"),  new { @class = "form-control", type = "date" })
 			</div>
-			<div class="form-group">
-				@Html.LabelFor(m => m.SelectListForStatus)
-				@Html.DropDownListFor(m => m.SelectedValForStatus, Model.SelectListForStatus, new { @class = "form-control" })
-			</div>
 		</div>
 		<!-- /.box-body -->
 

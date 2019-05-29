@@ -36,16 +36,19 @@
 				@switch (Model.Status)
 				{
 					case 0:
-						<span class="label label-info">待开启</span>
+						<span class="label label-info">@Model.Status.ToEvaTaskStatus()</span>
 						break;
 					case 1:
-						<span class="label label-info">正在评价</span>
+						<span class="label label-info">@Model.Status.ToEvaTaskStatus()</span>
 						break;
 					case 2:
-						<span class="label label-info">评价结束</span>
+						<span class="label label-info">@Model.Status.ToEvaTaskStatus()</span>
+						break;
+					case 3:
+						<span class="label label-info">@Model.Status.ToEvaTaskStatus()</span>
 						break;
 					default:
-						<span class="label label-info">未知</span>
+						<span class="label label-info">@Model.Status.ToEvaTaskStatus()</span>
 						break;
 				}
 			</div>
