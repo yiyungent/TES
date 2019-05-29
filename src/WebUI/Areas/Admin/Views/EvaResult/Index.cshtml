@@ -66,6 +66,7 @@
 
 		// start 计算分数
 		function caculateScore() {
+			$("#js-btn-caculate").html("计算中").attr("disabled", "disabled");
 			// 新计算分数, 实际上就是根据 评价记录创建对应的评价结果
 			var selectedEvaTaskId = $('#SelectedValForEvaTask').val();
 			var selectedTeacherId = $('#SelectedValForTeacher').val();
@@ -76,6 +77,7 @@
 				data: { evaTaskId: selectedEvaTaskId, teacherId: selectedTeacherId, evaTypeId: selectedEvaTypeId },
 				dataType: "json",
 				success: function (data) {
+					$("#js-btn-caculate").html("计算分数").removeAttr("disabled");
 					if (data.code > 0) {
 						// 计算成功
 						window.location.href = window.location.href;
@@ -86,8 +88,24 @@
 			});
 		}
 
-		function reCaculateScore() {
+		function reCaculateScore(id, obj) {
+			$(obj).html("计算中").attr("disabled", "disabled");
 			// 重新计算
+			$.ajax({
+				url: "/Admin/EvaResult/ReCaculateScore",
+				type: "post",
+				data: { id: id },
+				dataType: "json",
+				success: function (data) {
+					$(obj).html("重新计算分数").removeAttr("disabled");
+					if (data.code > 0) {
+						// 计算成功
+						window.location.href = window.location.href;
+					} else {
+						showMessage(data.message, -1);
+					}
+				}
+			});
 		}
 		// end 计算分数
 
@@ -122,6 +140,12 @@
 			// end 搜索
 		});
 	</script>
+	@if (TempData["message"] != null)
+	{
+		<script>
+			showMessage('@TempData["message"].ToString()', 1);
+		</script>
+	}
 }
 
 <!-- start 删除确认框 -->
@@ -214,7 +238,7 @@
 						<div class="btn-group" role="group" data-pjax>
 							@*@if (Html.HasAuth("Admin", "EvaResult", "CaculateScore"))
 								{*@
-							<button class="btn btn-success" onclick="reCaculateScore()">重新计算分数</button>
+							<button class="btn btn-success" onclick="reCaculateScore(@item.ID, this)">重新计算分数</button>
 							@*}*@
 						</div>
 					</td>
@@ -247,7 +271,7 @@
 				<div class="col-xs-3" style="padding-top: 24px;">
 					@*@if (Html.HasAuth("Admin", "EvaResult", "CaculateScore"))
 						{*@
-					<button class="btn btn-primary" onclick="caculateScore()">计算分数</button>
+					<button id="js-btn-caculate" class="btn btn-primary" onclick="caculateScore()">计算分数</button>
 					@*} *@
 				</div>
 			</div>

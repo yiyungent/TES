@@ -117,6 +117,7 @@ namespace WebUI.Areas.Admin.Controllers
         {
             try
             {
+                #region 有效性效验
                 // 效验是否有 符合的 评价记录 以供 计算分数
                 bool isExist = Container.Instance.Resolve<EvaRecordService>().Count(
                     Expression.Eq("EvaluateTask.ID", evaTaskId),
@@ -127,17 +128,58 @@ namespace WebUI.Areas.Admin.Controllers
                 {
                     return Json(new { code = -1, message = "计算失败，没有符合的评价记录 以供计算" });
                 }
+                #endregion
 
                 EvaTask evaTask = new EvaTask() { ID = evaTaskId };
                 NormType normType = new NormType() { ID = evaTypeId };
                 EmployeeInfo teacher = new EmployeeInfo() { ID = teacherId };
                 Caculate(evaTask, normType, teacher);
 
+                TempData["message"] = "计算成功";
                 return Json(new { code = 1, message = "计算成功" });
             }
             catch (Exception ex)
             {
                 return Json(new { code = -1, message = "计算失败" });
+            }
+        }
+
+        /// <summary>
+        /// 重新计算分数
+        /// </summary>
+        /// <param name="id">计算结果 EvaResult ID</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult ReCaculateScore(int id)
+        {
+            try
+            {
+                EvaResult evaResult = Container.Instance.Resolve<EvaResultService>().GetEntity(id);
+                #region 有效性效验
+                if (evaResult == null)
+                {
+                    return Json(new { code = -1, message = "重新计算失败，没有此评价结果" });
+                }
+                // 效验是否有 符合的 评价记录 以供 计算分数
+                bool isExist = Container.Instance.Resolve<EvaRecordService>().Count(
+                    Expression.Eq("EvaluateTask.ID", evaResult.EvaluateTask.ID),
+                    Expression.Eq("NormType.ID", evaResult.NormType.ID),
+                    Expression.Eq("Teacher.ID", evaResult.Teacher.ID)
+                 ) >= 1;
+                if (!isExist)
+                {
+                    return Json(new { code = -1, message = "计算失败，没有符合的评价记录 以供计算" });
+                }
+                #endregion
+
+                Caculate(evaResult.EvaluateTask, evaResult.NormType, evaResult.Teacher);
+
+                TempData["message"] = "计算成功";
+                return Json(new { code = 1, message = "计算分数成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "计算分数失败" });
             }
         }
         #endregion
