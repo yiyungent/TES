@@ -161,6 +161,9 @@ namespace WebUI.Areas.Admin.Controllers
                 }
                 #endregion
 
+                // 评价人（当前登录人）
+                UserInfo evaor = AccountManager.GetCurrentUserInfo();
+
                 // "学生方面" 指标
                 IList<NormTarget> needAnswerNormTargetList = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {
@@ -190,6 +193,7 @@ namespace WebUI.Areas.Admin.Controllers
                         NormTarget = new NormTarget { ID = item.Key },
                         NormType = new NormType { ID = 1 },
                         Options = new Options { ID = item.Value },
+                        Evaluator = new UserInfo { ID = evaor.ID },
                         Teacher = new EmployeeInfo { ID = teacherId },
                         EvaluateTask = new EvaTask { ID = evaTaskId }
                     });
