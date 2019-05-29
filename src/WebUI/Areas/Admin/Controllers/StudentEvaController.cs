@@ -35,6 +35,12 @@ namespace WebUI.Areas.Admin.Controllers
         public ViewResult Index(int pageIndex = 1, int pageSize = 6)
         {
             IList<ICriterion> queryConditions = new List<ICriterion>();
+            // 去掉 "待开启" 的评价任务
+            queryConditions.Add(Expression.Not(Expression.Eq("Status", 1)));
+            // 去掉 未知状态 的评价任务
+            //queryConditions.Add(Expression.IsNotNull("Status"));
+            //queryConditions.Add(Expression.IsNotEmpty("Status"));
+            queryConditions.Add(Expression.Not(Expression.Eq("Status", 0)));
             Query(queryConditions);
 
             ListViewModel<EvaTask> viewModel = new ListViewModel<EvaTask>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
@@ -90,7 +96,7 @@ namespace WebUI.Areas.Admin.Controllers
         /// </summary>
         /// <param name="id">关联的 评价任务ID</param>
         /// <returns></returns>
-        public ActionResult EvaList(int id)
+        public ViewResult EvaList(int id)
         {
             UserInfo currentUser = AccountManager.GetCurrentUserInfo();
             StudentInfo bindStudent = currentUser.GetBindStudent();
@@ -137,6 +143,18 @@ namespace WebUI.Areas.Admin.Controllers
         {
             try
             {
+                #region 安全起见
+                // 只允许评价 "正在评价" 状态 的评价任务
+                int evaingCount = Container.Instance.Resolve<EvaTaskService>().Count(
+                      Expression.Eq("Status", 3), // 正在评价
+                      Expression.Eq("ID", evaTaskId)
+                 );
+                if (evaingCount <= 0)
+                {
+                    return Json(new { code = -1, message = "评价失败，当前评价任务未开启，或已经结束" });
+                }
+                #endregion
+
                 // "学生方面" 指标
                 IList<NormTarget> needAnswerNormTargetList = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                 {

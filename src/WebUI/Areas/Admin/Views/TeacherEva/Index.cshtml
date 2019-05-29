@@ -123,7 +123,7 @@
 								<span class="label label-success">@item.Status.ToEvaTaskStatus()</span>
 								break;
 							case 3:
-								<span class="label label-primary">@item.Status.ToEvaTaskStatus()</span>
+								<span class="label label-danger">@item.Status.ToEvaTaskStatus()</span>
 								break;
 							default:
 								<span class="label label-default">@item.Status.ToEvaTaskStatus()</span>
@@ -134,7 +134,14 @@
 						<div class="btn-group" role="group" data-pjax>
 							@if (Html.HasAuth("Admin", "TeacherEva", "EvaList"))
 							{
-								<a class="btn btn-success" href="@Url.Action("EvaList")?id=@item.ID">进入</a>
+								if (item.Status == 3)
+								{
+									<a class="btn btn-default disabled" disabled href="#">已结束</a>
+								}
+								else
+								{
+									<a class="btn btn-success" href="@Url.Action("EvaList")?id=@item.ID">进入</a>
+								}
 							}
 						</div>
 					</td>

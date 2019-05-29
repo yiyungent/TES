@@ -2100,7 +2100,7 @@ namespace WebUI.Controllers
                         EvaTaskCode = string.Format("32001{0:00}", i),
                         StartDate = DateTime.Now,
                         EndDate = DateTime.Parse(time),
-                        Status = 0,
+                        Status = 1,
                     });
                 }
                 ShowMessage("成功");

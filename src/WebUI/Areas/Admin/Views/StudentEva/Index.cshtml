@@ -117,16 +117,16 @@
 						@switch (item.Status)
 						{
 							case 1:
-								<span class="label label-info">待开启</span>
+								<span class="label label-info">@item.Status.ToEvaTaskStatus()</span>
 								break;
 							case 2:
-								<span class="label label-info">正在评价</span>
+								<span class="label label-success">@item.Status.ToEvaTaskStatus()</span>
 								break;
 							case 3:
-								<span class="label label-info">评价结束</span>
+								<span class="label label-danger">@item.Status.ToEvaTaskStatus()</span>
 								break;
 							default:
-								<span class="label label-info">未知</span>
+								<span class="label label-default">@item.Status.ToEvaTaskStatus()</span>
 								break;
 						}
 					</td>
@@ -134,7 +134,14 @@
 						<div class="btn-group" role="group" data-pjax>
 							@if (Html.HasAuth("Admin", "StudentEva", "EvaList"))
 							{
-								<a class="btn btn-success" href="@Url.Action("EvaList")?id=@item.ID">进入</a>
+								if (item.Status == 3)
+								{
+									<a class="btn btn-default disabled" disabled href="#">已结束</a>
+								}
+								else
+								{
+									<a class="btn btn-success" href="@Url.Action("EvaList")?id=@item.ID">进入</a>
+								}
 							}
 						</div>
 					</td>
