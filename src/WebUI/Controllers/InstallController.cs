@@ -520,6 +520,34 @@ namespace WebUI.Controllers
                 });
                 #endregion
 
+                #region EvaResult
+                Sys_Menu evaResult_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "EvaResult") }).FirstOrDefault();
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EvaResult.Index",
+                    Name = "评价结果-列表",
+                    Sys_Menu = evaResult_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EvaResult.CaculateScore",
+                    Name = "评价结果-计算分数",
+                    Sys_Menu = evaResult_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EvaResult.ReCaculateScore",
+                    Name = "评价结果-重新计算分数",
+                    Sys_Menu = evaResult_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EvaResult.Delete",
+                    Name = "评价结果-删除",
+                    Sys_Menu = evaResult_Sys_Menu
+                });
+                #endregion
+
                 #region StudentInfo
                 //Sys_Menu studentInfo_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "StudentInfo") }).FirstOrDefault();
                 //Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
@@ -670,6 +698,7 @@ namespace WebUI.Controllers
                     Name = "超级管理员admin的绑定员工",
                     Department = new Department { ID = 5 },
                     EmployeeCode = "1235513238",
+                    Duty = 1,
                     UID = 1
                 });
 

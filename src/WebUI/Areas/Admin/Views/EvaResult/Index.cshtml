@@ -42,7 +42,7 @@
 			var id = $("#js-id").val();
 			$.ajax({
 				type: 'POST',
-				url: '/Admin/EvaTask/Delete',
+				url: '/Admin/EvaResult/Delete',
 				data: { id: id },
 				dataType: 'json',
 				success: function (data) {
@@ -236,10 +236,14 @@
 					</td>
 					<td>
 						<div class="btn-group" role="group" data-pjax>
-							@*@if (Html.HasAuth("Admin", "EvaResult", "CaculateScore"))
-								{*@
-							<button class="btn btn-success" onclick="reCaculateScore(@item.ID, this)">重新计算分数</button>
-							@*}*@
+							@if (Html.HasAuth("Admin", "EvaResult", "ReCaculateScore"))
+							{
+								<button class="btn btn-success" onclick="reCaculateScore(@item.ID, this)">重新计算分数</button>
+							}
+							@if (Html.HasAuth("Admin", "EvaResult", "Delete"))
+							{
+								<button class="btn btn-danger" onclick="deleteOp(@item.ID)">删除</button>
+							}
 						</div>
 					</td>
 				</tr>
@@ -269,10 +273,10 @@
 					</div>
 				</div>
 				<div class="col-xs-3" style="padding-top: 24px;">
-					@*@if (Html.HasAuth("Admin", "EvaResult", "CaculateScore"))
-						{*@
-					<button id="js-btn-caculate" class="btn btn-primary" onclick="caculateScore()">计算分数</button>
-					@*} *@
+					@if (Html.HasAuth("Admin", "EvaResult", "CaculateScore"))
+					{
+						<button id="js-btn-caculate" class="btn btn-primary" onclick="caculateScore()">计算分数</button>
+					}
 				</div>
 			</div>
 		</div>

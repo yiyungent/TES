@@ -13,7 +13,7 @@ namespace WebUI.Areas.Admin.Controllers
 {
     public class EvaResultController : Controller
     {
-        #region 首页
+        #region 列表
         public ActionResult Index(int pageIndex = 1, int pageSize = 6)
         {
             IList<ICriterion> queryConditions = new List<ICriterion>();
@@ -145,7 +145,9 @@ namespace WebUI.Areas.Admin.Controllers
                 return Json(new { code = -1, message = "计算失败" });
             }
         }
+        #endregion
 
+        #region 重新计算分数
         /// <summary>
         /// 重新计算分数
         /// </summary>
@@ -182,6 +184,23 @@ namespace WebUI.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 return Json(new { code = -1, message = "计算分数失败" });
+            }
+        }
+        #endregion
+
+        #region 删除
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            try
+            {
+                Container.Instance.Resolve<EvaResultService>().Delete(id);
+
+                return Json(new { code = 1, message = "删除成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "删除失败" });
             }
         }
         #endregion
