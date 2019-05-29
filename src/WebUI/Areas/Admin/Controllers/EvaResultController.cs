@@ -111,7 +111,36 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 计算分数
+        [HttpPost]
+        public JsonResult CaculateScore(int evaTaskId, int teacherId, int evaTypeId)
+        {
+            try
+            {
+                // 效验是否有 符合的 评价记录 以供 计算分数
+                bool isExist = Container.Instance.Resolve<EvaRecordService>().Count(
+                    Expression.Eq("EvaluateTask.ID", evaTaskId),
+                    Expression.Eq("NormType.ID", evaTypeId),
+                    Expression.Eq("Teacher.ID", teacherId)
+                 ) >= 1;
+                if (!isExist)
+                {
+                    return Json(new { code = -1, message = "计算失败，没有符合的评价记录 以供计算" });
+                }
 
+                EvaTask evaTask = new EvaTask() { ID = evaTaskId };
+                NormType normType = new NormType() { ID = evaTypeId };
+                EmployeeInfo teacher = new EmployeeInfo() { ID = teacherId };
+                Caculate(evaTask, normType, teacher);
+
+                return Json(new { code = 1, message = "计算成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "计算失败" });
+            }
+        }
+        #endregion
 
 
 
@@ -123,7 +152,7 @@ namespace WebUI.Areas.Admin.Controllers
             IList<NormTarget> allTarget = Container.Instance.Resolve<NormTargetService>().GetAll();
             IList<EvaRecord> allRecord = Container.Instance.Resolve<EvaRecordService>().Query(new List<ICriterion>
             {
-                Expression.Eq("EvaTask.ID", evaTask.ID),
+                Expression.Eq("EvaluateTask.ID", evaTask.ID),
                 Expression.Eq("NormType.ID", normType.ID),
                 Expression.Eq("Teacher.ID", employeeInfo.ID)
             });
@@ -154,15 +183,33 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 avgScore = sumScore / personCount;
             }
-            // 写计算结果EvaResult
-            Container.Instance.Resolve<EvaResultService>().Create(new EvaResult
+            // 判断是否已经存在 此评价结果-创建 / 更新（重新计算）
+            EvaResult existEvaResult = Container.Instance.Resolve<EvaResultService>().Query(
+                new List<ICriterion> {
+                    Expression.Eq("Teacher.ID", employeeInfo.ID),
+                    Expression.Eq("NormType.ID", normType.ID),
+                    Expression.Eq("EvaluateTask.ID", evaTask.ID)
+            }
+            ).FirstOrDefault();
+            if (existEvaResult != null)
             {
-                Teacher = employeeInfo,
-                NormType = normType,
-                CaculateTime = DateTime.Now, // 计算分数时间
-                EvaluateTask = evaTask,
-                Score = avgScore
-            });
+                // 更新 计算结果EvaResult
+                existEvaResult.CaculateTime = DateTime.Now;
+                existEvaResult.Score = avgScore;
+                Container.Instance.Resolve<EvaResultService>().Edit(existEvaResult);
+            }
+            else
+            {
+                // 创建 计算结果EvaResult
+                Container.Instance.Resolve<EvaResultService>().Create(new EvaResult
+                {
+                    Teacher = employeeInfo,
+                    NormType = normType,
+                    CaculateTime = DateTime.Now, // 计算分数时间
+                    EvaluateTask = evaTask,
+                    Score = avgScore
+                });
+            }
         }
         #endregion
 

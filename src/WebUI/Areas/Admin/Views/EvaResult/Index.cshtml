@@ -7,6 +7,11 @@
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
 }
 @section head {
+	<style>
+		table tr td {
+			vertical-align: middle !important;
+		}
+	</style>
 }
 @section body {
 	<script src="~/dist/pview/pview.js"></script>
@@ -59,17 +64,47 @@
 		}
 		// end 删除
 
+		// start 计算分数
+		function caculateScore() {
+			// 新计算分数, 实际上就是根据 评价记录创建对应的评价结果
+			var selectedEvaTaskId = $('#SelectedValForEvaTask').val();
+			var selectedTeacherId = $('#SelectedValForTeacher').val();
+			var selectedEvaTypeId = $('#SelectedValForEvaType').val();
+			$.ajax({
+				url: "/Admin/EvaResult/CaculateScore",
+				type: "post",
+				data: { evaTaskId: selectedEvaTaskId, teacherId: selectedTeacherId, evaTypeId: selectedEvaTypeId },
+				dataType: "json",
+				success: function (data) {
+					if (data.code > 0) {
+						// 计算成功
+						window.location.href = window.location.href;
+					} else {
+						showMessage(data.message, -1);
+					}
+				}
+			});
+		}
+
+		function reCaculateScore() {
+			// 重新计算
+		}
+		// end 计算分数
+
+		// start 搜索
 		function search() {
 			var query = $('#js-search-input').val();
 			var queryType = $('#js-search-type').attr('search-type');
 			window.location.href = window.location.origin + window.location.pathname + '?q=' + query + '&type=' + queryType;
 		}
+		// end 搜索
 
 		var pview;
 		$(function () {
 			pview = new PView();
 			pview.init();
 
+			// start 搜索
 			$('#js-search-input').on('keypress', function (event) {
 				if (event.keyCode == "13") {
 					search();
@@ -84,6 +119,7 @@
 				$('#js-search-type').attr('search-type', type);
 				$('#js-search-type').html(typeName);
 			});
+			// end 搜索
 		});
 	</script>
 }
@@ -112,7 +148,7 @@
 </div>
 <!-- end 删除确认框 -->
 <!-- start 提示框 -->
-@*@{ Html.RenderPartial("_MessagePartial"); }*@
+@{ Html.RenderPartial("_MessagePartial"); }
 <!-- end 提示框 -->
 
 <input id="js-id" type="hidden" />
@@ -176,10 +212,10 @@
 					</td>
 					<td>
 						<div class="btn-group" role="group" data-pjax>
-							@if (Html.HasAuth("Admin", "EvaResult", "Caculate"))
-							{
-								<a class="btn btn-success" href="@Url.Action("Caculate")?id=@item.ID">重新计算</a>
-							}
+							@*@if (Html.HasAuth("Admin", "EvaResult", "CaculateScore"))
+								{*@
+							<button class="btn btn-success" onclick="reCaculateScore()">重新计算分数</button>
+							@*}*@
 						</div>
 					</td>
 				</tr>
@@ -209,7 +245,10 @@
 					</div>
 				</div>
 				<div class="col-xs-3" style="padding-top: 24px;">
-					<a class="btn btn-primary" href="@Url.Action("Create") ">计算</a>
+					@*@if (Html.HasAuth("Admin", "EvaResult", "CaculateScore"))
+						{*@
+					<button class="btn btn-primary" onclick="caculateScore()">计算分数</button>
+					@*} *@
 				</div>
 			</div>
 		</div>
