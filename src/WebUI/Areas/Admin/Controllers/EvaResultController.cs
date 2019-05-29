@@ -22,9 +22,11 @@ namespace WebUI.Areas.Admin.Controllers
             ListViewModel<EvaResult> viewModel = new ListViewModel<EvaResult>(queryConditions, pageIndex, pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
 
-            ViewBag.SelectListForEvaTask = InitSelectListForEvaTask(0);
-            ViewBag.SelectListForTeacher = InitSelectListForTeacher(0);
-            ViewBag.SelectListForEvaType = InitSelectListForEvaType(0);
+            // 只显示 有评价记录（即可以计算分数）的选项列表
+            IList<EvaRecord> allEvaRecord = Container.Instance.Resolve<EvaRecordService>().GetAll();
+            ViewBag.SelectListForEvaTask = InitSelectListForEvaTask(0, allEvaRecord);
+            ViewBag.SelectListForTeacher = InitSelectListForTeacher(0, allEvaRecord);
+            ViewBag.SelectListForEvaType = InitSelectListForEvaType(0, allEvaRecord);
 
 
             return View(viewModel);
@@ -305,7 +307,7 @@ namespace WebUI.Areas.Admin.Controllers
         /// <summary>
         /// 初始化选项列表-被评教师
         /// </summary>
-        private static IList<SelectListItem> InitSelectListForTeacher(int selectedValue)
+        private static IList<SelectListItem> InitSelectListForTeacher(int selectedValue, IList<EvaRecord> allEvaRecordList)
         {
             IList<SelectListItem> ret = new List<SelectListItem>();
             ret.Add(new SelectListItem()
@@ -314,7 +316,7 @@ namespace WebUI.Areas.Admin.Controllers
                 Value = "0",
                 Selected = (selectedValue == 0)
             });
-            IList<EmployeeInfo> allEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetAll();
+            IList<EmployeeInfo> allEmployee = allEvaRecordList.Select(m => m.Teacher).Distinct().ToList();
             foreach (var item in allEmployee)
             {
                 ret.Add(new SelectListItem()
@@ -333,7 +335,7 @@ namespace WebUI.Areas.Admin.Controllers
         /// <summary>
         /// 初始化选项列表-评价类型
         /// </summary>
-        private static IList<SelectListItem> InitSelectListForEvaType(int selectedValue)
+        private static IList<SelectListItem> InitSelectListForEvaType(int selectedValue, IList<EvaRecord> allEvaRecordList)
         {
             IList<SelectListItem> ret = new List<SelectListItem>();
             ret.Add(new SelectListItem()
@@ -342,7 +344,7 @@ namespace WebUI.Areas.Admin.Controllers
                 Value = "0",
                 Selected = (selectedValue == 0)
             });
-            IList<NormType> all = Container.Instance.Resolve<NormTypeService>().GetAll();
+            IList<NormType> all = allEvaRecordList.Select(m => m.NormType).Distinct().ToList();
             foreach (var item in all)
             {
                 ret.Add(new SelectListItem()
@@ -361,7 +363,7 @@ namespace WebUI.Areas.Admin.Controllers
         /// <summary>
         /// 初始化选项列表-评价任务
         /// </summary>
-        private static IList<SelectListItem> InitSelectListForEvaTask(int selectedValue)
+        private static IList<SelectListItem> InitSelectListForEvaTask(int selectedValue, IList<EvaRecord> allEvaRecordList)
         {
             IList<SelectListItem> ret = new List<SelectListItem>();
             ret.Add(new SelectListItem()
@@ -370,7 +372,7 @@ namespace WebUI.Areas.Admin.Controllers
                 Value = "0",
                 Selected = (selectedValue == 0)
             });
-            IList<EvaTask> all = Container.Instance.Resolve<EvaTaskService>().GetAll();
+            IList<EvaTask> all = allEvaRecordList.Select(m => m.EvaluateTask).Distinct().ToList();
             foreach (var item in all)
             {
                 ret.Add(new SelectListItem()
