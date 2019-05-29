@@ -44,11 +44,11 @@ namespace WebUI.Controllers
             InitSys_Menu();
             InitFunction();
             InitRole();
-            InitUser();
             InitClazz();
+            InitDepartment();
+            InitUser();
             InitCourse();
             InitStudent();
-            InitDepartment();
             InitEmployee();
             InitCourseTable();
             InitNormType();
@@ -655,6 +655,22 @@ namespace WebUI.Controllers
                     Status = 0,
                     RoleInfoList = (from m in allRole where m.ID == 1 select m).ToList(),
                     RegTime = DateTime.Now
+                });
+
+                Container.Instance.Resolve<StudentInfoService>().Create(new StudentInfo()
+                {
+                    Name = "超级管理员admin的绑定学生",
+                    ClazzInfo = new ClazzInfo { ID = 1 },
+                    StudentCode = "123556778",
+                    UID = 1
+                });
+
+                Container.Instance.Resolve<EmployeeInfoService>().Create(new EmployeeInfo()
+                {
+                    Name = "超级管理员admin的绑定员工",
+                    Department = new Department { ID = 1 },
+                    EmployeeCode = "1235513238",
+                    UID = 1
                 });
 
 

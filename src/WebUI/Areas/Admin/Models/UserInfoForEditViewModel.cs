@@ -188,7 +188,7 @@ namespace WebUI.Areas.Admin.Models
             #endregion
             dbModel.UserName = inputModel.InputUserName?.Trim();
             dbModel.Name = inputModel.InputName?.Trim();
-            dbModel.Avatar = inputModel.InputAvatar?.Trim();
+            //dbModel.Avatar = inputModel.InputAvatar?.Trim();
             dbModel.Email = inputModel.InputEmail?.Trim();
             dbModel.Description = inputModel.InputDescription?.Trim();
             #endregion
