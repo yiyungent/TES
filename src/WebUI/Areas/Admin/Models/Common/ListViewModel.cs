@@ -68,6 +68,9 @@ namespace WebUI.Areas.Admin.Models.Common
                 case "Domain.EvaTask":
                     tempAllList = Container.Instance.Resolve<EvaTaskService>().GetPaged(queryConditions, orderList, pageIndex, pageSize, out totalCount);
                     break;
+                case "Domain.EvaResult":
+                    tempAllList = Container.Instance.Resolve<EvaResultService>().GetPaged(queryConditions, orderList, pageIndex, pageSize, out totalCount);
+                    break;
             }
             IList<dynamic> allList = tempAllList;
             IList<T> tempList = new List<T>();

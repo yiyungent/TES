@@ -7,15 +7,107 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebUI.Areas.Admin.Models.Common;
 
 namespace WebUI.Areas.Admin.Controllers
 {
     public class EvaResultController : Controller
     {
         #region 首页
-        public ActionResult Index()
+        public ActionResult Index(int pageIndex = 1, int pageSize = 6)
         {
-            return View();
+            IList<ICriterion> queryConditions = new List<ICriterion>();
+            Query(queryConditions);
+
+            ListViewModel<EvaResult> viewModel = new ListViewModel<EvaResult>(queryConditions, pageIndex, pageSize);
+            TempData["RedirectUrl"] = Request.RawUrl;
+
+            ViewBag.SelectListForEvaTask = InitSelectListForEvaTask(0);
+            ViewBag.SelectListForTeacher = InitSelectListForTeacher(0);
+            ViewBag.SelectListForEvaType = InitSelectListForEvaType(0);
+
+
+            return View(viewModel);
+        }
+
+        private void Query(IList<ICriterion> queryConditions)
+        {
+            // 输入的查询关键词
+            string query = Request["q"]?.Trim() ?? "";
+            // 查询类型
+            QueryType queryType = new QueryType();
+            Dictionary<string, string> queryTypeValTextDic = new Dictionary<string, string>
+            {
+                { "teachername", "教师名" },
+                { "evatypename", "评价类型名" },
+                { "evataskname", "评价任务名" },
+                { "score", "分数" },
+                { "id", "ID" },
+            };
+            queryType.Val = Request["type"]?.Trim().ToLower() ?? "teachername";
+            if (queryTypeValTextDic.ContainsKey(queryType.Val))
+            {
+                queryType.Text = queryTypeValTextDic[queryType.Val];
+            }
+            else
+            {
+                queryType.Text = "教学名";
+            }
+            if (!string.IsNullOrEmpty(query))
+            {
+                switch (queryType.Val)
+                {
+                    case "teachername":
+                        IList<EmployeeInfo> employeeList = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>
+                        {
+                            Expression.Like("Name", query, MatchMode.Anywhere)
+                        }).ToList();
+                        queryConditions.Add(Expression.In("Teacher.ID", employeeList.Select(m => m.ID).ToArray()));
+                        break;
+                    case "evatypename":
+                        IList<NormType> normTypeList = Container.Instance.Resolve<NormTypeService>().Query(new List<ICriterion>
+                        {
+                            Expression.Like("Name", query, MatchMode.Anywhere)
+                        }).ToList();
+                        queryConditions.Add(Expression.In("NormType.ID", normTypeList.Select(m => m.ID).ToArray()));
+                        break;
+                    case "evataskname":
+                        IList<EvaTask> evaTaskList = Container.Instance.Resolve<EvaTaskService>().Query(new List<ICriterion>
+                        {
+                            Expression.Like("Name", query, MatchMode.Anywhere)
+                        }).ToList();
+                        queryConditions.Add(Expression.In("EvaTask.ID", evaTaskList.Select(m => m.ID).ToArray()));
+                        break;
+                    case "score":
+                        if (decimal.TryParse(query, out decimal queryScore))
+                        {
+                            queryConditions.Add(Expression.Eq("Score", queryScore));
+                        }
+                        break;
+                    case "id":
+                        if (!string.IsNullOrEmpty(query))
+                        {
+                            if (int.TryParse(query, out int id))
+                            {
+                                queryConditions.Add(Expression.Eq("ID", id));
+                            }
+                            else
+                            {
+                                queryConditions.Add(Expression.Eq("ID", 0));
+                            }
+                        }
+                        break;
+                    default:
+                        IList<EmployeeInfo> employeeList_2 = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>
+                        {
+                            Expression.Like("Name", query, MatchMode.Anywhere)
+                        }).ToList();
+                        queryConditions.Add(Expression.In("Teacher.ID", employeeList_2.Select(m => m.ID).ToArray()));
+                        break;
+                }
+            }
+            ViewBag.Query = query;
+            ViewBag.QueryType = queryType;
         }
         #endregion
 
@@ -67,7 +159,7 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 Teacher = employeeInfo,
                 NormType = normType,
-                EvaDate = DateTime.Now, // 计算分数时间
+                CaculateTime = DateTime.Now, // 计算分数时间
                 EvaluateTask = evaTask,
                 Score = avgScore
             });
@@ -118,9 +210,97 @@ namespace WebUI.Areas.Admin.Controllers
                 return self.Weight / sumWeight * GetWeight(self.ParentTarget, all);
             }
         }
+        #endregion
+
+        #region 初始化选项列表-被评教师
+        /// <summary>
+        /// 初始化选项列表-被评教师
+        /// </summary>
+        private static IList<SelectListItem> InitSelectListForTeacher(int selectedValue)
+        {
+            IList<SelectListItem> ret = new List<SelectListItem>();
+            ret.Add(new SelectListItem()
+            {
+                Text = "请选择",
+                Value = "0",
+                Selected = (selectedValue == 0)
+            });
+            IList<EmployeeInfo> allEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetAll();
+            foreach (var item in allEmployee)
+            {
+                ret.Add(new SelectListItem()
+                {
+                    Text = $"{item.Name}（{item.EmployeeCode}）",
+                    Value = item.ID.ToString(),
+                    Selected = (selectedValue == item.ID)
+                });
+            }
+
+            return ret;
+        }
         #endregion 
 
+        #region 初始化选项列表-评价类型
+        /// <summary>
+        /// 初始化选项列表-评价类型
+        /// </summary>
+        private static IList<SelectListItem> InitSelectListForEvaType(int selectedValue)
+        {
+            IList<SelectListItem> ret = new List<SelectListItem>();
+            ret.Add(new SelectListItem()
+            {
+                Text = "请选择",
+                Value = "0",
+                Selected = (selectedValue == 0)
+            });
+            IList<NormType> all = Container.Instance.Resolve<NormTypeService>().GetAll();
+            foreach (var item in all)
+            {
+                ret.Add(new SelectListItem()
+                {
+                    Text = item.Name,
+                    Value = item.ID.ToString(),
+                    Selected = (selectedValue == item.ID)
+                });
+            }
+
+            return ret;
+        }
+        #endregion 
+
+        #region 初始化选项列表-评价任务
+        /// <summary>
+        /// 初始化选项列表-评价任务
+        /// </summary>
+        private static IList<SelectListItem> InitSelectListForEvaTask(int selectedValue)
+        {
+            IList<SelectListItem> ret = new List<SelectListItem>();
+            ret.Add(new SelectListItem()
+            {
+                Text = "请选择",
+                Value = "0",
+                Selected = (selectedValue == 0)
+            });
+            IList<EvaTask> all = Container.Instance.Resolve<EvaTaskService>().GetAll();
+            foreach (var item in all)
+            {
+                ret.Add(new SelectListItem()
+                {
+                    Text = $"{item.Name}（{item.EvaTaskCode}）",
+                    Value = item.ID.ToString(),
+                    Selected = (selectedValue == item.ID)
+                });
+            }
+
+            return ret;
+        }
         #endregion
+
+        #endregion
+
+
+
+
 
     }
 }
