@@ -102,12 +102,24 @@ namespace WebUI.Areas.Admin.Controllers
                 // 该学生 所在班级的 课表
                 viewModel = bindStudent.ClazzInfo.CourseTableList;
             }
+            // 查询这些 教师中哪些是 自己已经评价过的
+            // 当前人当前评价任务 已经评价过的 教师ID 列表
+            IList<int> isEvaedTeacherList = new List<int>();
+            isEvaedTeacherList = Container.Instance.Resolve<EvaRecordService>().Query(new List<ICriterion>()
+            {
+                Expression.Eq("EvaluateTask.ID", id),
+                Expression.Eq("Evaluator.ID", currentUser.ID)
+            }).Select(m => m.Teacher.ID).ToList();
+
+            #region 展示到视图
             ViewBag.CurrentStudent = bindStudent;
             ViewBag.CurrentClazz = bindStudent?.ClazzInfo;
             ViewBag.EvaTaskId = id;
             EvaTask evaTask = Container.Instance.Resolve<EvaTaskService>().GetEntity(id);
             ViewBag.EvaTask = evaTask;
+            ViewBag.IsEvaedTeacherList = isEvaedTeacherList;
             TempData["RedirectUrl"] = Request.RawUrl;
+            #endregion
 
             return View(viewModel);
         }
@@ -118,16 +130,17 @@ namespace WebUI.Areas.Admin.Controllers
         /// 评价
         /// </summary>
         /// <param name="id">课表ID</param>
+        /// <param name="evaTaskId">评价任务ID</param>
         /// <returns></returns>
         [HttpGet]
-        public ViewResult Eva(int id, int evaTaskId)
+        public ViewResult Eva(int courseTableId, int evaTaskId)
         {
             // 学生评价教师 使用 "学生评价" 类型的指标
             IList<NormTarget> viewModel = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
             {
                 Expression.Eq("NormType.ID", 1)
             });
-            CourseTable courseTable = Container.Instance.Resolve<CourseTableService>().GetEntity(id);
+            CourseTable courseTable = Container.Instance.Resolve<CourseTableService>().GetEntity(courseTableId);
             ViewBag.CourseTable = courseTable;
             ViewBag.EvaTaskId = evaTaskId;
 

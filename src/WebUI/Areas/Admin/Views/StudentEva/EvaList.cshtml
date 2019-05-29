@@ -9,6 +9,7 @@
 	ClazzInfo currentClazz = ViewBag.CurrentClazz;
 	int evaTaskId = ViewBag.EvaTaskId;
 	EvaTask evaTask = ViewBag.EvaTask;
+	IList<int> isEvaedTeacherList = ViewBag.IsEvaedTeacherList;
 }
 @section head {
 }
@@ -80,7 +81,16 @@
 						<td></td>
 						<td>
 							<div class="btn-group">
-								<a class="btn btn-primary" href="/Admin/StudentEva/Eva?id=@item.ID&evaTaskId=@evaTaskId">评价</a>
+								@if (isEvaedTeacherList.Contains(item.Teacher.ID))
+								{
+									// 已评
+									<a class="btn btn-default disabled" disabled href="#">已评</a>
+								}
+								else
+								{
+									// 未评
+									<a class="btn btn-primary" href="/Admin/StudentEva/Eva?courseTableId=@item.ID&evaTaskId=@evaTaskId">评价</a>
+								}
 							</div>
 						</td>
 					</tr>

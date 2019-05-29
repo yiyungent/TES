@@ -100,7 +100,7 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 Expression.Eq("EvaluateTask.ID", id),
                 Expression.Eq("Evaluator.ID", currentUser.ID)
-            }).Select(m => m.ID).ToList();
+            }).Select(m => m.Teacher.ID).ToList();
 
 
             #region 展示到视图
