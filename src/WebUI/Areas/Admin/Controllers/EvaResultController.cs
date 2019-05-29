@@ -12,10 +12,18 @@ namespace WebUI.Areas.Admin.Controllers
 {
     public class EvaResultController : Controller
     {
+        #region 首页
         public ActionResult Index()
         {
             return View();
         }
+        #endregion
+
+
+
+
+
+        #region Helpers
 
         #region 计算分数并保存评价结果
         private void Caculate(EvaTask evaTask, NormType normType, EmployeeInfo employeeInfo)
@@ -25,7 +33,7 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 Expression.Eq("EvaTask.ID", evaTask.ID),
                 Expression.Eq("NormType.ID", normType.ID),
-                Expression.Eq("EmployeeInfo.ID", employeeInfo.ID)
+                Expression.Eq("Teacher.ID", employeeInfo.ID)
             });
 
             // 按评价人排序
@@ -38,12 +46,12 @@ namespace WebUI.Areas.Admin.Controllers
             decimal avgScore = 0;
             foreach (var item in allRecord)
             {
-                //if (item.SysUser.ID != userId)
-                //{
-                //    personCount = personCount + 1;
+                if (item.Evaluator.ID != userId)
+                {
+                    personCount = personCount + 1;
 
-                //    userId = item.SysUser.ID;
-                //}
+                    userId = item.Evaluator.ID;
+                }
                 // 递归确定权重（含归一化处理）
                 decimal weight = GetWeight(item.NormTarget, allTarget);
 
@@ -110,6 +118,9 @@ namespace WebUI.Areas.Admin.Controllers
                 return self.Weight / sumWeight * GetWeight(self.ParentTarget, all);
             }
         }
+        #endregion 
+
         #endregion
+
     }
 }

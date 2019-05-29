@@ -36,7 +36,7 @@ namespace Domain
         /// </summary>
         [Display(Name = "计算时间")]
         [Property(NotNull = true)]
-        public DateTime EvaDate { get; set; }
+        public DateTime CaculateTime { get; set; }
 
         ///<summary>
         /// 成绩
