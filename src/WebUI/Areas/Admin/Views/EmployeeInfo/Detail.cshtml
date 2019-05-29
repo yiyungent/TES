@@ -24,12 +24,21 @@
 				@Html.TextBoxFor(m => m.EmployeeCode, new { @class = "form-control", disabled = "disabled" })
 			</div>
 			<div class="form-group">
+				@Html.LabelFor(m => m.Duty)
+				@Html.TextBoxFor(m => m.Duty, new { @class = "form-control", disabled = "disabled", Value = Model.Duty.ToEmployeeDuty() })
+			</div>
+			<div class="form-group">
 				@Html.LabelFor(m => m.Department)
-				@Html.TextBox("Department.Name", Model.Department?.Name ?? "无", new { @class = "form-control", disabled = "disabled" })
+				@{
+					string parentYuanName = Model.Department?.ParentDept?.Name ?? "";
+					string xiName = Model.Department?.Name ?? "";
+					string name = parentYuanName + " - " + xiName;
+				}
+				@Html.TextBox("Department.Name", name ?? "无", new { @class = "form-control", disabled = "disabled" })
 			</div>
 			<div class="form-group">
 				<label>绑定用户(用户名)</label>
-				@Html.TextBox("UserName", Model.GetBindUser()?.Name ?? "未绑定用户", new { @class = "form-control", disabled = "disabled"})
+				@Html.TextBox("UserName", Model.GetBindUser()?.Name ?? "未绑定用户", new { @class = "form-control", disabled = "disabled" })
 			</div>
 		</div>
 		<div class="box-footer">

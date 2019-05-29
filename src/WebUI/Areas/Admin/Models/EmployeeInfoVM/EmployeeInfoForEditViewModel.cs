@@ -44,6 +44,17 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
         public DateTime InputEnd_Time { get; set; }
 
         ///<summary>
+        /// 仅作展示，选择职位
+        /// </summary>
+        [Display(Name = "职位")]
+        public IList<SelectListItem> SelectListForDuty { get; set; }
+
+        /// <summary>
+        /// 仅作接收, 被选中的职位
+        /// </summary>
+        public int SelectedValForDuty { get; set; }
+
+        ///<summary>
         /// 仅作展示，选择性别
         /// </summary>
         [Display(Name = "性别")]
@@ -72,6 +83,8 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
             this.SelectedValForDept = 0;
             this.SelectListForSex = InitSelectListForSex(0);
             this.SelectedValForSex = 0;
+            this.SelectListForDuty = InitSelectListForDuty(0);
+            this.SelectedValForDuty = 0;
         }
         #endregion
 
@@ -88,7 +101,9 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
                 SelectListForDept = InitSelectListForDept(dbModel.Department?.ID ?? 0),
                 SelectedValForDept = dbModel.Department?.ID ?? 0,
                 SelectListForSex = InitSelectListForSex(dbModel.Sex),
-                SelectedValForSex = dbModel.Sex
+                SelectedValForSex = dbModel.Sex,
+                SelectListForDuty = InitSelectListForDuty(dbModel.Duty),
+                SelectedValForDuty = dbModel.Duty
             };
 
             return viewModel;
@@ -115,6 +130,7 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
             dbModel.End_Time = inputModel.InputEnd_Time;
             dbModel.Department = new Department { ID = inputModel.SelectedValForDept };
             dbModel.Sex = inputModel.SelectedValForSex;
+            dbModel.Duty = inputModel.SelectedValForDuty;
 
             return dbModel;
         }
@@ -158,7 +174,7 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
 
         #region 初始化选项列表-性别
         /// <summary>
-        /// 初始化选项列表-部门
+        /// 初始化选项列表-性别
         /// </summary>
         private static IList<SelectListItem> InitSelectListForSex(int selectedValue)
         {
@@ -186,6 +202,36 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
                 Text = "其他",
                 Value = "3",
                 Selected = (selectedValue == 3)
+            });
+
+            return ret;
+        }
+        #endregion 
+
+        #region 初始化选项列表-职位
+        /// <summary>
+        /// 初始化选项列表-职位
+        /// </summary>
+        private static IList<SelectListItem> InitSelectListForDuty(int selectedValue)
+        {
+            IList<SelectListItem> ret = new List<SelectListItem>();
+            ret.Add(new SelectListItem()
+            {
+                Text = "请选择",
+                Value = "0",
+                Selected = (selectedValue == 0)
+            });
+            ret.Add(new SelectListItem()
+            {
+                Text = "普通教师",
+                Value = "1",
+                Selected = (selectedValue == 1)
+            });
+            ret.Add(new SelectListItem()
+            {
+                Text = "系主任",
+                Value = "2",
+                Selected = (selectedValue == 2)
             });
 
             return ret;
