@@ -76,7 +76,7 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
-        #region 该任务要评价的教师列表
+        #region 该任务要评价的员工列表
         /// <summary>
         /// 需评价列表
         /// </summary>
