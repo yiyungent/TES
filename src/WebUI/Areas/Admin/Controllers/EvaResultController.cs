@@ -67,10 +67,7 @@ namespace WebUI.Areas.Admin.Controllers
                         queryConditions.Add(Expression.In("Teacher.ID", employeeList.Select(m => m.ID).ToArray()));
                         break;
                     case "evatypename":
-                        IList<NormType> normTypeList = Container.Instance.Resolve<NormTypeService>().Query(new List<ICriterion>
-                        {
-                            Expression.Like("Name", query, MatchMode.Anywhere)
-                        }).ToList();
+                        IList<NormType> normTypeList = null;
                         queryConditions.Add(Expression.In("NormType.ID", normTypeList.Select(m => m.ID).ToArray()));
                         break;
                     case "evataskname":

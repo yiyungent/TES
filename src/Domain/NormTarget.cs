@@ -21,7 +21,7 @@ namespace Domain
         /// 指标类型
         /// </summary>
         [Display(Name = "指标类型")]
-        [BelongsTo(Column = "NormTypeId")]
+        [BelongsTo(Column = "ParentId")]
         public NormType NormType { get; set; }
 
         ///<summary>

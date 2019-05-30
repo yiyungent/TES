@@ -8175,10 +8175,6 @@
     <Content Include="dist\push.js\README.md" />
     <Content Include="Areas\Admin\Views\Department\Index.cshtml" />
     <Content Include="Areas\Admin\Views\SysMenu\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\NormType\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\NormType\Detail.cshtml" />
-    <Content Include="Areas\Admin\Views\NormType\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\NormType\Create.cshtml" />
     <Content Include="Areas\Admin\Views\EvaTask\Index.cshtml" />
     <Content Include="Areas\Admin\Views\EvaTask\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\EvaTask\Edit.cshtml" />
@@ -8317,7 +8313,6 @@
     <Compile Include="Areas\Admin\Controllers\EvaResultController.cs" />
     <Compile Include="Areas\Admin\Controllers\EvaTaskController.cs" />
     <Compile Include="Areas\Admin\Controllers\NormTargetController.cs" />
-    <Compile Include="Areas\Admin\Controllers\NormTypeController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\StudentInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\StudentEvaController.cs" />
@@ -8332,7 +8327,6 @@
     <Compile Include="Areas\Admin\Models\DashboardVM\EvaAnalyseChart.cs" />
     <Compile Include="Areas\Admin\Models\EmployeeInfoVM\EmployeeInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EvaTaskVM\EvaTaskForEditViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\NormTypeVM\NormTypeForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\StudentInfoVM\StudentInfoForEditViewModel.cs" />

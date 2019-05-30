@@ -260,8 +260,13 @@ namespace WebUI.Areas.Admin.Controllers
                         }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
                     break;
                 case 3:
-                    // 
-
+                    // 教研主任
+                    // 被评人 职位 为: "教研主任"，使用 "教研室方面 " 类型的指标
+                    normType = Container.Instance.Resolve<NormTypeService>().GetEntity(3);
+                    rtn = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                        {
+                            Expression.Eq("NormType.ID", normType.ID)
+                        }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
                     break;
             }
 
