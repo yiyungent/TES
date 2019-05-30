@@ -227,24 +227,24 @@ namespace WebUI.Areas.Admin.Controllers
 
         #region Helpers
 
-        #region 根据被评价人选择评价指标（需回答即有选项的指标）（答卷）
+        #region 根据评价人选择评价指标（需回答即有选项的指标）（答卷）
         /// <summary>
-        /// 根据被评价人选择评价指标（答卷）
+        /// 根据评价人选择评价指标（答卷）
         /// </summary>
-        /// <param name="evaedor">被评价员工（教师）</param>
-        /// <param name="normType">他使用的评价类型</param>
-        /// <returns>他使用的评价指标列表</returns>
-        private IList<NormTarget> GetNormTargetsByEvaedor(EmployeeInfo evaedor, out NormType normType)
+        /// <param name="evaor">评价员工（教师）</param>
+        /// <param name="normType">使用的评价类型</param>
+        /// <returns>使用的评价指标列表</returns>
+        private IList<NormTarget> GetNormTargetsByEvaor(EmployeeInfo evaor, out NormType normType)
         {
             IList<NormTarget> rtn = null;
             normType = null;
             // 职位 区别
-            switch (evaedor.Duty)
+            switch (evaor.Duty)
             {
                 case 1:
                     // 普通教师
-                    // 被评人 职位 为: "普通教师"， 使用  "系 （部） 方 面" 类型  的指标
-                    normType = Container.Instance.Resolve<NormTypeService>().GetEntity(2);
+                    // 评价人 职位 为: "普通教师"， 使用  "同行方面（领导）" 类型  的指标
+                    normType = Container.Instance.Resolve<NormTypeService>().GetEntity(4);
                     rtn = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                         {
                             Expression.Eq("NormType.ID", normType.ID)
@@ -252,16 +252,21 @@ namespace WebUI.Areas.Admin.Controllers
                     break;
                 case 2:
                     // 系主任
-                    // 被评人 职位 为: "系主任"， 使用  "同行方面（领导）"  类型的指标
-                    normType = Container.Instance.Resolve<NormTypeService>().GetEntity(4);
+                    // 评价人 职位 为: "系主任"， 使用  "系 （部） 方 面"  类型的指标
+                    normType = Container.Instance.Resolve<NormTypeService>().GetEntity(2);
                     rtn = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
                         {
                             Expression.Eq("NormType.ID", normType.ID)
                         }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
                     break;
                 case 3:
-                    // 
-
+                    // 教研室主任
+                    // 评价人 职位 为: "教研室主任"， 使用  "教 研 室 方 面"  类型的指标
+                    normType = Container.Instance.Resolve<NormTypeService>().GetEntity(3);
+                    rtn = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                        {
+                            Expression.Eq("NormType.ID", normType.ID)
+                        }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
                     break;
             }
 
@@ -287,7 +292,7 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 // 被评人 非自己
                 // 职位 区别
-                rtn = GetNormTargetsByEvaedor(evaedor, out normType);
+                rtn = GetNormTargetsByEvaor(evaor.GetBindEmployee(), out normType);
             }
 
             return rtn;

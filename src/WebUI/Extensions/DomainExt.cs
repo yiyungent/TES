@@ -167,13 +167,16 @@ namespace WebUI.Extensions
             switch (value)
             {
                 case 1:
-                    meanStr = "教师";
+                    meanStr = "普通教师";
                     break;
                 case 2:
                     meanStr = "系主任";
                     break;
+                case 3:
+                    meanStr = "教研室主任";
+                    break;
                 default:
-                    meanStr = "未知";
+                    meanStr = "无";
                     break;
             }
 
