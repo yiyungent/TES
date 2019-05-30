@@ -90,9 +90,8 @@ namespace WebUI.Areas.Admin.Controllers
             if (bindEmployee != null)
             {
                 #region 根据部门筛选
-                // 该员工 所在系的 所有员工
-                // 只能评价 相同部门下 的教师
-                viewModel = bindEmployee.Department.EmployeeInfoList();
+                // 只能评价 相同部门下(递归:包括后代所有部门) 的员工
+                viewModel = GetAllEmployeeInSelfAndLaterDept(bindEmployee.Department);
                 #endregion
 
                 #region 根据职位筛选
@@ -112,7 +111,7 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 Expression.Eq("EvaluateTask.ID", id),
                 Expression.Eq("Evaluator.ID", currentUser.ID)
-            }).Select(m => m.Teacher.ID).ToList(); 
+            }).Select(m => m.Teacher.ID).ToList();
             #endregion
 
             #region 展示到视图
@@ -308,6 +307,47 @@ namespace WebUI.Areas.Admin.Controllers
             }
 
             return rtn;
+        }
+        #endregion
+
+        #region 获取当前部门的所有后代部门（返回包括自身(当前)）
+        private void GetAllLaterAndSelfDept(Department currentDept, IList<Department> resultDeptList)
+        {
+            resultDeptList.Add(currentDept);
+
+            if (currentDept.Children != null && currentDept.Children.Count >= 1)
+            {
+                foreach (var item in currentDept.Children)
+                {
+                    GetAllLaterAndSelfDept(item, resultDeptList);
+                }
+            }
+        }
+        #endregion
+
+        #region 获取这些部门的员工
+        private IList<EmployeeInfo> GetAllEmployeeInDeptList(IList<Department> deptList)
+        {
+            IList<EmployeeInfo> rtn = new List<EmployeeInfo>();
+            foreach (var dept in deptList)
+            {
+                foreach (var employee in dept.EmployeeInfoList())
+                {
+                    rtn.Add(employee);
+                }
+            }
+
+            return rtn;
+        }
+        #endregion
+
+        #region 获取当前部门的所有后代部门（包括自身）内的所有员工
+        private IList<EmployeeInfo> GetAllEmployeeInSelfAndLaterDept(Department dept)
+        {
+            IList<Department> deptList = new List<Department>();
+            GetAllLaterAndSelfDept(dept, deptList);
+
+            return GetAllEmployeeInDeptList(deptList);
         }
         #endregion
 

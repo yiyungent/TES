@@ -240,11 +240,33 @@ namespace WebUI.Extensions
             return rtn;
         }
         #endregion
+
+        #region 根据当前部门推出详细部门链
+        /// <summary>
+        /// 根据当前部门推出详细部门链
+        /// </summary>
+        /// <param name="currentDept"></param>
+        /// <returns>eg: A院 - B系 - D教研室</returns>
+        public static string DescDept(this Department currentDept)
+        {
+            string rtn = "";
+            Department currentItem = currentDept;
+            while (currentItem != null)
+            {
+                rtn = currentItem.Name + " - " + rtn;
+                currentItem = currentItem.ParentDept;
+            }
+            rtn = rtn.Remove(rtn.Length - 3);
+
+            return rtn;
+        }
+        #endregion
     }
 
     public enum EmployeeDuty
     {
-        教师 = 1,
-        系主任 = 2
+        普通教师 = 1,
+        系主任 = 2,
+        教研室主任 = 3
     }
 }

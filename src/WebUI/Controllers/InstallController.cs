@@ -717,7 +717,7 @@ namespace WebUI.Controllers
                     Name = "超级管理员admin的绑定员工",
                     Department = new Department { ID = 5 },
                     EmployeeCode = "1235513238",
-                    Duty = 1,
+                    Duty = 2,
                     UID = 1
                 });
 
@@ -836,6 +836,7 @@ namespace WebUI.Controllers
             {
                 ShowMessage("开始初始化部门");
 
+                #region 一级院
                 Container.Instance.Resolve<DepartmentService>().Create(new Department
                 {
                     DeptType = 1,
@@ -864,9 +865,10 @@ namespace WebUI.Controllers
                     SortCode = 40,
                     ParentDept = null
                 });
+                #endregion
 
                 Department parentDept = null;
-                // 二级学院
+                #region 二级系
                 parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
                 {
                     Expression.Eq("Name", "软件学院")
@@ -935,6 +937,28 @@ namespace WebUI.Controllers
                     SortCode = 20,
                     ParentDept = parentDept
                 });
+                #endregion
+
+                #region 三级教研室
+                parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "软件工程系")
+                }).FirstOrDefault();
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "软件工程A教研室",
+                    SortCode = 10,
+                    ParentDept = parentDept
+                });
+                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                {
+                    DeptType = 1,
+                    Name = "软件工程B教研室",
+                    SortCode = 10,
+                    ParentDept = parentDept
+                });
+                #endregion
 
 
                 ShowMessage("成功");
@@ -954,7 +978,9 @@ namespace WebUI.Controllers
                 ShowMessage("开始初始化员工表");
 
                 var allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
-                var allXiList = Container.Instance.Resolve<DepartmentService>().GetAll().Where(m => m.Children == null || m.Children.Count == 0).ToList();
+                var allDeptList = Container.Instance.Resolve<DepartmentService>().GetAll();
+                var allJYSList = allDeptList.Where(m => m.Children == null || m.Children.Count == 0).ToList();
+                var allXiList = allDeptList.Where(m => m.Name.EndsWith("系")).ToList();
 
                 Random r = new Random();
                 for (int i = 0; i < 100; i++)
@@ -976,7 +1002,7 @@ namespace WebUI.Controllers
                         Name = name,
                         EmployeeCode = employeeCode,
                         Duty = i % 3 + 1,
-                        Department = allXiList[r.Next(allXiList.Count)],
+                        Department = (i % 3 + 1) == 1 || (i % 3 + 1) == 3 ? allJYSList[r.Next(allJYSList.Count)] : allXiList[r.Next(allXiList.Count)],
                         CourseTableList = new List<CourseTable>(),
                         UID = 102 + i
                     });

@@ -53,11 +53,7 @@
 			</span>
 			<span class="col-xs-2 pull-left">职位: @currentEmployee.Duty.ToEmployeeDuty()</span>
 			<span class="col-xs-4 pull-right">
-				@{
-					string parentYuanName = currentDept?.ParentDept?.Name ?? "";
-					string xiName = currentDept?.Name ?? "";
-				}
-				@parentYuanName - @xiName
+				@currentDept.DescDept()
 			</span>
 		</h3>
 
@@ -71,6 +67,7 @@
 			<tr>
 				<th>ID</th>
 				<th>教师</th>
+				<th>部门</th>
 				<th>职位</th>
 				<th>操作</th>
 			</tr>
@@ -81,6 +78,7 @@
 					<tr>
 						<td>@item.ID</td>
 						<td>@item.Name（@item.EmployeeCode）</td>
+						<td>@item.Department.DescDept()</td>
 						<td>
 							<span class="label label-success">@item.Duty.ToEmployeeDuty()</span>
 						</td>

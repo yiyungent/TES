@@ -47,8 +47,9 @@ namespace Domain
         /// <summary>
         /// 职位
         /// <para>
-        /// 1: 教师
+        /// 1: 普通教师
         /// 2: 系主任
+        /// 3: 教研室主任
         /// </para>
         /// </summary>
         [Display(Name = "职位")]

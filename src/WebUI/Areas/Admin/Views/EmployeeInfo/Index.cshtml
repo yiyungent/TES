@@ -164,11 +164,7 @@
 					<td>@cat.Name</td>
 					<td>@cat.EmployeeCode</td>
 					<td>
-						@{ 
-							string parentYuanName = cat.Department?.ParentDept?.Name ?? "";
-							string xiName = cat.Department?.Name ?? "";
-						}
-						<span class="label label-info">@parentYuanName - @xiName</span>
+						<span class="label label-info">@cat.Department.DescDept()</span>
 					</td>
 					<td>
 						<span class="label label-success">@cat.Duty.ToEmployeeDuty()</span>
