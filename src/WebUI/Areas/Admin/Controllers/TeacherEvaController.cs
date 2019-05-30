@@ -89,10 +89,22 @@ namespace WebUI.Areas.Admin.Controllers
             IList<EmployeeInfo> viewModel = null;
             if (bindEmployee != null)
             {
+                #region 根据部门筛选
                 // 该员工 所在系的 所有员工
-                // 只能评价 同行（同院同系）的教师
+                // 只能评价 相同部门下 的教师
                 viewModel = bindEmployee.Department.EmployeeInfoList();
+                #endregion
+
+                #region 根据职位筛选
+
+                #endregion
+
+
             }
+
+
+
+            #region 标记已评
             // 查询这些 教师中哪些是 自己已经评价过的
             // 当前人当前评价任务 已经评价过的 教师ID 列表
             IList<int> isEvaedTeacherList = new List<int>();
@@ -100,8 +112,8 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 Expression.Eq("EvaluateTask.ID", id),
                 Expression.Eq("Evaluator.ID", currentUser.ID)
-            }).Select(m => m.Teacher.ID).ToList();
-
+            }).Select(m => m.Teacher.ID).ToList(); 
+            #endregion
 
             #region 展示到视图
             ViewBag.CurrentEmployee = bindEmployee;

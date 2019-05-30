@@ -975,7 +975,7 @@ namespace WebUI.Controllers
                     {
                         Name = name,
                         EmployeeCode = employeeCode,
-                        Duty = i % 2 + 1,
+                        Duty = i % 3 + 1,
                         Department = allXiList[r.Next(allXiList.Count)],
                         CourseTableList = new List<CourseTable>(),
                         UID = 102 + i
