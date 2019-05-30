@@ -67,13 +67,9 @@
 	<div class="box-header">
 		<h3 class="box-title col-sm-12">
 			<span class="col-xs-3">被评人: @evaedEmployee.Name（@evaedEmployee.EmployeeCode）</span>
-			<span class="col-xs-3">职位: @evaedEmployee.Duty.ToEmployeeDuty()</span>
+			<span class="col-xs-3">职位: @evaedEmployee.EmployeeDuty.Name</span>
 			<span class="col-xs-3">
-				@{
-					string parentYuanName = evaedEmployee.Department?.ParentDept?.Name ?? "";
-					string xiName = evaedEmployee.Department?.Name ?? "";
-				}
-				@parentYuanName - @xiName
+				@(evaedEmployee.Department?.DescDept() ?? "")
 			</span>
 			<span class="col-xs-3">评价类型: @normType.Name</span>
 		</h3>

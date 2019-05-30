@@ -95,10 +95,29 @@ namespace WebUI.Areas.Admin.Controllers
                 #endregion
 
                 #region 根据职位筛选
-
+                if (bindEmployee.EmployeeDuty != null)
+                {
+                    int currentEmployeeDutyId = bindEmployee.EmployeeDuty.ID;
+                    IList<EmployeeDuty> evaDutyList = Container.Instance.Resolve<EmployeeDutyService>().GetEntity(currentEmployeeDutyId).EvaDutyList;
+                    if (evaDutyList != null && evaDutyList.Count >= 1)
+                    {
+                        // 当前登录员工可以评价这些职位ID  的员工
+                        IList<int> evaDutyIdList = evaDutyList.Select(m => m.ID).ToList();
+                        // 筛选员工-只能评价这些职位的员工
+                        viewModel = viewModel.Where(m => evaDutyIdList.Contains(m.EmployeeDuty?.ID ?? 0)).ToList();
+                    }
+                    else
+                    {
+                        // 职位约束：不能评任何人
+                        viewModel = new List<EmployeeInfo>();
+                    }
+                }
+                else
+                {
+                    // 没职位的员工 不能评任何人
+                    viewModel = new List<EmployeeInfo>();
+                }
                 #endregion
-
-
             }
 
 
@@ -248,37 +267,19 @@ namespace WebUI.Areas.Admin.Controllers
         private IList<NormTarget> GetNormTargetsByEvaor(EmployeeInfo evaor, out NormType normType)
         {
             IList<NormTarget> rtn = null;
-            normType = null;
-            // 职位 区别
-            switch (evaor.Duty)
+            if (evaor.EmployeeDuty != null)
             {
-                case 1:
-                    // 普通教师
-                    // 评价人 职位 为: "普通教师"， 使用  "同行方面（领导）" 类型  的指标
-                    normType = Container.Instance.Resolve<NormTypeService>().GetEntity(4);
-                    rtn = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                        {
-                            Expression.Eq("NormType.ID", normType.ID)
-                        }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
-                    break;
-                case 2:
-                    // 系主任
-                    // 评价人 职位 为: "系主任"， 使用  "系 （部） 方 面"  类型的指标
-                    normType = Container.Instance.Resolve<NormTypeService>().GetEntity(2);
-                    rtn = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                        {
-                            Expression.Eq("NormType.ID", normType.ID)
-                        }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
-                    break;
-                case 3:
-                    // 教研室主任
-                    // 评价人 职位 为: "教研室主任"， 使用  "教 研 室 方 面"  类型的指标
-                    normType = Container.Instance.Resolve<NormTypeService>().GetEntity(3);
-                    rtn = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
-                        {
-                            Expression.Eq("NormType.ID", normType.ID)
-                        }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
-                    break;
+                normType = evaor.EmployeeDuty.NormType;
+                rtn = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("NormType.ID", normType.ID)
+                }).Where(m => m.OptionsList != null && m.OptionsList.Count >= 1).ToList();
+            }
+            else
+            {
+                // 评价人无职位--->无评价类型-->无指标
+                normType = null;
+                rtn = new List<NormTarget>();
             }
 
             return rtn;

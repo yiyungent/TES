@@ -161,28 +161,6 @@ namespace WebUI.Extensions
         #endregion
 
         #region int实际意义 与 枚举转换
-        public static string ToEmployeeDuty(this int value)
-        {
-            string meanStr = string.Empty;
-            switch (value)
-            {
-                case 1:
-                    meanStr = "普通教师";
-                    break;
-                case 2:
-                    meanStr = "系主任";
-                    break;
-                case 3:
-                    meanStr = "教研室主任";
-                    break;
-                default:
-                    meanStr = "无";
-                    break;
-            }
-
-            return meanStr;
-        }
-
         public static string ToEvaTaskStatus(this int value)
         {
             string meanStr = string.Empty;
@@ -261,12 +239,5 @@ namespace WebUI.Extensions
             return rtn;
         }
         #endregion
-    }
-
-    public enum EmployeeDuty
-    {
-        普通教师 = 1,
-        系主任 = 2,
-        教研室主任 = 3
     }
 }

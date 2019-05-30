@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\BaseEntity.cs" />
+    <Compile Include="EmployeeDuty.cs" />
     <Compile Include="EvaRecord.cs" />
     <Compile Include="EvaResult.cs" />
     <Compile Include="EvaTask.cs" />

@@ -52,6 +52,7 @@
     <Compile Include="CourseInfoService.cs" />
     <Compile Include="CourseTableService.cs" />
     <Compile Include="DepartmentService.cs" />
+    <Compile Include="EmployeeDutyService.cs" />
     <Compile Include="EvaRecordService.cs" />
     <Compile Include="EvaResultService.cs" />
     <Compile Include="EvaTaskService.cs" />

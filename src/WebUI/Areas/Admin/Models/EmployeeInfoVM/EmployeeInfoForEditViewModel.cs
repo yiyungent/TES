@@ -102,8 +102,8 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
                 SelectedValForDept = dbModel.Department?.ID ?? 0,
                 SelectListForSex = InitSelectListForSex(dbModel.Sex),
                 SelectedValForSex = dbModel.Sex,
-                SelectListForDuty = InitSelectListForDuty(dbModel.Duty),
-                SelectedValForDuty = dbModel.Duty
+                SelectListForDuty = InitSelectListForDuty(dbModel.EmployeeDuty?.ID ?? 0),
+                SelectedValForDuty = dbModel.EmployeeDuty?.ID ?? 0
             };
 
             return viewModel;
@@ -130,7 +130,7 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
             dbModel.End_Time = inputModel.InputEnd_Time;
             dbModel.Department = new Department { ID = inputModel.SelectedValForDept };
             dbModel.Sex = inputModel.SelectedValForSex;
-            dbModel.Duty = inputModel.SelectedValForDuty;
+            dbModel.EmployeeDuty = new EmployeeDuty { ID = inputModel.SelectedValForDuty };
 
             return dbModel;
         }
@@ -221,18 +221,16 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
                 Value = "0",
                 Selected = (selectedValue == 0)
             });
-            ret.Add(new SelectListItem()
+            IList<EmployeeDuty> allDuty = Container.Instance.Resolve<EmployeeDutyService>().GetAll();
+            foreach (var item in allDuty)
             {
-                Text = "普通教师",
-                Value = "1",
-                Selected = (selectedValue == 1)
-            });
-            ret.Add(new SelectListItem()
-            {
-                Text = "系主任",
-                Value = "2",
-                Selected = (selectedValue == 2)
-            });
+                ret.Add(new SelectListItem
+                {
+                    Text = item.Name,
+                    Value = item.ID.ToString(),
+                    Selected = (selectedValue == item.ID)
+                });
+            }
 
             return ret;
         }

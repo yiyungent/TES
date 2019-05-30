@@ -52,6 +52,7 @@
     <Compile Include="CourseInfoComponent.cs" />
     <Compile Include="CourseTableComponent.cs" />
     <Compile Include="DepartmentComponent.cs" />
+    <Compile Include="EmployeeDutyComponent.cs" />
     <Compile Include="EvaRecordComponent.cs" />
     <Compile Include="EvaResultComponent.cs" />
     <Compile Include="EvaTaskComponent.cs" />

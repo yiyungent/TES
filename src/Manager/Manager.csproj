@@ -52,6 +52,7 @@
     <Compile Include="CourseInfoManager.cs" />
     <Compile Include="CourseTableManager.cs" />
     <Compile Include="DepartmentManager.cs" />
+    <Compile Include="EmployeeDutyManager.cs" />
     <Compile Include="EvaRecordManager.cs" />
     <Compile Include="EvaResultManager.cs" />
     <Compile Include="EvaTaskManager.cs" />

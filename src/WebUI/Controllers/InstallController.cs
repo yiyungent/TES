@@ -46,12 +46,13 @@ namespace WebUI.Controllers
             InitRole();
             InitClazz();
             InitDepartment();
-            InitUser();
             InitCourse();
-            InitStudent();
-            InitEmployee();
-            InitCourseTable();
             InitNormType();
+            InitEmployeeDuty();
+            InitUser();
+            InitEmployee();
+            InitStudent();
+            InitCourseTable();
             InitNormTarget();
             InitOptions();
             InitEvaTask();
@@ -704,12 +705,17 @@ namespace WebUI.Controllers
                     RegTime = DateTime.Now
                 });
 
+                UserInfo admin = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("UserName", "admin")
+                }).FirstOrDefault();
+
                 Container.Instance.Resolve<StudentInfoService>().Create(new StudentInfo()
                 {
                     Name = "超级管理员admin的绑定学生",
                     ClazzInfo = new ClazzInfo { ID = 1 },
                     StudentCode = "123556778",
-                    UID = 1
+                    UID = admin.ID
                 });
 
                 Container.Instance.Resolve<EmployeeInfoService>().Create(new EmployeeInfo()
@@ -717,9 +723,22 @@ namespace WebUI.Controllers
                     Name = "超级管理员admin的绑定员工",
                     Department = new Department { ID = 5 },
                     EmployeeCode = "1235513238",
-                    Duty = 2,
-                    UID = 1
+                    EmployeeDuty = new EmployeeDuty { ID = 2 },
+                    UID = admin.ID
                 });
+
+                for (int i = 0; i < 100; i++)
+                {
+                    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo
+                    {
+                        Name = "用户" + (i + 1),
+                        UserName = "用户" + (i + 1),
+                        Avatar = "/images/default-avatar.jpg",
+                        Password = EncryptHelper.MD5Encrypt32("12345"),
+                        Status = 0,
+                        RegTime = DateTime.Now
+                    });
+                }
 
 
                 ShowMessage("成功");
@@ -970,6 +989,130 @@ namespace WebUI.Controllers
         }
         #endregion
 
+        #region 初始化评价/指标类型
+        private void InitNormType()
+        {
+            try
+            {
+                ShowMessage("开始初始化指标体系类型");
+
+                Container.Instance.Resolve<NormTypeService>().Create(new NormType()
+                {
+                    Name = "学生评价",
+                    SortCode = 10,
+                    Weight = 0.30m,
+                    Color = "#60B878",
+                    NormTypeCode = "20190500"
+                });
+                Container.Instance.Resolve<NormTypeService>().Create(new NormType()
+                {
+                    Name = "系  （部） 方  面",
+                    SortCode = 20,
+                    Weight = 0.25m,
+                    NormTypeCode = "20190510",
+                    Color = "#FF0000",
+                });
+                Container.Instance.Resolve<NormTypeService>().Create(new NormType()
+                {
+                    Name = "教  研  室  方  面",
+                    SortCode = 30,
+                    Weight = 0.20m,
+                    NormTypeCode = "20190520",
+                    Color = "#FFA500",
+                });
+                Container.Instance.Resolve<NormTypeService>().Create(new NormType()
+                {
+                    Name = "同行方面（领导）",
+                    SortCode = 40,
+                    Weight = 0.15m,
+                    NormTypeCode = "20190530",
+                    Color = "#00BFFF",
+                });
+                Container.Instance.Resolve<NormTypeService>().Create(new NormType()
+                {
+                    Name = "教师个人方面",
+                    SortCode = 50,
+                    Weight = 0.10m,
+                    NormTypeCode = "20190540",
+                    Color = "#1F9FFF",
+                });
+
+                ShowMessage("成功");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("失败");
+            }
+        }
+        #endregion
+
+        #region 初始化员工职位表
+        private void InitEmployeeDuty()
+        {
+            try
+            {
+                ShowMessage("开始初始化员工职位");
+
+                Container.Instance.Resolve<EmployeeDutyService>().Create(new EmployeeDuty()
+                {
+                    Name = "普通教师",
+                    NormType = new NormType { ID = 4 }
+                });
+                Container.Instance.Resolve<EmployeeDutyService>().Create(new EmployeeDuty()
+                {
+                    Name = "系主任",
+                    NormType = new NormType { ID = 2 }
+                });
+                Container.Instance.Resolve<EmployeeDutyService>().Create(new EmployeeDuty()
+                {
+                    Name = "教研主任",
+                    NormType = new NormType { ID = 3 }
+                });
+
+                // 建立评价关系
+                EmployeeDuty teacherDuty = Container.Instance.Resolve<EmployeeDutyService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name","普通教师")
+                }).FirstOrDefault();
+                EmployeeDuty xiDuty = Container.Instance.Resolve<EmployeeDutyService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name","系主任")
+                }).FirstOrDefault();
+                EmployeeDuty jiaoYanDuty = Container.Instance.Resolve<EmployeeDutyService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name","教研主任")
+                }).FirstOrDefault();
+
+                // "普通教师" 可以评价 "普通教师"
+                teacherDuty.EvaDutyList = new List<EmployeeDuty>();
+                teacherDuty.EvaDutyList.Add(teacherDuty);
+                Container.Instance.Resolve<EmployeeDutyService>().Edit(teacherDuty);
+
+                // "系部主任" 可以评价  "普通教师","系主任",  "教研室主任"
+                // PS: 没办法，总得让他自评
+                xiDuty.EvaDutyList = new List<EmployeeDuty>();
+                xiDuty.EvaDutyList.Add(teacherDuty);
+                xiDuty.EvaDutyList.Add(xiDuty);
+                xiDuty.EvaDutyList.Add(jiaoYanDuty);
+                Container.Instance.Resolve<EmployeeDutyService>().Edit(xiDuty);
+
+                // "教研室主任" 可以评价 "普通教师", "系主任", "教研室主任"
+                jiaoYanDuty.EvaDutyList = new List<EmployeeDuty>();
+                jiaoYanDuty.EvaDutyList.Add(teacherDuty);
+                jiaoYanDuty.EvaDutyList.Add(xiDuty);
+                jiaoYanDuty.EvaDutyList.Add(jiaoYanDuty);
+                Container.Instance.Resolve<EmployeeDutyService>().Edit(jiaoYanDuty);
+
+
+                ShowMessage("成功");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("失败");
+            }
+        }
+        #endregion
+
         #region 初始化员工表
         private void InitEmployee()
         {
@@ -982,30 +1125,29 @@ namespace WebUI.Controllers
                 var allJYSList = allDeptList.Where(m => m.Children == null || m.Children.Count == 0).ToList();
                 var allXiList = allDeptList.Where(m => m.Name.EndsWith("系")).ToList();
 
+
                 Random r = new Random();
                 for (int i = 0; i < 100; i++)
                 {
                     string name = "教师" + (i + 1);
                     string employeeCode = "120010" + i.ToString("000");
-                    // 创建其绑定用户
-                    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo()
-                    {
-                        Name = name,
-                        Avatar = "/images/default-avatar.jpg",
-                        UserName = employeeCode,
-                        Password = EncryptHelper.MD5Encrypt32("12345"),
-                        RoleInfoList = allRole.Where(m => m.Name == "教师").ToList()
-                    });
-                    // 创建教师
+
+                    // 创建员工
                     Container.Instance.Resolve<EmployeeInfoService>().Create(new EmployeeInfo()
                     {
                         Name = name,
                         EmployeeCode = employeeCode,
-                        Duty = i % 3 + 1,
                         Department = (i % 3 + 1) == 1 || (i % 3 + 1) == 3 ? allJYSList[r.Next(allJYSList.Count)] : allXiList[r.Next(allXiList.Count)],
+                        EmployeeDuty = new EmployeeDuty { ID = i % 3 + 1 },
                         CourseTableList = new List<CourseTable>(),
-                        UID = 102 + i
+                        // 防止绑定上已经绑定有员工的超级管理员admin
+                        UID = 2 + i
                     });
+                    // 为绑定的这些用户更换角色
+                    UserInfo bindUser = Container.Instance.Resolve<UserInfoService>().GetEntity(2 + i);
+                    bindUser.RoleInfoList = allRole.Where(m => m.Name == "教师").ToList();
+                    bindUser.UserName = "教师" + i + 1;
+                    Container.Instance.Resolve<UserInfoService>().Edit(bindUser);
                 }
 
                 ShowMessage("成功");
@@ -1266,63 +1408,6 @@ namespace WebUI.Controllers
                 ShowMessage("成功");
             }
             catch (Exception)
-            {
-                ShowMessage("失败");
-            }
-        }
-        #endregion
-
-        #region 初始化指标类型
-        private void InitNormType()
-        {
-            try
-            {
-                ShowMessage("开始初始化指标体系类型");
-
-                Container.Instance.Resolve<NormTypeService>().Create(new NormType()
-                {
-                    Name = "学生评价",
-                    SortCode = 10,
-                    Weight = 0.30m,
-                    Color = "#60B878",
-                    NormTypeCode = "20190500"
-                });
-                Container.Instance.Resolve<NormTypeService>().Create(new NormType()
-                {
-                    Name = "系  （部） 方  面",
-                    SortCode = 20,
-                    Weight = 0.25m,
-                    NormTypeCode = "20190510",
-                    Color = "#FF0000",
-                });
-                Container.Instance.Resolve<NormTypeService>().Create(new NormType()
-                {
-                    Name = "教  研  室  方  面",
-                    SortCode = 30,
-                    Weight = 0.20m,
-                    NormTypeCode = "20190520",
-                    Color = "#FFA500",
-                });
-                Container.Instance.Resolve<NormTypeService>().Create(new NormType()
-                {
-                    Name = "同行方面（领导）",
-                    SortCode = 40,
-                    Weight = 0.15m,
-                    NormTypeCode = "20190530",
-                    Color = "#00BFFF",
-                });
-                Container.Instance.Resolve<NormTypeService>().Create(new NormType()
-                {
-                    Name = "教师个人方面",
-                    SortCode = 50,
-                    Weight = 0.10m,
-                    NormTypeCode = "20190540",
-                    Color = "#1F9FFF",
-                });
-
-                ShowMessage("成功");
-            }
-            catch (Exception ex)
             {
                 ShowMessage("失败");
             }

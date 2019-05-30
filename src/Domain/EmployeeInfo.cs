@@ -44,17 +44,26 @@ namespace Domain
         [Property(NotNull = false)]
         public int Sex { get; set; }
 
+        #region 废弃
+        ///// <summary>
+        ///// 职位
+        ///// <para>
+        ///// 1: 普通教师
+        ///// 2: 系主任
+        ///// 3: 教研室主任
+        ///// </para>
+        ///// </summary>
+        //[Display(Name = "职位")]
+        //[Property]
+        //public int Duty { get; set; } 
+        #endregion
+
         /// <summary>
         /// 职位
-        /// <para>
-        /// 1: 普通教师
-        /// 2: 系主任
-        /// 3: 教研室主任
-        /// </para>
         /// </summary>
         [Display(Name = "职位")]
-        [Property]
-        public int Duty { get; set; }
+        [BelongsTo(Column = "EmployeeDutyId")]
+        public EmployeeDuty EmployeeDuty { get; set; }
 
         /// <summary>
         /// 绑定用户-用户ID

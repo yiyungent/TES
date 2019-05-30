@@ -24,8 +24,8 @@
 				@Html.TextBoxFor(m => m.EmployeeCode, new { @class = "form-control", disabled = "disabled" })
 			</div>
 			<div class="form-group">
-				@Html.LabelFor(m => m.Duty)
-				@Html.TextBoxFor(m => m.Duty, new { @class = "form-control", disabled = "disabled", Value = Model.Duty.ToEmployeeDuty() })
+				@Html.LabelFor(m => m.EmployeeDuty)
+				@Html.TextBoxFor(m => m.EmployeeDuty, new { @class = "form-control", disabled = "disabled", Value = Model.EmployeeDuty?.Name ?? "" })
 			</div>
 			<div class="form-group">
 				@Html.LabelFor(m => m.Department)
