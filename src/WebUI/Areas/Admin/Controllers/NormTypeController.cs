@@ -80,22 +80,6 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
-        #region 删除
-        public JsonResult Delete(int id)
-        {
-            try
-            {
-                Container.Instance.Resolve<NormTypeService>().Delete(id);
-
-                return Json(new { code = 1, message = "删除成功" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { code = 1, message = "删除失败" });
-            }
-        }
-        #endregion
-
         #region 查看
         public ViewResult Detail(int id)
         {
