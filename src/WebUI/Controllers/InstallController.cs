@@ -380,6 +380,7 @@ namespace WebUI.Controllers
 
                 IList<ICriterion> qryWhere = new List<ICriterion>();
 
+                #region 7-18 都具有 "新增", "修改", "删除", "查看"
                 // 7-18
                 qryWhere.Add(Expression.Ge("ID", 7));
                 qryWhere.Add(Expression.Le("ID", 18));
@@ -394,7 +395,7 @@ namespace WebUI.Controllers
                         {
                             Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo()
                             {
-                                Name = menu.Name + "-首页",
+                                Name = menu.Name + "-列表",
                                 AuthKey = menu.AreaName + "." + menu.ControllerName + "." + actionNames[i],
                                 Sys_Menu = menu
                             });
@@ -410,7 +411,9 @@ namespace WebUI.Controllers
                         }
                     }
                 }
+                #endregion
 
+                #region 角色管理
                 // 角色RoleInfo菜单 增加授权操作
                 Sys_Menu roleInfo_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "RoleInfo") }).FirstOrDefault();
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
@@ -419,6 +422,9 @@ namespace WebUI.Controllers
                     Name = "角色管理-授权",
                     Sys_Menu = roleInfo_Sys_Menu
                 });
+                #endregion
+
+                #region 班级管理
                 // 班级管理菜单 增加 调课操作
                 Sys_Menu clazzInfo_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "ClazzInfo") }).FirstOrDefault();
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
@@ -427,8 +433,9 @@ namespace WebUI.Controllers
                     Name = "班级管理-调课",
                     Sys_Menu = clazzInfo_Sys_Menu
                 });
+                #endregion
 
-                #region NormTarget
+                #region 评价指标 NormTarget
                 Sys_Menu normTarget_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "NormTarget") }).FirstOrDefault();
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
@@ -486,7 +493,7 @@ namespace WebUI.Controllers
                 });
                 #endregion
 
-                #region EvaTask
+                #region 评价任务 EvaTask
                 Sys_Menu evaTask_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "EvaTask") }).FirstOrDefault();
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
@@ -520,7 +527,7 @@ namespace WebUI.Controllers
                 });
                 #endregion
 
-                #region EvaResult
+                #region 评价结果 EvaResult
                 Sys_Menu evaResult_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "EvaResult") }).FirstOrDefault();
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
@@ -582,7 +589,7 @@ namespace WebUI.Controllers
                 //});
                 #endregion
 
-                #region StudentEva
+                #region 学生评价 StudentEva
                 Sys_Menu studentEva_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "StudentEva") }).FirstOrDefault();
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
@@ -590,14 +597,26 @@ namespace WebUI.Controllers
                     Name = "学生评价-进入",
                     Sys_Menu = studentEva_Sys_Menu
                 });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.StudentEva.Eva",
+                    Name = "学生评价-评价",
+                    Sys_Menu = studentEva_Sys_Menu
+                });
                 #endregion
 
-                #region TeacherEva
+                #region 教师评价 TeacherEva
                 Sys_Menu teacherEva_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "TeacherEva") }).FirstOrDefault();
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
                     AuthKey = "Admin.TeacherEva.EvaList",
-                    Name = "学生评价-进入",
+                    Name = "教师评价-进入",
+                    Sys_Menu = teacherEva_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.TeacherEva.Eva",
+                    Name = "教师评价-评价",
                     Sys_Menu = teacherEva_Sys_Menu
                 });
                 #endregion
@@ -643,16 +662,16 @@ namespace WebUI.Controllers
                 {
                     Name = "学生",
                     Status = 0,
-                    Sys_MenuList = null,
-                    FunctionInfoList = null
+                    Sys_MenuList = allMenu.Where(m => m.Name == "评价管理" || m.Name == "学生评价").ToList(),
+                    FunctionInfoList = allFunction.Where(m => m.Name == "(后台)管理中心(框架)" || m.Name == "学生评价-进入" || m.Name == "学生评价-评价").ToList()
                 });
 
                 Container.Instance.Resolve<RoleInfoService>().Create(new RoleInfo
                 {
                     Name = "教师",
                     Status = 0,
-                    Sys_MenuList = null,
-                    FunctionInfoList = null
+                    Sys_MenuList = allMenu.Where(m => m.Name == "评价管理" || m.Name == "教师评价").ToList(),
+                    FunctionInfoList = allFunction.Where(m => m.Name == "(后台)管理中心(框架)" || m.Name == "教师评价-进入" || m.Name == "教师评价-评价").ToList()
                 });
 
                 ShowMessage("成功");

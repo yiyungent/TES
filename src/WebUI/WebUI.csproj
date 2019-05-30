@@ -7558,9 +7558,9 @@
     <Content Include="dist\layui\lay\modules\util.js" />
     <Content Include="dist\loader\loading.css" />
     <Content Include="dist\pjax\jquery.pjax.js" />
-    <Content Include="dist\push.js\bin\push.js" />
-    <Content Include="dist\push.js\bin\push.min.js" />
-    <Content Include="dist\push.js\bin\serviceWorker.min.js" />
+    <Content Include="dist\push.js\bins\push.js" />
+    <Content Include="dist\push.js\bins\push.min.js" />
+    <Content Include="dist\push.js\bins\serviceWorker.min.js" />
     <Content Include="dist\push.js\browserstack.png" />
     <Content Include="dist\push.js\logo.png" />
     <Content Include="dist\push.js\push.min.js" />
@@ -8166,9 +8166,9 @@
     <Content Include="dist\layui\font\iconfont.eot" />
     <Content Include="dist\layui\font\iconfont.ttf" />
     <Content Include="dist\layui\font\iconfont.woff" />
-    <Content Include="dist\push.js\bin\push.js.map" />
-    <Content Include="dist\push.js\bin\push.min.js.map" />
-    <Content Include="dist\push.js\bin\serviceWorker.min.js.map" />
+    <Content Include="dist\push.js\bins\push.js.map" />
+    <Content Include="dist\push.js\bins\push.min.js.map" />
+    <Content Include="dist\push.js\bins\serviceWorker.min.js.map" />
     <Content Include="dist\push.js\CONTRIBUTING.md" />
     <Content Include="dist\push.js\LICENSE.md" />
     <Content Include="dist\push.js\package.json" />
@@ -8346,7 +8346,6 @@
     <Compile Include="Areas\Admin\Controllers\SysMenuController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserInfoController.cs" />
     <Compile Include="Controllers\NotificationDemoController.cs" />
-    <Compile Include="Controllers\PviewDemoController.cs" />
     <Compile Include="Controllers\WSController.cs" />
     <Compile Include="Extensions\DateTimeExt.cs" />
     <Compile Include="Extensions\DomainExt.cs" />
