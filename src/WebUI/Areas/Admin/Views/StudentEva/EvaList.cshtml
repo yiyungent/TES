@@ -67,7 +67,6 @@
 				<th>ID</th>
 				<th>课程</th>
 				<th>授课教师</th>
-				<th>状态</th>
 				<th>操作</th>
 			</tr>
 			@if (Model != null && Model.Count >= 1)
@@ -78,7 +77,6 @@
 						<td>@item.ID</td>
 						<td>@item.Course.Name - @item.Course.CourseCode</td>
 						<td>@item.Teacher.Name - @item.Teacher.EmployeeCode</td>
-						<td></td>
 						<td>
 							<div class="btn-group">
 								@if (isEvaedTeacherList.Contains(item.Teacher.ID))
