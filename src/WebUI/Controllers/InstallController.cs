@@ -390,7 +390,7 @@ namespace WebUI.Controllers
                 IList<ICriterion> qryWhere = new List<ICriterion>();
 
                 #region 这些 都具有 "新增", "修改", "删除", "查看"
-                string[] names = { "用户管理", "角色管理", "菜单管理", "操作管理", "主题模板", "学生管理", "班级管理", "部门管理", "课程管理", "课程表管理" };
+                string[] names = { "用户管理", "角色管理", "菜单管理", "操作管理", "主题模板", "学生管理", "员工管理", "班级管理", "部门管理", "课程管理", "课程表管理" };
                 IList<Sys_Menu> allMenu = Container.Instance.Resolve<Sys_MenuService>().GetAll();
                 IList<int> idList = allMenu.Where(m => names.Contains(m.Name)).Select(m => m.ID).ToList();
                 qryWhere.Add(Expression.In("ID", idList.ToArray()));
