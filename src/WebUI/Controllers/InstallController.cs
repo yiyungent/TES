@@ -1159,7 +1159,7 @@ namespace WebUI.Controllers
 
                 var allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
                 var allDeptList = Container.Instance.Resolve<DepartmentService>().GetAll();
-                var allJYSList = allDeptList.Where(m => m.Children == null || m.Children.Count == 0).ToList();
+                var allJYSList = allDeptList.Where(m => m.Name.EndsWith("教研室")).ToList();
                 var allXiList = allDeptList.Where(m => m.Name.EndsWith("系")).ToList();
 
 
@@ -1174,7 +1174,7 @@ namespace WebUI.Controllers
                     {
                         Name = name,
                         EmployeeCode = employeeCode,
-                        Department = (i % 3 + 1) == 1 || (i % 3 + 1) == 3 ? allJYSList[r.Next(allJYSList.Count)] : allXiList[r.Next(allXiList.Count)],
+                        Department = (i % 3 + 1 == 2) ? allXiList[r.Next(allXiList.Count)] : allJYSList[r.Next(allJYSList.Count)],
                         EmployeeDuty = new EmployeeDuty { ID = i % 3 + 1 },
                         CourseTableList = new List<CourseTable>(),
                         // 防止绑定上已经绑定有员工的超级管理员admin
