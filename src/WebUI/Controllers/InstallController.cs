@@ -603,6 +603,12 @@ namespace WebUI.Controllers
                 Sys_Menu studentEva_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "StudentEva") }).FirstOrDefault();
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
+                    AuthKey = "Admin.TeacherEva.EvaList",
+                    Name = "学生评价-评价任务列表",
+                    Sys_Menu = studentEva_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
                     AuthKey = "Admin.StudentEva.EvaList",
                     Name = "学生评价-进入",
                     Sys_Menu = studentEva_Sys_Menu
@@ -617,6 +623,12 @@ namespace WebUI.Controllers
 
                 #region 教师评价 TeacherEva
                 Sys_Menu teacherEva_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "TeacherEva") }).FirstOrDefault();
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.TeacherEva.Index",
+                    Name = "教师评价-评价任务列表",
+                    Sys_Menu = teacherEva_Sys_Menu
+                });
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
                     AuthKey = "Admin.TeacherEva.EvaList",
