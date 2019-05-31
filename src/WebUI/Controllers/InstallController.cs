@@ -8,6 +8,7 @@ using Domain;
 using Service;
 using NHibernate.Criterion;
 using Framework.Common;
+using WebUI.Extensions;
 
 namespace WebUI.Controllers
 {
@@ -56,6 +57,8 @@ namespace WebUI.Controllers
             InitNormTarget();
             InitOptions();
             InitEvaTask();
+            InitEvaRecord();
+            InitEvaResult();
         }
         #endregion
 
@@ -2320,7 +2323,26 @@ namespace WebUI.Controllers
                         NormTarget = normTarget
                     });
                 }
-                #endregion                                      
+                #endregion
+
+                // 教师个人方面
+                normTarget = Container.Instance.Resolve<NormTargetService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name","自我评价")
+                }).FirstOrDefault();
+                contents = new string[] { "对自己满意吗", "对教材的处理，有助于学生理解和掌握内在联系", "基本按照教材讲课，没有给学生什么新东西", "对教材毫无处理，完全重复课本内容" };
+                scores = new decimal[] { 1m, 0.85m, 0.65m, 0.45m };
+                for (int i = 0; i < contents.Length; i++)
+                {
+                    Container.Instance.Resolve<OptionsService>().Create(new Options
+                    {
+                        Content = contents[i],
+                        Score = scores[i],
+                        SortCode = 10 * (i + 1),
+                        NormTarget = normTarget
+                    });
+                }
+
 
                 ShowMessage("成功");
             }
@@ -2357,5 +2379,87 @@ namespace WebUI.Controllers
         }
         #endregion
 
+        #region 初始化评价记录
+        private void InitEvaRecord()
+        {
+            try
+            {
+                ShowMessage("开始初始化评价记录");
+                IList<EvaTask> allEvaTask = Container.Instance.Resolve<EvaTaskService>().GetAll();
+                IList<UserInfo> allUser = Container.Instance.Resolve<UserInfoService>().GetAll().Where(m => m.Name.StartsWith("学生") || m.Name.StartsWith("教师")).ToList();
+                IList<NormType> allNormType = Container.Instance.Resolve<NormTypeService>().GetAll();
+                IList<NormTarget> allNormTarget = Container.Instance.Resolve<NormTargetService>().GetAll();
+                IList<EmployeeInfo> allEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetAll();
+
+                Random r = new Random();
+                for (int i = 1; i <= 10; i++)
+                {
+                    UserInfo user = allUser[r.Next(0, allUser.Count - 1)];
+                    NormType normType = allNormType[r.Next(0, allNormType.Count - 1)];
+                    IList<NormTarget> currentNormTargetList = allNormTarget.Where(m => m.NormType.ID == normType.ID).ToList();
+                    NormTarget normTarget = currentNormTargetList[i % currentNormTargetList.Count];
+                    try
+                    {
+                        Container.Instance.Resolve<EvaRecordService>().Create(new EvaRecord()
+                        {
+                            EvaDate = DateTime.Now,
+                            EvaluateTask = allEvaTask[r.Next(0, allEvaTask.Count - 1)],
+                            Evaluator = user,
+                            NormType = user.GetBindEmployee().EmployeeDuty.NormType,
+                            NormTarget = normTarget,
+                            Options = normTarget.OptionsList?[i % normTarget.OptionsList.Count],
+                            Teacher = allEmployee[i % allEmployee.Count]
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+                ShowMessage("成功");
+            }
+            catch (Exception)
+            {
+                ShowMessage("失败");
+            }
+        }
+        #endregion
+
+        #region 初始化评价结果
+        private void InitEvaResult()
+        {
+            try
+            {
+                ShowMessage("开始初始化评价结果");
+                IList<EvaTask> allEvaTask = Container.Instance.Resolve<EvaTaskService>().GetAll();
+                IList<UserInfo> allUser = Container.Instance.Resolve<UserInfoService>().GetAll().Where(m => m.Name.StartsWith("学生") || m.Name.StartsWith("教师")).ToList();
+                IList<NormType> allNormType = Container.Instance.Resolve<NormTypeService>().GetAll();
+                IList<NormTarget> allNormTarget = Container.Instance.Resolve<NormTargetService>().GetAll();
+                IList<EmployeeInfo> allEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetAll();
+
+                Random r = new Random();
+                for (int i = 1; i <= 2000; i++)
+                {
+                    UserInfo user = allUser[r.Next(0, allUser.Count - 1)];
+                    NormType normType = allNormType[r.Next(0, allNormType.Count - 1)];
+                    IList<NormTarget> currentNormTargetList = allNormTarget.Where(m => m.NormType.ID == normType.ID).ToList();
+                    NormTarget normTarget = currentNormTargetList[i % currentNormTargetList.Count];
+
+                    Container.Instance.Resolve<EvaResultService>().Create(new EvaResult()
+                    {
+                        CaculateTime = DateTime.Now,
+                        EvaluateTask = allEvaTask[r.Next(0, allEvaTask.Count - 1)],
+                        NormType = allNormType[r.Next(0, allNormType.Count - 1)],
+                        Score = r.Next(0, 100),
+                        Teacher = allEmployee[i % allEmployee.Count]
+                    });
+                }
+                ShowMessage("成功");
+            }
+            catch (Exception)
+            {
+                ShowMessage("失败");
+            }
+        }
+        #endregion
     }
 }
