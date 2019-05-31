@@ -713,7 +713,7 @@ namespace WebUI.Controllers
                     Name = "学生",
                     Status = 0,
                     Sys_MenuList = allMenu.Where(m => m.Name == "学生评价").ToList(),
-                    FunctionInfoList = allFunction.Where(m => m.Name == "(后台)管理中心(框架)" || m.Name == "学生评价-进入" || m.Name == "学生评价-评价").ToList()
+                    FunctionInfoList = allFunction.Where(m => m.Name == "(后台)管理中心(框架)" || m.Name == "学生评价-评价任务列表" || m.Name == "学生评价-进入" || m.Name == "学生评价-评价").ToList()
                 });
 
                 Container.Instance.Resolve<RoleInfoService>().Create(new RoleInfo
@@ -721,7 +721,7 @@ namespace WebUI.Controllers
                     Name = "教师",
                     Status = 0,
                     Sys_MenuList = allMenu.Where(m => m.Name == "教师评价").ToList(),
-                    FunctionInfoList = allFunction.Where(m => m.Name == "(后台)管理中心(框架)" || m.Name == "教师评价-进入" || m.Name == "教师评价-评价").ToList()
+                    FunctionInfoList = allFunction.Where(m => m.Name == "(后台)管理中心(框架)" || m.Name == "教师评价-评价任务列表" || m.Name == "教师评价-进入" || m.Name == "教师评价-评价").ToList()
                 });
 
                 ShowMessage("成功");

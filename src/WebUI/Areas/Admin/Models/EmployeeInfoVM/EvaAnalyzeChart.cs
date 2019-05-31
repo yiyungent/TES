@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace WebUI.Areas.Admin.Models.DashboardVM
+namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
 {
-    public class EvaAnalyseChart
+    public class EvaAnalyzeChart
     {
         public Title title { get; set; }
         public Tooltip tooltip { get; set; }
@@ -84,7 +84,7 @@ namespace WebUI.Areas.Admin.Models.DashboardVM
         public string type { get; set; }
         public string stack { get; set; }
         public Areastyle areaStyle { get; set; }
-        public int[] data { get; set; }
+        public decimal[] data { get; set; }
         public Label1 label { get; set; }
     }
 

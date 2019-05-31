@@ -206,5 +206,105 @@ namespace WebUI.Areas.Admin.Controllers
             }
         }
         #endregion
+
+        #region 评价分析
+        /// <summary>
+        /// 评价分析
+        /// </summary>
+        /// <param name="id">被评价人（员工）ID</param>
+        [HttpGet]
+        public ViewResult EvaAnalyze(int id)
+        {
+            EmployeeInfo viewModel = Container.Instance.Resolve<EmployeeInfoService>().GetEntity(id);
+
+            return View(viewModel);
+        }
+
+        /// <summary>
+        /// 评价分析
+        /// </summary>
+        /// <param name="id">被评价人（员工）ID</param>
+        [HttpPost]
+        public JsonResult EvaAnalyze(int id, string chartType)
+        {
+
+            IList<EvaTask> allEvaTask = Container.Instance.Resolve<EvaTaskService>().GetAll();
+            IList<NormType> allNormType = Container.Instance.Resolve<NormTypeService>().GetAll().OrderBy(m => m.SortCode).ToList();
+            EmployeeInfo evaedEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetEntity(id);
+            IList<EvaResult> allRelativeEvaResult = Container.Instance.Resolve<EvaResultService>().Query(new List<ICriterion>
+            {
+                Expression.Eq("Teacher.ID", id)
+            });
+
+            EvaAnalyzeChart chartOption = new EvaAnalyzeChart();
+            #region 图标选项-基础设置
+            chartOption.title = new Title() { text = "评价 - 堆叠区域图" };
+            chartOption.tooltip = new Tooltip()
+            {
+                trigger = "axis",
+                axisPointer = new Axispointer()
+                {
+                    type = "cross",
+                    label = new Label()
+                    {
+                        backgroundColor = "#6a7985"
+                    }
+                }
+            };
+            chartOption.legend = new Legend()
+            {
+                data = allNormType.Select(m => m.Name).ToArray()
+            };
+            chartOption.toolbox = new Toolbox()
+            {
+                feature = new Feature()
+                {
+                    saveAsImage = new Saveasimage()
+                }
+            };
+            chartOption.grid = new Grid()
+            {
+                left = "3%",
+                right = "4%",
+                bottom = "3%",
+                containLabel = true
+            };
+            chartOption.xAxis = new Xaxi[]
+            {
+                new Xaxi()
+                {
+                    type = "category",
+                    boundaryGap = false,
+                    data = allEvaTask.Select(m=>m.Name).ToArray()
+                }
+            };
+            chartOption.yAxis = new Yaxi[]
+            {
+                new Yaxi()
+                {
+                    type = "value"
+                }
+            };
+            #endregion
+            #region 图标选项-数据
+            chartOption.series = new Series[allNormType.Count];
+            for (int i = 0; i < allNormType.Count; i++)
+            {
+                chartOption.series[i] = new Series()
+                {
+                    name = allNormType[i].Name,
+                    type = "line",
+                    stack = "总量",
+                    areaStyle = new Areastyle(),
+                    // 筛选出 当前评价类型， 只要此对应的分数 属性数组
+                    data = allRelativeEvaResult.Where(m => m.NormType.ID == allNormType[i].ID).OrderBy(m => m.NormType.SortCode).Select(m => m.Score).ToArray()
+                };
+            }
+            #endregion
+
+
+            return Json(chartOption);
+        }
+        #endregion
     }
 }

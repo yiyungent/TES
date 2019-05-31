@@ -162,32 +162,33 @@
 				<th>职位</th>
 				<th>操作</th>
 			</tr>
-			@foreach (var cat in Model.List)
+			@foreach (var item in Model.List)
 			{
-				<tr data-tr-id="@cat.ID">
-					<td>@cat.ID</td>
-					<td>@cat.Name</td>
-					<td>@cat.EmployeeCode</td>
+				<tr data-tr-id="@item.ID">
+					<td>@item.ID</td>
+					<td>@item.Name</td>
+					<td>@item.EmployeeCode</td>
 					<td>
-						<span class="label label-info">@cat.Department.DescDept()</span>
+						<span class="label label-info">@item.Department.DescDept()</span>
 					</td>
 					<td>
-						<span class="label label-success">@(cat.EmployeeDuty?.Name ?? "")</span>
+						<span class="label label-success">@(item.EmployeeDuty?.Name ?? "")</span>
 					</td>
 					<td>
 						<div class="btn-group" role="group" data-pjax>
 							@if (Html.HasAuth("Admin", "EmployeeInfo", "Detail"))
 							{
-								<a class="btn btn-success" href="@Url.Action("Detail")?id=@cat.ID">查看</a>
+								<a class="btn btn-success" href="@Url.Action("Detail")?id=@item.ID">查看</a>
 							}
 							@if (Html.HasAuth("Admin", "EmployeeInfo", "Delete"))
 							{
-								<button class="btn btn-danger" type="button" onclick="deleteOp(@cat.ID)">删除</button>
+								<button class="btn btn-danger" type="button" onclick="deleteOp(@item.ID)">删除</button>
 							}
 							@if (Html.HasAuth("Admin", "EmployeeInfo", "Edit"))
 							{
-								<a class="btn btn-warning" href="@Url.Action("Edit")?id=@cat.ID">修改</a>
+								<a class="btn btn-warning" href="@Url.Action("Edit")?id=@item.ID">修改</a>
 							}
+							<a class="btn btn-info" href="@Url.Action("EvaAnalyze")?id=@item.ID"><i class="fa fa-area-chart"></i> 评价分析</a>
 						</div>
 					</td>
 				</tr>

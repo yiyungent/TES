@@ -31,15 +31,15 @@ namespace WebUI.Areas.Admin.Controllers
 
         #region 评价分析
         [HttpGet]
-        public ViewResult EvaAnalyse()
+        public ViewResult EvaAnalyze()
         {
             return View();
         }
 
         [HttpPost]
-        public JsonResult EvaAnalyse(bool flag = false)
+        public JsonResult EvaAnalyze(bool flag = false)
         {
-            EvaAnalyseChart chartOption = new EvaAnalyseChart();
+            EvaAnalyzeChart chartOption = new EvaAnalyzeChart();
 
             IList<EvaTask> evaTaskList = Container.Instance.Resolve<EvaTaskService>().GetAll();
             chartOption.legend = new Legend() { data = new string[evaTaskList.Count] };
