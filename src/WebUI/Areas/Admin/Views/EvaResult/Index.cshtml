@@ -1,10 +1,13 @@
 ﻿@using Framework.HtmlHelpers
 @using WebUI.Areas.Admin.Models.Common
+@using WebUI.Areas.Admin.Models.EvaResultVM
 @using WebUI.Extensions
 @using Domain
-@model ListViewModel<EvaResult>
+@model EvaResultListViewModel
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+	IList<NormType> allNormType = ViewBag.AllNormType;
+	IList<int> allNormTypeId = allNormType.Select(m => m.ID).ToList();
 }
 @section head {
 	<style>
@@ -147,6 +150,24 @@
 		</script>
 	}
 }
+@helper generateScoreDesc(EvaResultVMItem currentVMItem, IList<int> allNormTypeId)
+{
+	foreach (var typeId in allNormTypeId)
+	{
+		// 当前分数明细 有哪些 评价类型 的分数
+		IList<int> current_ScoreDic_NormType_idList = currentVMItem.ScoreDic.Keys.Select(m => m.ID).ToList();
+		// 有此 评价类型的 (明细)分数
+		if (current_ScoreDic_NormType_idList.Contains(typeId))
+		{
+			// 此 评价类型 的 分数
+			<td>@(currentVMItem.ScoreDic.Where(m => m.Key.ID == typeId).FirstOrDefault().Value)</td>
+		}
+		else
+		{
+			<td>无相关评价记录</td>
+		}
+	}
+}
 
 <!-- start 删除确认框 -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
@@ -211,41 +232,38 @@
 	<div class="box-body table-responsive no-padding">
 		<table id="js-table" class="table table-hover" pview="table">
 			<tr>
-				<th>ID</th>
-				<th>被评价教师(员工)</th>
-				<th>教师个人</th>
+				@*<th>ID</th>*@
 				<th>评价任务</th>
-				<th>分数</th>
-				<th>最后计算时间</th>
+				<th>被评价教师(员工)</th>
+				@foreach (var item in allNormType)
+				{
+					<th>@item.Name</th>
+				}
+				<th>总分</th>
 				<th>操作</th>
 			</tr>
 			@foreach (var item in Model.List)
 			{
-				<tr data-tr-id="@item.ID">
-					<td>@item.ID</td>
-					<td>@item.Teacher.Name（@item.Teacher.EmployeeCode）</td>
-					<td>@item.NormType.Name</td>
+				<tr data-tr-id="">
+					@*<td>@item.ID</td>*@
 					<td>
-						<span class="label label-info">@item.EvaluateTask.Name</span>
+						<span class="label label-info">@item.EvaTask.Name</span>
 					</td>
-					<td>
-						@item.Score
-					</td>
-					<td>
-						<span class="label label-info">@item.CaculateTime</span>
-					</td>
-					<td>
-						<div class="btn-group" role="group" data-pjax>
-							@if (Html.HasAuth("Admin", "EvaResult", "ReCaculateScore"))
-							{
-								<button class="btn btn-success" onclick="reCaculateScore(@item.ID, this)">重新计算分数</button>
-							}
-							@if (Html.HasAuth("Admin", "EvaResult", "Delete"))
-							{
-								<button class="btn btn-danger" onclick="deleteOp(@item.ID)">删除</button>
-							}
-						</div>
-					</td>
+					<td>@item.EvaedEmployee.Name（@item.EvaedEmployee.EmployeeCode）</td>
+					@generateScoreDesc(item, allNormTypeId)
+					<td>@item.ScoreSum</td>
+					@*<td>
+							<div class="btn-group" role="group" data-pjax>
+								@if (Html.HasAuth("Admin", "EvaResult", "ReCaculateScore"))
+								{
+									<button class="btn btn-success" onclick="reCaculateScore(@item.ID, this)">重新计算分数</button>
+								}
+								@if (Html.HasAuth("Admin", "EvaResult", "Delete"))
+								{
+									<button class="btn btn-danger" onclick="deleteOp(@item.ID)">删除</button>
+								}
+							</div>
+						</td>*@
 				</tr>
 			}
 		</table>
@@ -281,11 +299,11 @@
 			</div>
 		</div>
 		<!-- start 分页 -->
-		<div id="js-page" pview="pages">
-			<ul class="pagination pull-right" pview-btn-group pview-targets="table,pages">
-				@Html.PageLinks(Model.PageInfo, i => Url.Action("Index", new { pageIndex = i, q = Request["q"], type = Request["type"] }))
-			</ul>
-		</div>
+		@*<div id="js-page" pview="pages">
+				<ul class="pagination pull-right" pview-btn-group pview-targets="table,pages">
+					@Html.PageLinks(Model.PageInfo, i => Url.Action("Index", new { pageIndex = i, q = Request["q"], type = Request["type"] }))
+				</ul>
+			</div>*@
 		<!-- end 分页 -->
 	</div>
 	<!-- end .box-footer -->

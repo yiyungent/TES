@@ -8337,6 +8337,7 @@
     <Compile Include="Areas\Admin\Models\DashboardVM\EvaAnalyseChart.cs" />
     <Compile Include="Areas\Admin\Models\EmployeeDutyVM\EmployeeDutyForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EmployeeInfoVM\EmployeeInfoForEditViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\EvaResultVM\EvaResultListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EvaTaskVM\EvaTaskForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\NormTypeVM\NormTypeForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />
@@ -8884,7 +8885,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Account\Views\Control\" />
-    <Folder Include="Areas\Admin\Models\EvaResultVM\" />
     <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="GlobalShared\Models\" />
     <Folder Include="Models\" />

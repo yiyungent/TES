@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models.Common;
+using WebUI.Areas.Admin.Models.EvaResultVM;
 
 namespace WebUI.Areas.Admin.Controllers
 {
@@ -19,15 +20,50 @@ namespace WebUI.Areas.Admin.Controllers
             IList<ICriterion> queryConditions = new List<ICriterion>();
             Query(queryConditions);
 
-            ListViewModel<EvaResult> viewModel = new ListViewModel<EvaResult>(queryConditions, pageIndex, pageSize);
-            TempData["RedirectUrl"] = Request.RawUrl;
 
             // 只显示 有评价记录（即可以计算分数）的选项列表
             IList<EvaRecord> allEvaRecord = Container.Instance.Resolve<EvaRecordService>().GetAll();
+
+            #region 准备列表视图数据
+            EvaResultListViewModel viewModel = new EvaResultListViewModel();
+            viewModel.List = new List<EvaResultVMItem>();
+            IList<EvaResult> allEvaResult = Container.Instance.Resolve<EvaResultService>().GetAll();
+            // 去重 + 只要有评价结果记录的
+            IList<EvaTask> allEvaTask = allEvaResult.Select(m => m.EvaluateTask).Distinct().ToList();
+            IList<EmployeeInfo> allEvaedEmployee = allEvaResult.Select(m => m.Teacher).Distinct().ToList();
+            foreach (var evaedEmployeeItem in allEvaedEmployee)
+            {
+                EvaResultVMItem vmItem = new EvaResultVMItem();
+                vmItem.EvaTask = allEvaResult.Where(m => m.Teacher.ID == evaedEmployeeItem.ID).Select(m => m.EvaluateTask).FirstOrDefault();
+                vmItem.EvaedEmployee = evaedEmployeeItem;
+                vmItem.ScoreDic = new Dictionary<NormType, decimal>();
+                // 只要 此评价任务，此被评员工 的评价记录
+                // 注意：表头的评价类型是按 排序码 排序，所以下方的明细分数单元格也许按排序码排序，以达明细分数一一对应
+                IList<EvaResult> relativeResultList = allEvaResult.Where(m => m.EvaluateTask.ID == vmItem.EvaTask.ID && m.Teacher.ID == vmItem.EvaedEmployee.ID).OrderBy(m => m.NormType.SortCode).ToList();
+                foreach (var resultItem in relativeResultList)
+                {
+                    vmItem.ScoreDic.Add(resultItem.NormType, resultItem.Score);
+                }
+
+                viewModel.List.Add(vmItem);
+            }
+            #endregion
+
+
+            #region 展示到视图
+
+            #region 计算分数的选项列表
             ViewBag.SelectListForEvaTask = InitSelectListForEvaTask(0, allEvaRecord);
             ViewBag.SelectListForTeacher = InitSelectListForTeacher(0, allEvaRecord);
             ViewBag.SelectListForEvaType = InitSelectListForEvaType(0, allEvaRecord);
+            #endregion
 
+            // 表头：需要展示哪些 评价类型 的 明细分数
+            IList<NormType> allNormType = Container.Instance.Resolve<NormTypeService>().GetAll().OrderBy(m => m.SortCode).ToList();
+            ViewBag.AllNormType = allNormType;
+
+            TempData["RedirectUrl"] = Request.RawUrl;
+            #endregion
 
             return View(viewModel);
         }
