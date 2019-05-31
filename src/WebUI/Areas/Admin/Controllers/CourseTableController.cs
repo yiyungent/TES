@@ -24,6 +24,7 @@ namespace WebUI.Areas.Admin.Controllers
             ViewBag.BreadcrumbList = new List<BreadcrumbItem>
             {
                 new BreadcrumbItem("业务管理"),
+                new BreadcrumbItem("课程表管理"),
             };
         }
         #endregion
@@ -32,11 +33,90 @@ namespace WebUI.Areas.Admin.Controllers
         public ActionResult Index(int pageIndex = 1, int pageSize = 6)
         {
             IList<ICriterion> queryConditions = new List<ICriterion>();
+            Query(queryConditions);
 
             ListViewModel<CourseTable> model = new ListViewModel<CourseTable>(queryConditions, pageIndex: pageIndex, pageSize: pageSize);
             TempData["RedirectUrl"] = Request.RawUrl;
 
             return View(model);
+        }
+
+        private void Query(IList<ICriterion> queryConditions)
+        {
+            // 输入的查询关键词
+            string query = Request["q"]?.Trim() ?? "";
+            // 查询类型
+            QueryType queryType = new QueryType();
+            Dictionary<string, string> queryTypeValTextDic = new Dictionary<string, string>
+            {
+                { "clazzcode", "班号" },
+                { "teachercode", "授课教师工号" },
+                { "teachername", "授课教师姓名" },
+                { "id", "ID" },
+            };
+            queryType.Val = Request["type"]?.Trim().ToLower() ?? "clazzcode";
+            if (queryTypeValTextDic.ContainsKey(queryType.Val))
+            {
+                queryType.Text = queryTypeValTextDic[queryType.Val];
+            }
+            else
+            {
+                queryType.Text = "班号";
+            }
+            if (!string.IsNullOrEmpty(query))
+            {
+                switch (queryType.Val)
+                {
+                    case "clazzcode":
+                        queryType.Text = "班号";
+                        IList<ClazzInfo> clazzList = Container.Instance.Resolve<ClazzInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.Like("ClazzCode", query, MatchMode.Anywhere)
+                    }).ToList();
+                        queryConditions.Add(Expression.In("Clazz.ID", clazzList.Select(m => m.ID).ToArray()));
+                        break;
+                    case "teachercode":
+                        queryType.Text = "授课教师工号";
+                        IList<EmployeeInfo> teacherList = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.Like("EmployeeCode", query, MatchMode.Anywhere)
+                    }).ToList();
+                        queryConditions.Add(Expression.In("Teacher.ID", teacherList.Select(m => m.ID).ToArray()));
+                        break;
+                    case "teachername":
+                        queryType.Text = "授课教师姓名";
+                        teacherList = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.Like("Name", query, MatchMode.Anywhere)
+                    }).ToList();
+                        queryConditions.Add(Expression.In("Teacher.ID", teacherList.Select(m => m.ID).ToArray()));
+                        break;
+                    case "id":
+                        queryType.Text = "ID";
+                        if (!string.IsNullOrEmpty(query))
+                        {
+                            if (int.TryParse(query, out int id))
+                            {
+                                queryConditions.Add(Expression.Eq("ID", id));
+                            }
+                            else
+                            {
+                                queryConditions.Add(Expression.Eq("ID", 0));
+                            }
+                        }
+                        break;
+                    default:
+                        queryType.Text = "班号";
+                        clazzList = Container.Instance.Resolve<ClazzInfoService>().Query(new List<ICriterion>
+                    {
+                        Expression.Like("ClazzCode", query, MatchMode.Anywhere)
+                    }).ToList();
+                        queryConditions.Add(Expression.In("Clazz.ID", clazzList.Select(m => m.ID).ToArray()));
+                        break;
+                }
+            }
+            ViewBag.Query = query;
+            ViewBag.QueryType = queryType;
         }
         #endregion
 

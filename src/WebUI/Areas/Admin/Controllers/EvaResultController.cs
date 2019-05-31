@@ -17,8 +17,8 @@ namespace WebUI.Areas.Admin.Controllers
         #region 列表
         public ActionResult Index(int pageIndex = 1, int pageSize = 6)
         {
-            IList<ICriterion> queryConditions = new List<ICriterion>();
-            Query(queryConditions);
+            //IList<ICriterion> queryConditions = new List<ICriterion>();
+            //Query(queryConditions);
 
 
             // 只显示 有评价记录（即可以计算分数）的选项列表
@@ -89,7 +89,7 @@ namespace WebUI.Areas.Admin.Controllers
             }
             else
             {
-                queryType.Text = "教学名";
+                queryType.Text = "教师名";
             }
             if (!string.IsNullOrEmpty(query))
             {
