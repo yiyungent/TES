@@ -166,7 +166,7 @@ namespace WebUI.Areas.Admin.Controllers
             // 使用的评价类型
             NormType normType = null;
             // 根据 评价人，被评价人 选择 指标
-            viewModel = GetNormTargetsByEvaorAndEvaedor(evaor, evaedEmployee, out normType);
+            viewModel = GetNormTargetsByEvaorAndEvaedor(evaor.GetBindEmployee(), evaedEmployee, out normType);
 
             #region 展示 被评信息 到页面
             ViewBag.EvaedEmployee = evaedEmployee;
@@ -203,7 +203,7 @@ namespace WebUI.Areas.Admin.Controllers
                 EmployeeInfo evaedEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetEntity(teacherId);
 
                 IList<NormTarget> needAnswerNormTargetList = null;
-                needAnswerNormTargetList = GetNormTargetsByEvaorAndEvaedor(evaor, evaedEmployee, out NormType normType);
+                needAnswerNormTargetList = GetNormTargetsByEvaorAndEvaedor(evaor.GetBindEmployee(), evaedEmployee, out NormType normType);
                 if (needAnswerNormTargetList == null || needAnswerNormTargetList.Count <= 0)
                 {
                     return Json(new { code = -1, message = "提交评价失败，没有需要回答的指标" });
@@ -287,7 +287,14 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
         #region 根据评价人和被评价人选择指标（需回答即有选项的末指标）（答卷）
-        private IList<NormTarget> GetNormTargetsByEvaorAndEvaedor(UserInfo evaor, EmployeeInfo evaedor, out NormType normType)
+        /// <summary>
+        /// 根据评价人和被评价人选择指标（需回答即有选项的末指标）（答卷）
+        /// </summary>
+        /// <param name="evaor">评价人</param>
+        /// <param name="evaedor">被评价人</param>
+        /// <param name="normType">带出使用的评价类型</param>
+        /// <returns>使用的评价指标列表</returns>
+        private IList<NormTarget> GetNormTargetsByEvaorAndEvaedor(EmployeeInfo evaor, EmployeeInfo evaedor, out NormType normType)
         {
             IList<NormTarget> rtn = null;
             normType = null;
@@ -304,7 +311,7 @@ namespace WebUI.Areas.Admin.Controllers
             {
                 // 被评人 非自己
                 // 职位 区别
-                rtn = GetNormTargetsByEvaor(evaor.GetBindEmployee(), out normType);
+                rtn = GetNormTargetsByEvaor(evaor, out normType);
             }
 
             return rtn;
