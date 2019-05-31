@@ -8366,6 +8366,7 @@
     </Compile>
     <Compile Include="Areas\Admin\Models\AdminWebBaseInfoViewModel.cs" />
     <Compile Include="Areas\Admin\Models\BreadcrumbItem.cs" />
+    <Compile Include="HtmlHelpers\CheckBoxListHelper.cs" />
     <Compile Include="HtmlHelpers\CollapseDept.cs" />
     <Compile Include="HtmlHelpers\CollapseMenu.cs" />
     <Compile Include="HtmlHelpers\CollapseNormTarget.cs" />

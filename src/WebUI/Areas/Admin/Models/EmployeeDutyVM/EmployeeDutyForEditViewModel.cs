@@ -31,9 +31,20 @@ namespace WebUI.Areas.Admin.Models.EmployeeDutyVM
         public IList<SelectListItem> SelectListForNormType { get; set; }
 
         /// <summary>
-        /// 仅作接收, 被选中的职位
+        /// 仅作接收, 被选中的评价类型
         /// </summary>
         public int SelectedValForNormType { get; set; }
+
+        ///<summary>
+        /// 仅作展示，选择评价职位
+        /// </summary>
+        [Display(Name = "评价职位")]
+        public IList<SelectListItem> SelectListForEvaDuty { get; set; }
+
+        /// <summary>
+        /// 仅作接收, 被选中的评价职位
+        /// </summary>
+        public int[] SelectedValArrForEvaDuty { get; set; }
 
         #endregion
 
@@ -42,6 +53,7 @@ namespace WebUI.Areas.Admin.Models.EmployeeDutyVM
         {
             this.SelectListForNormType = InitSelectListForNormType(0);
             this.SelectedValForNormType = 0;
+            this.SelectListForEvaDuty = InitSelectListForEvaDuty();
         }
         #endregion
 
@@ -55,7 +67,9 @@ namespace WebUI.Areas.Admin.Models.EmployeeDutyVM
                 ID = dbModel.ID,
                 InputName = dbModel.Name,
                 SelectListForNormType = InitSelectListForNormType(dbModel.NormType?.ID ?? 0),
-                SelectedValForNormType = dbModel.NormType?.ID ?? 0
+                SelectedValForNormType = dbModel.NormType?.ID ?? 0,
+                SelectListForEvaDuty = InitSelectListForEvaDuty(dbModel.EvaDutyList.Select(m => m.ID).ToArray()),
+                SelectedValArrForEvaDuty = dbModel.EvaDutyList.Select(m => m.ID).ToArray()
             };
 
             return viewModel;
@@ -78,6 +92,11 @@ namespace WebUI.Areas.Admin.Models.EmployeeDutyVM
             }
             dbModel.Name = inputModel.InputName?.Trim();
             dbModel.NormType = new NormType { ID = inputModel.SelectedValForNormType };
+            dbModel.EvaDutyList = new List<EmployeeDuty>();
+            foreach (int item in inputModel.SelectedValArrForEvaDuty)
+            {
+                dbModel.EvaDutyList.Add(new EmployeeDuty { ID = item });
+            }
 
             return dbModel;
         }
@@ -98,14 +117,36 @@ namespace WebUI.Areas.Admin.Models.EmployeeDutyVM
                 Value = "0",
                 Selected = (selectedValue == 0)
             });
-            IList<NormType> allDuty = Container.Instance.Resolve<NormTypeService>().GetAll();
-            foreach (var item in allDuty)
+            IList<NormType> allNormType = Container.Instance.Resolve<NormTypeService>().GetAll();
+            foreach (var item in allNormType)
             {
                 ret.Add(new SelectListItem
                 {
                     Text = item.Name,
                     Value = item.ID.ToString(),
                     Selected = (selectedValue == item.ID)
+                });
+            }
+
+            return ret;
+        }
+        #endregion
+
+        #region 初始化选项列表-评价职位
+        /// <summary>
+        /// 初始化选项列表-评价职位
+        /// </summary>
+        private static IList<SelectListItem> InitSelectListForEvaDuty(params int[] selectedValueArr)
+        {
+            IList<SelectListItem> ret = new List<SelectListItem>();
+            IList<EmployeeDuty> allDuty = Container.Instance.Resolve<EmployeeDutyService>().GetAll();
+            foreach (var item in allDuty)
+            {
+                ret.Add(new SelectListItem
+                {
+                    Text = item.Name,
+                    Value = item.ID.ToString(),
+                    Selected = selectedValueArr.Contains(item.ID)
                 });
             }
 

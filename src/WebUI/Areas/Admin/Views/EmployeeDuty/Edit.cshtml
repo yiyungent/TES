@@ -76,6 +76,10 @@
 				@Html.LabelFor(m => m.SelectListForNormType)
 				@Html.DropDownListFor(m => m.SelectedValForNormType, Model.SelectListForNormType, new { @class = "form-control" })
 			</div>
+			<div class="form-group">
+				@Html.LabelFor(m => m.SelectListForEvaDuty)
+				@Html.CheckBoxList("SelectedValArrForEvaDuty", Model.SelectListForEvaDuty)
+			</div>
 		</div>
 		<!-- /.box-body -->
 
