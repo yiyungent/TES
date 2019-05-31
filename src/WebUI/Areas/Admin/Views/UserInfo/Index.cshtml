@@ -7,6 +7,11 @@
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
 }
 @section head {
+	<style>
+		table tr td {
+			vertical-align: middle !important;
+		}
+	</style>
 }
 @section body {
 	<script src="~/dist/pview/pview.js"></script>
@@ -115,15 +120,16 @@
 		<div class="box-tools">
 			<div class="input-group input-group-sm" style="width: 250px;">
 				<div class="input-group-btn">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-					  <span id="js-search-type" search-type="@(ViewBag.QueryType.Val)">@(ViewBag.QueryType.Text)</span>
-                    <span class="fa fa-caret-down"></span></button>
-                  <ul id="js-search-type-list" class="dropdown-menu">
-                    <li search-type="username"><a href="javascript:;">用户名</a></li>
-                    <li search-type="name"><a href="javascript:;">展示名</a></li>
-                    <li search-type="id"><a href="javascript:;">ID</a></li>
-                  </ul>
-                </div>
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						<span id="js-search-type" search-type="@(ViewBag.QueryType.Val)">@(ViewBag.QueryType.Text)</span>
+						<span class="fa fa-caret-down"></span>
+					</button>
+					<ul id="js-search-type-list" class="dropdown-menu">
+						<li search-type="username"><a href="javascript:;">用户名</a></li>
+						<li search-type="name"><a href="javascript:;">展示名</a></li>
+						<li search-type="id"><a href="javascript:;">ID</a></li>
+					</ul>
+				</div>
 				<input id="js-search-input" type="text" name="table_search" class="form-control pull-right" placeholder="Search" value="@ViewBag.Query">
 				<div class="input-group-btn">
 					<button id="js-search-btn" type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>

@@ -1,5 +1,5 @@
 ﻿@using Domain
-@model IList<NormTarget>
+@model IList<Department>
 @{
 	Layout = null;
 }
@@ -16,9 +16,8 @@
 			</colgroup>
 			<thead>
 				<tr>
-					<th>指标名称</th>
-					<th>指标类型</th>
-					<th>上级指标</th>
+					<th>部门名称</th>
+					<th>上级部门</th>
 					<th>排序</th>
 				</tr>
 			</thead>
@@ -27,8 +26,7 @@
 				{
 					<tr id="js-tr-@item.ID">
 						<td>@item.Name</td>
-						<td>@(item.NormType == null ? "无指标类型" : item.NormType.Name)</td>
-						<td>@(item.ParentTarget == null ? "一级指标" : item.ParentTarget.Name)</td>
+						<td>@(item.ParentDept == null ? "一级部门" : item.ParentDept.Name)</td>
 						<td>
 							<div class="layui-btn-group">
 								<button class="layui-btn" onclick="onUp(this)"><i class="layui-icon layui-icon-up"></i></button>
@@ -70,7 +68,7 @@
 	function saveData() {
 		$.ajax({
 			type: "post",
-			url: "/Admin/NormTarget/Sort",
+			url: "/Admin/Department/Sort",
 			data: $("form").serialize(),
 			dataType: "json",
 			success: function (data) {

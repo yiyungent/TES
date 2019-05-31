@@ -700,7 +700,7 @@ namespace WebUI.Controllers
                 {
                     Name = "学生",
                     Status = 0,
-                    Sys_MenuList = allMenu.Where(m => m.Name == "评价管理" || m.Name == "学生评价").ToList(),
+                    Sys_MenuList = allMenu.Where(m => m.Name == "学生评价").ToList(),
                     FunctionInfoList = allFunction.Where(m => m.Name == "(后台)管理中心(框架)" || m.Name == "学生评价-进入" || m.Name == "学生评价-评价").ToList()
                 });
 
@@ -708,7 +708,7 @@ namespace WebUI.Controllers
                 {
                     Name = "教师",
                     Status = 0,
-                    Sys_MenuList = allMenu.Where(m => m.Name == "评价管理" || m.Name == "教师评价").ToList(),
+                    Sys_MenuList = allMenu.Where(m => m.Name == "教师评价").ToList(),
                     FunctionInfoList = allFunction.Where(m => m.Name == "(后台)管理中心(框架)" || m.Name == "教师评价-进入" || m.Name == "教师评价-评价").ToList()
                 });
 
@@ -764,12 +764,26 @@ namespace WebUI.Controllers
                     UID = admin.ID
                 });
 
+                // 创建 专用于学生绑定的用户
                 for (int i = 0; i < 100; i++)
                 {
                     Container.Instance.Resolve<UserInfoService>().Create(new UserInfo
                     {
-                        Name = "用户" + (i + 1),
-                        UserName = "用户" + (i + 1),
+                        Name = "学生" + (i + 1),
+                        UserName = "学生" + (i + 1),
+                        Avatar = "/images/default-avatar.jpg",
+                        Password = EncryptHelper.MD5Encrypt32("12345"),
+                        Status = 0,
+                        RegTime = DateTime.Now
+                    });
+                }
+                // 创建 专用于员工（教师）绑定的用户
+                for (int i = 0; i < 100; i++)
+                {
+                    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo
+                    {
+                        Name = "教师" + (i + 1),
+                        UserName = "教师" + (i + 1),
                         Avatar = "/images/default-avatar.jpg",
                         Password = EncryptHelper.MD5Encrypt32("12345"),
                         Status = 0,
@@ -850,20 +864,13 @@ namespace WebUI.Controllers
 
                 IList<RoleInfo> allRole = Container.Instance.Resolve<RoleInfoService>().GetAll();
                 IList<ClazzInfo> allClazz = Container.Instance.Resolve<ClazzInfoService>().GetAll();
+                // 所有用于绑定学生的用户
+                IList<UserInfo> allUserInBindStudent = Container.Instance.Resolve<UserInfoService>().GetAll().Where(m => m.Name.StartsWith("学生")).ToList();
 
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < allUserInBindStudent.Count; i++)
                 {
                     string name = "学生" + (i + 1);
                     string studentCode = "170010" + i.ToString("000");
-                    // 创建其绑定用户
-                    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo()
-                    {
-                        Name = name,
-                        Avatar = "/images/default-avatar.jpg",
-                        UserName = studentCode,
-                        Password = EncryptHelper.MD5Encrypt32("12345"),
-                        RoleInfoList = allRole.Where(m => m.Name == "学生").ToList()
-                    });
                     // 创建学生
                     int randomNum = new Random().Next(0, 50);
                     Container.Instance.Resolve<StudentInfoService>().Create(new StudentInfo()
@@ -871,8 +878,14 @@ namespace WebUI.Controllers
                         Name = name,
                         StudentCode = studentCode,
                         ClazzInfo = (from m in allClazz where m.ClazzCode == "17001" + randomNum.ToString("00") select m).FirstOrDefault(),
-                        UID = 2 + i
+                        UID = allUserInBindStudent[i].ID
                     });
+                    // 更新绑定的用户
+                    UserInfo bindUser = Container.Instance.Resolve<UserInfoService>().GetEntity(allUserInBindStudent[i].ID);
+                    bindUser.RoleInfoList = allRole.Where(m => m.Name == "学生").ToList();
+                    bindUser.UserName = studentCode;
+                    bindUser.Name = "学生" + (i + 1);
+                    Container.Instance.Resolve<UserInfoService>().Edit(bindUser);
                 }
 
                 ShowMessage("成功");
@@ -892,107 +905,89 @@ namespace WebUI.Controllers
             {
                 ShowMessage("开始初始化部门");
 
+                string[] names = { };
+
                 #region 一级院
-                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                names = new string[] { "软件学院", "传媒学院", "管理学院", "通识学院" };
+                for (int i = 0; i < names.Length; i++)
                 {
-                    DeptType = 1,
-                    Name = "软件学院",
-                    SortCode = 10,
-                    ParentDept = null
-                });
-                Container.Instance.Resolve<DepartmentService>().Create(new Department
-                {
-                    DeptType = 1,
-                    Name = "传媒学院",
-                    SortCode = 20,
-                    ParentDept = null
-                });
-                Container.Instance.Resolve<DepartmentService>().Create(new Department
-                {
-                    DeptType = 1,
-                    Name = "管理学院",
-                    SortCode = 30,
-                    ParentDept = null
-                });
-                Container.Instance.Resolve<DepartmentService>().Create(new Department
-                {
-                    DeptType = 1,
-                    Name = "通识学院",
-                    SortCode = 40,
-                    ParentDept = null
-                });
+                    Container.Instance.Resolve<DepartmentService>().Create(new Department
+                    {
+                        DeptType = 1,
+                        Name = names[i],
+                        SortCode = (i + 1) * 10,
+                        ParentDept = null
+                    });
+                }
                 #endregion
 
                 Department parentDept = null;
+
                 #region 二级系
                 parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
                 {
                     Expression.Eq("Name", "软件学院")
                 }).FirstOrDefault();
-                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                names = new string[] { "软件工程系", "移动应用开发系", "多媒体与游戏互联系" };
+                for (int i = 0; i < names.Length; i++)
                 {
-                    DeptType = 1,
-                    Name = "软件工程系",
-                    SortCode = 10,
-                    ParentDept = parentDept
-                });
-                Container.Instance.Resolve<DepartmentService>().Create(new Department
-                {
-                    DeptType = 1,
-                    Name = "移动应用开发系",
-                    SortCode = 20,
-                    ParentDept = parentDept
-                });
-                Container.Instance.Resolve<DepartmentService>().Create(new Department
-                {
-                    DeptType = 1,
-                    Name = "多媒体与游戏互联系",
-                    SortCode = 30,
-                    ParentDept = parentDept
-                });
+                    Container.Instance.Resolve<DepartmentService>().Create(new Department
+                    {
+                        DeptType = 1,
+                        Name = names[i],
+                        SortCode = (i + 1) * 10,
+                        ParentDept = parentDept
+                    });
+                }
 
                 parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
                 {
                     Expression.Eq("Name", "传媒学院")
                 }).FirstOrDefault();
-                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                names = new string[] { "数字艺术系" };
+                for (int i = 0; i < names.Length; i++)
                 {
-                    DeptType = 1,
-                    Name = "数字艺术系",
-                    SortCode = 10,
-                    ParentDept = parentDept
-                });
+                    Container.Instance.Resolve<DepartmentService>().Create(new Department
+                    {
+                        DeptType = 1,
+                        Name = names[i],
+                        SortCode = (i + 1) * 10,
+                        ParentDept = parentDept
+                    });
+                }
 
                 parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
                 {
                     Expression.Eq("Name", "管理学院")
                 }).FirstOrDefault();
-                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                names = new string[] { "电子商务系" };
+                for (int i = 0; i < names.Length; i++)
                 {
-                    DeptType = 1,
-                    Name = "电子商务系",
-                    SortCode = 10,
-                    ParentDept = parentDept
-                });
+                    Container.Instance.Resolve<DepartmentService>().Create(new Department
+                    {
+                        DeptType = 1,
+                        Name = names[i],
+                        SortCode = (i + 1) * 10,
+                        ParentDept = parentDept
+                    });
 
+                }
                 parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
                 {
                     Expression.Eq("Name", "通识学院")
                 }).FirstOrDefault();
-                Container.Instance.Resolve<DepartmentService>().Create(new Department
+                names = new string[] { "信息与计算科学系", "外语系", "数学系", "统计系" };
+                for (int i = 0; i < names.Length; i++)
                 {
-                    DeptType = 1,
-                    Name = "外语系",
-                    SortCode = 10,
-                    ParentDept = parentDept
-                });
-                Container.Instance.Resolve<DepartmentService>().Create(new Department
-                {
-                    DeptType = 1,
-                    Name = "数学系",
-                    SortCode = 20,
-                    ParentDept = parentDept
-                });
+                    Container.Instance.Resolve<DepartmentService>().Create(new Department
+                    {
+                        DeptType = 1,
+                        Name = names[i],
+                        SortCode = (i + 1) * 10,
+                        ParentDept = parentDept
+                    });
+                }
+
                 #endregion
 
                 #region 三级教研室
@@ -1007,13 +1002,54 @@ namespace WebUI.Controllers
                     SortCode = 10,
                     ParentDept = parentDept
                 });
-                Container.Instance.Resolve<DepartmentService>().Create(new Department
+
+                parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
                 {
-                    DeptType = 1,
-                    Name = "软件工程B教研室",
-                    SortCode = 10,
-                    ParentDept = parentDept
-                });
+                    Expression.Eq("Name", "数学系")
+                }).FirstOrDefault();
+                names = new string[] { "代数与几何教研室", "分析与函数教研室", "微分方程教研室", "实践技能教研室" };
+                for (int i = 0; i < names.Length; i++)
+                {
+                    Container.Instance.Resolve<DepartmentService>().Create(new Department
+                    {
+                        DeptType = 1,
+                        Name = names[i],
+                        SortCode = (i + 1) * 10,
+                        ParentDept = parentDept
+                    });
+                }
+
+                parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "统计系")
+                }).FirstOrDefault();
+                names = new string[] { "概率论教研室", "统计学教研室" };
+                for (int i = 0; i < names.Length; i++)
+                {
+                    Container.Instance.Resolve<DepartmentService>().Create(new Department
+                    {
+                        DeptType = 1,
+                        Name = names[i],
+                        SortCode = (i + 1) * 10,
+                        ParentDept = parentDept
+                    });
+                }
+
+                parentDept = Container.Instance.Resolve<DepartmentService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Name", "信息与计算科学系")
+                }).FirstOrDefault();
+                names = new string[] { "计算科学教研室", "信息科学教研室" };
+                for (int i = 0; i < names.Length; i++)
+                {
+                    Container.Instance.Resolve<DepartmentService>().Create(new Department
+                    {
+                        DeptType = 1,
+                        Name = names[i],
+                        SortCode = (i + 1) * 10,
+                        ParentDept = parentDept
+                    });
+                }
                 #endregion
 
 
@@ -1161,6 +1197,8 @@ namespace WebUI.Controllers
                 var allDeptList = Container.Instance.Resolve<DepartmentService>().GetAll();
                 var allJYSList = allDeptList.Where(m => m.Name.EndsWith("教研室")).ToList();
                 var allXiList = allDeptList.Where(m => m.Name.EndsWith("系")).ToList();
+                // 所有用于绑定学生的用户
+                IList<UserInfo> allUserInBindEmployee = Container.Instance.Resolve<UserInfoService>().GetAll().Where(m => m.Name.StartsWith("教师")).ToList();
 
 
                 Random r = new Random();
@@ -1177,13 +1215,13 @@ namespace WebUI.Controllers
                         Department = (i % 3 + 1 == 2) ? allXiList[r.Next(allXiList.Count)] : allJYSList[r.Next(allJYSList.Count)],
                         EmployeeDuty = new EmployeeDuty { ID = i % 3 + 1 },
                         CourseTableList = new List<CourseTable>(),
-                        // 防止绑定上已经绑定有员工的超级管理员admin
-                        UID = 2 + i
+                        UID = allUserInBindEmployee[i].ID
                     });
-                    // 为绑定的这些用户更换角色
-                    UserInfo bindUser = Container.Instance.Resolve<UserInfoService>().GetEntity(2 + i);
+                    // 更新绑定的用户
+                    UserInfo bindUser = Container.Instance.Resolve<UserInfoService>().GetEntity(allUserInBindEmployee[i].ID);
                     bindUser.RoleInfoList = allRole.Where(m => m.Name == "教师").ToList();
-                    bindUser.UserName = "教师" + i + 1;
+                    bindUser.UserName = employeeCode;
+                    bindUser.Name = "教师" + (i + 1);
                     Container.Instance.Resolve<UserInfoService>().Edit(bindUser);
                 }
 

@@ -8273,6 +8273,9 @@
     <Content Include="Areas\Admin\Views\EmployeeDuty\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeDuty\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeDuty\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Department\Sort.cshtml" />
+    <Content Include="Areas\Admin\Views\Department\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Department\Create.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />

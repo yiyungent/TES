@@ -14,7 +14,7 @@ namespace WebUI.HtmlHelpers
     {
         private static IList<Department> _allList;
 
-        private const string _btnGroupFormat = "<div class='layui-btn-group' style='float: right;'><button class='layui-btn layui-btn-sm' onclick='onEdit({1})'>修改</button></div>";
+        private const string _btnGroupFormat = "<div class='layui-btn-group' style='float: right;'><button class='layui-btn layui-btn-sm' onclick='onEdit({1})'>修改</button><button class='layui-btn layui-btn-sm' onclick='onSort({1})'>排序</button><button class='layui-btn layui-btn-sm layui-btn-danger' onclick='deleteOp({1})'>删除</button></div>";
 
         #region 产生菜单列表首页
         public static MvcHtmlString GenerateCollapseDept(this HtmlHelper value)
