@@ -104,11 +104,28 @@ namespace WebUI.Controllers
                     Name = "评价管理",
                     SortCode = 40,
                 });
-
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "学生评价",
+                    ControllerName = "StudentEva",
+                    ActionName = "Index",
+                    AreaName = "Admin",
+                    ParentMenu = null,
+                    SortCode = 50,
+                });
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "教师评价",
+                    ControllerName = "TeacherEva",
+                    ActionName = "Index",
+                    AreaName = "Admin",
+                    ParentMenu = null,
+                    SortCode = 60,
+                });
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
                     Name = "测试一级菜单",
-                    SortCode = 50,
+                    SortCode = 70,
                     AreaName = "Admin",
                     ControllerName = "UserInfo",
                     ActionName = "Index",
@@ -259,6 +276,15 @@ namespace WebUI.Controllers
                     ParentMenu = parentMenu,
                     SortCode = 60,
                 });
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "员工职位",
+                    ControllerName = "EmployeeDuty",
+                    ActionName = "Index",
+                    AreaName = "Admin",
+                    ParentMenu = parentMenu,
+                    SortCode = 70,
+                });
                 #endregion
 
                 #region 评价管理的二级菜单
@@ -312,24 +338,6 @@ namespace WebUI.Controllers
                     ParentMenu = parentMenu,
                     SortCode = 40,
                 });
-                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
-                {
-                    Name = "学生评价",
-                    ControllerName = "StudentEva",
-                    ActionName = "Index",
-                    AreaName = "Admin",
-                    ParentMenu = parentMenu,
-                    SortCode = 40,
-                });
-                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
-                {
-                    Name = "教师评价",
-                    ControllerName = "TeacherEva",
-                    ActionName = "Index",
-                    AreaName = "Admin",
-                    ParentMenu = parentMenu,
-                    SortCode = 50,
-                });
                 #endregion
 
                 #endregion
@@ -381,10 +389,11 @@ namespace WebUI.Controllers
 
                 IList<ICriterion> qryWhere = new List<ICriterion>();
 
-                #region 7-18 都具有 "新增", "修改", "删除", "查看"
-                // 7-18
-                qryWhere.Add(Expression.Ge("ID", 7));
-                qryWhere.Add(Expression.Le("ID", 18));
+                #region 这些 都具有 "新增", "修改", "删除", "查看"
+                string[] names = { "用户管理", "角色管理", "菜单管理", "操作管理", "主题模板", "学生管理", "班级管理", "部门管理", "课程管理", "课程表管理" };
+                IList<Sys_Menu> allMenu = Container.Instance.Resolve<Sys_MenuService>().GetAll();
+                IList<int> idList = allMenu.Where(m => names.Contains(m.Name)).Select(m => m.ID).ToList();
+                qryWhere.Add(Expression.In("ID", idList.ToArray()));
                 IList<Sys_Menu> findMenuList = Container.Instance.Resolve<Sys_MenuService>().Query(qryWhere);
                 string[] funcNames = { "新增", "修改", "删除", "查看" };
                 string[] actionNames = { "Create", "Edit", "Delete", "Detail", "Index" };
@@ -619,6 +628,34 @@ namespace WebUI.Controllers
                     AuthKey = "Admin.TeacherEva.Eva",
                     Name = "教师评价-评价",
                     Sys_Menu = teacherEva_Sys_Menu
+                });
+                #endregion
+
+                #region 员工职位 EmployeeDuty
+                Sys_Menu employeeDuty_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "EmployeeDuty") }).FirstOrDefault();
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EmployeeDuty.Index",
+                    Name = "员工职位-列表",
+                    Sys_Menu = employeeDuty_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EmployeeDuty.Edit",
+                    Name = "员工职位-修改",
+                    Sys_Menu = employeeDuty_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EmployeeDuty.Detail",
+                    Name = "员工职位-查看",
+                    Sys_Menu = employeeDuty_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.EmployeeDuty.Delete",
+                    Name = "员工职位-删除",
+                    Sys_Menu = employeeDuty_Sys_Menu
                 });
                 #endregion
 

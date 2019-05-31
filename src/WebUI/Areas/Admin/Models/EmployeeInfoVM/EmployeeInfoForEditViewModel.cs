@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebUI.Extensions;
 
 namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
 {
@@ -79,7 +80,7 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
         #region Ctor
         public EmployeeInfoForEditViewModel()
         {
-            this.SelectListForDept = InitSelectListForDept(0);
+            this.SelectListForDept = InitSelectListForDept(new Department(), 0);
             this.SelectedValForDept = 0;
             this.SelectListForSex = InitSelectListForSex(0);
             this.SelectedValForSex = 0;
@@ -98,7 +99,7 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
                 InputEmployeeCode = dbModel.EmployeeCode,
                 InputStart_Time = dbModel.Start_Time,
                 InputEnd_Time = dbModel.End_Time,
-                SelectListForDept = InitSelectListForDept(dbModel.Department?.ID ?? 0),
+                SelectListForDept = InitSelectListForDept(dbModel.Department, dbModel.Department?.ID ?? 0),
                 SelectedValForDept = dbModel.Department?.ID ?? 0,
                 SelectListForSex = InitSelectListForSex(dbModel.Sex),
                 SelectedValForSex = dbModel.Sex,
@@ -140,32 +141,42 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
         /// <summary>
         /// 初始化选项列表-部门
         /// </summary>
-        private static IList<SelectListItem> InitSelectListForDept(int selectedValue)
+        private static IList<SelectListItem> InitSelectListForDept(Department self, int parentId)
         {
             IList<SelectListItem> ret = new List<SelectListItem>();
             ret.Add(new SelectListItem()
             {
                 Text = "请选择",
                 Value = "0",
-                Selected = (selectedValue == 0)
+                Selected = (parentId == 0)
             });
-            // 所有 列表
-            IList<Department> allList = Container.Instance.Resolve<DepartmentService>().GetAll();
-            // 院级 列表
-            IList<Department> yuanList = allList.Where(m => m.ParentDept == null || m.ParentDept.ID == 0).ToList();
-            // 系级 列表
-            IList<Department> xiList = allList.Where(m => m.Children == null || m.Children.Count == 0).ToList();
-            foreach (var yuanItem in yuanList)
+            #region 临时解决没有当前选中项问题
+            ret.Add(new SelectListItem()
             {
-                foreach (var xiItem in xiList)
-                {
-                    ret.Add(new SelectListItem()
-                    {
-                        Text = yuanItem.Name + " - " + xiItem.Name,
-                        Value = xiItem.ID.ToString(),
-                        Selected = (selectedValue == xiItem.ID)
-                    });
-                }
+                Text = self.DescDept(),
+                Value = self.ID.ToString(),
+                Selected = (parentId == self.ID)
+            }); 
+            #endregion
+
+            IList<Department> all = Container.Instance.Resolve<DepartmentService>().GetAll();
+            // 找出自己及后代的ID
+            IList<int> idRange = new List<int>();
+            GetIdRange(self, idRange, all);
+
+            // not in 查询
+            var find = from m in all
+                       where idRange.Contains(m.ID) == false
+                       select m;
+            // 方案二：考虑层级的实现
+            // 1.一级菜单
+            var first = from m in find
+                        where m.ParentDept == null
+                        orderby m.SortCode
+                        select m;
+            foreach (var item in first)
+            {
+                AddSelfAndChildrenForDDL("", item, ret, find.ToList(), parentId);
             }
 
             return ret;
@@ -234,7 +245,50 @@ namespace WebUI.Areas.Admin.Models.EmployeeInfoVM
 
             return ret;
         }
-        #endregion 
+        #endregion
 
+        #region 辅助初始化选项列表-部门
+        private static void AddSelfAndChildrenForDDL(string pref, Department self, IList<SelectListItem> target, IList<Department> all, int parentId)
+        {
+            // 1.添加自己
+            target.Add(new SelectListItem()
+            {
+                Text = pref + self.Name,
+                Value = self.ID.ToString(),
+                Selected = (self.ID == parentId)
+            });
+            // 2.递归添加子女
+            var child = from m in all
+                        where m.ParentDept != null && m.ParentDept.ID == self.ID
+                        orderby m.SortCode
+                        select m;
+            foreach (var item in child)
+            {
+                AddSelfAndChildrenForDDL(pref + "--", item, target, all, parentId);
+            }
+        }
+
+
+        /// <summary>
+        /// 递归方法：添加自己及其子女
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="idRange"></param>
+        /// <param name="all"></param>
+        private static void GetIdRange(Department self, IList<int> idRange, IList<Department> all)
+        {
+            // 添加自己
+            idRange.Add(self.ID);
+
+            // 关于子女循环
+            // 第二种解决方法：
+            if (self.Children == null) return;
+            foreach (var item in self.Children)
+            {
+                // 递归调用---添加自己和自己的子女
+                GetIdRange(item, idRange, all);
+            }
+        }
+        #endregion
     }
 }
