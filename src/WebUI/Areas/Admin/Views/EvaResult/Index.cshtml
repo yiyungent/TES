@@ -150,7 +150,7 @@
 		</script>
 	}
 }
-@helper generateScoreDesc(EvaResultVMItem currentVMItem, IList<int> allNormTypeId)
+@helper GenerateScoreDesc(EvaResultVMItem currentVMItem, IList<int> allNormTypeId)
 {
 	foreach (var typeId in allNormTypeId)
 	{
@@ -250,7 +250,7 @@
 						<span class="label label-info">@item.EvaTask.Name</span>
 					</td>
 					<td>@item.EvaedEmployee.Name（@item.EvaedEmployee.EmployeeCode）</td>
-					@generateScoreDesc(item, allNormTypeId)
+					@GenerateScoreDesc(item, allNormTypeId)
 					<td>@item.ScoreSum</td>
 					@*<td>
 							<div class="btn-group" role="group" data-pjax>
