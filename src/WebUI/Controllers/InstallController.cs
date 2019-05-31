@@ -603,7 +603,7 @@ namespace WebUI.Controllers
                 Sys_Menu studentEva_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "StudentEva") }).FirstOrDefault();
                 Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
                 {
-                    AuthKey = "Admin.TeacherEva.EvaList",
+                    AuthKey = "Admin.StudentEva.Index",
                     Name = "学生评价-评价任务列表",
                     Sys_Menu = studentEva_Sys_Menu
                 });
