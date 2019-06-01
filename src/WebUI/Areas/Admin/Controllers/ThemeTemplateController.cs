@@ -1,6 +1,7 @@
 ﻿using Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -34,6 +35,7 @@ namespace WebUI.Areas.Admin.Controllers
             switch (cat.ToLower())
             {
                 case "open":                // 启用---注意:启用，一定已安装
+                    // 数据库中存放的已安装模板 被标记为 启用 的记录
                     model.Add(new ThemeTemplateViewModel
                     {
                         Source = Source.Upload,
@@ -73,38 +75,18 @@ namespace WebUI.Areas.Admin.Controllers
                         IsDefault = false,
                         Status = 1
                     });
-                    model.Add(new ThemeTemplateViewModel
-                    {
-                        Source = Source.Upload,
-                        ServerPath = "~/Upload/Templates/Red.zip",
-                        TemplateName = "Red",
-                        Title = "经典红",
-                        Description = "官方推荐主题-经典红",
-                        Authors = new List<string> { "TES Office Team" },
-                        Url = "",
-                        Version = "0.1.0",
-                        IsDefault = false,
-                        Status = 1
-                    });
-                    model.Add(new ThemeTemplateViewModel
-                    {
-                        Source = Source.Upload,
-                        ServerPath = "~/Upload/Templates/Red.zip",
-                        TemplateName = "Red",
-                        Title = "经典红",
-                        Description = "官方推荐主题-经典红",
-                        Authors = new List<string> { "TES Office Team" },
-                        Url = "",
-                        Version = "0.1.0",
-                        IsDefault = false,
-                        Status = 1
-                    });
                     break;
                 case "close":               // 禁用---注意：禁用，一定已安装
+                    // 数据库中存放的已安装模板 被标记为 禁用 的记录
+
                     break;
                 case "installed":           // 已安装
+                    // 数据库中存放的已安装模板的记录
+
                     break;
                 case "withoutinstalled":    // 未安装
+                    // 在本地检测到的模板安装包，但包名不在 数据库中已安装模板记录中
+
                     break;
                 default:                    // 启用
                     break;
@@ -153,6 +135,45 @@ namespace WebUI.Areas.Admin.Controllers
 
 
 
+        #region Helpers
+
+        #region 检测模板安装包
+        /// <summary>
+        /// 检测安装包目录下存在的安装包
+        /// </summary>
+        /// <param name="installZipDir">安装包目录 ~/Upload/Templates</param>
+        /// <returns>返回存在的安装包文件信息</returns>
+        private Dictionary<FileInfo, FileVersionInfo> DetectInstallZip(string installZipDir)
+        {
+            // 返回 安装包文件信息
+            Dictionary<FileInfo, FileVersionInfo> rtn = new Dictionary<FileInfo, FileVersionInfo>();
+            // 从目录检测存在的模板安装包 (.zip文件)
+            string[] installZipFilePaths = Directory.GetFiles(installZipDir, "*.zip");
+            foreach (string filePath in installZipFilePaths)
+            {
+                System.IO.FileInfo fileInfo = new FileInfo(filePath);
+                rtn.Add(fileInfo, GetFileVersionInfo(filePath));
+            }
+
+            return rtn;
+        }
+        #endregion
+
+        #region 获取文件详细信息
+        private FileVersionInfo GetFileVersionInfo(string filePath)
+        {
+            FileVersionInfo rtn = null;
+            if (System.IO.File.Exists(filePath))
+            {
+                rtn = FileVersionInfo.GetVersionInfo(filePath);
+            }
+            // 从 FileVersionInfo 中获取文件详细信息，FileInfo 中获取文件大小
+            // 参考: https://www.cnblogs.com/shadowme/p/6250036.html
+
+            return rtn;
+        }
+        #endregion
+
         #region 安装本地主题模板
         /// <summary>
         /// 安装本地主题模板
@@ -192,6 +213,8 @@ namespace WebUI.Areas.Admin.Controllers
 
             public string id { get; set; }
         }
+        #endregion 
+
         #endregion
     }
 }

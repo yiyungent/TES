@@ -44,6 +44,13 @@ namespace WebUI.Areas.Admin.Models.Template
                 return url;
             }
         }
+
+        #region Ctor
+        public ThemeTemplateViewModel()
+        {
+
+        }
+        #endregion
     }
 
     public enum Source

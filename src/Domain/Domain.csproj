@@ -73,6 +73,7 @@
     <Compile Include="Sys_Menu.cs" />
     <Compile Include="EmployeeInfo.cs" />
     <Compile Include="FrameworkBase\Setting.cs" />
+    <Compile Include="ThemeTemplate.cs" />
     <Compile Include="UserInfo.cs" />
   </ItemGroup>
   <ItemGroup />
