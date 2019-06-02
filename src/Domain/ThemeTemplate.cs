@@ -12,9 +12,13 @@ namespace Domain
         [Property(Unique = true, Length = 100, NotNull = true)]
         public string TemplateName { get; set; }
 
-        [Display(Name = "模板展示名")]
+        [Display(Name = "模板标题")]
         [Property(Length = 100, NotNull = true)]
-        public string DisplayName { get; set; }
+        public string Title { get; set; }
+
+        [Display(Name = "默认模板")]
+        [Property]
+        public bool IsDefault { get; set; }
 
         /// <summary>
         /// 状态

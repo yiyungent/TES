@@ -18,7 +18,7 @@ namespace Framework.Mvc.ViewEngines.Templates
             Dictionary<string, object> jsonDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonStr);
             if (jsonDic.ContainsKey("previewImageUrl"))
             {
-                this.PreviewImageUrl = jsonDic["PreviewImageUrl"].ToString();
+                this.PreviewImageUrl = jsonDic["previewImageUrl"].ToString();
             }
             if (jsonDic.ContainsKey("description"))
             {
@@ -26,7 +26,7 @@ namespace Framework.Mvc.ViewEngines.Templates
             }
             if (jsonDic.ContainsKey("title"))
             {
-                this.TemplateTitle = jsonDic["title"].ToString();
+                this.Title = jsonDic["title"].ToString();
             }
             if (jsonDic.ContainsKey("authors"))
             {
@@ -56,6 +56,6 @@ namespace Framework.Mvc.ViewEngines.Templates
 
         public string TemplateName { get; protected set; }
 
-        public string TemplateTitle { get; protected set; }
+        public string Title { get; protected set; }
     }
 }

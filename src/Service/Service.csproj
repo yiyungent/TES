@@ -66,6 +66,7 @@
     <Compile Include="StudentInfoService.cs" />
     <Compile Include="Sys_MenuService.cs" />
     <Compile Include="EmployeeInfoService.cs" />
+    <Compile Include="ThemeTemplateService.cs" />
     <Compile Include="UserInfoService.cs" />
   </ItemGroup>
   <ItemGroup>

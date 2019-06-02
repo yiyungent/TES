@@ -1,10 +1,12 @@
-{
-	"templateName": "Red", // Î¨Ò»
-	"title": "¾­µäºì",
-	"description": "¹Ù·½ÍÆ¼öÖ÷Ìâ",
+ï»¿{
+	"templateName": "Red", // å”¯ä¸€
+	"title": "ç»å…¸çº¢",
+	"description": "å®˜æ–¹æ¨èä¸»é¢˜",
 	"authors": [
-		"TES Office Team"
+		"TES Office Team",
+		"æµ‹è¯•äººå‘˜"
 	],
 	"version": "0.1.0",
-	"url": ""
+	"url": "",
+	"previewImageUrl": "Templates/Red/preview.png"
 }

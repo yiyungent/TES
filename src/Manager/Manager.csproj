@@ -66,6 +66,7 @@
     <Compile Include="StudentInfoManager.cs" />
     <Compile Include="Sys_MenuManger.cs" />
     <Compile Include="EmployeeInfoManager.cs" />
+    <Compile Include="ThemeTemplateManager.cs" />
     <Compile Include="UserInfoManager.cs" />
   </ItemGroup>
   <ItemGroup>

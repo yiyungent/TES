@@ -8348,7 +8348,9 @@
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\StudentInfoVM\StudentInfoForEditViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\Template\ThemeTemplateViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ThemeTemplateVM\OpenCloseItem.cs" />
+    <Compile Include="Areas\Admin\Models\ThemeTemplateVM\ThemeTemplateListViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\ThemeTemplateVM\InstallZipItem.cs" />
     <Compile Include="Areas\Admin\Models\UserInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ZNodeModel.cs" />
     <Compile Include="Controllers\ErrorsController.cs" />
@@ -8894,7 +8896,7 @@
     <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="GlobalShared\Models\" />
     <Folder Include="Models\" />
-    <Folder Include="Upload\Templates\" />
+    <Folder Include="Upload\TemplateInstallZip\" />
     <Folder Include="Views\Errors\" />
     <Folder Include="Views\NotificationDemo\" />
     <Folder Include="Views\WebSocket\" />

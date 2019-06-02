@@ -64,11 +64,11 @@ namespace Framework.Mvc.ViewEngines.Templates
         private TemplateConfiguration CreateTemplateConfiguration(string templatePath)
         {
             var templateDirectory = new DirectoryInfo(templatePath);
-            var templateConfigFile = new FileInfo(Path.Combine(templateDirectory.FullName, "template.config"));
+            var templateConfigFile = new FileInfo(Path.Combine(templateDirectory.FullName, "template.json"));
 
             if (templateConfigFile.Exists)
             {
-                string jsonStr = File.ReadAllText(templateConfigFile.FullName);
+                string jsonStr = File.ReadAllText(templateConfigFile.FullName, System.Text.Encoding.UTF8);
                 return new TemplateConfiguration(templateDirectory.Name, templateDirectory.FullName, jsonStr);
             }
 
