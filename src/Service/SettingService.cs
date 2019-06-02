@@ -5,5 +5,8 @@ namespace Service
 {
     public interface SettingService : BaseService<Setting>
     {
+        string GetSet(string key);
+
+        void Set(string key, string value);
     }
 }

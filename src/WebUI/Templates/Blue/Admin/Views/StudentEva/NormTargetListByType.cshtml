@@ -1,0 +1,62 @@
+﻿@using Framework.HtmlHelpers
+@using WebUI.Areas.Admin.Models.Common
+@using WebUI.Extensions
+@using Domain
+@model IList<NormTarget>
+@{
+	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+}
+@section head {
+}
+@section body {
+	<script src="~/dist/pview/pview.js"></script>
+	<script>
+
+		function showMessage(message, type) {
+			$("#js-message").fadeIn();
+			switch (type) {
+				case -1:
+					$("#js-message").attr("class", "alert alert-danger").find(".message").html(message);
+					break;
+				case 1:
+					$("#js-message").attr("class", "alert alert-success").find(".message").html(message);
+					break;
+			}
+			// 3s 后隐藏
+			setTimeout(function () {
+				$("#js-message").fadeOut("slow");
+			}, 3000);
+		}
+
+		$(function () {
+
+		});
+	</script>
+}
+
+
+<!-- start 提示框 -->
+@{ Html.RenderPartial("_MessagePartial"); }
+<!-- end 提示框 -->
+
+<!-- start .box -->
+<div class="box">
+	<!-- start .box-header -->
+	<div class="box-header">
+		<h3 class="box-title">列表</h3>
+
+		<div class="box-tools"></div>
+	</div>
+	<!-- end .box-header -->
+	<!-- start .box-body -->
+	
+	<!-- end .box-body -->
+	<!-- start .box-footer -->
+	<div class="box-footer clearfix">
+		<div class="btn-group pull-left">
+			<button class="btn btn-primary">提交</button>
+		</div>
+	</div>
+	<!-- end .box-footer -->
+</div>
+<!-- end .box -->

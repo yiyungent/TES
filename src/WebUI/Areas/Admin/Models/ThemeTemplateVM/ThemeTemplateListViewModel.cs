@@ -24,6 +24,7 @@ namespace WebUI.Areas.Admin.Models.ThemeTemplateVM
         public ThemeTemplateListViewModel(IList<ICriterion> queryConditions, IList<Order> orderList, int pageIndex, int pageSize, HttpContextBase httpContextBase, string cat = "open")
         {
             IList<ThemeTemplate> installedTemplateList = Container.Instance.Resolve<ThemeTemplateService>().GetPaged(queryConditions, orderList, pageIndex, pageSize, out int totalCount);
+            string defaultTemplateName = Container.Instance.Resolve<SettingService>().GetSet("DefaultTemplateName") ?? "";
             IList<string> installedTemplateNames = installedTemplateList.Select(m => m.TemplateName).ToList();
             ITemplateProvider templateProvider = new TemplateProvider(new WebHelper(httpContextBase));
             IList<TemplateConfiguration> templateConfigurations = templateProvider.GetTemplateConfigurations();
@@ -38,12 +39,17 @@ namespace WebUI.Areas.Admin.Models.ThemeTemplateVM
                     {
                         OpenCloseItem openItem = new OpenCloseItem();
                         TemplateConfiguration templateConfiguration = templateConfigurations.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).FirstOrDefault();
+                        if (templateConfiguration == null)
+                        {
+                            // 数据库中存在此模板记录，但模板目录却没有对应模板配置文件
+                            continue;
+                        }
                         openItem.TemplateName = templateConfiguration.TemplateName;
                         openItem.Title = templateConfiguration.Title;
                         openItem.Authors = templateConfiguration.Authors;
                         openItem.Description = templateConfiguration.Description;
                         openItem.PreviewImageUrl = templateConfiguration.PreviewImageUrl;
-                        openItem.IsDefault = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.IsDefault).FirstOrDefault();
+                        openItem.IsDefault = templateName.ToLower() == defaultTemplateName.ToLower();
                         openItem.Status = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.Status).FirstOrDefault();
                         openItem.ID = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.ID).FirstOrDefault();
 
@@ -57,12 +63,17 @@ namespace WebUI.Areas.Admin.Models.ThemeTemplateVM
                     {
                         OpenCloseItem closeItem = new OpenCloseItem();
                         TemplateConfiguration templateConfiguration = templateConfigurations.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).FirstOrDefault();
+                        if (templateConfiguration == null)
+                        {
+                            // 数据库中存在此模板记录，但模板目录却没有对应模板配置文件
+                            continue;
+                        }
                         closeItem.TemplateName = templateConfiguration.TemplateName;
                         closeItem.Title = templateConfiguration.Title;
                         closeItem.Authors = templateConfiguration.Authors;
                         closeItem.Description = templateConfiguration.Description;
                         closeItem.PreviewImageUrl = templateConfiguration.PreviewImageUrl;
-                        closeItem.IsDefault = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.IsDefault).FirstOrDefault();
+                        closeItem.IsDefault = templateName.ToLower() == defaultTemplateName.ToLower();
                         closeItem.Status = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.Status).FirstOrDefault();
                         closeItem.ID = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.ID).FirstOrDefault();
 
@@ -75,12 +86,17 @@ namespace WebUI.Areas.Admin.Models.ThemeTemplateVM
                     {
                         OpenCloseItem opencloseItem = new OpenCloseItem();
                         TemplateConfiguration templateConfiguration = templateConfigurations.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).FirstOrDefault();
+                        if (templateConfiguration == null)
+                        {
+                            // 数据库中存在此模板记录，但模板目录却没有对应模板配置文件
+                            continue;
+                        }
                         opencloseItem.TemplateName = templateConfiguration.TemplateName;
                         opencloseItem.Title = templateConfiguration.Title;
                         opencloseItem.Authors = templateConfiguration.Authors;
                         opencloseItem.Description = templateConfiguration.Description;
                         opencloseItem.PreviewImageUrl = templateConfiguration.PreviewImageUrl;
-                        opencloseItem.IsDefault = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.IsDefault).FirstOrDefault();
+                        opencloseItem.IsDefault = templateName.ToLower() == defaultTemplateName.ToLower();
                         opencloseItem.Status = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.Status).FirstOrDefault();
                         opencloseItem.ID = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.ID).FirstOrDefault();
 
@@ -97,7 +113,6 @@ namespace WebUI.Areas.Admin.Models.ThemeTemplateVM
                         if (!installedTemplateNames.Contains(templateName, new TemplateNameComparer()))
                         {
                             InstallZipItem zipItem = new InstallZipItem(zipFilePath);
-
                             list.Add(zipItem);
                         }
                     }

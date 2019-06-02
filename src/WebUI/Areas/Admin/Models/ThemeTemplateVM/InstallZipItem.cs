@@ -76,7 +76,7 @@ namespace WebUI.Areas.Admin.Models.ThemeTemplateVM
             {
                 throw new Exception("模板安装包文件不存在");
             }
-            this.TemplateName = fileInfo.Name;
+            this.TemplateName = fileInfo.Name.Remove(fileInfo.Name.LastIndexOf('.'));
             this.FileName = fileVersionInfo.FileName;
             this.ProductName = fileVersionInfo.ProductName;
             this.CompanyName = fileVersionInfo.CompanyName;

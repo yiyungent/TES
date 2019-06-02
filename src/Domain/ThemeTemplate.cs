@@ -16,10 +16,6 @@ namespace Domain
         [Property(Length = 100, NotNull = true)]
         public string Title { get; set; }
 
-        [Display(Name = "默认模板")]
-        [Property]
-        public bool IsDefault { get; set; }
-
         /// <summary>
         /// 状态
         ///     0: 禁用

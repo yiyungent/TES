@@ -81,6 +81,22 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 安装包
+        public JsonResult InstallZip(string templateName)
+        {
+            try
+            {
+                InstallLocationTemplate(templateName);
+
+                return Json(new { code = 1, message = templateName + " 安装成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = templateName + " 安装失败" });
+            }
+        }
+        #endregion
+
         #region 启用禁用模板
         public JsonResult OpenClose(int id)
         {
@@ -100,6 +116,11 @@ namespace WebUI.Areas.Admin.Controllers
                         break;
                     case 1:
                         dbModel.Status = 0;
+                        string defaultTemplateName = Container.Instance.Resolve<SettingService>().GetSet("DefaultTemplateName");
+                        if (defaultTemplateName.ToLower() == dbModel.TemplateName)
+                        {
+                            return Json(new { code = -2, message = "当前模板为默认模板，请先设置其它模板为默认模板，再禁用此模板" });
+                        }
                         msg = "禁用";
                         break;
                 }
@@ -114,6 +135,34 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 设置为默认模板
+        public JsonResult SetDefault(int id)
+        {
+            try
+            {
+                bool isExist = Container.Instance.Resolve<ThemeTemplateService>().Exist(id);
+                if (!isExist)
+                {
+                    return Json(new { code = -1, message = "模板不存在，或未安装" });
+                }
+
+                ThemeTemplate dbModel = Container.Instance.Resolve<ThemeTemplateService>().GetEntity(id);
+                if (dbModel.Status == 0)
+                {
+                    return Json(new { code = -2, message = "模板未启用，请先启用再设置为默认模板" });
+                }
+
+                Container.Instance.Resolve<SettingService>().Set("DefaultTemplateName", dbModel.TemplateName);
+
+                return Json(new { code = 1, message = dbModel.Title + " 成功设置为默认模板" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "设置为默认模板失败" });
+            }
+        }
+        #endregion
+
 
         #region Helpers
 
@@ -121,19 +170,25 @@ namespace WebUI.Areas.Admin.Controllers
         /// <summary>
         /// 安装本地主题模板
         /// </summary>
-        /// <param name="templateServerPath">eg. ~/Upload/Templates/Red.zip</param>
+        /// <param name="templateServerPath">eg. ~/Upload/TemplateInstallZip/Red.zip</param>
         /// <returns></returns>
-        public async Task<JsonResult> InstallLocationTemplate(string templateServerPath)
+        private bool InstallLocationTemplate(string templateName)
         {
-            string fullPhysicalPath = System.Web.HttpContext.Current.Server.MapPath(templateServerPath);
-            await Task.Run(() =>
+            string serverPath = "~/Upload/TemplateInstallZip/" + templateName + ".zip";
+            string fullPhysicalPath = System.Web.HttpContext.Current.Server.MapPath(serverPath);
+
+            // 解压上传的模板包 到 视图地 ~/Templates
+            UnZipTemplate(fullPhysicalPath);
+            // 将模板信息 插入数据库，默认安装完后为启用
+            Container.Instance.Resolve<ThemeTemplateService>().Create(new ThemeTemplate
             {
-                // 解压上传的模板包 到 视图地 ~/Templates
-                UnZipTemplate(fullPhysicalPath);
-                // 将模板信息 插入数据库，默认安装完后为启用
+                TemplateName = templateName,
+                Title = templateName,
+                // 默认安装后 启用
+                Status = 1,
             });
 
-            return Json(new { code = 1, message = "安装完成" });
+            return true;
         }
         #endregion
 
