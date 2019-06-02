@@ -82,6 +82,11 @@ namespace Manager.Base
             return ActiveRecordBase.Count(typeof(T), criteria);
         }
 
+        public bool Exist(int id)
+        {
+            return ActiveRecordBase.Exists(typeof(T), id);
+        }
+
         //分页区和取对象集合
         public IList<T> GetPaged(IList<ICriterion> queryConditions, IList<Order> orderList, int pageIndex, int pageSize, out int count)
         {

@@ -8,6 +8,8 @@ namespace WebUI.Areas.Admin.Models.ThemeTemplateVM
 {
     public class OpenCloseItem
     {
+        public int ID { get; set; }
+
         public Source Source { get; set; }
 
         /// <summary>

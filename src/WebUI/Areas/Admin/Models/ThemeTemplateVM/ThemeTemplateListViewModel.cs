@@ -1,16 +1,148 @@
-﻿using Framework.HtmlHelpers;
+﻿using Core;
+using Domain;
+using Framework.Common;
+using Framework.HtmlHelpers;
+using Framework.Mvc.ViewEngines.Templates;
+using NHibernate.Criterion;
+using Service;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 
 namespace WebUI.Areas.Admin.Models.ThemeTemplateVM
 {
-    public class ThemeTemplateViewModel
+    public class ThemeTemplateListViewModel
     {
         public IList<dynamic> List { get; set; }
 
         public PageInfo PageInfo { get; set; }
+
+        public static IList<Order> DefaultOrderList = new List<Order> { new Order("ID", false) };
+
+        public ThemeTemplateListViewModel(IList<ICriterion> queryConditions, IList<Order> orderList, int pageIndex, int pageSize, HttpContextBase httpContextBase, string cat = "open")
+        {
+            IList<ThemeTemplate> installedTemplateList = Container.Instance.Resolve<ThemeTemplateService>().GetPaged(queryConditions, orderList, pageIndex, pageSize, out int totalCount);
+            IList<string> installedTemplateNames = installedTemplateList.Select(m => m.TemplateName).ToList();
+            ITemplateProvider templateProvider = new TemplateProvider(new WebHelper(httpContextBase));
+            IList<TemplateConfiguration> templateConfigurations = templateProvider.GetTemplateConfigurations();
+
+            IList<dynamic> list = new List<dynamic>();
+            switch (cat.ToLower())
+            {
+                case "open":                // 启用---注意:启用，一定已安装
+                    // 数据库中存放的已安装模板 被标记为 启用 的记录
+                    IList<string> openTemplateNames = installedTemplateList.Where(m => m.Status == 1).Select(m => m.TemplateName).ToList();
+                    foreach (var templateName in openTemplateNames)
+                    {
+                        OpenCloseItem openItem = new OpenCloseItem();
+                        TemplateConfiguration templateConfiguration = templateConfigurations.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).FirstOrDefault();
+                        openItem.TemplateName = templateConfiguration.TemplateName;
+                        openItem.Title = templateConfiguration.Title;
+                        openItem.Authors = templateConfiguration.Authors;
+                        openItem.Description = templateConfiguration.Description;
+                        openItem.PreviewImageUrl = templateConfiguration.PreviewImageUrl;
+                        openItem.IsDefault = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.IsDefault).FirstOrDefault();
+                        openItem.Status = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.Status).FirstOrDefault();
+                        openItem.ID = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.ID).FirstOrDefault();
+
+                        list.Add(openItem);
+                    }
+                    break;
+                case "close":               // 禁用---注意：禁用，一定已安装
+                    // 数据库中存放的已安装模板 被标记为 禁用 的记录
+                    IList<string> closeTemplateNames = installedTemplateList.Where(m => m.Status == 0).Select(m => m.TemplateName).ToList();
+                    foreach (var templateName in closeTemplateNames)
+                    {
+                        OpenCloseItem closeItem = new OpenCloseItem();
+                        TemplateConfiguration templateConfiguration = templateConfigurations.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).FirstOrDefault();
+                        closeItem.TemplateName = templateConfiguration.TemplateName;
+                        closeItem.Title = templateConfiguration.Title;
+                        closeItem.Authors = templateConfiguration.Authors;
+                        closeItem.Description = templateConfiguration.Description;
+                        closeItem.PreviewImageUrl = templateConfiguration.PreviewImageUrl;
+                        closeItem.IsDefault = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.IsDefault).FirstOrDefault();
+                        closeItem.Status = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.Status).FirstOrDefault();
+                        closeItem.ID = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.ID).FirstOrDefault();
+
+                        list.Add(closeItem);
+                    }
+                    break;
+                case "installed":           // 已安装
+                    // 数据库中存放的已安装模板的记录
+                    foreach (var templateName in installedTemplateNames)
+                    {
+                        OpenCloseItem opencloseItem = new OpenCloseItem();
+                        TemplateConfiguration templateConfiguration = templateConfigurations.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).FirstOrDefault();
+                        opencloseItem.TemplateName = templateConfiguration.TemplateName;
+                        opencloseItem.Title = templateConfiguration.Title;
+                        opencloseItem.Authors = templateConfiguration.Authors;
+                        opencloseItem.Description = templateConfiguration.Description;
+                        opencloseItem.PreviewImageUrl = templateConfiguration.PreviewImageUrl;
+                        opencloseItem.IsDefault = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.IsDefault).FirstOrDefault();
+                        opencloseItem.Status = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.Status).FirstOrDefault();
+                        opencloseItem.ID = installedTemplateList.Where(m => m.TemplateName.ToLower() == templateName.ToLower()).Select(m => m.ID).FirstOrDefault();
+
+                        list.Add(opencloseItem);
+                    }
+                    break;
+                case "withoutinstalled":    // 未安装
+                    // 在本地检测到的模板安装包，但包名不在 数据库中已安装模板记录中
+                    IList<string> zipFilePaths = DetectInstallZip(httpContextBase.Server.MapPath(@"~\Upload\TemplateInstallZip"));
+                    foreach (string zipFilePath in zipFilePaths)
+                    {
+                        FileInfo fileInfo = new FileInfo(zipFilePath);
+                        string templateName = fileInfo.Name.Remove(fileInfo.Name.LastIndexOf('.'));
+                        if (!installedTemplateNames.Contains(templateName, new TemplateNameComparer()))
+                        {
+                            InstallZipItem zipItem = new InstallZipItem(zipFilePath);
+
+                            list.Add(zipItem);
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            this.List = list;
+            this.PageInfo = new PageInfo
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalRecordCount = totalCount,
+                MaxLinkCount = 10
+            };
+        }
+
+        public ThemeTemplateListViewModel(IList<ICriterion> queryConditions, int pageIndex, int pageSize, HttpContextBase httpContextBase, string cat = "open") : this(queryConditions, DefaultOrderList, pageIndex, pageSize, httpContextBase, cat)
+        { }
+
+        #region Helpers
+
+        #region 检测模板安装包
+        /// <summary>
+        /// 检测安装包目录下存在的安装包
+        /// </summary>
+        /// <param name="installZipDir">安装包目录 ~/Upload/TemplateInstallZip</param>
+        /// <returns>返回存在的安装包文件名（包含路径）</returns>
+        private IList<string> DetectInstallZip(string installZipDir)
+        {
+            // 返回 安装包文件名（包括路径）
+            IList<string> rtn = new List<string>();
+            // 从目录检测存在的模板安装包 (.zip文件)
+            string[] installZipFilePaths = Directory.GetFiles(installZipDir, "*.zip");
+            foreach (string filePath in installZipFilePaths)
+            {
+                rtn.Add(filePath);
+            }
+
+            return rtn;
+        }
+        #endregion
+
+        #endregion
     }
 
     public enum Source
@@ -44,6 +176,23 @@ namespace WebUI.Areas.Admin.Models.ThemeTemplateVM
             }
 
             return rtn;
+        }
+    }
+
+    public class TemplateNameComparer : IEqualityComparer<string>
+    {
+        public bool Equals(string x, string y)
+        {
+            if (x == null || y == null)
+            {
+                return false;
+            }
+            return x.ToLower() == y.ToLower();
+        }
+
+        public int GetHashCode(string obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

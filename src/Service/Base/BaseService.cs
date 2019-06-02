@@ -47,6 +47,8 @@ namespace Service.Base
 
         int Count(params ICriterion[] criteria);
 
+        bool Exist(int id);
+
         //分页区和取对象集合
         IList<T> GetPaged(IList<ICriterion> queryConditions, IList<Order> orderList, int pageIndex, int pageSize, out int count);
 

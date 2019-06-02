@@ -3,7 +3,7 @@
 @using WebUI.Areas.Admin.Models.Common
 @using WebUI.Extensions
 @using Domain
-@model ThemeTemplateViewModel
+@model ThemeTemplateListViewModel
 @{
 	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
 	string currentCat = ((string)ViewBag.Cat).ToLower();
@@ -30,6 +30,34 @@
 			setTimeout(function () {
 				$("#js-message").fadeOut("slow");
 			}, 3000);
+		}
+
+		function setDefault(id) {
+
+		}
+
+		function openClose(id) {
+			var text = $('#js-btn-openClose').html();
+			$('#js-btn-openClose').attr('disabled', 'disabled').html(text + '中');
+			$.ajax({
+				url: '/Admin/ThemeTemplate/OpenClose',
+				type: 'post',
+				data: { id: id },
+				success: function (data) {
+					if (data.code <= 0) {
+						$('#js-btn-openClose').removeAttr('disabled').html(text);
+						showMessage(data.message, -1);
+					} else {
+						if (text == '禁用') {
+							text = '启用';
+						} else {
+							text = '禁用';
+						}
+						$('#js-btn-openClose').removeAttr('disabled').html(text);
+						showMessage(data.message, 1);
+					}
+				}
+			});
 		}
 
 		var pview;
@@ -96,9 +124,9 @@
 								<p class="btn-group">
 									@if (item.Status == 1)
 									{
-										<button class="btn btn-primary" role="button">@(item.IsDefault ? "默认" : "设置为默认")</button>
+										<button id="js-btn-default" class="btn btn-primary" onclick="setDefault(@item.ID)">@(item.IsDefault ? "默认" : "设置为默认")</button>
 									}
-									<button class="btn btn-default" role="button">@(item.Status == 1 ? "禁用" : "启用")</button>
+									<button id="js-btn-openClose" class="btn btn-info" onclick="openClose(@item.ID)">@(item.Status == 1 ? "禁用" : "启用")</button>
 								</p>
 							</div>
 						</div>
