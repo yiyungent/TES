@@ -107,8 +107,15 @@ namespace WebUI.Areas.Admin.Controllers
                 {
                     return Json(new { code = -1, message = "卸载失败, 要卸载的模板不存在，或未安装" });
                 }
+                ThemeTemplate dbModel = Container.Instance.Resolve<ThemeTemplateService>().GetEntity(id);
 
                 Container.Instance.Resolve<ThemeTemplateService>().Delete(id);
+                try
+                {
+                    FileHelper.DeleteDir(Server.MapPath(@"~/Templates/" + dbModel.TemplateName));
+                }
+                catch (Exception ex)
+                { }
 
                 return Json(new { code = 1, message = "卸载成功" });
             }
