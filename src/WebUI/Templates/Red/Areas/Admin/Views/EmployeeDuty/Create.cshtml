@@ -1,0 +1,103 @@
+﻿@using WebUI.Areas.Admin.Models
+@using WebUI.Areas.Admin.Models.EmployeeDutyVM
+@model EmployeeDutyForEditViewModel
+@{
+	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+
+	Html.EnableClientValidation(false);
+}
+@section head {
+	<!-- date-range-picker -->
+	<link href="~/dist/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+}
+@section body {
+	<!-- date-range-picker -->
+	<script src="~/dist/AdminLTE/bower_components/moment/min/moment.min.js"></script>
+	<script src="~/dist/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script>
+
+		function showMessage(message, type) {
+			$("#js-message").fadeIn();
+			switch (type) {
+				case -1:
+					$("#js-message").attr("class", "alert alert-danger").find(".message").html(message);
+					break;
+				case 1:
+					$("#js-message").attr("class", "alert alert-success").find(".message").html(message);
+					break;
+			}
+			// 3s 后隐藏
+			setTimeout(function () {
+				$("#js-message").fadeOut("slow");
+			}, 3000);
+		}
+
+		function onSuccess(data) {
+			if (data.code <= 0) {
+				showMessage(data.message, -1);
+			} else {
+				showMessage(data.message, 1);
+			}
+		}
+
+		function saveData() {
+			$.ajax({
+				url: "/Admin/EmployeeDuty/Create",
+				type: "post",
+				dataType: "json",
+				data: $("#js-form").serialize(),
+				success: onSuccess
+			});
+			return false;
+		}
+
+		$(function () {
+
+		});
+
+	</script>
+}
+
+<!-- start 提示框 -->
+@Html.Partial("_MessagePartial")
+<!-- end 提示框 -->
+<!-- general form elements -->
+<div class="box box-primary">
+	<div class="box-header with-border">
+		<h3 class="box-title">创建</h3>
+	</div>
+	<!-- /.box-header -->
+	<!-- form start -->
+	<form id="js-form">
+		<div class="box-body">
+			<div class="form-group">
+				@Html.LabelFor(m => m.InputName)
+				@Html.TextBoxFor(m => m.InputName, new { @class = "form-control", placeholder = "请输入名称" })
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(m => m.SelectListForNormType)
+				@Html.DropDownListFor(m => m.SelectedValForNormType, Model.SelectListForNormType, new { @class = "form-control" })
+			</div>
+			<div class="form-group">
+				@Html.LabelFor(m => m.SelectListForEvaDuty)
+				@Html.CheckBoxList("SelectedValArrForEvaDuty", Model.SelectListForEvaDuty)
+			</div>
+		</div>
+		<!-- /.box-body -->
+
+		<div class="box-footer">
+			<div class="btn-group">
+				@if (TempData["RedirectUrl"] != null)
+				{
+					<a class="btn btn-default" href="@TempData["RedirectUrl"].ToString()">返回</a>
+				}
+				else
+				{
+					<a class="btn btn-default" href="javascript:history.go(-1);">返回</a>
+				}
+				<input class="btn btn-primary" type="submit" onclick="return saveData();" value="保存" />
+			</div>
+		</div>
+	</form>
+</div>
+<!-- /.box -->

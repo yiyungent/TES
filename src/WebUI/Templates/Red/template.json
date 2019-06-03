@@ -1,0 +1,12 @@
+﻿{
+	"templateName": "Red", // 唯一
+	"title": "经典红",
+	"description": "TES推荐主题模板",
+	"authors": [
+		"TES Office Team",
+		"yiyun"
+	],
+	"version": "0.1.0",
+	"url": "",
+	"previewImageUrl": "Templates/Red/preview.png"
+}

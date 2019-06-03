@@ -97,6 +97,35 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 卸载
+        public JsonResult Uninstall(int id)
+        {
+            try
+            {
+                bool isExist = Container.Instance.Resolve<ThemeTemplateService>().Exist(id);
+                if (!isExist)
+                {
+                    return Json(new { code = -1, message = "卸载失败, 要卸载的模板不存在，或未安装" });
+                }
+
+                Container.Instance.Resolve<ThemeTemplateService>().Delete(id);
+
+                return Json(new { code = 1, message = "卸载成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "卸载失败" });
+            }
+        }
+        #endregion
+
+        #region 删除安装包
+        public JsonResult DeleteInstallZip(string templateName)
+        {
+            return Json(new { });
+        }
+        #endregion
+
         #region 启用禁用模板
         public JsonResult OpenClose(int id)
         {
