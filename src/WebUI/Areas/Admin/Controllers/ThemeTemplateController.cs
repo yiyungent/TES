@@ -2,6 +2,8 @@
 using Core;
 using Domain;
 using Framework.Common;
+using Framework.Infrastructure.Concrete;
+using Framework.Models;
 using Framework.Mvc.ViewEngines.Templates;
 using NHibernate.Criterion;
 using Service;
@@ -214,6 +216,39 @@ namespace WebUI.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 return Json(new { code = -1, message = "设置为默认模板失败" });
+            }
+        }
+        #endregion
+
+        #region 选择模板
+        public JsonResult SelectTemplate(int id)
+        {
+            try
+            {
+                CurrentAccountModel currentAccount = AccountManager.GetCurrentAccount();
+                if (currentAccount.IsGuest)
+                {
+                    return Json(new { code = -2, message = "未登录状态不允许切换模板" });
+                }
+                bool isExist = Container.Instance.Resolve<ThemeTemplateService>().Exist(id);
+                if (!isExist)
+                {
+                    return Json(new { code = -3, message = "切换模板失败, 不存在此模板" });
+                }
+                ThemeTemplate dbModel = Container.Instance.Resolve<ThemeTemplateService>().GetEntity(id);
+                if (dbModel.Status == 0)
+                {
+                    return Json(new { code = -4, message = "切换模板失败，此模板被禁用" });
+                }
+
+                currentAccount.UserInfo.TemplateName = dbModel.TemplateName;
+                Container.Instance.Resolve<UserInfoService>().Edit(currentAccount.UserInfo);
+
+                return Json(new { code = 1, message = "切换模板成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "切换模板失败" });
             }
         }
         #endregion

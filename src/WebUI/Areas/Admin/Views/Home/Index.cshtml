@@ -31,6 +31,7 @@
 	<script src="~/Scripts/jquery.validate.min.js"></script>
 	<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 	<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+	<script src="/dist/push.js/push.min.js"></script>
 	<script>
 		$(function () {
 			$(".js-left-menu-a").on("click", function () {
@@ -48,8 +49,40 @@
 				};
 			}
 		});
+
 		function iframeLoadComplate() {
 			document.getElementById("loading").style.display = "none";
+		}
+
+		function pushMessage(title, message, imageUrl, redirectUrl) {
+			Push.create(title, {
+				body: message,
+				icon: imageUrl,
+				timeout: 4000,
+				onClick: function () {
+					window.focus();
+					this.close();
+					if (redirectUrl != null && redirectUrl != '') {
+						window.location.href = redirectUrl;
+					}
+				}
+			});
+		}
+
+		function selectTemplate(id) {
+			$.ajax({
+				url: '/Admin/ThemeTemplate/SelectTemplate',
+				type: 'post',
+				data: { id: id },
+				dataType: 'json',
+				success: function (data) {
+					if (data.code <= 0) {
+						pushMessage('切换模板失败', data.message);
+					} else {
+						window.location.href = window.location.href;
+					}
+				}
+			});
 		}
 	</script>
 }
