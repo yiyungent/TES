@@ -8298,7 +8298,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Templates\Red\preview.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -8871,17 +8870,6 @@
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_ErrorRedirect.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Templates\Red\Views\web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Templates\Red\Views\Shared\_TopNav.cshtml" />
-    <Content Include="Templates\Red\Views\Shared\_TopNav_MessagesMenuPartial.cshtml" />
-    <Content Include="Templates\Red\Views\Shared\_TopNav_NavbarCollapsePartial.cshtml" />
-    <Content Include="Templates\Red\Views\Shared\_TopNav_NotificationsMenuPartial.cshtml" />
-    <Content Include="Templates\Red\Views\Shared\_TopNav_TasksMenuPartial.cshtml" />
-    <Content Include="Templates\Red\Views\Shared\_TopNav_UserAccountMenuPartial.cshtml" />
-    <Content Include="Templates\Red\Views\Home\Index.cshtml" />
-    <Content Include="Templates\Red\template.json" />
     <Content Include="Views\PviewDemo\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -8896,6 +8884,7 @@
     <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="GlobalShared\Models\" />
     <Folder Include="Models\" />
+    <Folder Include="Templates\" />
     <Folder Include="Upload\TemplateInstallZip\" />
     <Folder Include="Views\Errors\" />
     <Folder Include="Views\NotificationDemo\" />
