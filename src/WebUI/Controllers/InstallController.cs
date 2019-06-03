@@ -42,6 +42,8 @@ namespace WebUI.Controllers
         private void CreateDB()
         {
             CreateSchema();
+            InitSetting();
+            InitThemeTemplate();
             InitSys_Menu();
             InitFunction();
             InitRole();
@@ -75,6 +77,59 @@ namespace WebUI.Controllers
             {
                 ShowMessage("失败");
                 ShowMessage(ex.Message);
+            }
+        }
+        #endregion
+
+        #region 初始化设置
+        private void InitSetting()
+        {
+            try
+            {
+                ShowMessage("初始化设置");
+
+                Dictionary<string, string> dic = new Dictionary<string, string>()
+                {
+                    { "DefaultTemplateName", "Blue" }
+                };
+
+                foreach (var keyValue in dic)
+                {
+                    Container.Instance.Resolve<SettingService>().Create(new Setting()
+                    {
+                        SetKey = keyValue.Key,
+                        SetValue = keyValue.Value
+                    });
+                }
+
+                ShowMessage("成功");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("失败");
+            }
+        }
+        #endregion
+
+        #region 初始化主题模板
+        private void InitThemeTemplate()
+        {
+            try
+            {
+                ShowMessage("初始化主题模板");
+
+                Container.Instance.Resolve<ThemeTemplateService>().Create(new ThemeTemplate
+                {
+                    TemplateName = "Blue",
+                    Title = "经典蓝",
+                    Status = 1
+                });
+
+                ShowMessage("成功");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("失败");
             }
         }
         #endregion

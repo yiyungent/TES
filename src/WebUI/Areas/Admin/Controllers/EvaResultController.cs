@@ -42,7 +42,10 @@ namespace WebUI.Areas.Admin.Controllers
                 IList<EvaResult> relativeResultList = allEvaResult.Where(m => m.EvaluateTask.ID == vmItem.EvaTask.ID && m.Teacher.ID == vmItem.EvaedEmployee.ID).OrderBy(m => m.NormType.SortCode).ToList();
                 foreach (var resultItem in relativeResultList)
                 {
-                    vmItem.ScoreDic.Add(resultItem.NormType, resultItem.Score);
+                    if (!vmItem.ScoreDic.ContainsKey(resultItem.NormType))
+                    {
+                        vmItem.ScoreDic.Add(resultItem.NormType, resultItem.Score);
+                    }
                 }
 
                 viewModel.List.Add(vmItem);
