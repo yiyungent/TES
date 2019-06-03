@@ -17,6 +17,11 @@ namespace WebUI.Areas.Admin.Models.ThemeTemplateVM
         /// <summary>
         /// 文件名称（包含绝对物理路径）
         /// </summary>
+        public string FilePath { get; set; }
+
+        /// <summary>
+        /// 文件名称（包含后缀名）
+        /// </summary>
         public string FileName { get; set; }
 
         /// <summary>
@@ -77,7 +82,8 @@ namespace WebUI.Areas.Admin.Models.ThemeTemplateVM
                 throw new Exception("模板安装包文件不存在");
             }
             this.TemplateName = fileInfo.Name.Remove(fileInfo.Name.LastIndexOf('.'));
-            this.FileName = fileVersionInfo.FileName;
+            this.FilePath = fileVersionInfo.FileName;
+            this.FileName = fileInfo.Name;
             this.ProductName = fileVersionInfo.ProductName;
             this.CompanyName = fileVersionInfo.CompanyName;
             this.FileVersion = fileVersionInfo.FileVersion;

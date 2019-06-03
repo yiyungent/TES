@@ -116,6 +116,25 @@
 			});
 		}
 
+		function deleteInstallZip(templateName) {
+			$('#js-btn-delete-' + templateName).attr('disabled', 'disabled').html('删除中');
+			$.ajax({
+				url: '/Admin/ThemeTemplate/DeleteInstallZip',
+				type: 'post',
+				data: { templateName: templateName },
+				dataType: 'json',
+				success: function (data) {
+					if (data.code <= 0) {
+						$('#js-btn-delete-' + templateName).removeAttr('disabled').html('删除');
+						showMessage(data.message, -1);
+					} else {
+						$('#js-btn-delete-' + templateName).removeAttr('disabled').html('已删除');
+						showMessage(data.message, 1);
+					}
+				}
+			});
+		}
+
 		var pview;
 		$(function () {
 			pview = new PView();
@@ -209,7 +228,7 @@
 					@foreach (InstallZipItem item in Model.List)
 					{
 						<tr>
-							<td>@item.TemplateName</td>
+							<td>@item.FileName</td>
 							<td>@item.FileDescription</td>
 							<td>@item.LegalCopyright</td>
 							<td>@item.Version</td>
@@ -217,6 +236,7 @@
 							<td>
 								<div class="btn-group" pview-btn-group pview-targets="list">
 									<button id="js-btn-installZip-@item.TemplateName" class="btn btn-primary" onclick="installZip('@item.TemplateName')">安装</button>
+									<button id="js-btn-delete-@item.TemplateName" class="btn btn-danger" onclick="deleteInstallZip('@item.TemplateName')">删除</button>
 								</div>
 							</td>
 						</tr>

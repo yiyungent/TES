@@ -122,7 +122,17 @@ namespace WebUI.Areas.Admin.Controllers
         #region 删除安装包
         public JsonResult DeleteInstallZip(string templateName)
         {
-            return Json(new { });
+            try
+            {
+                string installZipPath = Server.MapPath("~/Upload/TemplateInstallZip/" + templateName + ".zip");
+                System.IO.File.Delete(installZipPath);
+
+                return Json(new { code = 1, message = "删除安装包 " + templateName + ".zip 成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "删除安装包 " + templateName + ".zip 失败" });
+            }
         }
         #endregion
 
