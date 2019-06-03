@@ -253,15 +253,15 @@ namespace WebUI.Controllers
                     ParentMenu = parentMenu,
                     SortCode = 40,
                 });
-                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
-                {
-                    Name = "操作管理",
-                    ControllerName = "FunctionInfo",
-                    ActionName = "Index",
-                    AreaName = "Admin",
-                    ParentMenu = parentMenu,
-                    SortCode = 50,
-                });
+                //Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                //{
+                //    Name = "操作管理",
+                //    ControllerName = "FunctionInfo",
+                //    ActionName = "Index",
+                //    AreaName = "Admin",
+                //    ParentMenu = parentMenu,
+                //    SortCode = 50,
+                //});
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
                     Name = "主题模板",
@@ -378,15 +378,15 @@ namespace WebUI.Controllers
                     ParentMenu = parentMenu,
                     SortCode = 30,
                 });
-                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
-                {
-                    Name = "评价记录",
-                    ControllerName = "EvaRecord",
-                    ActionName = "Index",
-                    AreaName = "Admin",
-                    ParentMenu = parentMenu,
-                    SortCode = 40,
-                });
+                //Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                //{
+                //    Name = "评价记录",
+                //    ControllerName = "EvaRecord",
+                //    ActionName = "Index",
+                //    AreaName = "Admin",
+                //    ParentMenu = parentMenu,
+                //    SortCode = 40,
+                //});
                 Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
                 {
                     Name = "评价指标",

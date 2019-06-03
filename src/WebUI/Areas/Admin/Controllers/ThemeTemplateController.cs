@@ -47,6 +47,7 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
         #region 上传本地主题模板
+        [HttpGet]
         public ViewResult UploadTemplate()
         {
             return View();
@@ -58,23 +59,25 @@ namespace WebUI.Areas.Admin.Controllers
 
             // 如果路径含有~，即需要服务器映射为绝对路径，则进行映射
             basePath = (basePath.IndexOf("~") > -1) ? System.Web.HttpContext.Current.Server.MapPath(basePath) : basePath;
-            HttpFileCollection files = System.Web.HttpContext.Current.Request.Files;
+            HttpPostedFile file = System.Web.HttpContext.Current.Request.Files[0];
             // 如果目录不存在，则创建目录
             if (!Directory.Exists(basePath))
             {
                 Directory.CreateDirectory(basePath);
             }
 
-            string name = System.Web.HttpContext.Current.Request["name"];
+            string fileName = System.Web.HttpContext.Current.Request["name"];
+            if (string.IsNullOrEmpty(fileName))
+            {
+                fileName = file.FileName;
+            }
             // 文件保存
-            string fullPath = basePath + name;
-            files[0].SaveAs(fullPath);
+            string fullPath = basePath + fileName;
+            file.SaveAs(fullPath);
 
             FileResult rtnJsonObj = new FileResult
             {
-                jsonrpc = "2.0",
-                result = null,
-                id = name
+                fileName = fileName
             };
 
             return Json(rtnJsonObj);
@@ -86,9 +89,15 @@ namespace WebUI.Areas.Admin.Controllers
         {
             try
             {
-                InstallLocationTemplate(templateName);
-
-                return Json(new { code = 1, message = templateName + " 安装成功" });
+                bool isSuccess = InstallLocationTemplate(templateName);
+                if (isSuccess)
+                {
+                    return Json(new { code = 1, message = templateName + " 安装成功" });
+                }
+                else
+                {
+                    return Json(new { code = -1, message = templateName + " 安装失败" });
+                }
             }
             catch (Exception ex)
             {
@@ -225,18 +234,25 @@ namespace WebUI.Areas.Admin.Controllers
             string serverPath = "~/Upload/TemplateInstallZip/" + templateName + ".zip";
             string fullPhysicalPath = System.Web.HttpContext.Current.Server.MapPath(serverPath);
 
-            // 解压上传的模板包 到 视图地 ~/Templates
-            UnZipTemplate(fullPhysicalPath);
-            // 将模板信息 插入数据库，默认安装完后为启用
-            Container.Instance.Resolve<ThemeTemplateService>().Create(new ThemeTemplate
+            try
             {
-                TemplateName = templateName,
-                Title = templateName,
-                // 默认安装后 启用
-                Status = 1,
-            });
+                // 解压上传的模板包 到 视图地 ~/Templates
+                UnZipTemplate(fullPhysicalPath);
+                // 将模板信息 插入数据库，默认安装完后为启用
+                Container.Instance.Resolve<ThemeTemplateService>().Create(new ThemeTemplate
+                {
+                    TemplateName = templateName,
+                    Title = templateName,
+                    // 默认安装后 启用
+                    Status = 1,
+                });
 
-            return true;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
         #endregion
 
@@ -253,11 +269,7 @@ namespace WebUI.Areas.Admin.Controllers
         #region 上传文件json结果
         sealed class FileResult
         {
-            public string jsonrpc { get; set; }
-
-            public string result { get; set; }
-
-            public string id { get; set; }
+            public string fileName { get; set; }
         }
         #endregion 
 
