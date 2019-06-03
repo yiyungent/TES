@@ -1,4 +1,5 @@
 ﻿using Core;
+using Framework.Factories;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,11 @@ namespace Framework.Mvc.ViewEngines.Templates
     {
         protected override string GetCurrentTemplate(ControllerContext controllerContext)
         {
-            //var templateName = controllerContext.RequestContext.HttpContext.Request["Template"];
-            //object templateNameSession = controllerContext.RequestContext.HttpContext.Session[TemplateSessionKey];
             string templateName = null;
             try
             {
-                templateName = Container.Instance.Resolve<SettingService>().GetSet("DefaultTemplateName");
+                ITemplateContext templateContext = HttpOneRequestFactory.Get<ITemplateContext>();
+                templateName = templateContext.WorkingTemplateName;
             }
             catch (Exception ex)
             { }

@@ -448,7 +448,7 @@ namespace WebUI.Controllers
                 IList<ICriterion> qryWhere = new List<ICriterion>();
 
                 #region 这些 都具有 "新增", "修改", "删除", "查看"
-                string[] names = { "用户管理", "角色管理", "菜单管理", "操作管理", "主题模板", "学生管理", "员工管理", "班级管理", "部门管理", "课程管理", "课程表管理" };
+                string[] names = { "用户管理", "角色管理", "菜单管理", "操作管理", "学生管理", "员工管理", "班级管理", "部门管理", "课程管理", "课程表管理" };
                 IList<Sys_Menu> allMenu = Container.Instance.Resolve<Sys_MenuService>().GetAll();
                 IList<int> idList = allMenu.Where(m => names.Contains(m.Name)).Select(m => m.ID).ToList();
                 qryWhere.Add(Expression.In("ID", idList.ToArray()));
@@ -729,6 +729,66 @@ namespace WebUI.Controllers
                 });
                 #endregion
 
+                #region 主题模板 ThemeTemplate
+                Sys_Menu themeTemplate_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "ThemeTemplate") }).FirstOrDefault();
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.ThemeTemplate.Index",
+                    Name = "主题模板-列表",
+                    Sys_Menu = themeTemplate_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.ThemeTemplate.UploadTemplate",
+                    Name = "主题模板-上传本地主题模板页面",
+                    Sys_Menu = themeTemplate_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.ThemeTemplate.UploadTemplateFile",
+                    Name = "主题模板-上传本地主题模板",
+                    Sys_Menu = themeTemplate_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.ThemeTemplate.InstallZip",
+                    Name = "主题模板-安装",
+                    Sys_Menu = themeTemplate_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.ThemeTemplate.Uninstall",
+                    Name = "主题模板-卸载",
+                    Sys_Menu = themeTemplate_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.ThemeTemplate.DeleteInstallZip",
+                    Name = "主题模板-删除安装包",
+                    Sys_Menu = themeTemplate_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.ThemeTemplate.OpenClose",
+                    Name = "主题模板-启用禁用",
+                    Sys_Menu = themeTemplate_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.ThemeTemplate.SetDefault",
+                    Name = "主题模板-设置为默认模板",
+                    Sys_Menu = themeTemplate_Sys_Menu
+                });
+                #endregion
+
+                #region 单独操作（不放在系统菜单下）
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.ThemeTemplate.SelectTemplate",
+                    Name = "主题模板-选择模板",
+                    Sys_Menu = null
+                }); 
+                #endregion
 
                 ShowMessage("成功");
             }

@@ -209,8 +209,6 @@ namespace WebUI.Areas.Admin.Controllers
 
                 Container.Instance.Resolve<SettingService>().Set("DefaultTemplateName", dbModel.TemplateName);
 
-                Session[TemplateViewEngine.TemplateSessionKey] = dbModel.TemplateName;
-
                 return Json(new { code = 1, message = dbModel.Title + " 成功设置为默认模板" });
             }
             catch (Exception ex)

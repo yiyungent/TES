@@ -18,7 +18,8 @@ namespace Framework.Common
     {
         #region Fields 
 
-        private readonly HttpContextBase _httpContext;
+        private readonly HttpContextBase _httpContextBase;
+        private readonly HttpContext _httpContext;
 
         #endregion
 
@@ -84,8 +85,13 @@ namespace Framework.Common
         /// <summary>
         /// Ctor
         /// </summary>
-        /// <param name="httpContext">HTTP context</param>
-        public WebHelper(HttpContextBase httpContext)
+        /// <param name="httpContextBase">HTTP context</param>
+        public WebHelper(HttpContextBase httpContextBase)
+        {
+            this._httpContextBase = httpContextBase;
+        }
+
+        public WebHelper(HttpContext httpContext)
         {
             this._httpContext = httpContext;
         }
@@ -99,8 +105,8 @@ namespace Framework.Common
             string referrerUrl = string.Empty;
 
             //URL referrer is null in some case (for example, in IE 8)
-            if (IsRequestAvailable(_httpContext) && _httpContext.Request.UrlReferrer != null)
-                referrerUrl = _httpContext.Request.UrlReferrer.PathAndQuery;
+            if (IsRequestAvailable(_httpContextBase) && _httpContextBase.Request.UrlReferrer != null)
+                referrerUrl = _httpContextBase.Request.UrlReferrer.PathAndQuery;
 
             return referrerUrl;
         }
@@ -111,11 +117,11 @@ namespace Framework.Common
         /// <returns>URL referrer</returns>
         public virtual string GetCurrentIpAddress()
         {
-            if (!IsRequestAvailable(_httpContext))
+            if (!IsRequestAvailable(_httpContextBase))
                 return string.Empty;
 
             var result = "";
-            if (_httpContext.Request.Headers != null)
+            if (_httpContextBase.Request.Headers != null)
             {
                 //The X-Forwarded-For (XFF) HTTP header field is a de facto standard
                 //for identifying the originating IP address of a client
@@ -130,9 +136,9 @@ namespace Framework.Common
 
                 //it's used for identifying the originating IP address of a client connecting to a web server
                 //through an HTTP proxy or load balancer. 
-                string xff = _httpContext.Request.Headers.AllKeys
+                string xff = _httpContextBase.Request.Headers.AllKeys
                     .Where(x => forwardedHttpHeader.Equals(x, StringComparison.InvariantCultureIgnoreCase))
-                    .Select(k => _httpContext.Request.Headers[k])
+                    .Select(k => _httpContextBase.Request.Headers[k])
                     .FirstOrDefault();
 
                 //if you want to exclude private IP addresses, then see http://stackoverflow.com/questions/2577496/how-can-i-get-the-clients-ip-address-in-asp-net-mvc
@@ -143,9 +149,9 @@ namespace Framework.Common
                 }
             }
 
-            if (String.IsNullOrEmpty(result) && _httpContext.Request.UserHostAddress != null)
+            if (String.IsNullOrEmpty(result) && _httpContextBase.Request.UserHostAddress != null)
             {
-                result = _httpContext.Request.UserHostAddress;
+                result = _httpContextBase.Request.UserHostAddress;
             }
 
             //some validation
@@ -182,7 +188,7 @@ namespace Framework.Common
         public virtual string GetThisPageUrl(bool includeQueryString, bool useSsl)
         {
             string url = string.Empty;
-            if (!IsRequestAvailable(_httpContext))
+            if (!IsRequestAvailable(_httpContextBase))
                 return url;
 
             if (includeQueryString)
@@ -190,13 +196,13 @@ namespace Framework.Common
                 string storeHost = GetStoreHost(useSsl);
                 if (storeHost.EndsWith("/"))
                     storeHost = storeHost.Substring(0, storeHost.Length - 1);
-                url = storeHost + _httpContext.Request.RawUrl;
+                url = storeHost + _httpContextBase.Request.RawUrl;
             }
             else
             {
-                if (_httpContext.Request.Url != null)
+                if (_httpContextBase.Request.Url != null)
                 {
-                    url = _httpContext.Request.Url.GetLeftPart(UriPartial.Path);
+                    url = _httpContextBase.Request.Url.GetLeftPart(UriPartial.Path);
                 }
             }
             url = url.ToLowerInvariant();
@@ -210,9 +216,9 @@ namespace Framework.Common
         public virtual bool IsCurrentConnectionSecured()
         {
             bool useSsl = false;
-            if (IsRequestAvailable(_httpContext))
+            if (IsRequestAvailable(_httpContextBase))
             {
-                useSsl = _httpContext.Request.IsSecureConnection;
+                useSsl = _httpContextBase.Request.IsSecureConnection;
                 //when your hosting uses a load balancer on their server then the Request.IsSecureConnection is never got set to true, use the statement below
                 //just uncomment it
                 //useSSL = _httpContext.Request.ServerVariables["HTTP_CLUSTER_HTTPS"] == "on" ? true : false;
@@ -232,14 +238,14 @@ namespace Framework.Common
 
             try
             {
-                if (!IsRequestAvailable(_httpContext))
+                if (!IsRequestAvailable(_httpContextBase))
                     return result;
 
                 //put this method is try-catch 
                 //as described here http://www.nopcommerce.com/boards/t/21356/multi-store-roadmap-lets-discuss-update-done.aspx?p=6#90196
-                if (_httpContext.Request.ServerVariables[name] != null)
+                if (_httpContextBase.Request.ServerVariables[name] != null)
                 {
-                    result = _httpContext.Request.ServerVariables[name];
+                    result = _httpContextBase.Request.ServerVariables[name];
                 }
             }
             catch
@@ -354,8 +360,8 @@ namespace Framework.Common
             string result = GetStoreHost(useSsl);
             if (result.EndsWith("/"))
                 result = result.Substring(0, result.Length - 1);
-            if (IsRequestAvailable(_httpContext))
-                result = result + _httpContext.Request.ApplicationPath;
+            if (IsRequestAvailable(_httpContextBase))
+                result = result + _httpContextBase.Request.ApplicationPath;
             if (!result.EndsWith("/"))
                 result += "/";
 
@@ -656,11 +662,11 @@ namespace Framework.Common
             // If setting up extensions/modules requires an AppDomain restart, it's very unlikely the
             // current request can be processed correctly.  So, we redirect to the same URL, so that the
             // new request will come to the newly started AppDomain.
-            if (_httpContext != null && makeRedirect)
+            if (_httpContextBase != null && makeRedirect)
             {
                 if (String.IsNullOrEmpty(redirectUrl))
                     redirectUrl = GetThisPageUrl(true);
-                _httpContext.Response.Redirect(redirectUrl, true /*endResponse*/);
+                _httpContextBase.Response.Redirect(redirectUrl, true /*endResponse*/);
             }
         }
 
@@ -671,7 +677,7 @@ namespace Framework.Common
         {
             get
             {
-                var response = _httpContext.Response;
+                var response = _httpContextBase.Response;
                 return response.IsRequestBeingRedirected;
             }
         }
@@ -683,13 +689,13 @@ namespace Framework.Common
         {
             get
             {
-                if (_httpContext.Items["nop.IsPOSTBeingDone"] == null)
+                if (_httpContextBase.Items["nop.IsPOSTBeingDone"] == null)
                     return false;
-                return Convert.ToBoolean(_httpContext.Items["nop.IsPOSTBeingDone"]);
+                return Convert.ToBoolean(_httpContextBase.Items["nop.IsPOSTBeingDone"]);
             }
             set
             {
-                _httpContext.Items["nop.IsPOSTBeingDone"] = value;
+                _httpContextBase.Items["nop.IsPOSTBeingDone"] = value;
             }
         }
 

@@ -39,6 +39,13 @@ namespace Domain
         public DateTime LastLoginTime { get; set; }
 
         /// <summary>
+        /// 选择的主体模板
+        /// </summary>
+        [Display(Name = "选择的主体模板")]
+        [Property(Length = 20, NotNull = false)]
+        public string TemplateName { get; set; }
+
+        /// <summary>
         /// 状态
         ///     0: 正常
         ///     1: 禁用

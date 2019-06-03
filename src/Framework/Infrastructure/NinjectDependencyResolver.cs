@@ -1,10 +1,13 @@
-﻿using Framework.Infrastructure.Abstract;
+﻿using Framework.Common;
+using Framework.Infrastructure.Abstract;
 using Framework.Infrastructure.Concrete;
+using Framework.Mvc.ViewEngines.Templates;
 using Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Framework.Infrastructure
@@ -46,6 +49,11 @@ namespace Framework.Infrastructure
 
             _kernel.Bind<IAuthManager>().To<AuthManager>();
             _kernel.Bind<IDBAccessProvider>().To<DBAccessProvider>();
+            _kernel.Bind<IWorkContext>().To<WorkContext>();
+            _kernel.Bind<ITemplateContext>().To<TemplateContext>();
+            _kernel.Bind<ITemplateProvider>().To<TemplateProvider>();
+            _kernel.Bind<IWebHelper>().To<WebHelper>().WithConstructorArgument("httpContext", HttpContext.Current);
+            _kernel.Bind<WebHelper>().To<WebHelper>().WithConstructorArgument("httpContext", HttpContext.Current);
         }
     }
 }

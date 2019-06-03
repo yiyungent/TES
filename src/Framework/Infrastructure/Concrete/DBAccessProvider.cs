@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Framework.Config;
+using Framework.Models;
 
 namespace Framework.Infrastructure.Concrete
 {
@@ -155,6 +156,24 @@ namespace Framework.Infrastructure.Concrete
             });
 
             return rtn;
+        }
+
+        public string GetSet(string key)
+        {
+            string rtn = null;
+            rtn = Container.Instance.Resolve<SettingService>().GetSet(key);
+
+            return rtn;
+        }
+
+        public void SaveUserTemplateName(string templateName)
+        {
+            CurrentAccountModel currentAccount = AccountManager.GetCurrentAccount();
+            if (!currentAccount.IsGuest)
+            {
+                currentAccount.UserInfo.TemplateName = templateName;
+                Container.Instance.Resolve<UserInfoService>().Edit(currentAccount.UserInfo);
+            }
         }
     }
 }

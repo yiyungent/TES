@@ -37,5 +37,9 @@ namespace Framework.Infrastructure.Abstract
         UserInfo GetUserInfoByUserName(string loginAccount);
 
         IList<FunctionInfo> GetFunctionListBySys_MenuId(int sys_menuId);
+
+        string GetSet(string key);
+
+        void SaveUserTemplateName(string templateName);
     }
 }
