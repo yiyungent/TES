@@ -40,7 +40,7 @@ namespace Framework.Config
         {
             viewEngines.Clear();
             //viewEngines.Add(new TemplateViewEngine());
-            //viewEngines.Add(new DbDriveTemplateViewEngine());
+            viewEngines.Add(new DbDriveTemplateViewEngine());
             viewEngines.Add(new RazorViewEngine());
             viewEngines.Add(new GlobalSharedViewEngine());
         }
