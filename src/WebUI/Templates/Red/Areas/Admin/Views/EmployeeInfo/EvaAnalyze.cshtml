@@ -1,0 +1,76 @@
+﻿@using WebUI.Areas.Admin.Models.EmployeeInfoVM
+@using Domain
+@model EmployeeInfo
+@{
+	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+}
+@section head {
+}
+@section body {
+	<script src="~/dist/echarts/dist/echarts.min.js"></script>
+	<script>
+
+		function showMessage(message, type) {
+			$("#js-message").fadeIn();
+			switch (type) {
+				case -1:
+					$("#js-message").attr("class", "alert alert-danger").find(".message").html(message);
+					break;
+				case 1:
+					$("#js-message").attr("class", "alert alert-success").find(".message").html(message);
+					break;
+			}
+			// 3s 后隐藏
+			setTimeout(function () {
+				$("#js-message").fadeOut("slow");
+			}, 3000);
+		}
+
+		function refreshPage() {
+			window.location.href = window.location.href;
+		}
+
+		$(function () {
+			var chart_1 = echarts.init($('#js-chart-1')[0]);
+			chart_1.showLoading();
+			$.post('/Admin/EmployeeInfo/EvaAnalyze', { id: @Model.ID, chartType: "chart_1" }, function (data) {
+				chart_1.hideLoading();
+				chart_1.setOption(data);
+			});
+
+		});
+	</script>
+}
+
+<!-- start .box -->
+<div class="box">
+	<!-- start .box-header -->
+	<div class="box-header">
+		<h3 class="box-title">评价分析 - @Model.Name（@Model.EmployeeCode）</h3>
+		<div class="box-tools"></div>
+	</div>
+	<!-- end .box-header -->
+	<!-- start .box-body -->
+	<!-- start 简单表格 -->
+	<div class="box-body">
+		<div id="js-chart-1" style="width: 1000px;height:400px;"></div>
+	</div>
+	<!-- end 简单表格 -->
+	<!-- end .box-body -->
+	<!-- start .box-footer -->
+	<div class="box-footer clearfix">
+		<div class="btn-group">
+			@if (TempData["RedirectUrl"] != null)
+			{
+				<a class="btn btn-default" href="@TempData["RedirectUrl"].ToString()">返回</a>
+			}
+			else
+			{
+				<a class="btn btn-default" href="javascript:history.go(-1);">返回</a>
+			}
+			<button class="btn btn-primary" onclick="refreshPage()">刷新</button>
+		</div>
+	</div>
+	<!-- end .box-footer -->
+</div>
+<!-- end .box -->

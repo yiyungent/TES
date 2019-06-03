@@ -1,0 +1,158 @@
+﻿@using Framework.HtmlHelpers
+@using WebUI.HtmlHelpers
+@{
+	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+}
+@section head {
+	<link href="~/dist/layui/css/layui.css" rel="stylesheet" />
+}
+@section body {
+	<script src="~/dist/layui/layui.all.js"></script>
+	<script>
+
+		function showMessage(message, type) {
+			$("#js-message").fadeIn();
+			switch (type) {
+				case -1:
+					$("#js-message").attr("class", "alert alert-danger").find(".message").html(message);
+					break;
+				case 1:
+					$("#js-message").attr("class", "alert alert-success").find(".message").html(message);
+					break;
+			}
+			// 3s 后隐藏
+			setTimeout(function () {
+				$("#js-message").fadeOut("slow");
+			}, 3000);
+		}
+
+		function onEdit(id) {
+			layer.open({
+				type: 2,
+				closeBtn: 1,
+				anim: 4,
+				title: "修改",
+				shade: 0.4,
+				shadeClose: false,
+				area: ['800px', '420px'],
+				content: ['/Admin/NormTarget/Edit?id=' + id, 'yes'],
+				end: function () {
+				}
+			});
+		}
+
+		function onSort(id) {
+			layer.open({
+				type: 2,
+				closeBtn: 1,
+				anim: 4,
+				title: "排序",
+				shade: 0.4,
+				shadeClose: false,
+				area: ['800px', '420px'],
+				content: ['/Admin/NormTarget/Sort?id=' + id, 'yes'],
+				end: function () {
+				}
+			});
+		}
+
+		function onCreate() {
+			layer.open({
+				type: 2,
+				closeBtn: 1,
+				anim: 4,
+				title: "添加",
+				shade: 0.4,
+				shadeClose: false,
+				area: ['800px', '420px'],
+				content: ['/Admin/NormTarget/Create', 'yes'],
+				end: function () {
+				}
+			});
+		}
+
+		function onOption(id) {
+			layer.open({
+				type: 2,
+				closeBtn: 1,
+				anim: 4,
+				title: "选项列表",
+				shade: 0.4,
+				shadeClose: false,
+				area: ['1000px', '500px'],
+				content: ['/Admin/NormTarget/OptionList?id=' + id, 'yes'],
+				end: function () {
+				}
+			});
+		}
+
+		// start 删除
+		function deleteOp(id) {
+			$("#js-id").val(id);
+			$('#deleteModal').modal();
+			console.log(11111111);
+		}
+
+		function deleteSubmit() {
+			var id = $("#js-id").val();
+			$.ajax({
+				type: 'POST',
+				url: '/Admin/NormTarget/Delete',
+				data: { id: id },
+				dataType: 'json',
+				success: function (data) {
+					if (data.code <= 0) {
+						// 删除失败
+						showMessage(data.message, -1);
+					} else {
+						// 删除成功
+						window.location.href = window.location.href;
+					}
+				}
+			});
+		}
+		// end 删除
+
+	</script>
+}
+
+<!-- start 删除确认框 -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<h4 class="modal-title">确认框</h4>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="form-group">
+						<label for="message-text" class="control-label">确定要删除？</label>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+				<button onclick="deleteSubmit()" type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end 删除确认框 -->
+<!-- start 提示框 -->
+@{ Html.RenderPartial("_MessagePartial"); }
+<!-- end 提示框 -->
+<input id="js-id" type="hidden" />
+<div class="layui-fluid">
+	<div class="layui-btn-group">
+		@Html.HasAuth("Admin", "NormTarget", "Create")
+		{
+		<button class="layui-btn layui-btn-sm layui-btn-normal" onclick="onCreate()">添加</button>
+		}
+		@Html.HasAuth("Admin", "NormTarget", "Sort")
+		{
+		<button class="layui-btn layui-btn-sm layui-btn-normal" onclick="onSort(0)">排序</button>
+		}
+	</div>
+	@Html.GenerateCollapseNormTarget()
+</div>

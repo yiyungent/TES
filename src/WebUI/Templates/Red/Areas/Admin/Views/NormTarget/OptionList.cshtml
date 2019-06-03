@@ -1,0 +1,143 @@
+﻿@using Domain
+@model IList<Options>
+@{
+	Layout = null;
+}
+
+<link href="~/dist/layui/css/layui.css" rel="stylesheet" />
+<div class="layui-fluid">
+	<div>
+		@if (Model != null && Model.Count >= 1)
+		{
+			<h2>@(Model[0].NormTarget?.Name ?? "(无所属指标)") 的选项列表</h2>
+		}
+		<table class="layui-table">
+			<colgroup>
+				<col>
+				<col>
+				<col>
+				<col>
+			</colgroup>
+			<thead>
+				<tr>
+					<th>内容</th>
+					<th>分数</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					if (Model != null && Model.Count >= 1)
+					{
+						for (int i = 0; i < Model.Count; i++)
+						{
+							var item = Model[i];
+							<tr id="js-tr-@item.ID">
+								<td>@item.Content</td>
+								<td>@item.Score</td>
+								<td>
+									<div class="layui-btn-group">
+										<button class="layui-btn" onclick="onUp(this)">↑</button>
+										<button class="layui-btn" onclick="onDown(this)">↓</button>
+										<a class="layui-btn" href="/Admin/NormTarget/OptionEdit?id=@item.ID">修改</a>
+										<button class="layui-btn layui-btn-danger" onclick="onDelete(@item.ID)">删除</button>
+									</div>
+								</td>
+							</tr>
+						}
+					}
+				}
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<form>
+			<input id="js-ids" name="ids" type="hidden" />
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<a class="layui-btn" href="/Admin/NormTarget/OptionCreate?id=@ViewBag.NormTargetId">添加选项</a>
+					<button class="layui-btn" onclick="return saveData();">保存排序</button>
+					<button class="layui-btn" onclick="return flush();">刷新</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script src="~/Scripts/jquery-1.12.0.min.js"></script>
+<script src="~/dist/layui/layui.js"></script>
+<script>
+
+	function onUp(obj) {
+		$currentTr = $(obj).parent().parent().parent('tr');
+		$currentTr.insertBefore($currentTr.prev('tr'));
+		updateSortIds();
+	}
+
+	function onDown(obj) {
+		$currentTr = $(obj).parent().parent().parent('tr');
+		$currentTr.insertAfter($currentTr.next('tr'));
+		updateSortIds();
+	}
+
+	function onDelete(id) {
+		$.ajax({
+			type: 'POST',
+			url: '/Admin/NormTarget/OptionDelete',
+			data: { id: id },
+			dataType: 'json',
+			success: function (data) {
+				if (data.code <= 0) {
+					// 删除失败
+					layer.msg(data.message);
+				} else {
+					// 删除成功
+					flush();
+				}
+			}
+		});
+	}
+
+	function saveData() {
+		$.ajax({
+			type: "post",
+			url: "/Admin/NormTarget/OptionSort",
+			data: $("form").serialize(),
+			dataType: "json",
+			success: function (data) {
+				if (data.code > 0) {
+					// 3.关闭弹窗
+					layer.msg(data.message);
+				} else if (data.code < 0) {
+					// 失败
+					layer.msg(data.message);
+				}
+			}
+		});
+		return false;
+	}
+
+	function updateSortIds() {
+		var $trs = $('table tbody tr');
+		var ids = '';
+		for (var i = 0; i < $trs.length; i++) {
+			var idVal = $($trs[i]).attr('id');
+			ids += parseInt(idVal.substring(idVal.lastIndexOf('-') + 1)) + ',';
+		}
+		$('#js-ids').val(ids);
+	}
+
+	function flush() {
+		window.location.href = window.location.href;
+		return false;
+	}
+
+	var form, layer;
+	layui.use(['form', 'layer'], function () {
+		form = layui.form,
+			layer = layui.layer;
+	});
+
+	$(function () {
+		updateSortIds();
+	});
+</script>
