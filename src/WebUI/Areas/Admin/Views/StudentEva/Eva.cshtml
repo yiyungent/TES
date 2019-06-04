@@ -56,6 +56,13 @@
 				checkboxClass: 'icheckbox_minimal-blue',
 				radioClass: 'iradio_minimal-blue'
 			});
+
+			$('input[type="radio"]').on('ifChecked', function () {
+				var completeCount = $('input[type="radio"]:checked').length;
+				$('[area="js-completeCount"]').html(completeCount);
+				var percent = completeCount / @Model.Count * 100;
+				$('[area="js-progress"] div').css('width', percent + "%");
+			});
 		});
 	</script>
 }
@@ -69,8 +76,12 @@
 			<span class="col-xs-12 col-md-4">课程: @courseTable.Course.Name（@courseTable.Course.CourseCode）</span>
 			<span class="col-xs-12 col-md-4">授课教师: @courseTable.Teacher.Name（@courseTable.Teacher.EmployeeCode）</span>
 		</h3>
-
-		<div class="box-tools"></div>
+		<div class="col-xs-12" style="padding-top: 20px;">
+			<p>共 @Model.Count 题, 已完成<span area="js-completeCount">0</span> 题</p>
+			<div area="js-progress" class="progress">
+				<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+			</div>
+		</div>
 	</div>
 	<!-- end .box-header -->
 	<!-- start .box-body -->
@@ -128,6 +139,12 @@
 		<!-- start 提示框 -->
 		@{ Html.RenderPartial("_MessagePartial"); }
 		<!-- end 提示框 -->
+		<div class="col-xs-12" style="padding-top: 20px;">
+			<p>共 @Model.Count 题, 已完成<span area="js-completeCount">0</span> 题</p>
+			<div area="js-progress" class="progress">
+				<div class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+			</div>
+		</div>
 		<div class="btn-group col-md-4 col-md-offset-4 col-xs-12">
 			<button class="btn btn-primary btn-lg btn-block" onclick="saveData()">提交</button>
 			@if (redirectUrl != null)
