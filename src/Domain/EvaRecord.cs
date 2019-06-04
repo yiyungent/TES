@@ -58,5 +58,13 @@ namespace Domain
         [Display(Name = "评价任务")]
         [BelongsTo(Column = "EvaluateTaskId")]
         public EvaTask EvaluateTask { get; set; }
+
+        [Display(Name = "班级")]
+        [BelongsTo(Column = "ClazzId")]
+        public ClazzInfo ClazzInfo { get; set; }
+
+        [Display(Name = "课程")]
+        [BelongsTo(Column = "CourseId")]
+        public CourseInfo CourseInfo { get; set; }
     }
 }

@@ -148,7 +148,7 @@ namespace WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult Eva(int teacherId, int evaTaskId, bool falg = false)
+        public JsonResult Eva(int courseId, int teacherId, int evaTaskId, bool falg = false)
         {
             try
             {
@@ -195,7 +195,9 @@ namespace WebUI.Areas.Admin.Controllers
                         Options = new Options { ID = item.Value },
                         Evaluator = new UserInfo { ID = evaor.ID },
                         Teacher = new EmployeeInfo { ID = teacherId },
-                        EvaluateTask = new EvaTask { ID = evaTaskId }
+                        EvaluateTask = new EvaTask { ID = evaTaskId },
+                        ClazzInfo = evaor.GetBindStudent().ClazzInfo,
+                        CourseInfo = new CourseInfo { ID = courseId }
                     });
                 }
 

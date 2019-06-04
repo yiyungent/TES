@@ -1,0 +1,107 @@
+﻿@using Framework.HtmlHelpers
+@using WebUI.Areas.Admin.Models.Common
+@using WebUI.Areas.Admin.Models.EvaConditionVM
+@using Domain
+@using WebUI.Extensions
+@model ClassEvaConViewModel
+@{
+	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+	EvaTask evaTask = ViewBag.EvaTask;
+	ClazzInfo clazzInfo = ViewBag.ClazzInfo;
+}
+@section head {
+	<style>
+		table tr td {
+			vertical-align: middle !important;
+		}
+	</style>
+}
+@section body {
+	<script src="~/dist/pview/pview.js"></script>
+	<script>
+
+		function search() {
+			var query = $('#js-search-input').val();
+			var queryType = 'clazzCode';
+			window.location.href = window.location.origin + window.location.pathname + '?q=' + query + '&type=' + queryType;
+		}
+
+		var pview;
+		$(function () {
+			pview = new PView();
+			pview.init();
+
+			$('#js-search-input').on('keypress', function (event) {
+				if (event.keyCode == "13") {
+					search();
+				}
+			});
+			$('#js-search-btn').on('click', function () {
+				search();
+			});
+		});
+	</script>
+}
+
+<!-- start 提示框 -->
+@{ Html.RenderPartial("_MessagePartial"); }
+<!-- end 提示框 -->
+
+<input id="js-id" type="hidden" />
+
+<!-- start .box -->
+<div class="box">
+	<!-- start .box-header -->
+	<div class="box-header">
+		<h3 class="box-title">@evaTask.Name（@evaTask.EvaTaskCode） - @clazzInfo.ClazzCode 班</h3>
+
+		<div class="box-tools">
+			<div class="input-group input-group-sm" style="width: 150px;">
+				<input id="js-search-input" type="text" name="table_search" class="form-control pull-right" placeholder="班级代号" value="@ViewBag.Query">
+
+				<div class="input-group-btn">
+					<button id="js-search-btn" type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end .box-header -->
+	<!-- start .box-body -->
+	<!-- start 简单表格 -->
+	<div class="box-body table-responsive no-padding">
+		<table id="js-table" class="table table-hover" pview="table">
+			<tr>
+				<th>学生</th>
+				<th>已评课程</th>
+			</tr>
+			@foreach (var item in Model.List)
+			{
+				<tr>
+					<td>@item.Student.Name（@item.Student.StudentCode）</td>
+					<td>
+						@foreach (var course in item.EvaCourseList)
+						{
+							<span class="label label-info">@course.Name（@course.CourseCode）</span>
+						}
+					</td>
+				</tr>
+			}
+		</table>
+	</div>
+	<!-- end 简单表格 -->
+	<!-- end .box-body -->
+	<!-- start .box-footer -->
+	<div class="box-footer clearfix">
+		<div class="btn-group pull-left">
+		</div>
+		<!-- start 分页 -->
+		<div id="js-page" data-pjax pview="pages">
+			@*<ul class="pagination pull-right" pview-btn-group pview-targets="table,pages">
+					@Html.PageLinks(Model.PageInfo, i => Url.Action("Index", new { pageIndex = i, q = Request["q"], type = Request["type"] }))
+				</ul>*@
+		</div>
+		<!-- end 分页 -->
+	</div>
+	<!-- end .box-footer -->
+</div>
+<!-- end .box -->

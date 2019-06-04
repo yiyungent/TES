@@ -8277,6 +8277,9 @@
     <Content Include="Areas\Admin\Views\Department\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Department\Create.cshtml" />
     <Content Include="Areas\Admin\Views\EmployeeInfo\EvaAnalyze.cshtml" />
+    <Content Include="Areas\Admin\Views\EvaCondition\ClassList.cshtml" />
+    <Content Include="Areas\Admin\Views\EvaCondition\ClassEvaCon.cshtml" />
+    <Content Include="Areas\Admin\Views\EvaCondition\Index.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
@@ -8320,6 +8323,7 @@
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\DepartmentController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeDutyController.cs" />
+    <Compile Include="Areas\Admin\Controllers\EvaConditionController.cs" />
     <Compile Include="Areas\Admin\Controllers\TeacherEvaController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\EvaResultController.cs" />
@@ -8341,6 +8345,7 @@
     <Compile Include="Areas\Admin\Models\EmployeeDutyVM\EmployeeDutyForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EmployeeInfoVM\EmployeeInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EmployeeInfoVM\EvaAnalyzeChart.cs" />
+    <Compile Include="Areas\Admin\Models\EvaConditionVM\ClassEvaConViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EvaResultVM\EvaResultListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EvaTaskVM\EvaTaskForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\NormTypeVM\NormTypeForEditViewModel.cs" />
