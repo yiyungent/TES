@@ -41,7 +41,7 @@ namespace WebUI.Areas.Admin.Models.EvaResultVM
                 decimal rtnSum = 0;
                 foreach (var item in ScoreDic)
                 {
-                    rtnSum += item.Value;
+                    rtnSum += item.Key.Weight * item.Value;
                 }
 
                 return rtnSum;

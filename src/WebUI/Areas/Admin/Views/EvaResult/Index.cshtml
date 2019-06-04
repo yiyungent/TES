@@ -160,7 +160,7 @@
 		if (current_ScoreDic_NormType_idList.Contains(typeId))
 		{
 			// 此 评价类型 的 分数
-			<td>@(currentVMItem.ScoreDic.Where(m => m.Key.ID == typeId).FirstOrDefault().Value)</td>
+			<td>@(currentVMItem.ScoreDic.Where(m => m.Key.ID == typeId).FirstOrDefault().Value.ToString("0.##"))</td>
 		}
 		else
 		{
@@ -251,7 +251,7 @@
 					</td>
 					<td>@item.EvaedEmployee.Name（@item.EvaedEmployee.EmployeeCode）</td>
 					@GenerateScoreDesc(item, allNormTypeId)
-					<td>@item.ScoreSum</td>
+					<td>@item.ScoreSum.ToString("0.##")</td>
 					@*<td>
 							<div class="btn-group" role="group" data-pjax>
 								@if (Html.HasAuth("Admin", "EvaResult", "ReCaculateScore"))
