@@ -29,7 +29,7 @@ namespace WebUI.Areas.Admin.Controllers
             viewModel.List = new List<EvaResultVMItem>();
             IList<EvaResult> allEvaResult = Container.Instance.Resolve<EvaResultService>().GetAll();
             // 去重 + 只要有评价结果记录的
-            IList<EvaTask> allEvaTask = allEvaResult.Select(m => m.EvaluateTask).Distinct().ToList();
+            IList<EvaTask> allRelativeEvaTask = allEvaResult.Select(m => m.EvaluateTask).Distinct().ToList();
             IList<EmployeeInfo> allEvaedEmployee = allEvaResult.Select(m => m.Teacher).Distinct().ToList();
             foreach (var evaedEmployeeItem in allEvaedEmployee)
             {
@@ -56,9 +56,8 @@ namespace WebUI.Areas.Admin.Controllers
             #region 展示到视图
 
             #region 计算分数的选项列表
-            ViewBag.SelectListForEvaTask = InitSelectListForEvaTask(0, allEvaRecord);
-            ViewBag.SelectListForTeacher = InitSelectListForTeacher(0, allEvaRecord);
-            ViewBag.SelectListForEvaType = InitSelectListForEvaType(0, allEvaRecord);
+            IList<EvaTask> allEvaTask = Container.Instance.Resolve<EvaTaskService>().GetAll();
+            ViewBag.SelectListForEvaTask = InitSelectListForEvaTask(0, allEvaTask);
             #endregion
 
             // 表头：需要展示哪些 评价类型 的 明细分数
@@ -153,17 +152,20 @@ namespace WebUI.Areas.Admin.Controllers
         #endregion
 
         #region 计算分数
+        /// <summary>
+        /// 计算此任务的 所有评价类型，所有教师
+        /// </summary>
+        /// <param name="evaTaskId"></param>
+        /// <returns></returns>
         [HttpPost]
-        public JsonResult CaculateScore(int evaTaskId, int teacherId, int evaTypeId)
+        public JsonResult CaculateScore(int evaTaskId)
         {
             try
             {
                 #region 有效性效验
                 // 效验是否有 符合的 评价记录 以供 计算分数
                 bool isExist = Container.Instance.Resolve<EvaRecordService>().Count(
-                    Expression.Eq("EvaluateTask.ID", evaTaskId),
-                    Expression.Eq("NormType.ID", evaTypeId),
-                    Expression.Eq("Teacher.ID", teacherId)
+                    Expression.Eq("EvaluateTask.ID", evaTaskId)
                  ) >= 1;
                 if (!isExist)
                 {
@@ -171,10 +173,24 @@ namespace WebUI.Areas.Admin.Controllers
                 }
                 #endregion
 
-                EvaTask evaTask = new EvaTask() { ID = evaTaskId };
-                NormType normType = new NormType() { ID = evaTypeId };
-                EmployeeInfo teacher = new EmployeeInfo() { ID = teacherId };
-                Caculate(evaTask, normType, teacher);
+                IList<EvaRecord> allRelativeEvaRecord = Container.Instance.Resolve<EvaRecordService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("EvaluateTask.ID", evaTaskId)
+                });
+
+                //IList<EmployeeInfo> allTeacher = Container.Instance.Resolve<EmployeeInfoService>().GetAll();
+                IList<EmployeeInfo> allTeacher = allRelativeEvaRecord.Select(m => m.Teacher).ToList();
+                //IList<NormType> allNormType = Container.Instance.Resolve<NormTypeService>().GetAll();
+                IList<NormType> allNormType = allRelativeEvaRecord.Select(m => m.NormType).ToList();
+                //EvaTask EvaTask = Container.Instance.Resolve<EvaTaskService>().GetEntity(evaTaskId);
+                EvaTask evaTask = new EvaTask { ID = evaTaskId };
+                foreach (var teacher in allTeacher)
+                {
+                    foreach (var normType in allNormType)
+                    {
+                        Caculate(evaTask, normType, teacher);
+                    }
+                }
 
                 TempData["message"] = "计算成功";
                 return Json(new { code = 1, message = "计算成功" });
@@ -182,64 +198,6 @@ namespace WebUI.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 return Json(new { code = -1, message = "计算失败" });
-            }
-        }
-        #endregion
-
-        #region 重新计算分数
-        /// <summary>
-        /// 重新计算分数
-        /// </summary>
-        /// <param name="id">计算结果 EvaResult ID</param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult ReCaculateScore(int id)
-        {
-            try
-            {
-                EvaResult evaResult = Container.Instance.Resolve<EvaResultService>().GetEntity(id);
-                #region 有效性效验
-                if (evaResult == null)
-                {
-                    return Json(new { code = -1, message = "重新计算失败，没有此评价结果" });
-                }
-                // 效验是否有 符合的 评价记录 以供 计算分数
-                bool isExist = Container.Instance.Resolve<EvaRecordService>().Count(
-                    Expression.Eq("EvaluateTask.ID", evaResult.EvaluateTask.ID),
-                    Expression.Eq("NormType.ID", evaResult.NormType.ID),
-                    Expression.Eq("Teacher.ID", evaResult.Teacher.ID)
-                 ) >= 1;
-                if (!isExist)
-                {
-                    return Json(new { code = -1, message = "计算失败，没有符合的评价记录 以供计算" });
-                }
-                #endregion
-
-                Caculate(evaResult.EvaluateTask, evaResult.NormType, evaResult.Teacher);
-
-                TempData["message"] = "计算成功";
-                return Json(new { code = 1, message = "计算分数成功" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { code = -1, message = "计算分数失败" });
-            }
-        }
-        #endregion
-
-        #region 删除
-        [HttpPost]
-        public JsonResult Delete(int id)
-        {
-            try
-            {
-                Container.Instance.Resolve<EvaResultService>().Delete(id);
-
-                return Json(new { code = 1, message = "删除成功" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { code = -1, message = "删除失败" });
             }
         }
         #endregion
@@ -361,67 +319,11 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
-        #region 初始化选项列表-被评教师
-        /// <summary>
-        /// 初始化选项列表-被评教师
-        /// </summary>
-        private static IList<SelectListItem> InitSelectListForTeacher(int selectedValue, IList<EvaRecord> allEvaRecordList)
-        {
-            IList<SelectListItem> ret = new List<SelectListItem>();
-            ret.Add(new SelectListItem()
-            {
-                Text = "请选择",
-                Value = "0",
-                Selected = (selectedValue == 0)
-            });
-            IList<EmployeeInfo> allEmployee = allEvaRecordList.Select(m => m.Teacher).Distinct().ToList();
-            foreach (var item in allEmployee)
-            {
-                ret.Add(new SelectListItem()
-                {
-                    Text = $"{item.Name}（{item.EmployeeCode}）",
-                    Value = item.ID.ToString(),
-                    Selected = (selectedValue == item.ID)
-                });
-            }
-
-            return ret;
-        }
-        #endregion 
-
-        #region 初始化选项列表-评价类型
-        /// <summary>
-        /// 初始化选项列表-评价类型
-        /// </summary>
-        private static IList<SelectListItem> InitSelectListForEvaType(int selectedValue, IList<EvaRecord> allEvaRecordList)
-        {
-            IList<SelectListItem> ret = new List<SelectListItem>();
-            ret.Add(new SelectListItem()
-            {
-                Text = "请选择",
-                Value = "0",
-                Selected = (selectedValue == 0)
-            });
-            IList<NormType> all = allEvaRecordList.Select(m => m.NormType).Distinct().ToList();
-            foreach (var item in all)
-            {
-                ret.Add(new SelectListItem()
-                {
-                    Text = item.Name,
-                    Value = item.ID.ToString(),
-                    Selected = (selectedValue == item.ID)
-                });
-            }
-
-            return ret;
-        }
-        #endregion 
-
         #region 初始化选项列表-评价任务
         /// <summary>
         /// 初始化选项列表-评价任务
         /// </summary>
-        private static IList<SelectListItem> InitSelectListForEvaTask(int selectedValue, IList<EvaRecord> allEvaRecordList)
+        private static IList<SelectListItem> InitSelectListForEvaTask(int selectedValue, IList<EvaTask> allEvaTask)
         {
             IList<SelectListItem> ret = new List<SelectListItem>();
             ret.Add(new SelectListItem()
@@ -430,8 +332,7 @@ namespace WebUI.Areas.Admin.Controllers
                 Value = "0",
                 Selected = (selectedValue == 0)
             });
-            IList<EvaTask> all = allEvaRecordList.Select(m => m.EvaluateTask).Distinct().ToList();
-            foreach (var item in all)
+            foreach (var item in allEvaTask)
             {
                 ret.Add(new SelectListItem()
                 {

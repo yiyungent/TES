@@ -59,8 +59,8 @@ namespace WebUI.Controllers
             InitNormTarget();
             InitOptions();
             InitEvaTask();
-            InitEvaRecord();
-            InitEvaResult();
+            //InitEvaRecord();
+            //InitEvaResult();
         }
         #endregion
 
