@@ -867,6 +867,7 @@ namespace WebUI.Controllers
                     UserName = "admin",
                     Avatar = "/images/default-avatar.jpg",
                     Password = EncryptHelper.MD5Encrypt32("admin"),
+                    Email = "1439856067@qq.com",
                     Status = 0,
                     RoleInfoList = (from m in allRole where m.ID == 1 select m).ToList(),
                     RegTime = DateTime.Now
