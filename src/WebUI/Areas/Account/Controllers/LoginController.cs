@@ -21,7 +21,16 @@ namespace WebUI.Areas.Account.Controllers
         private static string _cookieKeyToken = AppConfig.RememberMeTokenCookieKey;
         private static int _rememberMeDayCount = AppConfig.RememberMeDayCount;
 
-        #region 登录
+        Dictionary<string, string> EmailDic { get; set; }
+
+        #region Ctor
+        public LoginController()
+        {
+            InitEmailDic();
+        } 
+        #endregion
+
+        #region 登录视图
         [HttpGet]
         public ActionResult Index(string returnUrl)
         {
@@ -68,78 +77,75 @@ namespace WebUI.Areas.Account.Controllers
             return View();
         }
 
+        #endregion
+
+        #region 登录验证
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Index(LoginModel model, string returnUrl)
+        public ActionResult Index(string userName, string password, string returnUrl)
         {
-            #region 验证码验证
-            if (Session["ValidateCode"] != null && model.ValidateCode != null && model.ValidateCode.ToLower() != Session["ValidateCode"].ToString())
+            password = Framework.Common.EncryptHelper.MD5Encrypt32(password);
+
+            // 1.滑动验证码 二次验证
+            string message = string.Empty;
+            bool isPass = Common.VerifyCode.SecondVerifyCode(Request.Form["ticket"], Request.Form["randStr"], Request.UserHostAddress, out message);
+            if (!isPass)
             {
-                ModelState.AddModelError("Error_PersonLogin", "验证码错误！");
-                return View();
+                // 验证码错误
+                return Json(new { code = -2, message });
             }
-            Session["ValidateCode"] = null;
+
+            // 验证通过
+            var dbUser = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("UserName", userName)
+                }).FirstOrDefault();
+            if (dbUser == null)
+            {
+                return Json(new { code = -1, message = "用户不存在,检查或前往注册" });
+            }
+            if (dbUser.Password != password)
+            {
+                return Json(new { code = -1, message = "用户名或密码错误" });
+            }
+            if (dbUser.Status == 1)
+            {
+                return Json(new { code = -1, message = "账号被禁用" });
+            }
+
+            // 登录成功
+            Session[_sessionKeyLoginAccount] = dbUser;
+            // 浏览器移除 Token
+            if (Request.Cookies.AllKeys.Contains(_cookieKeyToken))
+            {
+                Response.Cookies[_cookieKeyToken].Expires = DateTime.UtcNow.AddDays(-1);
+            }
+
+            #region 记住我
+            if (Request["isRememberMe"] != null && bool.Parse(Request["isRememberMe"].ToString()))
+            {
+                string token = Guid.NewGuid().ToString();
+                // token 存入登录用户--数据库
+                dbUser.Token = token;
+                // token 存入 浏览器
+                HttpCookie cookieToken = new HttpCookie(_cookieKeyToken, token)
+                {
+                    Expires = DateTime.UtcNow.AddDays(_rememberMeDayCount),
+                    HttpOnly = true
+                };
+                Response.Cookies.Add(cookieToken);
+            }
+            else
+            {
+                // 数据库-当前用户移除 Token
+                dbUser.Token = null;
+            }
             #endregion
 
-            if (ModelState.IsValid)
-            {
-                var dbUser = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
-                {
-                    Expression.Eq("UserName", model.LoginAccount)
-                }).FirstOrDefault();
-                if (dbUser == null)
-                {
-                    ModelState.AddModelError("", "账号不存在");
-                    return View();
-                }
-                if (dbUser.Password != EncryptHelper.MD5Encrypt32(model.Password))
-                {
-                    ModelState.AddModelError("", "账号或密码错误");
-                    return View();
-                }
-                if (dbUser.Status == 1)
-                {
-                    ModelState.AddModelError("", "账号被禁用");
-                    return View();
-                }
+            // 更新用户--最后登录时间等
+            dbUser.LastLoginTime = DateTime.UtcNow;
+            Container.Instance.Resolve<UserInfoService>().Edit(dbUser);
 
-                // 登录成功
-                Session[_sessionKeyLoginAccount] = dbUser;
-                // 浏览器移除 Token
-                if (Request.Cookies.AllKeys.Contains(_cookieKeyToken))
-                {
-                    Response.Cookies[_cookieKeyToken].Expires = DateTime.UtcNow.AddDays(-1);
-                }
-
-                #region 记住我
-                if (model.IsRememberMe == true)
-                {
-                    string token = Guid.NewGuid().ToString();
-                    // token 存入登录用户--数据库
-                    dbUser.Token = token;
-                    // token 存入 浏览器
-                    HttpCookie cookieToken = new HttpCookie(_cookieKeyToken, token)
-                    {
-                        Expires = DateTime.UtcNow.AddDays(_rememberMeDayCount),
-                        HttpOnly = true
-                    };
-                    Response.Cookies.Add(cookieToken);
-                }
-                else
-                {
-                    // 数据库-当前用户移除 Token
-                    dbUser.Token = null;
-                }
-                #endregion
-
-                // 更新用户--最后登录时间等
-                dbUser.LastLoginTime = DateTime.UtcNow;
-                Container.Instance.Resolve<UserInfoService>().Edit(dbUser);
-
-                return LoginSuccessRedirectResult(returnUrl);
-            }
-
-            return View(model);
+            return Json(new { code = 1, message = "登录成功", returnUrl = returnUrl });
         }
         #endregion
 
@@ -171,6 +177,76 @@ namespace WebUI.Areas.Account.Controllers
         }
         #endregion
 
+        #region 找回密码视图
+        public ActionResult FindPassword()
+        {
+            return View();
+        }
+        #endregion
+
+        #region 滑动二次验证
+        /// <summary>
+        /// 滑动二次验证(目前此方法仅用于找回密码时验证)
+        /// </summary>
+        /// <param name="ticket"></param>
+        /// <param name="randStr"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult VerifyCode(string ticket, string randStr, string action)
+        {
+            string[] actions = action.Split('|');
+            string ip = Request.UserHostAddress;
+            string message = string.Empty;
+            if (Common.VerifyCode.SecondVerifyCode(ticket, randStr, ip, out message))
+            {
+                // 验证通过
+                // 根据用户的邮箱类型返回不同的邮箱查看地址
+                // ewffnrwf@126.com --->  126.com
+                string emailType = actions[1].Split(new string[] { "@" }, StringSplitOptions.RemoveEmptyEntries)[1];
+                string emailLoginAddress = EmailDic[emailType];
+                // 邮件验证码
+                Common.EmailVerifyCode.SendEmailVerifyCode(actions[1], Common.SendReason.RPwd);
+                return Json(new { code = 1, message = $"验证码短信/邮件已发出，5分钟内有效，请注意<a target=\"_blank\" href=\"//{emailLoginAddress}\" style=\"font-size: 14px;\">查收</a>" });
+            }
+            else
+            {
+                // 验证不通过
+                return Json(new { code = -1, message = "滑动验证不通过或失效，请重新验证" });
+            }
+        }
+        #endregion
+
+        #region 重置密码
+        [HttpPost]
+        public ActionResult ResetPwd(string userName, string password, string vCode)
+        {
+            // 效验验证码
+            string inputVCode = vCode;
+            string rightVCode = Session["vCode"] != null ? Session["vCode"].ToString() : "";
+            // 使用一次后使其立即失效
+            Session["vCode"] = null;
+            if (inputVCode == rightVCode)
+            {
+                // 验证通过
+                // 更改密码
+                // 注意：实际上传过来的是邮箱
+                UserInfo dbModel = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("Email", userName)
+                }).FirstOrDefault();
+                dbModel.Password = Framework.Common.EncryptHelper.MD5Encrypt32(password);
+                Container.Instance.Resolve<UserInfoService>().Edit(dbModel);
+
+                return Json(new { code = 1, message = "密码重置成功，请前往登录" });
+            }
+            else
+            {
+                return Json(new { code = -1, message = "验证码错误，请重新获取并填写" });
+            }
+        }
+        #endregion
+
         #region 退出账号
         public ViewResult Exit(string returnUrl = null)
         {
@@ -189,6 +265,16 @@ namespace WebUI.Areas.Account.Controllers
             };
 
             return View("_Redirect", model);
+        }
+        #endregion
+
+        #region 初始化邮件地址数据
+        private void InitEmailDic()
+        {
+            this.EmailDic = new Dictionary<string, string>();
+            this.EmailDic.Add("126.com", "mail.126.com");
+            this.EmailDic.Add("qq.com", "mail.qq.com");
+            this.EmailDic.Add("163.com", "www.163.com");
         }
         #endregion
     }
