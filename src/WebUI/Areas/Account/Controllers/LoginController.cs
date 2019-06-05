@@ -27,7 +27,7 @@ namespace WebUI.Areas.Account.Controllers
         public LoginController()
         {
             InitEmailDic();
-        } 
+        }
         #endregion
 
         #region 登录视图
@@ -231,6 +231,11 @@ namespace WebUI.Areas.Account.Controllers
                 // 验证通过
                 // 更改密码
                 // 注意：实际上传过来的是邮箱
+                bool existEmail = Container.Instance.Resolve<UserInfoService>().Count(Expression.Eq("Email", userName)) >= 1;
+                if (!existEmail)
+                {
+                    return Json(new { code = -1, message = "没有绑定此邮箱的用户，请更换" });
+                }
                 UserInfo dbModel = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
                 {
                     Expression.Eq("Email", userName)
