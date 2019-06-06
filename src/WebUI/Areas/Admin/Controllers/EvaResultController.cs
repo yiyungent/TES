@@ -68,6 +68,29 @@ namespace WebUI.Areas.Admin.Controllers
 
             #endregion
 
+            #region 页码
+
+            viewModel.PageInfo = new Framework.HtmlHelpers.PageInfo
+            {
+                MaxLinkCount = 6,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalRecordCount = viewModel.List.Count,
+            };
+
+            // 根据页码选择记录
+            // 当前页号超过总页数，则显示最后一页
+            int lastPageIndex = (int)Math.Ceiling((double)viewModel.List.Count / pageSize);
+            pageIndex = pageIndex <= lastPageIndex ? pageIndex : lastPageIndex;
+            ViewBag.PageIndex = pageIndex;
+            ViewBag.PageSize = pageSize;
+            // 使用 Skip 还顺便解决了 若 pageIndex <= 0 的错误情况
+            var pageData = (from m in viewModel.List
+                            orderby m.ID descending
+                            select m).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            viewModel.List = pageData.ToList();
+
+            #endregion
 
             #region 展示到视图
 

@@ -46,7 +46,7 @@
 				data: { evaTaskId: evaTaskId, teacherId: teacherId },
 				dataType: "json",
 				success: function (data) {
-					$("#js-btn-caculate").html("计算分数").removeAttr("disabled");
+					$("#js-btn-caculate-" + index).html("计算分数").removeAttr("disabled");
 					if (data.code > 0) {
 						// 计算成功
 						window.location.href = window.location.href;
@@ -188,11 +188,11 @@
 	<!-- start .box-footer -->
 	<div class="box-footer clearfix">
 		<!-- start 分页 -->
-		@*<div id="js-page" pview="pages">
+		<div id="js-page" pview="pages">
 				<ul class="pagination pull-right" pview-btn-group pview-targets="table,pages">
 					@Html.PageLinks(Model.PageInfo, i => Url.Action("Index", new { pageIndex = i, q = Request["q"], type = Request["type"] }))
 				</ul>
-			</div>*@
+			</div>
 		<!-- end 分页 -->
 	</div>
 	<!-- end .box-footer -->
