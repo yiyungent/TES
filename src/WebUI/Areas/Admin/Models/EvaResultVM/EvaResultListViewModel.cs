@@ -11,6 +11,17 @@ namespace WebUI.Areas.Admin.Models.EvaResultVM
     {
         public IList<EvaResultVMItem> List { get; set; }
 
+        public void Add(EvaResultVMItem item)
+        {
+            if (this.List == null)
+            {
+                this.List = new List<EvaResultVMItem>();
+            }
+            int currentCount = this.List.Count;
+            item.ID = currentCount + 1;
+            this.List.Add(item);
+        }
+
         public PageInfo PageInfo { get; set; }
     }
 
@@ -19,6 +30,8 @@ namespace WebUI.Areas.Admin.Models.EvaResultVM
     /// </summary>
     public class EvaResultVMItem
     {
+        public int ID { get; set; }
+
         public EvaTask EvaTask { get; set; }
 
         /// <summary>

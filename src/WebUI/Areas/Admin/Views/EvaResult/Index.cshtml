@@ -35,47 +35,15 @@
 			}, 3000);
 		}
 
-		// start 删除
-		function deleteOp(id) {
-			$("#js-id").val(id);
-			$('#deleteModal').modal();
-		}
-
-		function deleteSubmit() {
-			var id = $("#js-id").val();
-			$.ajax({
-				type: 'POST',
-				url: '/Admin/EvaResult/Delete',
-				data: { id: id },
-				dataType: 'json',
-				success: function (data) {
-					if (data.code <= 0) {
-						// 删除失败
-						showMessage(data.message, -1);
-					} else {
-						// 删除成功
-						showMessage(data.message, 1);
-						$(".table").find("tr[data-tr-id='" + id + "']").remove();
-						// 检查当前当前页面是否已经全部删除完，若是，则点击当前页码，重新加载
-						var trNum = $(".table").find("tr").length - 1;
-						if (trNum == 0) {
-							$("#js-page").find("li[class*='active']>a")[0].click();
-						}
-					}
-				}
-			});
-		}
-		// end 删除
-
 		// start 计算分数
-		function caculateScore() {
-			$("#js-btn-caculate").html("计算中").attr("disabled", "disabled");
+		function caculateScore(evaTaskId, teacherId, index) {
+			$("#js-btn-caculate-" + index).html("计算中").attr("disabled", "disabled");
 			// 新计算分数, 实际上就是根据 评价记录创建对应的评价结果
 			var selectedEvaTaskId = $('#SelectedValForEvaTask').val();
 			$.ajax({
 				url: "/Admin/EvaResult/CaculateScore",
 				type: "post",
-				data: { evaTaskId: selectedEvaTaskId },
+				data: { evaTaskId: evaTaskId, teacherId: teacherId },
 				dataType: "json",
 				success: function (data) {
 					$("#js-btn-caculate").html("计算分数").removeAttr("disabled");
@@ -142,34 +110,11 @@
 		}
 		else
 		{
-			<td>无相关评价记录</td>
+			<td>未计算</td>
 		}
 	}
 }
 
-<!-- start 删除确认框 -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-				<h4 class="modal-title">确认框</h4>
-			</div>
-			<div class="modal-body">
-				<form>
-					<div class="form-group">
-						<label for="message-text" class="control-label">确定要删除？</label>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
-				<button onclick="deleteSubmit()" type="button" class="btn btn-primary" data-dismiss="modal">确认</button>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- end 删除确认框 -->
 <!-- start 提示框 -->
 @{ Html.RenderPartial("_MessagePartial"); }
 <!-- end 提示框 -->
@@ -191,10 +136,9 @@
 					</button>
 					<ul id="js-search-type-list" class="dropdown-menu">
 						<li search-type="teachername"><a href="javascript:;">教师名</a></li>
-						<li search-type="evatypename"><a href="javascript:;">评价类型名</a></li>
+						<li search-type="employeecode"><a href="javascript:;">教师工号</a></li>
 						<li search-type="evataskname"><a href="javascript:;">评价任务名</a></li>
-						<li search-type="score"><a href="javascript:;">分数</a></li>
-						<li search-type="id"><a href="javascript:;">ID</a></li>
+						<li search-type="scoresum"><a href="javascript:;">总分</a></li>
 					</ul>
 				</div>
 				<input id="js-search-input" type="text" name="table_search" class="form-control pull-right" placeholder="Search" value="@ViewBag.Query">
@@ -210,6 +154,7 @@
 	<div class="box-body table-responsive no-padding">
 		<table id="js-table" class="table table-hover" pview="table">
 			<tr>
+				<th>序号</th>
 				<th>评价任务</th>
 				<th>被评教师（员工）</th>
 				@foreach (var item in allNormType)
@@ -217,16 +162,23 @@
 					<th>@item.Name</th>
 				}
 				<th>总分</th>
+				<th>操作</th>
 			</tr>
 			@foreach (var item in Model.List)
 			{
 				<tr>
+					<td>@item.ID</td>
 					<td>
 						<span class="label label-info">@item.EvaTask.Name</span>
 					</td>
 					<td>@item.EvaedEmployee.Name（@item.EvaedEmployee.EmployeeCode）</td>
 					@GenerateScoreDesc(item, allNormTypeId)
 					<td>@item.ScoreSum.ToString("0.##")</td>
+					<td>
+						<div class="btn btn-group">
+							<button id="js-btn-caculate-@item.ID" class="btn btn-primary" onclick="caculateScore(@item.EvaTask.ID, @item.EvaedEmployee.ID, @item.ID)">计算分数</button>
+						</div>
+					</td>
 				</tr>
 			}
 		</table>
@@ -235,20 +187,6 @@
 	<!-- end .box-body -->
 	<!-- start .box-footer -->
 	<div class="box-footer clearfix">
-		<div class="col-xs-6">
-			<div class="row">
-				<div class="col-xs-3">
-					<label for="SelectedValForTeacher">评价任务</label>
-					@Html.DropDownList("SelectedValForEvaTask", (IList<SelectListItem>)ViewBag.SelectListForEvaTask, new { @class = "form-control" })
-				</div>
-				<div class="col-xs-3" style="padding-top: 24px;">
-					@if (Html.HasAuth("Admin", "EvaResult", "CaculateScore"))
-					{
-						<button id="js-btn-caculate" class="btn btn-primary" onclick="caculateScore()">计算分数</button>
-					}
-				</div>
-			</div>
-		</div>
 		<!-- start 分页 -->
 		@*<div id="js-page" pview="pages">
 				<ul class="pagination pull-right" pview-btn-group pview-targets="table,pages">

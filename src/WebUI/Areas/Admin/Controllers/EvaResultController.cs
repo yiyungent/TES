@@ -20,56 +20,121 @@ namespace WebUI.Areas.Admin.Controllers
             IList<ICriterion> queryConditions = new List<ICriterion>();
             Query(queryConditions);
 
-
+            // 第一次搜索筛选行
             // 只显示 有评价记录（即可以计算分数）的选项列表
-            IList<EvaRecord> allEvaRecord = Container.Instance.Resolve<EvaRecordService>().GetAll();
+            IList<EvaRecord> allEvaRecord = Container.Instance.Resolve<EvaRecordService>().Query(queryConditions);
 
             #region 准备列表视图数据
             EvaResultListViewModel viewModel = new EvaResultListViewModel();
-            viewModel.List = new List<EvaResultVMItem>();
             IList<EvaResult> allEvaResult = Container.Instance.Resolve<EvaResultService>().GetAll();
             // 去重 + 只要有评价结果记录的
+
             IList<EvaTask> allRelativeEvaTask = allEvaResult.Select(m => m.EvaluateTask).Distinct().ToList();
             IList<EmployeeInfo> allEvaedEmployee = allEvaResult.Select(m => m.Teacher).Distinct().ToList();
-            foreach (var evaedEmployeeItem in allEvaedEmployee)
+
+            IList<EvaTask> allEvaTask = Container.Instance.Resolve<EvaTaskService>().GetAll();
+            IList<EmployeeInfo> allEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetAll();
+
+            viewModel.List = new List<EvaResultVMItem>();
+            foreach (var evaedEmployeeItem in allEmployee)
             {
-                EvaResultVMItem vmItem = new EvaResultVMItem();
-                vmItem.EvaTask = allEvaResult.Where(m => m.Teacher.ID == evaedEmployeeItem.ID).Select(m => m.EvaluateTask).FirstOrDefault();
-                vmItem.EvaedEmployee = evaedEmployeeItem;
-                vmItem.ScoreDic = new Dictionary<NormType, decimal>();
-                // 只要 此评价任务，此被评员工 的评价记录
-                // 注意：表头的评价类型是按 排序码 排序，所以下方的明细分数单元格也许按排序码排序，以达明细分数一一对应
-                IList<EvaResult> relativeResultList = allEvaResult.Where(m => m.EvaluateTask.ID == vmItem.EvaTask.ID && m.Teacher.ID == vmItem.EvaedEmployee.ID).OrderBy(m => m.NormType.SortCode).ToList();
-                foreach (var resultItem in relativeResultList)
+                foreach (var evaTask in allEvaTask)
                 {
-                    if (!vmItem.ScoreDic.ContainsKey(resultItem.NormType))
+                    EvaResultVMItem vmItem = new EvaResultVMItem();
+                    vmItem.EvaedEmployee = evaedEmployeeItem;
+                    vmItem.EvaTask = evaTask;
+                    vmItem.ScoreDic = new Dictionary<NormType, decimal>();
+                    // 只要 此评价任务，此被评员工 的评价记录
+                    // 注意：表头的评价类型是按 排序码 排序，所以下方的明细分数单元格也许按排序码排序，以达明细分数一一对应
+                    IList<EvaResult> relativeResultList = allEvaResult.Where(m => m.EvaluateTask.ID == vmItem.EvaTask.ID && m.Teacher.ID == vmItem.EvaedEmployee.ID).OrderBy(m => m.NormType.SortCode).ToList();
+                    foreach (var resultItem in relativeResultList)
                     {
-                        vmItem.ScoreDic.Add(resultItem.NormType, resultItem.Score);
+                        if (!vmItem.ScoreDic.ContainsKey(resultItem.NormType))
+                        {
+                            vmItem.ScoreDic.Add(resultItem.NormType, resultItem.Score);
+                        }
+                    }
+                    if (!viewModel.List.Contains(vmItem, new EvaResultVMItemCompare()))
+                    {
+                        viewModel.Add(vmItem);
                     }
                 }
-
-                viewModel.List.Add(vmItem);
             }
+            #endregion
+
+            #region 搜索二次筛选行--在视图模型准备完成后再次筛选
+
+            SearchTwoFilter(viewModel);
+
             #endregion
 
 
             #region 展示到视图
-
-            #region 计算分数的选项列表
-            IList<EvaTask> allEvaTask = Container.Instance.Resolve<EvaTaskService>().GetAll();
-            ViewBag.SelectListForEvaTask = InitSelectListForEvaTask(0, allEvaTask);
-            #endregion
 
             // 表头：需要展示哪些 评价类型 的 明细分数
             IList<NormType> allNormType = Container.Instance.Resolve<NormTypeService>().GetAll().OrderBy(m => m.SortCode).ToList();
             ViewBag.AllNormType = allNormType;
 
             TempData["RedirectUrl"] = Request.RawUrl;
+
             #endregion
 
             return View(viewModel);
         }
 
+        #region 查询-搜索二次筛选
+        private void SearchTwoFilter(EvaResultListViewModel viewModel)
+        {
+            // 输入的查询关键词
+            string query = Request["q"]?.Trim() ?? "";
+            // 查询类型
+            QueryType queryType = new QueryType();
+            Dictionary<string, string> queryTypeValTextDic = new Dictionary<string, string>
+            {
+                { "teachername", "教师名" },
+                { "employeecode", "教师工号" },
+                { "evataskname", "评价任务名" },
+                { "scoresum", "总分" },
+            };
+            queryType.Val = Request["type"]?.Trim().ToLower() ?? "teachername";
+            if (queryTypeValTextDic.ContainsKey(queryType.Val))
+            {
+                queryType.Text = queryTypeValTextDic[queryType.Val];
+            }
+            else
+            {
+                queryType.Text = "教师名";
+            }
+            if (!string.IsNullOrEmpty(query))
+            {
+                switch (queryType.Val)
+                {
+                    case "teachername":
+                        viewModel.List = viewModel.List.Where(m => m.EvaedEmployee.Name.Contains(query)).ToList();
+                        break;
+                    case "employeecode":
+                        viewModel.List = viewModel.List.Where(m => m.EvaedEmployee.EmployeeCode.Equals(query)).ToList();
+                        break;
+                    case "evataskname":
+                        viewModel.List = viewModel.List.Where(m => m.EvaTask.Name.Contains(query)).ToList();
+                        break;
+                    case "scoresum":
+                        if (decimal.TryParse(query, out decimal queryScoreSum))
+                        {
+                            viewModel.List = viewModel.List.Where(m => m.ScoreSum.ToString("0.##") == queryScoreSum.ToString("0.##")).ToList();
+                        }
+                        break;
+                    default:
+                        viewModel.List = viewModel.List.Where(m => m.EvaedEmployee.Name.Contains(query)).ToList();
+                        break;
+                }
+            }
+            ViewBag.Query = query;
+            ViewBag.QueryType = queryType;
+        }
+        #endregion
+
+        #region 查询
         private void Query(IList<ICriterion> queryConditions)
         {
             // 输入的查询关键词
@@ -79,10 +144,7 @@ namespace WebUI.Areas.Admin.Controllers
             Dictionary<string, string> queryTypeValTextDic = new Dictionary<string, string>
             {
                 { "teachername", "教师名" },
-                { "evatypename", "评价类型名" },
                 { "evataskname", "评价任务名" },
-                { "score", "分数" },
-                { "id", "ID" },
             };
             queryType.Val = Request["type"]?.Trim().ToLower() ?? "teachername";
             if (queryTypeValTextDic.ContainsKey(queryType.Val))
@@ -104,45 +166,19 @@ namespace WebUI.Areas.Admin.Controllers
                         }).ToList();
                         queryConditions.Add(Expression.In("Teacher.ID", employeeList.Select(m => m.ID).ToArray()));
                         break;
-                    case "evatypename":
-                        IList<NormType> normTypeList = Container.Instance.Resolve<NormTypeService>().Query(new List<ICriterion>
-                        {
-                            Expression.Like("Name", query, MatchMode.Anywhere)
-                        }).ToList();
-                        queryConditions.Add(Expression.In("NormType.ID", normTypeList.Select(m => m.ID).ToArray()));
-                        break;
                     case "evataskname":
                         IList<EvaTask> evaTaskList = Container.Instance.Resolve<EvaTaskService>().Query(new List<ICriterion>
                         {
                             Expression.Like("Name", query, MatchMode.Anywhere)
                         }).ToList();
-                        queryConditions.Add(Expression.In("EvaTask.ID", evaTaskList.Select(m => m.ID).ToArray()));
-                        break;
-                    case "score":
-                        if (decimal.TryParse(query, out decimal queryScore))
-                        {
-                            queryConditions.Add(Expression.Eq("Score", queryScore));
-                        }
-                        break;
-                    case "id":
-                        if (!string.IsNullOrEmpty(query))
-                        {
-                            if (int.TryParse(query, out int id))
-                            {
-                                queryConditions.Add(Expression.Eq("ID", id));
-                            }
-                            else
-                            {
-                                queryConditions.Add(Expression.Eq("ID", 0));
-                            }
-                        }
+                        queryConditions.Add(Expression.In("EvaluateTask.ID", evaTaskList.Select(m => m.ID).ToArray()));
                         break;
                     default:
-                        IList<EmployeeInfo> employeeList_2 = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>
+                        employeeList = Container.Instance.Resolve<EmployeeInfoService>().Query(new List<ICriterion>
                         {
                             Expression.Like("Name", query, MatchMode.Anywhere)
                         }).ToList();
-                        queryConditions.Add(Expression.In("Teacher.ID", employeeList_2.Select(m => m.ID).ToArray()));
+                        queryConditions.Add(Expression.In("Teacher.ID", employeeList.Select(m => m.ID).ToArray()));
                         break;
                 }
             }
@@ -151,21 +187,19 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #endregion
+
         #region 计算分数
-        /// <summary>
-        /// 计算此任务的 所有评价类型，所有教师
-        /// </summary>
-        /// <param name="evaTaskId"></param>
-        /// <returns></returns>
         [HttpPost]
-        public JsonResult CaculateScore(int evaTaskId)
+        public JsonResult CaculateScore(int evaTaskId, int teacherId)
         {
             try
             {
                 #region 有效性效验
                 // 效验是否有 符合的 评价记录 以供 计算分数
                 bool isExist = Container.Instance.Resolve<EvaRecordService>().Count(
-                    Expression.Eq("EvaluateTask.ID", evaTaskId)
+                    Expression.Eq("EvaluateTask.ID", evaTaskId),
+                    Expression.Eq("Teacher.ID", teacherId)
                  ) >= 1;
                 if (!isExist)
                 {
@@ -173,23 +207,21 @@ namespace WebUI.Areas.Admin.Controllers
                 }
                 #endregion
 
-                IList<EvaRecord> allRelativeEvaRecord = Container.Instance.Resolve<EvaRecordService>().Query(new List<ICriterion>
+                IList<EvaRecord> allRelativeRecord = Container.Instance.Resolve<EvaRecordService>().Query(new List<ICriterion>
                 {
-                    Expression.Eq("EvaluateTask.ID", evaTaskId)
+                    Expression.And(
+                        Expression.Eq("EvaluateTask.ID", evaTaskId),
+                        Expression.Eq("Teacher.ID", teacherId)
+                    )
                 });
 
-                //IList<EmployeeInfo> allTeacher = Container.Instance.Resolve<EmployeeInfoService>().GetAll();
-                IList<EmployeeInfo> allTeacher = allRelativeEvaRecord.Select(m => m.Teacher).ToList();
-                //IList<NormType> allNormType = Container.Instance.Resolve<NormTypeService>().GetAll();
-                IList<NormType> allNormType = allRelativeEvaRecord.Select(m => m.NormType).ToList();
-                //EvaTask EvaTask = Container.Instance.Resolve<EvaTaskService>().GetEntity(evaTaskId);
-                EvaTask evaTask = new EvaTask { ID = evaTaskId };
-                foreach (var teacher in allTeacher)
+                EvaTask evaTask = new EvaTask() { ID = evaTaskId };
+                EmployeeInfo teacher = new EmployeeInfo() { ID = teacherId };
+                IList<NormType> allNormType = allRelativeRecord.Select(m => m.NormType).Distinct().ToList();
+
+                foreach (var normType in allNormType)
                 {
-                    foreach (var normType in allNormType)
-                    {
-                        Caculate(evaTask, normType, teacher);
-                    }
+                    Caculate(evaTask, normType, teacher);
                 }
 
                 TempData["message"] = "计算成功";
@@ -201,6 +233,8 @@ namespace WebUI.Areas.Admin.Controllers
             }
         }
         #endregion
+
+
 
 
 
@@ -346,7 +380,32 @@ namespace WebUI.Areas.Admin.Controllers
         }
         #endregion
 
+        #region 评价结果视图项比较器
+        sealed class EvaResultVMItemCompare : IEqualityComparer<EvaResultVMItem>
+        {
+            public bool Equals(EvaResultVMItem x, EvaResultVMItem y)
+            {
+                if (x == null || y == null)
+                {
+                    return false;
+                }
+                if (x.EvaTask.ID == y.EvaTask.ID && x.EvaedEmployee.ID == y.EvaedEmployee.ID)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            public int GetHashCode(EvaResultVMItem obj)
+            {
+                throw new NotImplementedException();
+            }
+        }
         #endregion
+
+        #endregion
+
 
 
 
