@@ -109,9 +109,6 @@
     <Reference Include="NHibernate.Search">
       <HintPath>..\..\libs\NHibernate.Search.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI">
-      <HintPath>..\..\libs\NPOI.dll</HintPath>
-    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -8902,6 +8899,7 @@
     <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="GlobalShared\Models\" />
     <Folder Include="Models\" />
+    <Folder Include="Resources\Excels\" />
     <Folder Include="Templates\" />
     <Folder Include="Upload\TemplateInstallZip\" />
     <Folder Include="Views\Errors\" />
