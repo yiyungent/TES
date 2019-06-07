@@ -66,6 +66,31 @@
 		}
 		// end 搜索
 
+		// start 导出 excel
+		function exportExcel() {
+			var selectedVal = $('#SelectListForEvaTask').val();
+			if (selectedVal == 0) {
+				showMessage('请选择评价任务', -1);
+				return;
+			}
+			$('#js-btn-export-excel').html('导出中...');
+			$.ajax({
+				url: "/Admin/EvaResult/ExportExcel",
+				type: "post",
+				data: { evaTaskId: selectedVal },
+				dataType: "json",
+				success: function (data) {
+					$('#js-btn-export-excel').html('导出评价结果(Excel)');
+					if (data.code <= 0) {
+						showMessage(data.message, -1)
+					} else {
+						$('#js-file-export-excel').css('display', 'block').find('a').attr('href', data.fileUrl);
+					}
+				}
+			});
+		}
+		// emd 导出 excel
+
 		var pview;
 		$(function () {
 			pview = new PView();
@@ -87,6 +112,10 @@
 				$('#js-search-type').html(typeName);
 			});
 			// end 搜索
+
+			// start 导出 excel
+			$('#js-btn-export-excel').on('click', exportExcel);
+			// end 导出 excel
 		});
 	</script>
 	@if (TempData["message"] != null)
@@ -187,13 +216,29 @@
 	<!-- end .box-body -->
 	<!-- start .box-footer -->
 	<div class="box-footer clearfix">
-		<!-- start 分页 -->
-		<div id="js-page" pview="pages">
-				<ul class="pagination pull-right" pview-btn-group pview-targets="table,pages">
-					@Html.PageLinks(Model.PageInfo, i => Url.Action("Index", new { pageIndex = i, q = Request["q"], type = Request["type"] }))
-				</ul>
+		<div class="row">
+			<div class="col-xs-2">
+				<div class="form-group" style="width: 160px;">
+					<label>评价任务</label>
+					@Html.DropDownList("SelectListForEvaTask", (IList<SelectListItem>)ViewBag.SelectListForEvaTask, new { @class = "form-control" })
+				</div>
 			</div>
-		<!-- end 分页 -->
+			<div class="col-xs-4">
+				<div class="btn-group" style="padding-top: 24px;">
+					<button id="js-btn-export-excel" class="btn btn-primary">导出评价结果(Excel)</button>
+					<span id="js-file-export-excel" style="display: none;transform: translate(170px,-26px);"><a href="#" target="_blank">立即下载Excel</a></span>
+				</div>
+			</div>
+			<div class="col-xs-6">
+				<!-- start 分页 -->
+				<div id="js-page" pview="pages">
+					<ul class="pagination pull-right" pview-btn-group pview-targets="table,pages">
+						@Html.PageLinks(Model.PageInfo, i => Url.Action("Index", new { pageIndex = i, q = Request["q"], type = Request["type"] }))
+					</ul>
+				</div>
+				<!-- end 分页 -->
+			</div>
+		</div>
 	</div>
 	<!-- end .box-footer -->
 </div>

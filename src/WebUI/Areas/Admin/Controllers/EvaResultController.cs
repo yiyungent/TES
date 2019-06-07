@@ -99,7 +99,7 @@ namespace WebUI.Areas.Admin.Controllers
             // 表头：需要展示哪些 评价类型 的 明细分数
             IList<NormType> allNormType = Container.Instance.Resolve<NormTypeService>().GetAll().OrderBy(m => m.SortCode).ToList();
             ViewBag.AllNormType = allNormType;
-
+            ViewBag.SelectListForEvaTask = InitSelectListForEvaTask(0, allEvaTask);
             TempData["RedirectUrl"] = Request.RawUrl;
 
             #endregion
@@ -323,8 +323,6 @@ namespace WebUI.Areas.Admin.Controllers
                 return Json(new { code = -1, message = "导出失败", fileUrl = "" }, JsonRequestBehavior.AllowGet);
             }
         }
-
-
         #endregion
 
 
