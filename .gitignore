@@ -262,3 +262,4 @@ paket-files/
 __pycache__/
 *.pyc
 /src/WebUI/Properties/PublishProfiles
+/src/WebUI/App_Data/Plugins
