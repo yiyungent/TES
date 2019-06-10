@@ -23,7 +23,8 @@ namespace WebUI.Areas.Account
             context.MapRoute(
                 "Account_default",
                 "Account/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { action = "Index", id = UrlParameter.Optional },
+                namespaces: new string[] { "WebUI.Areas.Account.Controllers" }
             );
         }
     }

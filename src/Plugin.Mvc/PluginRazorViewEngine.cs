@@ -77,6 +77,13 @@ namespace Plugin.Mvc
         /// <returns></returns>
         public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
+            #region 如果不是插件，则放弃，本视图引擎只负责插件视图，让下一个视图引擎搜索
+            if (!controllerContext.RouteData.Values.ContainsKey("pluginName"))
+            {
+                return new ViewEngineResult((IEnumerable<string>)new string[] { "" });
+            } 
+            #endregion
+
             string areaName = GetAreaName(controllerContext.RouteData);
          //   UpdatePath(areaName);
             UpdateRouteData(areaName, controllerContext);
@@ -89,6 +96,13 @@ namespace Plugin.Mvc
 
         public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
+            #region  如果不是插件，则放弃，本视图引擎只负责插件视图，让下一个视图引擎搜索
+            if (!controllerContext.RouteData.Values.ContainsKey("pluginName"))
+            {
+                return new ViewEngineResult((IEnumerable<string>)new string[] { "" });
+            } 
+            #endregion
+
             string areaName = GetAreaName(controllerContext.RouteData);
         //    UpdatePath(areaName);
             UpdateRouteData(areaName, controllerContext);

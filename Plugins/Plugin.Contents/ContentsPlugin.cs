@@ -33,7 +33,7 @@ namespace Plugin.Contents
             route.DataTokens["area"] = this.Name;//设置area的值为Plugin.Name
 
             //route.DataTokens["area"] = this.Name;
-            //route.DataTokens["pluginName"] = this.Name; 
+            route.DataTokens["pluginName"] = this.Name;
         }
 
         public void Unload()

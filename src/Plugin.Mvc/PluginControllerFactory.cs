@@ -25,7 +25,7 @@ namespace Plugin.Mvc
             if (requestContext.RouteData.Values.ContainsKey("pluginName"))
             {
                 pluginName = requestContext.RouteData.GetRequiredString("pluginName");
-                controllerType = this.GetControllerType(pluginName,controllerName);
+                controllerType = this.GetControllerType(pluginName, controllerName);
             }
 
             if (controllerType == null)
@@ -41,11 +41,13 @@ namespace Plugin.Mvc
         /// </summary>
         /// <param name="controllerName">控制器名称。</param>
         /// <returns>控制器类型。</returns>
-        private Type GetControllerType(string pluginName,string controllerName)
+        private Type GetControllerType(string pluginName, string controllerName)
         {
             var plugin = Plugin.Framework.PluginManager.GetPlugin(pluginName);
             var controlName = controllerName + "Controller";
-            var control = plugin.Assembly.GetTypes().FirstOrDefault(p => p.Name == controlName); ;
+            //var control = plugin.Assembly.GetTypes().FirstOrDefault(p => p.Name == controlName); ;
+            // 注意：有时 controllerName 首字母小写，所以进行忽略大小写比较，不然查不到
+            var control = plugin.Assembly.GetTypes().FirstOrDefault(p => p.Name.ToLower() == controlName.ToLower());
             if (control != null)
             {
                 return control;
