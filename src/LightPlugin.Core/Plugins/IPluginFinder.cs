@@ -30,7 +30,7 @@ namespace LightPlugin.Core.Plugins
         /// <param name="group">Filter by plugin group; pass null to load all records</param>
         /// <returns>Plugins</returns>
         IEnumerable<T> GetPlugins<T>(LoadPluginsMode loadMode = LoadPluginsMode.InstalledOnly,
-            int storeId = 0, string group = null) where T : class, IPlugin;
+            string group = null) where T : class, IPlugin;
 
         /// <summary>
         /// Get plugin descriptors
@@ -40,7 +40,7 @@ namespace LightPlugin.Core.Plugins
         /// <param name="group">Filter by plugin group; pass null to load all records</param>
         /// <returns>Plugin descriptors</returns>
         IEnumerable<PluginDescriptor> GetPluginDescriptors(LoadPluginsMode loadMode = LoadPluginsMode.InstalledOnly,
-            int storeId = 0, string group = null);
+            string group = null);
 
         /// <summary>
         /// Get plugin descriptors
@@ -51,7 +51,7 @@ namespace LightPlugin.Core.Plugins
         /// <param name="group">Filter by plugin group; pass null to load all records</param>
         /// <returns>Plugin descriptors</returns>
         IEnumerable<PluginDescriptor> GetPluginDescriptors<T>(LoadPluginsMode loadMode = LoadPluginsMode.InstalledOnly,
-            int storeId = 0, string group = null) where T : class, IPlugin;
+            string group = null) where T : class, IPlugin;
 
         /// <summary>
         /// Get a plugin descriptor by its system name

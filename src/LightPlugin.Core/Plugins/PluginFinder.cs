@@ -76,7 +76,7 @@ namespace LightPlugin.Core.Plugins
         }
 
         #endregion
-        
+
         #region Methods
 
         /// <summary>
@@ -117,10 +117,10 @@ namespace LightPlugin.Core.Plugins
         /// <param name="storeId">Load records allowed only in a specified store; pass 0 to load all records</param>
         /// <param name="group">Filter by plugin group; pass null to load all records</param>
         /// <returns>Plugins</returns>
-        public virtual IEnumerable<T> GetPlugins<T>(LoadPluginsMode loadMode = LoadPluginsMode.InstalledOnly, 
-            int storeId = 0, string group = null) where T : class, IPlugin
+        public virtual IEnumerable<T> GetPlugins<T>(LoadPluginsMode loadMode = LoadPluginsMode.InstalledOnly,
+             string group = null) where T : class, IPlugin
         {
-            return GetPluginDescriptors<T>(loadMode, storeId, group).Select(p => p.Instance<T>());
+            return GetPluginDescriptors<T>(loadMode, group).Select(p => p.Instance<T>());
         }
 
         /// <summary>
@@ -131,12 +131,13 @@ namespace LightPlugin.Core.Plugins
         /// <param name="group">Filter by plugin group; pass null to load all records</param>
         /// <returns>Plugin descriptors</returns>
         public virtual IEnumerable<PluginDescriptor> GetPluginDescriptors(LoadPluginsMode loadMode = LoadPluginsMode.InstalledOnly,
-            int storeId = 0, string group = null)
+            string group = null)
         {
             //ensure plugins are loaded
             EnsurePluginsAreLoaded();
 
-            return _plugins.Where(p => CheckLoadMode(p, loadMode) && AuthenticateStore(p, storeId) && CheckGroup(p, group));
+            //return _plugins.Where(p => CheckLoadMode(p, loadMode) && AuthenticateStore(p, storeId) && CheckGroup(p, group));
+            return _plugins.Where(p => CheckLoadMode(p, loadMode));
         }
 
         /// <summary>
@@ -148,10 +149,10 @@ namespace LightPlugin.Core.Plugins
         /// <param name="group">Filter by plugin group; pass null to load all records</param>
         /// <returns>Plugin descriptors</returns>
         public virtual IEnumerable<PluginDescriptor> GetPluginDescriptors<T>(LoadPluginsMode loadMode = LoadPluginsMode.InstalledOnly,
-            int storeId = 0, string group = null) 
+             string group = null)
             where T : class, IPlugin
         {
-            return GetPluginDescriptors(loadMode, storeId, group)
+            return GetPluginDescriptors(loadMode, group)
                 .Where(p => typeof(T).IsAssignableFrom(p.PluginType));
         }
 
@@ -180,7 +181,7 @@ namespace LightPlugin.Core.Plugins
             return GetPluginDescriptors<T>(loadMode)
                 .SingleOrDefault(p => p.SystemName.Equals(systemName, StringComparison.InvariantCultureIgnoreCase));
         }
-        
+
         /// <summary>
         /// Reload plugins
         /// </summary>
