@@ -8927,18 +8927,6 @@
       <Project>{133de7b4-457d-46b4-94ed-3ca0379644ae}</Project>
       <Name>Framework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Plugin.Framework\Plugin.Framework.csproj">
-      <Project>{2c48dab6-17f7-4540-aa56-ddfb657ea3e9}</Project>
-      <Name>Plugin.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Plugin.Interfaces\Plugin.Interfaces.csproj">
-      <Project>{048955cf-5cf3-45e6-864a-8827dc737417}</Project>
-      <Name>Plugin.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Plugin.Mvc\Plugin.Mvc.csproj">
-      <Project>{0cda0667-3700-412f-93c4-c1e00cfab012}</Project>
-      <Name>Plugin.Mvc</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Service\Service.csproj">
       <Project>{f6e2082c-eb59-4fe6-85bb-ca618b85314e}</Project>
       <Name>Service</Name>
