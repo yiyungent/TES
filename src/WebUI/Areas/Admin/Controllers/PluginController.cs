@@ -89,12 +89,8 @@ namespace WebUI.Areas.Admin.Controllers
 
         #region Methods
 
+        #region 列表
         public ActionResult Index()
-        {
-            return RedirectToAction("List");
-        }
-
-        public ActionResult List()
         {
             var viewModel = new PluginListViewModel();
             var allPluginDescriptor = _pluginFinder.GetPluginDescriptors(LoadPluginsMode.All);
@@ -104,7 +100,8 @@ namespace WebUI.Areas.Admin.Controllers
             }
 
             return View(viewModel);
-        }
+        } 
+        #endregion
 
         public ActionResult Install(string systemName)
         {
@@ -129,8 +126,9 @@ namespace WebUI.Areas.Admin.Controllers
             {
             }
 
-            return RedirectToAction("List");
+            return RedirectToAction("Index");
         }
+
         public ActionResult Uninstall(string systemName)
         {
             try
@@ -154,14 +152,14 @@ namespace WebUI.Areas.Admin.Controllers
             {
             }
 
-            return RedirectToAction("List");
+            return RedirectToAction("Index");
         }
 
         public ActionResult ReloadList()
         {
             //restart application
             _webHelper.RestartAppDomain();
-            return RedirectToAction("List");
+            return RedirectToAction("Index");
         }
 
         //edit

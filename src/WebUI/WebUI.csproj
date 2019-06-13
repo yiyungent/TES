@@ -8288,7 +8288,7 @@
     <Content Include="Areas\Admin\Views\EvaCondition\Index.cshtml" />
     <Content Include="Areas\Account\Views\Shared\_LayoutMain.cshtml" />
     <Content Include="Areas\Account\Views\Login\FindPassword.cshtml" />
-    <Content Include="Areas\Admin\Views\Plugin\List.cshtml" />
+    <Content Include="Areas\Admin\Views\Plugin\Index.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
