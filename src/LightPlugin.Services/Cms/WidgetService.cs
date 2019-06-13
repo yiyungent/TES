@@ -28,9 +28,11 @@ namespace LightPlugin.Services.Cms
         public WidgetService(IPluginFinder pluginFinder,
             WidgetSettings widgetSettings)
         {
-            this._pluginFinder = new PluginFinder();
-            this._widgetSettings = new WidgetSettings();
-            _widgetSettings.ActiveWidgetSystemNames.Add("Widgets.NivoSlider");
+            this._pluginFinder = pluginFinder;
+            this._widgetSettings = widgetSettings;
+
+            var allWidgetSystemName = LoadAllWidgets().Select(m => m.PluginDescriptor.SystemName);
+            _widgetSettings.ActiveWidgetSystemNames.AddRange(allWidgetSystemName);
         }
 
         #endregion
@@ -40,11 +42,10 @@ namespace LightPlugin.Services.Cms
         /// <summary>
         /// Load active widgets
         /// </summary>
-        /// <param name="storeId">Load records allowed only in a specified store; pass 0 to load all records</param>
         /// <returns>Widgets</returns>
-        public virtual IList<IWidgetPlugin> LoadActiveWidgets(int storeId = 0)
+        public virtual IList<IWidgetPlugin> LoadActiveWidgets()
         {
-            return LoadAllWidgets(storeId)
+            return LoadAllWidgets()
                    .Where(x => _widgetSettings.ActiveWidgetSystemNames.Contains(x.PluginDescriptor.SystemName, StringComparer.InvariantCultureIgnoreCase))
                    .ToList();
         }
@@ -53,14 +54,13 @@ namespace LightPlugin.Services.Cms
         /// Load active widgets
         /// </summary>
         /// <param name="widgetZone">Widget zone</param>
-        /// <param name="storeId">Load records allowed only in a specified store; pass 0 to load all records</param>
         /// <returns>Widgets</returns>
-        public virtual IList<IWidgetPlugin> LoadActiveWidgetsByWidgetZone(string widgetZone, int storeId = 0)
+        public virtual IList<IWidgetPlugin> LoadActiveWidgetsByWidgetZone(string widgetZone)
         {
             if (String.IsNullOrWhiteSpace(widgetZone))
                 return new List<IWidgetPlugin>();
 
-            return LoadActiveWidgets(storeId)
+            return LoadActiveWidgets()
                    .Where(x => x.GetWidgetZones().Contains(widgetZone, StringComparer.InvariantCultureIgnoreCase))
                    .ToList();
         }
@@ -82,9 +82,8 @@ namespace LightPlugin.Services.Cms
         /// <summary>
         /// Load all widgets
         /// </summary>
-        /// <param name="storeId">Load records allowed only in a specified store; pass 0 to load all records</param>
         /// <returns>Widgets</returns>
-        public virtual IList<IWidgetPlugin> LoadAllWidgets(int storeId = 0)
+        public virtual IList<IWidgetPlugin> LoadAllWidgets()
         {
             return _pluginFinder.GetPlugins<IWidgetPlugin>().ToList();
         }

@@ -1,5 +1,6 @@
 ﻿@using Domain
 @using Framework.Models
+@using LightPlugin.Web.Framework
 @model CurrentAccountModel
 @{
 	ViewBag.Title = "教学评价系统 - TES";
@@ -18,6 +19,11 @@
 	<div class="row">
 		<div class="col-md-12">
 			@{ Html.RenderAction("ProfileBoxPartial", "Control", new { area = "Account", userName = currentUserInfo.UserName }); }
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			@Html.Widget("home_page_bottom")
 		</div>
 	</div>
 </section>

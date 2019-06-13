@@ -64,7 +64,7 @@ namespace WebUI.Controllers
             //});
             var model = new List<RenderWidgetModel>();
 
-            var widgets = _widgetService.LoadActiveWidgetsByWidgetZone(widgetZone, 0);
+            var widgets = _widgetService.LoadActiveWidgetsByWidgetZone(widgetZone);
             foreach (var widget in widgets)
             {
                 var widgetModel = new RenderWidgetModel();
