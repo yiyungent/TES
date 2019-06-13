@@ -1,0 +1,71 @@
+﻿@using WebUI.Areas.Admin.Models.PluginVM
+@model PluginListViewModel
+@{
+	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml"; ;
+}
+
+<!-- start 提示框 -->
+@{ Html.RenderPartial("_MessagePartial"); }
+<!-- end 提示框 -->
+<!-- start 切换页头 -->
+<div class="row" style="padding-bottom: 24px;" pview="header">
+	<div class="col-md-12">
+
+	</div>
+</div>
+<!-- end 切换页头 -->
+<!-- start 模板列表 -->
+<div class="row" pview="list">
+	<div class="col-xs-12">
+
+		<div class="table-responsive no-padding">
+			<table class="table table-hover">
+				<tr>
+					<th>插件系统名称</th>
+					<th>插件自定义名称</th>
+					<th>所在组</th>
+					<th>版本</th>
+					<th>作者</th>
+					<th>支持版本</th>
+					<th>操作</th>
+				</tr>
+				@foreach (var item in Model.List)
+				{
+					<tr>
+						<td>@item.SystemName</td>
+						<td>@item.FriendlyName</td>
+						<td>@item.Group</td>
+						<td>@item.Version</td>
+						<td>@item.Author</td>
+						<td>
+							@foreach (var version in item.SupportedVersions)
+							{
+								<span class="label label-info">@version</span>
+							}
+						</td>
+						<td>
+							<div class="btn-group" pview-btn-group pview-targets="list">
+								@if (item.Installed)
+								{
+									<a class="btn btn-primary" href="@Url.Content("~/Admin/Plugin/Uninstall/")?systemName=@item.SystemName">卸载</a>
+								}
+								else
+								{
+									<a class="btn btn-warning" href="@Url.Content("~/Admin/Plugin/Install/")?systemName=@item.SystemName">安装</a>
+								}
+							</div>
+						</td>
+					</tr>
+				}
+			</table>
+		</div>
+	</div>
+	<!-- start 分页 -->
+	<div id="js-page" class="col-xs-12">
+		<ul class="pagination pull-right" pview-btn-group pview-targets="header,list">
+			@*@Html.PageLinks(Model.PageInfo, i => Url.Action("Index", new { pageIndex = i, q = Request["q"], type = Request["type"] }))*@
+		</ul>
+	</div>
+	<!-- end 分页 -->
+</div>
+<!-- end 模板列表 -->

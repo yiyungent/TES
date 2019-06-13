@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=3.3.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4, Version=3.3.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.ActiveRecord">
       <HintPath>..\..\libs\Castle.ActiveRecord.dll</HintPath>
     </Reference>
@@ -8282,6 +8288,7 @@
     <Content Include="Areas\Admin\Views\EvaCondition\Index.cshtml" />
     <Content Include="Areas\Account\Views\Shared\_LayoutMain.cshtml" />
     <Content Include="Areas\Account\Views\Login\FindPassword.cshtml" />
+    <Content Include="Areas\Admin\Views\Plugin\List.cshtml" />
     <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
@@ -8334,6 +8341,7 @@
     <Compile Include="Areas\Admin\Controllers\DepartmentController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeDutyController.cs" />
     <Compile Include="Areas\Admin\Controllers\EvaConditionController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PluginController.cs" />
     <Compile Include="Areas\Admin\Controllers\TeacherEvaController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\EvaResultController.cs" />
@@ -8360,6 +8368,8 @@
     <Compile Include="Areas\Admin\Models\EvaTaskVM\EvaTaskForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\NormTypeVM\NormTypeForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />
+    <Compile Include="Areas\Admin\Models\PluginVM\PluginListViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\PluginVM\PluginModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\StudentInfoVM\StudentInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ThemeTemplateVM\OpenCloseItem.cs" />
@@ -8378,6 +8388,7 @@
     <Compile Include="Controllers\WSController.cs" />
     <Compile Include="Extensions\DateTimeExt.cs" />
     <Compile Include="Extensions\DomainExt.cs" />
+    <Compile Include="Extensions\MappingExtensions.cs" />
     <Compile Include="Extensions\ModelStateDicExt.cs" />
     <Compile Include="Extensions\RequestExt.cs" />
     <Compile Include="Global.asax.cs">
@@ -8389,9 +8400,11 @@
     <Compile Include="HtmlHelpers\CollapseDept.cs" />
     <Compile Include="HtmlHelpers\CollapseMenu.cs" />
     <Compile Include="HtmlHelpers\CollapseNormTarget.cs" />
+    <Compile Include="Infrastructure\AutoMapperStartupTask.cs" />
     <Compile Include="MessageHubs\NotificationHub.cs" />
     <Compile Include="MessageHubs\NotificationManager.cs" />
     <Compile Include="Models\Cms\RenderWidgetModel.cs" />
+    <Compile Include="Models\Cms\WidgetModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -8986,6 +8999,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
+  <Import Project="..\..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets" Condition="Exists('..\..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
