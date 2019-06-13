@@ -36,76 +36,82 @@ namespace WebUI.Controllers
 
         [ChildActionOnly]
         public ActionResult WidgetsByZone(string widgetZone, object additionalData = null)
-
-
         {
-            var cacheKey = string.Format("Nop.pres.widget-{0}-{1}", 1, widgetZone);
-            //var cacheModel = _cacheManager.Get(cacheKey, () =>
-            //{
-            //    //model
-            //    var model = new List<RenderWidgetModel>();
-
-            //    var widgets = _widgetService.LoadActiveWidgetsByWidgetZone(widgetZone);
-            //    foreach (var widget in widgets)
-            //    {
-            //        var widgetModel = new RenderWidgetModel();
-
-            //        string actionName;
-            //        string controllerName;
-            //        RouteValueDictionary routeValues;
-            //        widget.GetDisplayWidgetRoute(widgetZone, out actionName, out controllerName, out routeValues);
-            //        widgetModel.ActionName = actionName;
-            //        widgetModel.ControllerName = controllerName;
-            //        widgetModel.RouteValues = routeValues;
-
-            //        model.Add(widgetModel);
-            //    }
-            //    return model;
-            //});
-            var model = new List<RenderWidgetModel>();
-
-            var widgets = _widgetService.LoadActiveWidgetsByWidgetZone(widgetZone);
-            foreach (var widget in widgets)
+            try
             {
-                var widgetModel = new RenderWidgetModel();
+                var cacheKey = string.Format("Nop.pres.widget-{0}-{1}", 1, widgetZone);
+                //var cacheModel = _cacheManager.Get(cacheKey, () =>
+                //{
+                //    //model
+                //    var model = new List<RenderWidgetModel>();
 
-                string actionName;
-                string controllerName;
-                RouteValueDictionary routeValues;
-                widget.GetDisplayWidgetRoute(widgetZone, out actionName, out controllerName, out routeValues);
-                widgetModel.ActionName = actionName;
-                widgetModel.ControllerName = controllerName;
-                widgetModel.RouteValues = routeValues;
+                //    var widgets = _widgetService.LoadActiveWidgetsByWidgetZone(widgetZone);
+                //    foreach (var widget in widgets)
+                //    {
+                //        var widgetModel = new RenderWidgetModel();
 
-                model.Add(widgetModel);
-            }
+                //        string actionName;
+                //        string controllerName;
+                //        RouteValueDictionary routeValues;
+                //        widget.GetDisplayWidgetRoute(widgetZone, out actionName, out controllerName, out routeValues);
+                //        widgetModel.ActionName = actionName;
+                //        widgetModel.ControllerName = controllerName;
+                //        widgetModel.RouteValues = routeValues;
 
-            //no data?
-            if (model.Count == 0)
-                return Content("");
+                //        model.Add(widgetModel);
+                //    }
+                //    return model;
+                //});
+                var model = new List<RenderWidgetModel>();
 
-            //"RouteValues" property of widget models depends on "additionalData".
-            //We need to clone the cached model before modifications (the updated one should not be cached)
-            var clonedModel = new List<RenderWidgetModel>();
-            foreach (var widgetModel in model)
-            {
-                var clonedWidgetModel = new RenderWidgetModel();
-                clonedWidgetModel.ActionName = widgetModel.ActionName;
-                clonedWidgetModel.ControllerName = widgetModel.ControllerName;
-                if (widgetModel.RouteValues != null)
-                    clonedWidgetModel.RouteValues = new RouteValueDictionary(widgetModel.RouteValues);
-
-                if (additionalData != null)
+                var widgets = _widgetService.LoadActiveWidgetsByWidgetZone(widgetZone);
+                foreach (var widget in widgets)
                 {
-                    if (clonedWidgetModel.RouteValues == null)
-                        clonedWidgetModel.RouteValues = new RouteValueDictionary();
-                    clonedWidgetModel.RouteValues.Add("additionalData", additionalData);
+                    var widgetModel = new RenderWidgetModel();
+
+                    string actionName;
+                    string controllerName;
+                    RouteValueDictionary routeValues;
+                    widget.GetDisplayWidgetRoute(widgetZone, out actionName, out controllerName, out routeValues);
+                    widgetModel.ActionName = actionName;
+                    widgetModel.ControllerName = controllerName;
+                    widgetModel.RouteValues = routeValues;
+
+                    model.Add(widgetModel);
                 }
 
-                clonedModel.Add(clonedWidgetModel);
-            }
+                //no data?
+                if (model.Count == 0)
+                    return Content("");
 
-            return PartialView(clonedModel);
+                //"RouteValues" property of widget models depends on "additionalData".
+                //We need to clone the cached model before modifications (the updated one should not be cached)
+                var clonedModel = new List<RenderWidgetModel>();
+                foreach (var widgetModel in model)
+                {
+                    var clonedWidgetModel = new RenderWidgetModel();
+                    clonedWidgetModel.ActionName = widgetModel.ActionName;
+                    clonedWidgetModel.ControllerName = widgetModel.ControllerName;
+                    if (widgetModel.RouteValues != null)
+                        clonedWidgetModel.RouteValues = new RouteValueDictionary(widgetModel.RouteValues);
+
+                    if (additionalData != null)
+                    {
+                        if (clonedWidgetModel.RouteValues == null)
+                            clonedWidgetModel.RouteValues = new RouteValueDictionary();
+                        clonedWidgetModel.RouteValues.Add("additionalData", additionalData);
+                    }
+
+                    clonedModel.Add(clonedWidgetModel);
+                }
+
+                return PartialView(clonedModel);
+            }
+            catch (System.Exception ex)
+            {
+
+            }
+            return null;
         }
 
         #endregion
