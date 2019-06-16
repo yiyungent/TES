@@ -271,6 +271,15 @@ namespace WebUI.Controllers
                     ParentMenu = parentMenu,
                     SortCode = 60,
                 });
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "插件管理",
+                    ControllerName = "Plugin",
+                    ActionName = "Index",
+                    AreaName = "Admin",
+                    ParentMenu = parentMenu,
+                    SortCode = 70,
+                });
                 #endregion
 
                 #region 业务管理的二级菜单

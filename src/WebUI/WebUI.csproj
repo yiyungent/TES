@@ -8289,8 +8289,7 @@
     <Content Include="Areas\Account\Views\Shared\_LayoutMain.cshtml" />
     <Content Include="Areas\Account\Views\Login\FindPassword.cshtml" />
     <Content Include="Areas\Admin\Views\Plugin\Index.cshtml" />
-    <None Include="Properties\PublishProfiles\tesdemo - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\tesdemo - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Demos\NotificationDemo.html" />
     <Content Include="images\scripts\detect-c.png" />
@@ -8914,6 +8913,7 @@
     <Folder Include="Areas\Account\Views\Control\" />
     <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="GlobalShared\Models\" />
+    <Folder Include="Plugins\" />
     <Folder Include="Resources\Excels\" />
     <Folder Include="Templates\" />
     <Folder Include="Upload\TemplateInstallZip\" />
