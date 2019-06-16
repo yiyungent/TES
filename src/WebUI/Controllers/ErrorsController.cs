@@ -50,5 +50,18 @@ namespace WebUI.Controllers
 
             return View("_ErrorRedirect", model);
         }
+
+        /// <summary>
+        /// page not found
+        /// </summary>
+        public ActionResult PageNotFound()
+        {
+            this.Response.StatusCode = 404;
+            this.Response.TrySkipIisCustomErrors = true;
+            // 不知道为什么，不加这句默认会网页乱码，浏览器切换字符集又会显示为网页源代码
+            this.Response.ContentType = "text/html";
+
+            return View();
+        }
     }
 }

@@ -10,6 +10,8 @@ using Castle.ActiveRecord.Framework;
 using Core;
 using Domain;
 using Framework.Config;
+using Framework.Common;
+using WebUI.Controllers;
 
 namespace WebUI
 {
@@ -38,6 +40,33 @@ namespace WebUI
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             FrameworkConfig.Register();
+        }
+
+        protected void Application_Error(Object sender, EventArgs e)
+        {
+            var exception = Server.GetLastError();
+
+            //process 404 HTTP errors
+            var httpException = exception as HttpException;
+            if (httpException != null && httpException.GetHttpCode() == 404)
+            {
+                var webHelper = new WebHelper(new HttpContextWrapper(Context));
+                if (!webHelper.IsStaticResource(this.Request))
+                {
+                    Response.Clear();
+                    Server.ClearError();
+                    Response.TrySkipIisCustomErrors = true;
+
+                    // Call target Controller and pass the routeData.
+                    IController errorController = new ErrorsController();
+
+                    var routeData = new RouteData();
+                    routeData.Values.Add("controller", "Errors");
+                    routeData.Values.Add("action", "PageNotFound");
+
+                    errorController.Execute(new RequestContext(new HttpContextWrapper(Context), routeData));
+                }
+            }
         }
     }
 }
