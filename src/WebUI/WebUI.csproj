@@ -8944,18 +8944,6 @@
       <Project>{133de7b4-457d-46b4-94ed-3ca0379644ae}</Project>
       <Name>Framework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LightPlugin.Core\LightPlugin.Core.csproj">
-      <Project>{d80d8c64-27cf-468e-b83b-9c38fd06a320}</Project>
-      <Name>LightPlugin.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LightPlugin.Services\LightPlugin.Services.csproj">
-      <Project>{9cf89103-eeef-4f61-bded-fa4b25edadde}</Project>
-      <Name>LightPlugin.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LightPlugin.Web.Framework\LightPlugin.Web.Framework.csproj">
-      <Project>{503c6ccc-9e59-4dca-9df6-184566a3ebc2}</Project>
-      <Name>LightPlugin.Web.Framework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Service\Service.csproj">
       <Project>{f6e2082c-eb59-4fe6-85bb-ca618b85314e}</Project>
       <Name>Service</Name>
