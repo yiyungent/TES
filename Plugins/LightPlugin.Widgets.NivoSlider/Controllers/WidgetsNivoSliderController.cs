@@ -17,6 +17,7 @@ namespace LightPlugin.Widgets.NivoSlider.Controllers
         [ChildActionOnly]
         public ActionResult PublicInfo(string widgetZone, object additionalData = null)
         {
+            
 
             return View("~/Plugins/Widgets.NivoSlider/Views/WidgetsNivoSlider/PublicInfo.cshtml");
         }
