@@ -12,6 +12,8 @@ using Domain;
 using Framework.Config;
 using Framework.Common;
 using WebUI.Controllers;
+using PluginHub.Infrastructure;
+using PluginHub.Web.Mvc.Routes;
 
 namespace WebUI
 {
@@ -35,11 +37,26 @@ namespace WebUI
             }
             #endregion
 
-            AreaRegistration.RegisterAllAreas();
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            RegisterRoutes(RouteTable.Routes);
+
+            //initialize engine context
+            EngineContext.Initialize(false);
+
+            // Web Api
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             FrameworkConfig.Register();
+        }
+
+        public static void RegisterRoutes(RouteCollection routes)
+        {
+            AreaRegistration.RegisterAllAreas();
+
+            //register custom routes (plugins, etc)
+            var routePublisher = EngineContext.Current.Resolve<IRoutePublisher>();
+            routePublisher.RegisterRoutes(routes);
+
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
 
         protected void Application_Error(Object sender, EventArgs e)

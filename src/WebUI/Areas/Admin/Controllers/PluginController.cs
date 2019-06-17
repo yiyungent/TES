@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
-using LightPlugin.Core;
-using LightPlugin.Core.Domain.Cms;
-using LightPlugin.Core.Plugins;
-using LightPlugin.Services.Cms;
+using System.Web.Routing;
+using PluginHub;
+using PluginHub.Domain.Cms;
+using PluginHub.Infrastructure;
+using PluginHub.Plugins;
+using PluginHub.Services.Cms;
 using WebUI.Areas.Admin.Models.PluginVM;
 using WebUI.Extensions;
 
@@ -27,11 +28,8 @@ namespace WebUI.Areas.Admin.Controllers
 
         public PluginController()
         {
-            //this._pluginFinder = pluginFinder;
-            this._pluginFinder = new PluginFinder();
-            //this._webHelper = webHelper;
-            this._webHelper = new WebHelper(HttpContext);
-            //this._widgetSettings = widgetSettings;
+            this._pluginFinder = EngineContext.Current.Resolve<IPluginFinder>();
+            this._webHelper = EngineContext.Current.Resolve<IWebHelper>();
             this._widgetSettings = new WidgetSettings();
         }
 
@@ -89,6 +87,8 @@ namespace WebUI.Areas.Admin.Controllers
 
         #region Methods
 
+        #region Methods
+
         #region 列表
         public ActionResult Index()
         {
@@ -100,9 +100,10 @@ namespace WebUI.Areas.Admin.Controllers
             }
 
             return View(viewModel);
-        } 
+        }
         #endregion
 
+        #region 安装
         public ActionResult Install(string systemName)
         {
             try
@@ -128,7 +129,9 @@ namespace WebUI.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region 卸载
         public ActionResult Uninstall(string systemName)
         {
             try
@@ -154,87 +157,50 @@ namespace WebUI.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
         }
+        #endregion
 
+        #region 重新加载
         public ActionResult ReloadList()
         {
             //restart application
             _webHelper.RestartAppDomain();
             return RedirectToAction("Index");
         }
+        #endregion
 
-        //edit
-        public ActionResult EditPopup(string systemName)
+        #region 配置
+        [HttpGet]
+        public ActionResult Configure(string systemName)
         {
             var pluginDescriptor = _pluginFinder.GetPluginDescriptorBySystemName(systemName, LoadPluginsMode.All);
-            if (pluginDescriptor == null)
-                //No plugin found with the specified id
-                return RedirectToAction("List");
 
-            var model = PreparePluginModel(pluginDescriptor);
+            ConfigureViewModel viewModel = new ConfigureViewModel();
+            viewModel.FriendlyName = pluginDescriptor.FriendlyName;
+            viewModel.SystemName = pluginDescriptor.SystemName;
 
-            return View(model);
-        }
-        [HttpPost]
-        public ActionResult EditPopup(string btnId, string formId, PluginModel model)
-        {
-            var pluginDescriptor = _pluginFinder.GetPluginDescriptorBySystemName(model.SystemName, LoadPluginsMode.All);
-            if (pluginDescriptor == null)
-                //No plugin found with the specified id
-                return RedirectToAction("List");
-
-            if (ModelState.IsValid)
+            #region 是否具有配置页
+            string actionName = null, controllerName = null;
+            RouteValueDictionary routeValues = null;
+            if (pluginDescriptor.Instance() is IWidgetPlugin)
             {
-                //we allow editing of 'friendly name', 'display order', store mappings
-                pluginDescriptor.FriendlyName = model.FriendlyName;
-                pluginDescriptor.DisplayOrder = model.DisplayOrder;
-                pluginDescriptor.LimitedToStores.Clear();
-
-                PluginFileParser.SavePluginDescriptionFile(pluginDescriptor);
-                //reset plugin cache
-                _pluginFinder.ReloadPlugins();
-                //locales
-                //foreach (var localized in model.Locales)
-                //{
-                //    pluginDescriptor.Instance().SaveLocalizedFriendlyName(_localizationService, localized.LanguageId, localized.FriendlyName);
-                //}
-                //enabled/disabled
-                if (pluginDescriptor.Installed)
-                {
-                    var pluginInstance = pluginDescriptor.Instance();
-                    if (pluginInstance is IWidgetPlugin)
-                    {
-                        //Misc plugins
-                        var widget = (IWidgetPlugin)pluginInstance;
-                        if (widget.IsWidgetActive(_widgetSettings))
-                        {
-                            if (!model.IsEnabled)
-                            {
-                                //mark as disabled
-                                _widgetSettings.ActiveWidgetSystemNames.Remove(widget.PluginDescriptor.SystemName);
-                                //_settingService.SaveSetting(_widgetSettings);
-                            }
-                        }
-                        else
-                        {
-                            if (model.IsEnabled)
-                            {
-                                //mark as active
-                                _widgetSettings.ActiveWidgetSystemNames.Add(widget.PluginDescriptor.SystemName);
-                                //_settingService.SaveSetting(_widgetSettings);
-                            }
-                        }
-                    }
-                }
-
-                ViewBag.RefreshPage = true;
-                ViewBag.btnId = btnId;
-                ViewBag.formId = formId;
-                return View(model);
+                var widgetPlugin = pluginDescriptor.Instance<IWidgetPlugin>();
+                widgetPlugin.GetConfigurationRoute(out actionName, out controllerName, out routeValues);
             }
+            else
+            {
+                viewModel = null;
+                return View(viewModel);
+            }
+            viewModel.ConfigurationActionName = actionName;
+            viewModel.ConfigurationControllerName = controllerName;
+            viewModel.ConfigurationRouteValues = routeValues;
+            #endregion
 
-            //If we got this far, something failed, redisplay form
-            return View(model);
+            return View(viewModel);
         }
+        #endregion
+
+        #endregion
 
         #endregion
     }

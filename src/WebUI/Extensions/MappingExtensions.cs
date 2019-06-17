@@ -1,4 +1,4 @@
-﻿using LightPlugin.Core.Plugins;
+﻿using PluginHub.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Linq;

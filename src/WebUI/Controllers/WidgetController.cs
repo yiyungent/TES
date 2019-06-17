@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Routing;
-using LightPlugin.Core;
-using LightPlugin.Core.Caching;
-using LightPlugin.Services.Cms;
+using PluginHub;
+using PluginHub.Domain.Cms;
+using PluginHub.Infrastructure;
+using PluginHub.Plugins;
+using PluginHub.Services.Cms;
 //using LightPlugin.Web.Infrastructure.Cache;
 //using LightPlugin.Web.Models.Cms;
 
@@ -17,7 +19,7 @@ namespace WebUI.Controllers
 
         private readonly IWidgetService _widgetService;
         //private readonly IStoreContext _storeContext;
-        private readonly ICacheManager _cacheManager;
+        //private readonly ICacheManager _cacheManager;
 
         #endregion
 
@@ -25,9 +27,9 @@ namespace WebUI.Controllers
 
         public WidgetController()
         {
-            this._widgetService = new WidgetService(new LightPlugin.Core.Plugins.PluginFinder(), new LightPlugin.Core.Domain.Cms.WidgetSettings());
+            this._widgetService = EngineContext.Current.Resolve<IWidgetService>();
             //this._storeContext = storeContext;
-            this._cacheManager = new PerRequestCacheManager(HttpContext);
+            //this._cacheManager = new PerRequestCacheManager(HttpContext);
         }
 
         #endregion
@@ -37,81 +39,37 @@ namespace WebUI.Controllers
         [ChildActionOnly]
         public ActionResult WidgetsByZone(string widgetZone, object additionalData = null)
         {
-            try
+            List<RenderWidgetModel> viewModel = new List<RenderWidgetModel>();
+
+            var widgets = _widgetService.LoadActiveWidgetsByWidgetZone(widgetZone);
+            foreach (var widget in widgets)
             {
-                var cacheKey = string.Format("Nop.pres.widget-{0}-{1}", 1, widgetZone);
-                //var cacheModel = _cacheManager.Get(cacheKey, () =>
-                //{
-                //    //model
-                //    var model = new List<RenderWidgetModel>();
+                RenderWidgetModel widgetModel = new RenderWidgetModel();
 
-                //    var widgets = _widgetService.LoadActiveWidgetsByWidgetZone(widgetZone);
-                //    foreach (var widget in widgets)
-                //    {
-                //        var widgetModel = new RenderWidgetModel();
-
-                //        string actionName;
-                //        string controllerName;
-                //        RouteValueDictionary routeValues;
-                //        widget.GetDisplayWidgetRoute(widgetZone, out actionName, out controllerName, out routeValues);
-                //        widgetModel.ActionName = actionName;
-                //        widgetModel.ControllerName = controllerName;
-                //        widgetModel.RouteValues = routeValues;
-
-                //        model.Add(widgetModel);
-                //    }
-                //    return model;
-                //});
-                var model = new List<RenderWidgetModel>();
-
-                var widgets = _widgetService.LoadActiveWidgetsByWidgetZone(widgetZone);
-                foreach (var widget in widgets)
-                {
-                    var widgetModel = new RenderWidgetModel();
-
-                    string actionName;
-                    string controllerName;
-                    RouteValueDictionary routeValues;
-                    widget.GetDisplayWidgetRoute(widgetZone, out actionName, out controllerName, out routeValues);
-                    widgetModel.ActionName = actionName;
-                    widgetModel.ControllerName = controllerName;
-                    widgetModel.RouteValues = routeValues;
-
-                    model.Add(widgetModel);
-                }
-
-                //no data?
-                if (model.Count == 0)
-                    return Content("");
+                string actionName;
+                string controllerName;
+                RouteValueDictionary routeValues;
+                widget.GetDisplayWidgetRoute(widgetZone, out actionName, out controllerName, out routeValues);
+                widgetModel.ActionName = actionName;
+                widgetModel.ControllerName = controllerName;
+                widgetModel.RouteValues = routeValues;
 
                 //"RouteValues" property of widget models depends on "additionalData".
-                //We need to clone the cached model before modifications (the updated one should not be cached)
-                var clonedModel = new List<RenderWidgetModel>();
-                foreach (var widgetModel in model)
+                if (additionalData != null)
                 {
-                    var clonedWidgetModel = new RenderWidgetModel();
-                    clonedWidgetModel.ActionName = widgetModel.ActionName;
-                    clonedWidgetModel.ControllerName = widgetModel.ControllerName;
-                    if (widgetModel.RouteValues != null)
-                        clonedWidgetModel.RouteValues = new RouteValueDictionary(widgetModel.RouteValues);
-
-                    if (additionalData != null)
-                    {
-                        if (clonedWidgetModel.RouteValues == null)
-                            clonedWidgetModel.RouteValues = new RouteValueDictionary();
-                        clonedWidgetModel.RouteValues.Add("additionalData", additionalData);
-                    }
-
-                    clonedModel.Add(clonedWidgetModel);
+                    if (widgetModel.RouteValues == null)
+                        widgetModel.RouteValues = new RouteValueDictionary();
+                    widgetModel.RouteValues.Add("additionalData", additionalData);
                 }
 
-                return PartialView(clonedModel);
+                viewModel.Add(widgetModel);
             }
-            catch (System.Exception ex)
-            {
 
-            }
-            return null;
+            //no data?
+            if (viewModel.Count == 0)
+                return Content("");
+
+            return PartialView(viewModel);
         }
 
         #endregion

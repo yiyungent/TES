@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.Mvc5.3.3.3\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="AutoMapper, Version=3.3.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
@@ -8319,6 +8325,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Tables\BaiduTJSettings.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -8369,6 +8376,7 @@
     <Compile Include="Areas\Admin\Models\EvaTaskVM\EvaTaskForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\NormTypeVM\NormTypeForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />
+    <Compile Include="Areas\Admin\Models\PluginVM\ConfigureViewModel.cs" />
     <Compile Include="Areas\Admin\Models\PluginVM\PluginListViewModel.cs" />
     <Compile Include="Areas\Admin\Models\PluginVM\PluginModel.cs" />
     <Compile Include="Areas\Admin\Models\RoleInfoForEditViewModel.cs" />
@@ -8387,6 +8395,7 @@
     <Compile Include="Controllers\NotificationDemoController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Controllers\WSController.cs" />
+    <Compile Include="DependencyRegistrar.cs" />
     <Compile Include="Extensions\DateTimeExt.cs" />
     <Compile Include="Extensions\DomainExt.cs" />
     <Compile Include="Extensions\MappingExtensions.cs" />
@@ -8401,6 +8410,7 @@
     <Compile Include="HtmlHelpers\CollapseDept.cs" />
     <Compile Include="HtmlHelpers\CollapseMenu.cs" />
     <Compile Include="HtmlHelpers\CollapseNormTarget.cs" />
+    <Compile Include="Imples\CustomSettingImply.cs" />
     <Compile Include="Infrastructure\AutoMapperStartupTask.cs" />
     <Compile Include="MessageHubs\NotificationHub.cs" />
     <Compile Include="MessageHubs\NotificationManager.cs" />
@@ -8901,7 +8911,6 @@
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_ErrorRedirect.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\PviewDemo\Index.cshtml" />
     <Content Include="Views\Widget\WidgetsByZone.cshtml" />
     <Content Include="Views\Errors\PageNotFound.cshtml" />
     <None Include="Web.Debug.config">
@@ -8924,6 +8933,22 @@
     <Folder Include="Views\WebSocket\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\pluginHub\PluginHub.Mvc5\PluginHub.Mvc5.csproj">
+      <Project>{c7624908-0861-428d-aa0d-3468d8ca4ac8}</Project>
+      <Name>PluginHub.Mvc5</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\pluginHub\PluginHub.Services\PluginHub.Services.csproj">
+      <Project>{f16a9c9b-f001-4d1b-9623-b192effc7d0d}</Project>
+      <Name>PluginHub.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\pluginHub\PluginHub.Web\PluginHub.Web.csproj">
+      <Project>{d546c37c-3e0f-421d-b685-e39df8019958}</Project>
+      <Name>PluginHub.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\pluginHub\PluginHub\PluginHub.csproj">
+      <Project>{7eee28df-e7d1-473d-ae8a-acff774ac741}</Project>
+      <Name>PluginHub</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{2b716300-f8db-4726-ac39-f45d15fb7a9d}</Project>
       <Name>Common</Name>

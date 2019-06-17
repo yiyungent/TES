@@ -68,8 +68,9 @@
 					<div class="media-body">
 						<h4 class="media-heading">@item.FriendlyName</h4>
 						<p>
-							<span>插件系统名称: </span><span>@item.SystemName</span>
+							<span>插件名称: </span><span>@item.SystemName</span>
 							<span>版本: </span><span class="label label-info">@item.Version</span>
+							<span>作者: </span><span class="label label-success">@item.Author</span>
 							<span>支持版本: </span>
 							@foreach (var version in item.SupportedVersions)
 							{
@@ -85,6 +86,7 @@
 							{
 								<a class="btn btn-primary" href="@Url.Content("~/Admin/Plugin/Install/")?systemName=@item.SystemName">安装</a>
 							}
+							<a class="btn btn-info" href="@Url.Content("~/Admin/Plugin/Configure/")?systemName=@item.SystemName">配置</a>
 						</p>
 					</div>
 				</li>

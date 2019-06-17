@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using LightPlugin.Web.Framework;
+using PluginHub.Mvc5;
 
 namespace WebUI.Areas.Admin.Models.PluginVM
 {

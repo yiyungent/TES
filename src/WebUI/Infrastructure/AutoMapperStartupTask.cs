@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 
 using AutoMapper;
-using LightPlugin.Core.Infrastructure;
-using LightPlugin.Core.Plugins;
-using LightPlugin.Services.Cms;
+using PluginHub.Infrastructure;
+using PluginHub.Plugins;
+using PluginHub.Services.Cms;
 using WebUI.Areas.Admin.Models.PluginVM;
 using WebUI.Models.Cms;
 
