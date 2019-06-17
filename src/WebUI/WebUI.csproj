@@ -8413,6 +8413,8 @@
     <Compile Include="HtmlHelpers\CollapseNormTarget.cs" />
     <Compile Include="Imples\CustomSettingImply.cs" />
     <Compile Include="Infrastructure\AutoMapperStartupTask.cs" />
+    <Compile Include="Infrastructure\CaculateScore\CaculateScore.cs" />
+    <Compile Include="Infrastructure\CaculateScore\ICaculateScore.cs" />
     <Compile Include="MessageHubs\NotificationHub.cs" />
     <Compile Include="MessageHubs\NotificationManager.cs" />
     <Compile Include="Models\Cms\RenderWidgetModel.cs" />

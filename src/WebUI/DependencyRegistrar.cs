@@ -19,6 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebUI.Infrastructure.CaculateScore;
 
 namespace WebUI
 {
@@ -69,6 +70,9 @@ namespace WebUI
             builder.RegisterType<CustomSettingImply>().As<ISettingService>().InstancePerLifetimeScope();
 
 
+
+            // others
+            builder.RegisterType<CaculateScore>().As<ICaculateScore>().InstancePerLifetimeScope();
         }
 
         public int Order
