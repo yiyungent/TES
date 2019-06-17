@@ -2,6 +2,6 @@
 SystemName: BaiduTJ
 Version: 1.06
 SupportedVersions: 0.1.0
-Author: yiyungent
+Author: test
 DisplayOrder: 1
 FileName: BaiduTJ.dll

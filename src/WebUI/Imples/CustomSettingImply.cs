@@ -1,4 +1,6 @@
-﻿using PluginHub.Configuration;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using PluginHub.Configuration;
 using PluginHub.Domain.Configuration;
 using PluginHub.Services.Configuration;
 using System;
@@ -57,45 +59,32 @@ namespace WebUI.Imples
         {
             // 提取插件设置名作为 插件表名
             string pluginTableName = typeof(T).Name;
-            // 简化--直接使用 txt 文件模拟数据库表
-            string filePath = HttpContext.Current.Server.MapPath("~/Tables/" + pluginTableName + ".txt");
+            // 简化--直接使用 json 文件模拟数据库表
+            string filePath = HttpContext.Current.Server.MapPath("~/App_Data/PluginTables/" + pluginTableName + ".json");
             if (!File.Exists(filePath))
             {
                 File.Create(filePath).Dispose();
             }
-            string[] contents = File.ReadAllLines(filePath);
-            Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
-            foreach (var line in contents)
-            {
-                string[] lineKeyVal = line.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
-                keyValuePairs.Add(lineKeyVal[0], lineKeyVal[1]);
-            }
+            string jsonStr = File.ReadAllText(filePath);
+            T jsonObj = JsonConvert.DeserializeObject<T>(jsonStr);
 
-            T rtnObj = Activator.CreateInstance<T>();
-            // 获取该类的所有属性
-            PropertyInfo[] propertyInfos = typeof(T).GetProperties();
-            foreach (var property in propertyInfos)
-            {
-                property.SetValue(rtnObj, keyValuePairs[property.Name]);
-            }
-
-            return rtnObj;
+            return jsonObj;
         }
 
         public void SaveSetting<T>(T settings) where T : ISettings, new()
         {
             // 提取插件设置名作为 插件表名
             string pluginTableName = typeof(T).Name;
-            // 简化--直接使用 txt 文件模拟数据库表
-            string filePath = HttpContext.Current.Server.MapPath("~/Tables/" + pluginTableName + ".txt");
-            IList<string> contents = new List<string>();
+            // 简化--直接使用 json 文件模拟数据库表
+            string filePath = HttpContext.Current.Server.MapPath("~/App_Data/PluginTables/" + pluginTableName + ".json");
+            JObject jObject = new JObject();
             // 获取该类的所有属性
             PropertyInfo[] propertyInfos = typeof(T).GetProperties();
             foreach (var property in propertyInfos)
             {
-                contents.Add(property.Name + ":" + property.GetValue(settings).ToString());
+                jObject.Add(property.Name,new JValue(property.GetValue(settings)));
             }
-            File.WriteAllLines(filePath, contents, System.Text.Encoding.UTF8);
+            File.WriteAllText(filePath, jObject.ToString(), System.Text.Encoding.UTF8);
         }
 
         public void SetSetting<T>(string key, T value)

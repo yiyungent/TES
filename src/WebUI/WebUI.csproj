@@ -8298,6 +8298,7 @@
     <Content Include="Areas\Account\Views\Login\FindPassword.cshtml" />
     <Content Include="Areas\Admin\Views\Plugin\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Plugin\Configure.cshtml" />
+    <Content Include="App_Data\PluginTables\BaiduTJSettings.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Demos\NotificationDemo.html" />
@@ -8326,7 +8327,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Tables\BaiduTJSettings.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -8922,7 +8922,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Areas\Account\Views\Control\" />
     <Folder Include="Areas\Admin\Views\Control\" />
     <Folder Include="GlobalShared\Models\" />
