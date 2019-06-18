@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PluginHub.Web", "pluginHub\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaiduTJ", "plugins\BaiduTJ\BaiduTJ.csproj", "{AF439F8A-ABA1-4B65-BCE0-C076CA4D75E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RankingChart", "plugins\RankingChart\RankingChart.csproj", "{AF3CB4B2-CEA7-41B7-86F0-797E09EE36B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{AF439F8A-ABA1-4B65-BCE0-C076CA4D75E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF439F8A-ABA1-4B65-BCE0-C076CA4D75E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF439F8A-ABA1-4B65-BCE0-C076CA4D75E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF3CB4B2-CEA7-41B7-86F0-797E09EE36B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF3CB4B2-CEA7-41B7-86F0-797E09EE36B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF3CB4B2-CEA7-41B7-86F0-797E09EE36B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF3CB4B2-CEA7-41B7-86F0-797E09EE36B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,6 +124,7 @@ Global
 		{F16A9C9B-F001-4D1B-9623-B192EFFC7D0D} = {EF29EEC5-D819-476E-9567-E59F853E663A}
 		{D546C37C-3E0F-421D-B685-E39DF8019958} = {EF29EEC5-D819-476E-9567-E59F853E663A}
 		{AF439F8A-ABA1-4B65-BCE0-C076CA4D75E4} = {19968077-9CC9-4808-91C8-7D7FBBAF05FD}
+		{AF3CB4B2-CEA7-41B7-86F0-797E09EE36B8} = {19968077-9CC9-4808-91C8-7D7FBBAF05FD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D08ED581-D4C9-4587-AC63-F892EDCD361A}

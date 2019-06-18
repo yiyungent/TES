@@ -60,7 +60,7 @@ namespace WebUI.Controllers
             InitOptions();
             InitEvaTask();
             //InitEvaRecord();
-            //InitEvaResult();
+            InitEvaResult();
         }
         #endregion
 
@@ -2992,15 +2992,16 @@ namespace WebUI.Controllers
             try
             {
                 ShowMessage("开始初始化评价任务");
-                string time = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-01")).AddMonths(1).ToShortDateString();
-                for (int i = 1; i <= 5; i++)
+                Random r = new Random();
+                for (int i = 1; i <= 50; i++)
                 {
+                    DateTime time = DateTime.Now.AddMonths(r.Next(1, 12));
                     Container.Instance.Resolve<EvaTaskService>().Create(new EvaTask()
                     {
                         Name = "任务" + i,
                         EvaTaskCode = string.Format("32001{0:00}", i),
-                        StartDate = DateTime.Now,
-                        EndDate = DateTime.Parse(time),
+                        StartDate = time,
+                        EndDate = time.AddMonths(8),
                     });
                 }
                 ShowMessage("成功");
