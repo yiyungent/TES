@@ -24,6 +24,8 @@ namespace Framework.Infrastructure.Abstract
 
         bool EditRoleInfo(RoleInfo roleInfo);
 
+        bool EditUserInfo(UserInfo userInfo);
+
         RoleInfo GetRoleInfoById(int id);
 
         Sys_Menu GetSys_MenuById(int id);

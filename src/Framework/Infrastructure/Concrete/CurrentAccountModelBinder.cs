@@ -22,7 +22,7 @@ namespace Framework.Infrastructure.Concrete
     public class CurrentAccountModelBinder : IModelBinder
     {
         private string _loginAccountSessionKey = AppConfig.LoginAccountSessionKey;
-        private string _rememberMeTokenCookieKey = AppConfig.RememberMeTokenCookieKey;
+        private string _rememberMeTokenCookieKey = AppConfig.TokenCookieKey;
         private int _rememberMeDayCount = AppConfig.RememberMeDayCount;
 
         private IDBAccessProvider _dBAccessProvider = HttpOneRequestFactory.Get<IDBAccessProvider>();

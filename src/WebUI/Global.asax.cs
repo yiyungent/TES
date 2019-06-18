@@ -52,6 +52,13 @@ namespace WebUI
         {
             AreaRegistration.RegisterAllAreas();
 
+            routes.MapRoute(
+                name: "Install",
+                url: "install/{action}",
+                defaults: new { controller = "Install", action = "Index" },
+                namespaces: new string[] { "WebUI.Controllers" }
+            );
+
             //register custom routes (plugins, etc)
             var routePublisher = EngineContext.Current.Resolve<IRoutePublisher>();
             routePublisher.RegisterRoutes(routes);

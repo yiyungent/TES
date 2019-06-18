@@ -45,7 +45,7 @@ namespace Framework.Infrastructure.Concrete
         {
             UserInfo user = Container.Instance.Resolve<UserInfoService>().Query(new List<ICriterion>
             {
-                Expression.Eq(AppConfig.RememberMeTokenCookieKey, tokenCookieValue)
+                Expression.Eq(AppConfig.TokenCookieKey, tokenCookieValue)
             }).FirstOrDefault();
 
             return user;
@@ -79,6 +79,24 @@ namespace Framework.Infrastructure.Concrete
             try
             {
                 Container.Instance.Resolve<RoleInfoService>().Edit(roleInfo);
+                isSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                isSuccess = false;
+            }
+
+            return isSuccess;
+        }
+        #endregion
+
+        #region 编辑用户
+        public bool EditUserInfo(UserInfo userInfo)
+        {
+            bool isSuccess = false;
+            try
+            {
+                Container.Instance.Resolve<UserInfoService>().Edit(userInfo);
                 isSuccess = true;
             }
             catch (Exception ex)

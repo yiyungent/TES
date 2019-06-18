@@ -16,12 +16,12 @@ namespace Framework.Attributes
 
     /// <summary>
     /// 登录用户Session 维护器
-    /// <para>当浏览器端Session被移除，但拥有"记住我"Cookie时，只要有效，则会在任何请求之前 将此用户信息存于 Session</para>
+    /// <para>当浏览器端Session被移除，但拥有 Cookie token 时，只要有效，则会在任何请求之前 将此用户信息存于 Session</para>
     /// </summary>
     public class LoginAccountFilterAttribute : ActionFilterAttribute
     {
-        private static string _sessionKeyLoginAccount = AppConfig.LoginAccountSessionKey;
-        private static string _cookieKeyToken = AppConfig.RememberMeTokenCookieKey;
+        private static string _loginAccountSessionKey = AppConfig.LoginAccountSessionKey;
+        private static string _tokenCookieKey = AppConfig.TokenCookieKey;
         private static int _rememberMeDayCount = AppConfig.RememberMeDayCount;
 
         private static IDBAccessProvider _dBAccessProvider = HttpOneRequestFactory.Get<IDBAccessProvider>();
@@ -44,7 +44,7 @@ namespace Framework.Attributes
 
         #region 维护当前请求 Session 始终有登录用户值（若 已登录）
         /// <summary>
-        /// 检查当前请求是否 为"记住我"(记住登录状态)，如果是，则为其Session再次赋值此用户
+        /// 检查当前请求是否 有cookie token，如果是，则为其Session再次赋值此用户
         /// </summary>
         private void CheckRememberMe(ActionExecutingContext filterContext)
         {
@@ -57,24 +57,23 @@ namespace Framework.Attributes
             {
                 return;
             }
-            // 是否请求浏览器有 "记住我" Token
-            if (request.Cookies.AllKeys.Contains(_cookieKeyToken))
+            // 是否请求浏览器有 cookie Token
+            if (request.Cookies.AllKeys.Contains(_tokenCookieKey))
             {
-                if (request.Cookies[_cookieKeyToken] != null && string.IsNullOrEmpty(request.Cookies[_cookieKeyToken].Value) == false)
+                if (request.Cookies[_tokenCookieKey] != null && string.IsNullOrEmpty(request.Cookies[_tokenCookieKey].Value) == false)
                 {
-                    string cookieTokenValue = request.Cookies[_cookieKeyToken].Value;
+                    string cookieTokenValue = request.Cookies[_tokenCookieKey].Value;
                     UserInfo user = _dBAccessProvider.GetUserInfoByTokenCookieKey(cookieTokenValue);
 
                     if (user == null)
                     {
                         // 口令不正确
-                        response.Cookies[_cookieKeyToken].Expires = DateTime.UtcNow.AddDays(-1);
+                        response.Cookies[_tokenCookieKey].Expires = DateTime.UtcNow.AddDays(-1);
                     }
-                    else if (user.LastLoginTime.AddDays(_rememberMeDayCount) > DateTime.UtcNow)
+                    else if (user.TokenExpireAt > DateTime.UtcNow)
                     {
-                        // 最多 "记住我" 保存7天的 登录状态
                         // 保存到 Session
-                        session[_sessionKeyLoginAccount] = user;
+                        session[_loginAccountSessionKey] = user;
                     }
                     else
                     {

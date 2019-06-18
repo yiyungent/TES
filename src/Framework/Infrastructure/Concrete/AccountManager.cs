@@ -36,7 +36,7 @@ namespace Framework.Infrastructure.Concrete
     public class AccountManager
     {
         private static string _loginAccountSessionKey = AppConfig.LoginAccountSessionKey;
-        private static string _rememberMeTokenCookieKey = AppConfig.RememberMeTokenCookieKey;
+        private static string _tokenCookieKey = AppConfig.TokenCookieKey;
         private static int _rememberMeDayCount = AppConfig.RememberMeDayCount;
 
         private static IDBAccessProvider _dBAccessProvider = HttpOneRequestFactory.Get<IDBAccessProvider>();
@@ -54,12 +54,12 @@ namespace Framework.Infrastructure.Concrete
             UserInfo rtnUserInfo = Tools.GetSession<UserInfo>(AppConfig.LoginAccountSessionKey);
             if (rtnUserInfo == null)
             {
-                #region 记住我
-                if (request.Cookies.AllKeys.Contains(_rememberMeTokenCookieKey))
+                #region 验证口令
+                if (request.Cookies.AllKeys.Contains(_tokenCookieKey))
                 {
-                    if (request.Cookies[_rememberMeTokenCookieKey] != null && string.IsNullOrEmpty(request.Cookies[_rememberMeTokenCookieKey].Value) == false)
+                    if (request.Cookies[_tokenCookieKey] != null && string.IsNullOrEmpty(request.Cookies[_tokenCookieKey].Value) == false)
                     {
-                        string cookieTokenValue = request.Cookies[_rememberMeTokenCookieKey].Value;
+                        string cookieTokenValue = request.Cookies[_tokenCookieKey].Value;
                         UserInfo dbUser = _dBAccessProvider.GetUserInfoByTokenCookieKey(cookieTokenValue);
 
                         if (dbUser == null)
@@ -67,7 +67,7 @@ namespace Framework.Infrastructure.Concrete
                             // 口令不正确---游客
                             rtnUserInfo = UserInfo_Guest.Instance;
                         }
-                        else if (dbUser.LastLoginTime.AddDays(_rememberMeDayCount) > DateTime.UtcNow)
+                        else if (dbUser.TokenExpireAt > DateTime.UtcNow)
                         {
                             // 最多 "记住我" 保存7天的 登录状态
                             rtnUserInfo = dbUser;
@@ -129,8 +129,8 @@ namespace Framework.Infrastructure.Concrete
         /// <summary>
         /// 检查登录状态
         /// <para>已登录:1.Session有UserInfo 2.Cookie 有 有效Token(记住我)</para>
-        /// <para>未登录: 无Session 且 Cookie无Token(记住我)</para>
-        /// <para>登录超时: Cookie 有 Token(记住我) Token存在但已过期</para>
+        /// <para>未登录: 无Session 且 Cookie无Token</para>
+        /// <para>登录超时: Cookie 有 Token ,Token存在但已过期</para>
         /// </summary>
         /// <returns></returns>
         public static LoginStatus CheckLoginStatus()
@@ -148,12 +148,12 @@ namespace Framework.Infrastructure.Concrete
             else
             {
 
-                #region 记住我
-                if (request.Cookies.AllKeys.Contains(_rememberMeTokenCookieKey))
+                #region 验证口令
+                if (request.Cookies.AllKeys.Contains(_tokenCookieKey))
                 {
-                    if (request.Cookies[_rememberMeTokenCookieKey] != null && string.IsNullOrEmpty(request.Cookies[_rememberMeTokenCookieKey].Value) == false)
+                    if (request.Cookies[_tokenCookieKey] != null && string.IsNullOrEmpty(request.Cookies[_tokenCookieKey].Value) == false)
                     {
-                        string cookieTokenValue = request.Cookies[_rememberMeTokenCookieKey].Value;
+                        string cookieTokenValue = request.Cookies[_tokenCookieKey].Value;
                         UserInfo user = _dBAccessProvider.GetUserInfoByTokenCookieKey(cookieTokenValue);
 
                         if (user == null)
@@ -161,7 +161,7 @@ namespace Framework.Infrastructure.Concrete
                             // 口令不正确
                             loginStatus = LoginStatus.WithoutLogin;
                         }
-                        else if (user.LastLoginTime.AddDays(_rememberMeDayCount) > DateTime.UtcNow)
+                        else if (user.TokenExpireAt > DateTime.UtcNow)
                         {
                             // 最多 "记住我" 保存7天的 登录状态
                             loginStatus = LoginStatus.IsLogin;
@@ -207,14 +207,20 @@ namespace Framework.Infrastructure.Concrete
         /// </summary>
         public static void Exit()
         {
+            // 浏览器删除 session 用户信息
             Tools.SetSession(_loginAccountSessionKey, null);
             HttpRequest request = HttpContext.Current.Request;
             HttpResponse response = HttpContext.Current.Response;
-
-            if (request.Cookies.AllKeys.Contains(_rememberMeTokenCookieKey))
+            // 浏览器 删除 cookie token
+            if (request.Cookies.AllKeys.Contains(_tokenCookieKey))
             {
-                response.Cookies[_rememberMeTokenCookieKey].Expires = DateTime.UtcNow.AddDays(-1);
+                response.Cookies[_tokenCookieKey].Expires = DateTime.UtcNow.AddDays(-1);
             }
+            // 数据库删除 token，并过期
+            UserInfo userInfo = GetCurrentUserInfo();
+            userInfo.Token = null;
+            userInfo.TokenExpireAt = DateTime.Now;
+            _dBAccessProvider.EditUserInfo(userInfo);
         }
         #endregion
     }

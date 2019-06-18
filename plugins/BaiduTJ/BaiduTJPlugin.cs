@@ -54,7 +54,7 @@ namespace BaiduTJ
         {
             actionName = "Configure";
             controllerName = "WidgetsBaiduTJ";
-            routeValues = new RouteValueDictionary { { "Namespaces", "PluginHub.Widgets.BaiduTJ.Controllers" }, { "area", null } };
+            routeValues = new RouteValueDictionary { { "Namespaces", "BaiduTJ.Controllers" }, { "area", null } };
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace BaiduTJ
             controllerName = "WidgetsBaiduTJ";
             routeValues = new RouteValueDictionary
             {
-                {"Namespaces", "PluginHub.Widgets.BaiduTJ.Controllers"},
+                {"Namespaces", "BaiduTJ.Controllers"},
                 {"area", null},
                 {"widgetZone", widgetZone}
             };
@@ -85,8 +85,6 @@ namespace BaiduTJ
             baiduTJSettings.TJCode = "Ä¬ÈÏ´úÂë";
             _settingService.SaveSetting<BaiduTJSettings>(baiduTJSettings);
 
-            //Open();
-
             base.Install();
         }
 
@@ -95,28 +93,19 @@ namespace BaiduTJ
         /// </summary>
         public override void Uninstall()
         {
-
-
             base.Uninstall();
         }
 
         public override void Open()
         {
-            var route = RouteTable.Routes.MapRoute(
-                   name: "Widgets.BaiduTJ",
-                   url: "plugins/{controller}/{action}/{id}",
-                   defaults: new { controller = "WidgetsBaiduTJ", action = "Configure", id = UrlParameter.Optional }
-               );
-            route.DataTokens["area"] = "plugins";
-
             base.Open();
         }
 
         public void RegisterRoutes(RouteCollection routes)
         {
             routes.MapRoute(
-                   name: "Widgets.BaiduTJ",
-                   url: "plugin-BaiduTJ/{controller}/{action}/{id}",
+                   name: "PluginHub.BaiduTJ",
+                   url: "plugin-baiduTJ/{controller}/{action}/{id}",
                    defaults: new { controller = "WidgetsBaiduTJ", action = "Configure", id = UrlParameter.Optional },
                    namespaces: new string[] { "BaiduTJ.Controllers" }
                );

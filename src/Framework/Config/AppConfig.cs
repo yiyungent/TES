@@ -9,7 +9,7 @@ namespace Framework.Config
     {
         public static string LoginAccountSessionKey { get; set; } = "LoginUserInfo";
 
-        public static string RememberMeTokenCookieKey { get; set; } = "Token";
+        public static string TokenCookieKey { get; set; } = "Token";
 
         public static int RememberMeDayCount { get; set; } = 7;
     }
