@@ -82,6 +82,11 @@ namespace WebUI.Infrastructure.CaculateScore
             }
         }
 
+        public void Caculate(int evaTaskId, int normTypeId, int employeeInfoId)
+        {
+            Caculate(new EvaTask { ID = evaTaskId }, new NormType { ID = normTypeId }, new EmployeeInfo { ID = employeeInfoId });
+        }
+
         #region 递归获取权重（含归一化处理）
         private decimal GetWeight(NormTarget self, IList<NormTarget> all)
         {

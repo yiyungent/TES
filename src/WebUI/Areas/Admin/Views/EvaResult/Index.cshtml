@@ -39,7 +39,6 @@
 		function caculateScore(evaTaskId, teacherId, index) {
 			$("#js-btn-caculate-" + index).html("计算中").attr("disabled", "disabled");
 			// 新计算分数, 实际上就是根据 评价记录创建对应的评价结果
-			var selectedEvaTaskId = $('#SelectedValForEvaTask').val();
 			$.ajax({
 				url: "/Admin/EvaResult/CaculateScore",
 				type: "post",
@@ -47,6 +46,28 @@
 				dataType: "json",
 				success: function (data) {
 					$("#js-btn-caculate-" + index).html("计算分数").removeAttr("disabled");
+					if (data.code > 0) {
+						// 计算成功
+						window.location.href = window.location.href;
+					} else {
+						showMessage(data.message, -1);
+					}
+				}
+			});
+		}
+
+		function caculateScoreTask() {
+			$("#js-btn-caculate-task").html("计算中").attr("disabled", "disabled");
+			// 新计算分数, 实际上就是根据 评价记录创建对应的评价结果
+			var selectedEvaTaskId = parseInt($('#SelectListForEvaTask').val());
+			console.log(selectedEvaTaskId);
+			$.ajax({
+				url: "/Admin/EvaResult/CaculateScoreTask",
+				type: "post",
+				data: { evaTaskId: selectedEvaTaskId },
+				dataType: "json",
+				success: function (data) {
+					$("#js-btn-caculate-task").html("计算分数").removeAttr("disabled");
 					if (data.code > 0) {
 						// 计算成功
 						window.location.href = window.location.href;
@@ -112,6 +133,9 @@
 				$('#js-search-type').html(typeName);
 			});
 			// end 搜索
+
+			// 点击 计算指定评价任务的分数
+			$('#js-btn-caculate-task').on('click', caculateScoreTask);
 
 			// start 导出 excel
 			$('#js-btn-export-excel').on('click', exportExcel);
@@ -225,8 +249,9 @@
 			</div>
 			<div class="col-xs-4">
 				<div class="btn-group" style="padding-top: 24px;">
+					<button id="js-btn-caculate-task" class="btn btn-success">计算分数</button>
 					<button id="js-btn-export-excel" class="btn btn-primary">导出评价结果(Excel)</button>
-					<span id="js-file-export-excel" style="display: none;transform: translate(170px,-26px);"><a href="#" target="_blank">立即下载Excel</a></span>
+					<span id="js-file-export-excel" style="display: none;transform: translate(260px,-26px);"><a href="#" target="_blank">立即下载Excel</a></span>
 				</div>
 			</div>
 			<div class="col-xs-6">

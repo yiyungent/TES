@@ -2,23 +2,35 @@
 using Domain;
 using Framework.Infrastructure.Concrete;
 using NHibernate.Criterion;
+using PluginHub.Infrastructure;
 using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models;
 using WebUI.Areas.Admin.Models.Common;
 using WebUI.Extensions;
+using WebUI.Infrastructure.CaculateScore;
 
 namespace WebUI.Areas.Admin.Controllers
 {
     public class TeacherEvaController : Controller
     {
+        #region Fields
+
+        private ICaculateScore _caculateScore;
+
+        #endregion
+
         #region Ctor
         public TeacherEvaController()
-        { }
+        {
+            this._caculateScore = EngineContext.Current.Resolve<ICaculateScore>();
+        }
         #endregion
 
         #region 评价任务列表
@@ -238,6 +250,14 @@ namespace WebUI.Areas.Admin.Controllers
                         EvaluateTask = new EvaTask { ID = evaTaskId }
                     });
                 }
+
+                //#region 计算分数
+                //Task.Run(() =>
+                //{
+                //    Thread.Sleep(1000);
+                //    _caculateScore.Caculate(evaTaskId, normType.ID, teacherId);
+                //});
+                //#endregion
 
                 return Json(new { code = 1, message = "提交评价成功" });
             }

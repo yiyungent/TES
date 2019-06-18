@@ -233,6 +233,49 @@ namespace WebUI.Areas.Admin.Controllers
 
         #region 计算分数
         [HttpPost]
+        public JsonResult CaculateScoreTask(int evaTaskId)
+        {
+            try
+            {
+                #region 有效性效验
+                // 效验是否有 符合的 评价记录 以供 计算分数
+                bool isExist = Container.Instance.Resolve<EvaRecordService>().Count(
+                    Expression.Eq("EvaluateTask.ID", evaTaskId)
+                 ) >= 1;
+                if (!isExist)
+                {
+                    return Json(new { code = -1, message = "计算失败，没有符合的评价记录 以供计算" });
+                }
+                #endregion
+
+                IList<EvaRecord> allRelativeRecord = Container.Instance.Resolve<EvaRecordService>().Query(new List<ICriterion>
+                {
+                    Expression.Eq("EvaluateTask.ID", evaTaskId)
+                });
+
+
+                EvaTask evaTask = new EvaTask() { ID = evaTaskId };
+                IList<NormType> allNormType = allRelativeRecord.Select(m => m.NormType).Distinct().ToList();
+                IList<EmployeeInfo> allTeacher = allRelativeRecord.Select(m => m.Teacher).ToList();
+
+                foreach (var teacher in allTeacher)
+                {
+                    foreach (var normType in allNormType)
+                    {
+                        _caculateScore.Caculate(evaTask, normType, teacher);
+                    }
+                }
+
+                TempData["message"] = "计算成功";
+                return Json(new { code = 1, message = "计算成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, message = "计算失败" });
+            }
+        }
+
+        [HttpPost]
         public JsonResult CaculateScore(int evaTaskId, int teacherId)
         {
             try

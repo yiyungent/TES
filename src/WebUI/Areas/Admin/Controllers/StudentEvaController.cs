@@ -3,21 +3,31 @@ using Domain;
 using Framework.Infrastructure.Concrete;
 using Framework.Models;
 using NHibernate.Criterion;
+using PluginHub.Infrastructure;
 using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Account.Models;
 using WebUI.Areas.Admin.Models;
 using WebUI.Areas.Admin.Models.Common;
 using WebUI.Extensions;
+using WebUI.Infrastructure.CaculateScore;
 
 namespace WebUI.Areas.Admin.Controllers
 {
     public class StudentEvaController : Controller
     {
+        #region Fileds
+
+        ICaculateScore _caculateScore;
+
+        #endregion
+
         #region Ctor
         public StudentEvaController()
         {
@@ -28,6 +38,8 @@ namespace WebUI.Areas.Admin.Controllers
                 new BreadcrumbItem("评价管理"),
                 new BreadcrumbItem("学生评价"),
             };
+
+            this._caculateScore = EngineContext.Current.Resolve<ICaculateScore>();
         }
         #endregion
 
@@ -200,6 +212,14 @@ namespace WebUI.Areas.Admin.Controllers
                         CourseInfo = new CourseInfo { ID = courseId }
                     });
                 }
+
+               // #region 计算分数
+               // Task.Run(() =>
+               //{
+               //    Thread.Sleep(1000);
+               //    _caculateScore.Caculate(evaTaskId, 1, teacherId);
+               //});
+               // #endregion
 
                 return Json(new { code = 1, message = "提交评价成功" });
             }

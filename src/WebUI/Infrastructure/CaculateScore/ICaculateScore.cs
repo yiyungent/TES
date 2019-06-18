@@ -16,5 +16,7 @@ namespace WebUI.Infrastructure.CaculateScore
         /// <param name="normType"></param>
         /// <param name="employeeInfo"></param>
         void Caculate(EvaTask evaTask, NormType normType, EmployeeInfo employeeInfo);
+
+        void Caculate(int evaTaskId, int normTypeId, int employeeInfoId);
     }
 }
