@@ -22,6 +22,7 @@ namespace RankingChart.Controllers
         {
             EvaResultService evaResultService = Container.Instance.Resolve<EvaResultService>();
             IList<EvaResult> allEvaResult = evaResultService.GetAll();
+            allEvaResult = allEvaResult.OrderBy(m => m.EvaluateTask.EndDate).ToList();
             IList<JsonDataModel> jsonArr = new List<JsonDataModel>();
             foreach (var item in allEvaResult)
             {
