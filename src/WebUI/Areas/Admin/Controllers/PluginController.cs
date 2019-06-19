@@ -9,6 +9,7 @@ using PluginHub.Domain.Cms;
 using PluginHub.Infrastructure;
 using PluginHub.Plugins;
 using PluginHub.Services.Cms;
+using PluginHub.Web.Mvc.Routes;
 using WebUI.Areas.Admin.Models.PluginVM;
 using WebUI.Extensions;
 
@@ -96,7 +97,23 @@ namespace WebUI.Areas.Admin.Controllers
             var allPluginDescriptor = _pluginFinder.GetPluginDescriptors(LoadPluginsMode.All);
             foreach (var item in allPluginDescriptor)
             {
-                viewModel.List.Add(item);
+                var instance = item.Instance();
+                var itemModel = new PluginItemModel
+                {
+                    SystemName = item.SystemName,
+                    FriendlyName = item.FriendlyName,
+                    Version = item.Version,
+                    Author = item.Author,
+                    SupportedVersions = item.SupportedVersions,
+                    Installed = item.Installed,
+                    HaveConfigure = instance is IWidgetPlugin,
+                    HaveRoute = instance is IRouteProvider
+                };
+                if (itemModel.HaveRoute)
+                {
+                    //itemModel.RouteUrl=((IRouteProvider)instance)
+                }
+                viewModel.List.Add(itemModel);
             }
 
             return View(viewModel);

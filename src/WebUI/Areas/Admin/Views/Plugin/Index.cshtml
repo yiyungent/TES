@@ -42,7 +42,7 @@
 <div class="row" style="padding-bottom: 24px;" pview="header">
 	<div class="col-md-12">
 		<div class="pull-left">
-			
+
 		</div>
 		<div class="pull-right col-md-4">
 			<div class="btn-group">
@@ -86,7 +86,10 @@
 							{
 								<a class="btn btn-primary" href="@Url.Content("~/Admin/Plugin/Install/")?systemName=@item.SystemName">安装</a>
 							}
-							<a class="btn btn-info" href="@Url.Content("~/Admin/Plugin/Configure/")?systemName=@item.SystemName">配置</a>
+							@if (item.HaveConfigure)
+							{
+								<a class="btn btn-info" href="@Url.Content("~/Admin/Plugin/Configure/")?systemName=@item.SystemName">配置</a>
+							}
 						</p>
 					</div>
 				</li>
