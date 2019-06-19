@@ -34,6 +34,9 @@
     <Reference Include="Castle.ActiveRecord">
       <HintPath>..\..\libs\Castle.ActiveRecord.dll</HintPath>
     </Reference>
+    <Reference Include="Jdenticon, Version=2.2.1.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Jdenticon-net.2.2.1\lib\net45\Jdenticon.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\..\libs\NHibernate.dll</HintPath>
     </Reference>
@@ -82,6 +85,9 @@
       <Project>{f6e2082c-eb59-4fe6-85bb-ca618b85314e}</Project>
       <Name>Service</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

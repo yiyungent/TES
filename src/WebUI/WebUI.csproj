@@ -99,6 +99,9 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\libs\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="Jdenticon, Version=2.2.1.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Jdenticon-net.2.2.1\lib\net45\Jdenticon.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\libs\log4net.dll</HintPath>
     </Reference>
@@ -8948,6 +8951,7 @@
     <Folder Include="Plugins\" />
     <Folder Include="Resources\Excels\" />
     <Folder Include="Templates\" />
+    <Folder Include="Upload\images\avatars\" />
     <Folder Include="Upload\TemplateInstallZip\" />
     <Folder Include="Views\NotificationDemo\" />
     <Folder Include="Views\WebSocket\" />

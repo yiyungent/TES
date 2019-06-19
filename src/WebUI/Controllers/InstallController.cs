@@ -9,6 +9,7 @@ using Service;
 using NHibernate.Criterion;
 using Framework.Common;
 using WebUI.Extensions;
+using Jdenticon;
 
 namespace WebUI.Controllers
 {
@@ -907,7 +908,7 @@ namespace WebUI.Controllers
                 // 创建 专用于学生绑定的用户
                 for (int i = 0; i < 100; i++)
                 {
-                    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo
+                    var studentBindUser = new UserInfo
                     {
                         Name = "学生" + (i + 1),
                         UserName = "学生" + (i + 1),
@@ -915,12 +916,18 @@ namespace WebUI.Controllers
                         Password = EncryptHelper.MD5Encrypt32("12345"),
                         Status = 0,
                         RegTime = DateTime.Now
-                    });
+                    };
+                    studentBindUser.Avatar = $"/upload/images/avatars/{studentBindUser.UserName}.png";
+                    Identicon
+                            .FromValue(EncryptHelper.MD5Encrypt32(studentBindUser.UserName), size: 100)
+                            .SaveAsPng(Server.MapPath($"~/upload/images/avatars/{studentBindUser.UserName}.png"));
+                    studentBindUser.Avatar = "/upload/images/avatars/" + studentBindUser.UserName + ".png";
+                    Container.Instance.Resolve<UserInfoService>().Create(studentBindUser);
                 }
                 // 创建 专用于员工（教师）绑定的用户
                 for (int i = 0; i < 100; i++)
                 {
-                    Container.Instance.Resolve<UserInfoService>().Create(new UserInfo
+                    var teacherBindUser = new UserInfo
                     {
                         Name = "教师" + (i + 1),
                         UserName = "教师" + (i + 1),
@@ -928,7 +935,13 @@ namespace WebUI.Controllers
                         Password = EncryptHelper.MD5Encrypt32("12345"),
                         Status = 0,
                         RegTime = DateTime.Now
-                    });
+                    };
+                    teacherBindUser.Avatar = $"/upload/images/avatars/{teacherBindUser.UserName}.png";
+                    Identicon
+                           .FromValue(EncryptHelper.MD5Encrypt32(teacherBindUser.UserName), size: 100)
+                           .SaveAsPng(Server.MapPath($"~/upload/images/avatars/{teacherBindUser.UserName}.png"));
+                    teacherBindUser.Avatar = "/upload/images/avatars/" + teacherBindUser.UserName + ".png";
+                    Container.Instance.Resolve<UserInfoService>().Create(teacherBindUser);
                 }
 
 
