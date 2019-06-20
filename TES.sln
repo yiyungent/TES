@@ -39,6 +39,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaiduTJ", "plugins\BaiduTJ\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RankingChart", "plugins\RankingChart\RankingChart.csproj", "{AF3CB4B2-CEA7-41B7-86F0-797E09EE36B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArticleContent", "plugins\ArticleContent\ArticleContent.csproj", "{B4FC672D-AB1D-4C5D-A00B-CD2871892E70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{AF3CB4B2-CEA7-41B7-86F0-797E09EE36B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF3CB4B2-CEA7-41B7-86F0-797E09EE36B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF3CB4B2-CEA7-41B7-86F0-797E09EE36B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4FC672D-AB1D-4C5D-A00B-CD2871892E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4FC672D-AB1D-4C5D-A00B-CD2871892E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4FC672D-AB1D-4C5D-A00B-CD2871892E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4FC672D-AB1D-4C5D-A00B-CD2871892E70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +131,7 @@ Global
 		{D546C37C-3E0F-421D-B685-E39DF8019958} = {EF29EEC5-D819-476E-9567-E59F853E663A}
 		{AF439F8A-ABA1-4B65-BCE0-C076CA4D75E4} = {19968077-9CC9-4808-91C8-7D7FBBAF05FD}
 		{AF3CB4B2-CEA7-41B7-86F0-797E09EE36B8} = {19968077-9CC9-4808-91C8-7D7FBBAF05FD}
+		{B4FC672D-AB1D-4C5D-A00B-CD2871892E70} = {19968077-9CC9-4808-91C8-7D7FBBAF05FD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D08ED581-D4C9-4587-AC63-F892EDCD361A}

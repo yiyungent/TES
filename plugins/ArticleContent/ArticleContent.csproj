@@ -7,12 +7,12 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AF3CB4B2-CEA7-41B7-86F0-797E09EE36B8}</ProjectGuid>
+    <ProjectGuid>{B4FC672D-AB1D-4C5D-A00B-CD2871892E70}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RankingChart</RootNamespace>
-    <AssemblyName>RankingChart</AssemblyName>
+    <RootNamespace>ArticleContent</RootNamespace>
+    <AssemblyName>ArticleContent</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -43,10 +43,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.ActiveRecord, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc" />
+    <Reference Include="Castle.ActiveRecord">
+      <HintPath>..\..\libs\Castle.ActiveRecord.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Dapper.1.60.6\lib\net451\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="NHibernate, Version=3.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="NHibernate">
       <HintPath>..\..\libs\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
@@ -94,15 +98,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Description.txt" />
-    <Content Include="dist\bootstrap\bootstrap.min.css" />
-    <Content Include="dist\hrd3\color_ranges.js" />
-    <Content Include="dist\hrd3\config.js" />
-    <Content Include="dist\hrd3\d3.min.js" />
-    <Content Include="dist\hrd3\imgs.js" />
-    <Content Include="dist\hrd3\jquery-1.6.4.min.js" />
-    <Content Include="dist\hrd3\stylesheet.css" />
-    <Content Include="dist\hrd3\visual.js" />
     <Content Include="Global.asax" />
+    <Content Include="install.sql" />
     <Content Include="logo.jpg" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -112,14 +109,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\JsonDataModel.cs" />
+    <Compile Include="Models\ArticleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RankingChartPlugin.cs" />
+    <Compile Include="ArticleContentPlugin.cs" />
     <Compile Include="RouteProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
-    <Content Include="dist\hrd3\example.csv" />
     <None Include="packages.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
@@ -172,9 +168,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1135</DevelopmentServerPort>
+          <DevelopmentServerPort>17124</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1135/</IISUrl>
+          <IISUrl>http://localhost:17124/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

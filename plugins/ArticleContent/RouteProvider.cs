@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace RankingChart
+namespace ArticleContent
 {
     public class RouteProvider : IRouteProvider
     {
@@ -15,12 +15,12 @@ namespace RankingChart
         public void RegisterRoutes(RouteCollection routes)
         {
             Route route = routes.MapRoute(
-                           name: "PluginHub.RankingChart",
-                           url: "plugin-RankingChart/{controller}/{action}/{id}",
+                           name: "PluginHub.ArticleContent",
+                           url: "plugin-ArticleContent/{controller}/{action}/{id}",
                            defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
-                           namespaces: new string[] { "RankingChart.Controllers" }
+                           namespaces: new string[] { "ArticleContent.Controllers" }
                        );
-            route.DataTokens["area"] = "RankingChart";
+            route.DataTokens["area"] = "ArticleContent";
         }
     }
 }
