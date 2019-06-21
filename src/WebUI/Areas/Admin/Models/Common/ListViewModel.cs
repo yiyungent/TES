@@ -74,6 +74,9 @@ namespace WebUI.Areas.Admin.Models.Common
                 case "Domain.EmployeeDuty":
                     tempAllList = Container.Instance.Resolve<EmployeeDutyService>().GetPaged(queryConditions, orderList, pageIndex, pageSize, out totalCount);
                     break;
+                case "Domain.Article":
+                    tempAllList = Container.Instance.Resolve<ArticleService>().GetPaged(queryConditions, orderList, pageIndex, pageSize, out totalCount);
+                    break;
             }
             IList<dynamic> allList = tempAllList;
             IList<T> tempList = new List<T>();

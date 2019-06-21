@@ -7599,6 +7599,10 @@
     <Content Include="dist\push.js\push.min.js" />
     <Content Include="dist\pview\pview.js" />
     <Content Include="dist\tagHelper\tagHelper.js" />
+    <Content Include="dist\wangEditor\wangEditor.css" />
+    <Content Include="dist\wangEditor\wangEditor.js" />
+    <Content Include="dist\wangEditor\wangEditor.min.css" />
+    <Content Include="dist\wangEditor\wangEditor.min.js" />
     <Content Include="dist\WebUploader\Uploader.swf" />
     <Content Include="dist\WebUploader\webuploader.css" />
     <Content Include="dist\WebUploader\webuploader.js" />
@@ -8320,6 +8324,12 @@
     <Content Include="Areas\Admin\Views\Plugin\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Plugin\Configure.cshtml" />
     <Content Include="App_Data\PluginTables\BaiduTJSettings.json" />
+    <Content Include="Areas\Admin\Views\Article\Page.cshtml" />
+    <Content Include="Areas\Admin\Views\Article\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Article\Create.cshtml" />
+    <Content Include="dist\wangEditor\fonts\w-e-icon.woff" />
+    <Content Include="dist\wangEditor\wangEditor.min.js.map" />
+    <Content Include="Areas\Admin\Views\Article\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Demos\NotificationDemo.html" />
@@ -8363,6 +8373,7 @@
     <Compile Include="Areas\Account\Models\EditUserInfoViewModel.cs" />
     <Compile Include="Areas\Account\Models\RedirectViewModel.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\ArticleController.cs" />
     <Compile Include="Areas\Admin\Controllers\ClazzInfoController.cs" />
     <Compile Include="Areas\Admin\Controllers\ControlController.cs" />
     <Compile Include="Areas\Admin\Controllers\CourseInfoController.cs" />
@@ -8436,6 +8447,7 @@
     <Compile Include="Infrastructure\AutoMapperStartupTask.cs" />
     <Compile Include="Infrastructure\CaculateScore\CaculateScore.cs" />
     <Compile Include="Infrastructure\CaculateScore\ICaculateScore.cs" />
+    <Compile Include="Infrastructure\CmsUrlConstraint.cs" />
     <Compile Include="MessageHubs\NotificationHub.cs" />
     <Compile Include="MessageHubs\NotificationManager.cs" />
     <Compile Include="Models\Cms\RenderWidgetModel.cs" />

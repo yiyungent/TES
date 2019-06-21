@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArticleManager.cs" />
     <Compile Include="Base\BaseManager.cs" />
     <Compile Include="ClazzInfoManager.cs" />
     <Compile Include="CourseInfoManager.cs" />

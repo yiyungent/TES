@@ -62,6 +62,7 @@ namespace WebUI.Controllers
             InitEvaTask();
             //InitEvaRecord();
             InitEvaResult();
+            InitArticle();
         }
         #endregion
 
@@ -353,6 +354,15 @@ namespace WebUI.Controllers
                     ParentMenu = parentMenu,
                     SortCode = 70,
                 });
+                Container.Instance.Resolve<Sys_MenuService>().Create(new Sys_Menu()
+                {
+                    Name = "文章管理",
+                    ControllerName = "Article",
+                    ActionName = "Index",
+                    AreaName = "Admin",
+                    ParentMenu = parentMenu,
+                    SortCode = 80,
+                });
                 #endregion
 
                 #region 评价管理的二级菜单
@@ -489,6 +499,34 @@ namespace WebUI.Controllers
                         }
                     }
                 }
+                #endregion
+
+                #region 文章管理
+                Sys_Menu article_Sys_Menu = Container.Instance.Resolve<Sys_MenuService>().Query(new List<ICriterion> { Expression.Eq("ControllerName", "Article") }).FirstOrDefault();
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.Article.Create",
+                    Name = "文章管理-创建",
+                    Sys_Menu = article_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.Article.Index",
+                    Name = "文章管理-列表",
+                    Sys_Menu = article_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.Article.Edit",
+                    Name = "文章管理-编辑",
+                    Sys_Menu = article_Sys_Menu
+                });
+                Container.Instance.Resolve<FunctionInfoService>().Create(new FunctionInfo
+                {
+                    AuthKey = "Admin.Article.Delete",
+                    Name = "文章管理-删除",
+                    Sys_Menu = article_Sys_Menu
+                });
                 #endregion
 
                 #region 角色管理
@@ -3100,6 +3138,36 @@ namespace WebUI.Controllers
                         Teacher = allEmployee[i % allEmployee.Count]
                     });
                 }
+                ShowMessage("成功");
+            }
+            catch (Exception)
+            {
+                ShowMessage("失败");
+            }
+        }
+        #endregion
+
+        #region 初始化文章
+        private void InitArticle()
+        {
+            try
+            {
+                ShowMessage("开始初始化文章");
+
+                ArticleService articleService = Container.Instance.Resolve<ArticleService>();
+                for (int i = 0; i < 10; i++)
+                {
+                    articleService.Create(new Article
+                    {
+                        PublishTime = DateTime.Now,
+                        LastUpdateTime = DateTime.Now,
+                        Author = new UserInfo { ID = 1 },
+                        Title = "测试文章" + (i + 1),
+                        Content = "测试内容" + (i + 1),
+                        CustomUrl = $"article-{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}"
+                    });
+                }
+
                 ShowMessage("成功");
             }
             catch (Exception)

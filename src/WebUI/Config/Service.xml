@@ -53,5 +53,6 @@
     <component id='OptionsService' service='Service.OptionsService,Service' type='Component.OptionsComponent,Component' isTransactional='true' />
     <component id='EmployeeDutyService' service='Service.EmployeeDutyService,Service' type='Component.EmployeeDutyComponent,Component' isTransactional='true' />
     <component id='ThemeTemplateService' service='Service.ThemeTemplateService,Service' type='Component.ThemeTemplateComponent,Component' isTransactional='true' />
+    <component id='ArticleService' service='Service.ArticleService,Service' type='Component.ArticleComponent,Component' isTransactional='true' />
   </components>
 </configuration>

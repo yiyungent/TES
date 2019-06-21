@@ -14,6 +14,7 @@ using Framework.Common;
 using WebUI.Controllers;
 using PluginHub.Infrastructure;
 using PluginHub.Web.Mvc.Routes;
+using WebUI.Infrastructure;
 
 namespace WebUI
 {
@@ -62,6 +63,16 @@ namespace WebUI
             //register custom routes (plugins, etc)
             var routePublisher = EngineContext.Current.Resolve<IRoutePublisher>();
             routePublisher.RegisterRoutes(routes);
+
+            // register custom article url
+            var route = routes.MapRoute(
+                  name: "ArticleCustomUrl",
+                  url: "{*cmsurl}",
+                  defaults: new { controller = "Article", action = "Page" },
+                  constraints: new { cmsurl = new CmsUrlConstraint() },
+                  namespaces: new string[] { "WebUI.Areas.Admin.Controllers" }
+             );
+            route.DataTokens["area"] = "Admin";
 
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
