@@ -1,6 +1,5 @@
 ﻿@using Domain
 @using Framework.Models
-@using PluginHub.Mvc5
 @model CurrentAccountModel
 @{
 	ViewBag.Title = "教学评价系统 - TES";
@@ -8,6 +7,8 @@
 	Layout = "~/GlobalShared/Views/_TopNav.cshtml";
 
 	UserInfo currentUserInfo = Model.UserInfo;
+	IList<Article> articleList = ViewBag.ArticleList;
+	articleList = articleList.OrderByDescending(m => m.LastUpdateTime).Take(5).ToList();
 }
 @section head {
 }
@@ -18,12 +19,15 @@
 <section class="content">
 	<div class="row">
 		<div class="col-md-12">
-			@{ Html.RenderAction("ProfileBoxPartial", "Control", new { area = "Account", userName = currentUserInfo.UserName }); }
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12">
-			@Html.Widget("home_page_bottom")
+			<div class="list-group">
+				@foreach (var item in articleList)
+				{
+					<a class="list-group-item" href="/@item.CustomUrl">
+						<span class="badge">@item.LastUpdateTime</span>
+						@item.Title
+					</a>
+				}
+			</div>
 		</div>
 	</div>
 </section>

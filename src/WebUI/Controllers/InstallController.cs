@@ -3164,7 +3164,7 @@ namespace WebUI.Controllers
                         Author = new UserInfo { ID = 1 },
                         Title = "测试文章" + (i + 1),
                         Content = "测试内容" + (i + 1),
-                        CustomUrl = $"article-{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}"
+                        CustomUrl = $"article-{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}-{i + 1}"
                     });
                 }
 
