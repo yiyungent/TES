@@ -62,12 +62,12 @@
 			var E = window.wangEditor;
 			var editor = new E('#js-editArea');
 			var $hiddenEditArea = $("#Content");
-			editor.create();
-			editor.txt.html($hiddenEditArea.val());
 			editor.customConfig.onchange = function (html) {
 				// 监控变化，同步更新到 textarea
-				$hiddenEditArea.val(html)
+				$hiddenEditArea.val(html);
 			}
+			editor.create();
+			editor.txt.html($hiddenEditArea.val());
 			// 初始化 textarea 的值
 			$hiddenEditArea.val(editor.txt.html())
 		});

@@ -79,12 +79,16 @@ namespace WebUI.Areas.Admin.Controllers
 
                     #endregion
 
+                    ArticleService articleService = Container.Instance.Resolve<ArticleService>();
+                    Article dbModel = articleService.GetEntity(inputModel.ID);
+
                     // 输入模型->数据库模型
-                    Article dbModel = inputModel;
-                    dbModel.Author = new UserInfo { ID = AccountManager.GetCurrentUserInfo().ID };
+                    dbModel.Title = inputModel.Title;
+                    dbModel.Content = inputModel.Content;
+                    dbModel.CustomUrl = inputModel.CustomUrl;
                     dbModel.LastUpdateTime = DateTime.Now;
 
-                    Container.Instance.Resolve<ArticleService>().Edit(dbModel);
+                    articleService.Edit(dbModel);
 
                     return Json(new { code = 1, message = "保存成功" });
                 }
