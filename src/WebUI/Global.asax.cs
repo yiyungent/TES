@@ -15,6 +15,9 @@ using WebUI.Controllers;
 using PluginHub.Infrastructure;
 using PluginHub.Web.Mvc.Routes;
 using WebUI.Infrastructure;
+using System.Threading;
+using WebUI.Attributes;
+using log4net;
 
 namespace WebUI
 {
@@ -47,6 +50,34 @@ namespace WebUI
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             FrameworkConfig.Register();
+
+            #region log4net
+            log4net.Config.XmlConfigurator.Configure();
+            GlobalFilters.Filters.Add(new LogErrorAttribute());
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                while (true)
+                {
+                    if (LogErrorAttribute.ExceptionQueue.Count > 0)
+                    {
+                        Exception ex = LogErrorAttribute.ExceptionQueue.Dequeue();
+                        if (ex != null)
+                        {
+                            ILog logger = LogManager.GetLogger("testError");
+                            logger.Error(ex.ToString()); //将异常信息写入Log4Net中  
+                        }
+                        else
+                        {
+                            Thread.Sleep(50);
+                        }
+                    }
+                    else
+                    {
+                        Thread.Sleep(50);
+                    }
+                }
+            });
+            #endregion
         }
 
         public static void RegisterRoutes(RouteCollection routes)

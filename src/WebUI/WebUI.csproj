@@ -102,8 +102,8 @@
     <Reference Include="Jdenticon, Version=2.2.1.0, Culture=neutral, PublicKeyToken=3fcf9f6e3475a4f8, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Jdenticon-net.2.2.1\lib\net45\Jdenticon.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\libs\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Core.2.4.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
@@ -8419,6 +8419,7 @@
     <Compile Include="Areas\Admin\Models\ThemeTemplateVM\InstallZipItem.cs" />
     <Compile Include="Areas\Admin\Models\UserInfoForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ZNodeModel.cs" />
+    <Compile Include="Attributes\LogErrorAttribute.cs" />
     <Compile Include="Controllers\ErrorsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
