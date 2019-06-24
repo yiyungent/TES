@@ -99,7 +99,7 @@
     <Compile Include="HtmlHelpers\PageInfo.cs" />
     <Compile Include="HtmlHelpers\PViewPageHelper.cs" />
     <Compile Include="Infrastructure\Abstract\IAuthManager.cs" />
-    <Compile Include="Infrastructure\Abstract\ICacheProvider.cs" />
+    <Compile Include="Infrastructure\Abstract\ICacheManager.cs" />
     <Compile Include="Infrastructure\Abstract\IDBAccessProvider.cs" />
     <Compile Include="Infrastructure\Concrete\AccountManager.cs" />
     <Compile Include="Infrastructure\Concrete\AuthManager.cs" />

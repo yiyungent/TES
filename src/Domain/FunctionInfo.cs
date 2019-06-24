@@ -1,5 +1,6 @@
 ﻿using Castle.ActiveRecord;
 using Domain.Base;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain
@@ -8,6 +9,7 @@ namespace Domain
     /// 实体类： 操作
     /// </summary>
     [ActiveRecord]
+    [Serializable]
     public partial class FunctionInfo : BaseEntity<FunctionInfo>
     {
         

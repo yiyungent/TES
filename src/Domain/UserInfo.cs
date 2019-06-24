@@ -10,6 +10,7 @@ namespace Domain
     /// 实体类：用户
     /// </summary>
     [ActiveRecord]
+    [Serializable]
     public partial class UserInfo : BaseEntity<UserInfo>
     {
         /// <summary>
