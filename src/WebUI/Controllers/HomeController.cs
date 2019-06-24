@@ -23,17 +23,18 @@ namespace WebUI.Controllers
         }
         #endregion
 
+        #region 首页
         public ActionResult Index()
         {
             // 当前登录账号/未登录
             CurrentAccountModel currentAccount = AccountManager.GetCurrentAccount();
-            Session[TemplateViewEngine.TemplateSessionKey] = "Red";
 
             ArticleService articleService = Container.Instance.Resolve<ArticleService>();
             var articleList = articleService.GetAll();
             ViewBag.ArticleList = articleList;
 
             return View(currentAccount);
-        }
+        } 
+        #endregion
     }
 }
