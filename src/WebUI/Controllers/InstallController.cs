@@ -3137,16 +3137,20 @@ namespace WebUI.Controllers
                     for (int j = 0; j < allEvaTask.Count; j++)
                     {
                         // 每个评价类型
+                        // 每个评价类型总分100
+                        int totalScore = 100;
                         for (int k = 0; k < allNormType.Count; k++)
                         {
+                            int score = r.Next(0, totalScore);
                             Container.Instance.Resolve<EvaResultService>().Create(new EvaResult()
                             {
                                 CaculateTime = firstEvaTaskTime,
                                 EvaluateTask = allEvaTask[j],
                                 NormType = allNormType[k],
-                                Score = r.Next(0, 100),
+                                Score = score,
                                 Teacher = allEmployee[i]
                             });
+                            totalScore -= score;
                         }
                         // 评价任务时间++
                         firstEvaTaskTime = firstEvaTaskTime.AddMonths(2);

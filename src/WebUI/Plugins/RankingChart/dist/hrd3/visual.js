@@ -9,6 +9,18 @@
 // import * as d3 from 'd3';
 // require("./stylesheet.css");
 
+function loadColor() {
+	$.ajax({
+		url: "/plugin-rankingchart/home/UserColor",
+		type: "get",
+		dataType: "json",
+		success: function (data) {
+			config.color = data;
+			loadChart();
+		}
+	});
+}
+
 function loadChart() {
 	$.ajax({
 		url: "/plugin-rankingchart/home/getdata",
@@ -37,11 +49,8 @@ $(function () {
 		type: "get",
 		dataType: "json",
 		success: function (data) {
-			console.log(data);
-			for (var i = 0; i < data.length; i++) {
-			}
 			external_imgs = data;
-			loadChart();
+			loadColor();
 		}
 	});
 });
