@@ -62,7 +62,11 @@
 			</span>
 		</h3>
 
-		<div class="box-tools"></div>
+		<div class="box-tools">
+			<div class="btn-group">
+				<a class="btn btn-info" href="@Url.Action("EvaResult", new { evaTaskId = evaTask.ID, employeeId = currentEmployee.ID })">查看评价</a>
+			</div>
+		</div>
 	</div>
 	<!-- end .box-header -->
 	<!-- start .box-body -->
@@ -89,21 +93,29 @@
 						</td>
 						<td>
 							<div class="btn-group">
-								@if (isEvaedTeacherList.Contains(item.ID))
+								@if (evaTask.Status == 3)
 								{
-									// 已评
-									<a class="btn btn-default disabled" disabled href="#">已评</a>
+									// 评价结束
+									<a class="btn btn-default disabled" disabled href="#">评价结束</a>
 								}
 								else
 								{
-									// 未评
-									if (currentEmployee.ID == item.ID)
+									if (isEvaedTeacherList.Contains(item.ID))
 									{
-										<a class="btn btn-success" href="/Admin/TeacherEva/Eva?teacherId=@item.ID&evaTaskId=@evaTaskId">自评</a>
+										// 已评
+										<a class="btn btn-default disabled" disabled href="#">已评</a>
 									}
 									else
 									{
-										<a class="btn btn-primary" href="/Admin/TeacherEva/Eva?teacherId=@item.ID&evaTaskId=@evaTaskId">评价</a>
+										// 未评
+										if (currentEmployee.ID == item.ID)
+										{
+											<a class="btn btn-success" href="/Admin/TeacherEva/Eva?teacherId=@item.ID&evaTaskId=@evaTaskId">自评</a>
+										}
+										else
+										{
+											<a class="btn btn-primary" href="/Admin/TeacherEva/Eva?teacherId=@item.ID&evaTaskId=@evaTaskId">评价</a>
+										}
 									}
 								}
 							</div>

@@ -113,11 +113,7 @@ namespace WebUI.Infrastructure.CaculateScore
             {
                 var findBrother = from m in all
                                   where m.ParentTarget != null
-                                  && m.ParentTarget != null
-                                  && self.ParentTarget != null
                                   && m.ParentTarget.ID == self.ParentTarget.ID
-                                  && m.NormType != null
-                                  && self.NormType != null
                                   && m.NormType.ID == self.NormType.ID
                                   select m;
                 decimal sumWeight = 0;
@@ -125,12 +121,13 @@ namespace WebUI.Infrastructure.CaculateScore
                 {
                     sumWeight = sumWeight + item.Weight;
                 }
-                if (sumWeight == 0) sumWeight = 1;
+                if (sumWeight == 0) sumWeight = 1; // 避免0做除数
 
                 // 需要递归
                 return self.Weight / sumWeight * GetWeight(self.ParentTarget, all);
             }
         }
         #endregion
+
     }
 }

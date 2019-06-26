@@ -37,5 +37,20 @@ namespace RankingChart.Controllers
 
             return Json(jsonArr, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult UserFace()
+        {
+            IList<EmployeeInfo> allEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetAll();
+            IList<UserInfo> allUser = Container.Instance.Resolve<UserInfoService>().GetAll();
+
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            foreach (var item in allEmployee)
+            {
+                UserInfo userInfo = allUser.Where(m => m.ID == item.UID).FirstOrDefault();
+                dic.Add($"{item.Name}({item.EmployeeCode})", userInfo.Avatar);
+            }
+
+            return Json(dic, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Framework.Attributes;
 using Framework.Infrastructure.Concrete;
 using Framework.Models;
-using Framework.Mvc.ViewEngines.GlobalShared;
 using Framework.Mvc.ViewEngines.Templates;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -38,11 +37,9 @@ namespace Framework.Config
 
         public static void RegisterViewEngine(ViewEngineCollection viewEngines)
         {
-            //viewEngines.Clear();
-            viewEngines.Add(new TemplateViewEngine());
+            viewEngines.Clear();
             viewEngines.Add(new DbDriveTemplateViewEngine());
             viewEngines.Add(new RazorViewEngine());
-            viewEngines.Add(new GlobalSharedViewEngine());
         }
     }
 }

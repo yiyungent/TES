@@ -134,14 +134,7 @@
 						<div class="btn-group" role="group" data-pjax>
 							@if (Html.HasAuth("Admin", "TeacherEva", "EvaList"))
 							{
-								if (item.Status == 3)
-								{
-									<a class="btn btn-default disabled" disabled href="#">已结束</a>
-								}
-								else
-								{
-									<a class="btn btn-success" href="@Url.Action("EvaList")?id=@item.ID">进入</a>
-								}
+								<a class="btn btn-success" href="@Url.Action("EvaList")?id=@item.ID">进入</a>
 							}
 						</div>
 					</td>

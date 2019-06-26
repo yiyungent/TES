@@ -9,7 +9,7 @@
 // import * as d3 from 'd3';
 // require("./stylesheet.css");
 
-$(function () {
+function loadChart() {
 	$.ajax({
 		url: "/plugin-rankingchart/home/getdata",
 		type: "get",
@@ -21,10 +21,27 @@ $(function () {
 			}
 			console.log(chartDataArr);
 			try {
-			  draw(chartDataArr);
+				draw(chartDataArr);
 			} catch (e) {
 				console.log(e);
 			}
+		}
+	});
+}
+
+$(function () {
+	
+	//external_imgs
+	$.ajax({
+		url: "/plugin-rankingchart/home/UserFace",
+		type: "get",
+		dataType: "json",
+		success: function (data) {
+			console.log(data);
+			for (var i = 0; i < data.length; i++) {
+			}
+			external_imgs = data;
+			loadChart();
 		}
 	});
 });

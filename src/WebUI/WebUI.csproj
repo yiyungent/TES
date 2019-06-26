@@ -8182,15 +8182,12 @@
     <Content Include="Areas\Admin\Views\Shared\_LeftMenuPartial.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_MessagePartial.cshtml" />
     <Content Include="Areas\Account\Views\Shared\_MessagePartial.cshtml" />
-    <Content Include="GlobalShared\Views\_TopNav.cshtml" />
-    <Content Include="GlobalShared\Views\_TopNav_MessagesMenuPartial.cshtml" />
-    <Content Include="GlobalShared\Views\_TopNav_NavbarCollapsePartial.cshtml" />
-    <Content Include="GlobalShared\Views\_TopNav_NotificationsMenuPartial.cshtml" />
-    <Content Include="GlobalShared\Views\_TopNav_TasksMenuPartial.cshtml" />
-    <Content Include="GlobalShared\Views\_TopNav_UserAccountMenuPartial.cshtml" />
-    <Content Include="GlobalShared\Views\web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Views\Shared\_TopNav.cshtml" />
+    <Content Include="Views\Shared\_TopNav_MessagesMenuPartial.cshtml" />
+    <Content Include="Views\Shared\_TopNav_NavbarCollapsePartial.cshtml" />
+    <Content Include="Views\Shared\_TopNav_NotificationsMenuPartial.cshtml" />
+    <Content Include="Views\Shared\_TopNav_TasksMenuPartial.cshtml" />
+    <Content Include="Views\Shared\_TopNav_UserAccountMenuPartial.cshtml" />
     <Content Include="Areas\Account\Views\Shared\_Redirect.cshtml" />
     <Content Include="Areas\Admin\Views\CourseInfo\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\CourseInfo\Detail.cshtml" />
@@ -8337,6 +8334,7 @@
     <Content Include="dist\wangEditor\fonts\w-e-icon.woff" />
     <Content Include="dist\wangEditor\wangEditor.min.js.map" />
     <Content Include="Areas\Admin\Views\Article\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\TeacherEva\EvaResult.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Demos\NotificationDemo.html" />
@@ -8413,6 +8411,7 @@
     <Compile Include="Areas\Admin\Models\EmployeeInfoVM\EvaAnalyzeChart.cs" />
     <Compile Include="Areas\Admin\Models\EvaConditionVM\ClassEvaConViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EvaResultVM\EvaResultListViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\EvaResultVM\EvaResultViewModel.cs" />
     <Compile Include="Areas\Admin\Models\EvaTaskVM\EvaTaskForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\NormTypeVM\NormTypeForEditViewModel.cs" />
     <Compile Include="Areas\Admin\Models\OptionModel.cs" />
@@ -8965,9 +8964,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\Logs\" />
     <Folder Include="Areas\Account\Views\Control\" />
     <Folder Include="Areas\Admin\Views\Control\" />
-    <Folder Include="GlobalShared\Models\" />
     <Folder Include="Plugins\" />
     <Folder Include="Resources\Excels\" />
     <Folder Include="Templates\" />

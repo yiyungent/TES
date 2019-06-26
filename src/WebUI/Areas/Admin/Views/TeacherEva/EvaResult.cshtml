@@ -1,0 +1,68 @@
+﻿@using WebUI.Areas.Admin.Models.EvaResultVM
+@using WebUI.Extensions
+@using WebUI.Areas.Admin.Models.Common
+@using Domain
+@model EvaResultViewModel
+@{
+	Layout = "~/Areas/Admin/Views/Shared/_AdminContent.cshtml";
+	decimal totalScore = 0;
+	foreach (var item in Model.EvaResultList)
+	{
+		totalScore += item.Score;
+	}
+}
+
+<!-- start .box -->
+<div class="box">
+	<!-- start .box-header -->
+	<div class="box-header">
+		<h3 class="box-title">
+			<span class="col-xs-12" style="padding-bottom: 10px;">评价任务: @Model.EvaTask.Name</span>
+			<span class="col-xs-6 pull-left" style="padding-bottom: 10px;">
+				@(Model.EmployeeInfo?.Name ?? "")（@(Model.EmployeeInfo?.EmployeeCode ?? "")）
+			</span>
+			<span class="col-xs-2 pull-left">职位: @(Model.EmployeeInfo.EmployeeDuty?.Name ?? "")</span>
+			<span class="col-xs-4 pull-right">
+				@Model.EmployeeInfo.Department.DescDept()
+			</span>
+		</h3>
+
+		<div class="box-tools">
+
+		</div>
+	</div>
+	<!-- end .box-header -->
+	<!-- start .box-body -->
+	<!-- start 简单表格 -->
+	<div class="box-body table-responsive no-padding">
+		<table id="js-table" class="table table-hover" pview="table">
+			<tr>
+				<th>ID</th>
+				<th>评价类型</th>
+				<th>分数</th>
+			</tr>
+			@if (Model != null && Model.EvaResultList.Count >= 1)
+			{
+				foreach (var item in Model.EvaResultList)
+				{
+					<tr>
+						<td>@item.ID</td>
+						<td>@item.NormType.Name</td>
+						<td>@item.Score.ToString("#.##")</td>
+					</tr>
+				}
+			}
+		</table>
+		<span class="label-info">总分：@totalScore.ToString("#.##")</span>
+	</div>
+	<!-- end 简单表格 -->
+	<!-- end .box-body -->
+	<!-- start .box-footer -->
+	<div class="box-footer clearfix">
+		<div class="btn-group">
+			<a class="btn btn-default" href="/Admin/TeacherEva/EvaList?id=@Model.EvaTask.ID">返回</a>
+		</div>
+	</div>
+	<!-- end .box-footer -->
+</div>
+<!-- end .box -->

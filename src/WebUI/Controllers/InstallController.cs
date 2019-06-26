@@ -10,6 +10,7 @@ using NHibernate.Criterion;
 using Framework.Common;
 using WebUI.Extensions;
 using Jdenticon;
+using Common;
 
 namespace WebUI.Controllers
 {
@@ -1060,7 +1061,8 @@ namespace WebUI.Controllers
 
                 for (int i = 0; i < allUserInBindStudent.Count; i++)
                 {
-                    string name = "学生" + (i + 1);
+                    string studentName = GetRandom.GetRandomName();
+                    string name = studentName;
                     string studentCode = "170010" + i.ToString("000");
                     // 创建学生
                     int randomNum = new Random().Next(0, 50);
@@ -1075,7 +1077,7 @@ namespace WebUI.Controllers
                     UserInfo bindUser = Container.Instance.Resolve<UserInfoService>().GetEntity(allUserInBindStudent[i].ID);
                     bindUser.RoleInfoList = allRole.Where(m => m.Name == "学生").ToList();
                     bindUser.UserName = studentCode;
-                    bindUser.Name = "学生" + (i + 1);
+                    bindUser.Name = studentName;
                     Container.Instance.Resolve<UserInfoService>().Edit(bindUser);
                 }
 
@@ -1395,7 +1397,8 @@ namespace WebUI.Controllers
                 Random r = new Random();
                 for (int i = 0; i < 100; i++)
                 {
-                    string name = "教师" + (i + 1);
+                    string employeeName = GetRandom.GetRandomName();
+                    string name = employeeName;
                     string employeeCode = "120010" + i.ToString("000");
 
                     // 创建员工
@@ -1412,7 +1415,7 @@ namespace WebUI.Controllers
                     UserInfo bindUser = Container.Instance.Resolve<UserInfoService>().GetEntity(allUserInBindEmployee[i].ID);
                     bindUser.RoleInfoList = allRole.Where(m => m.Name == "教师").ToList();
                     bindUser.UserName = employeeCode;
-                    bindUser.Name = "教师" + (i + 1);
+                    bindUser.Name = employeeName;
                     Container.Instance.Resolve<UserInfoService>().Edit(bindUser);
                 }
 
@@ -3044,16 +3047,17 @@ namespace WebUI.Controllers
             {
                 ShowMessage("开始初始化评价任务");
                 Random r = new Random();
+                DateTime firstEvaTaskTime = new DateTime(1998, 12, 15);
                 for (int i = 1; i <= 50; i++)
                 {
-                    DateTime time = DateTime.Now.AddMonths(r.Next(1, 12));
                     Container.Instance.Resolve<EvaTaskService>().Create(new EvaTask()
                     {
                         Name = "任务" + i,
                         EvaTaskCode = string.Format("32001{0:00}", i),
-                        StartDate = time,
-                        EndDate = time.AddMonths(8),
+                        StartDate = firstEvaTaskTime,
+                        EndDate = firstEvaTaskTime.AddMonths(2),
                     });
+                    firstEvaTaskTime = firstEvaTaskTime.AddMonths(2);
                 }
                 ShowMessage("成功");
             }
@@ -3100,6 +3104,7 @@ namespace WebUI.Controllers
                     {
                     }
                 }
+
                 ShowMessage("成功");
             }
             catch (Exception)
@@ -3122,22 +3127,32 @@ namespace WebUI.Controllers
                 IList<EmployeeInfo> allEmployee = Container.Instance.Resolve<EmployeeInfoService>().GetAll();
 
                 Random r = new Random();
-                for (int i = 1; i <= 2000; i++)
-                {
-                    UserInfo user = allUser[r.Next(0, allUser.Count - 1)];
-                    NormType normType = allNormType[r.Next(0, allNormType.Count - 1)];
-                    IList<NormTarget> currentNormTargetList = allNormTarget.Where(m => m.NormType.ID == normType.ID).ToList();
-                    NormTarget normTarget = currentNormTargetList[i % currentNormTargetList.Count];
 
-                    Container.Instance.Resolve<EvaResultService>().Create(new EvaResult()
+                // 每名教师
+                for (int i = 0; i < allEmployee.Count; i++)
+                {
+                    // 第一个评价任务发起时间-作为计算时间
+                    DateTime firstEvaTaskTime = new DateTime(1998, 12, 15);
+                    // 每个评价任务
+                    for (int j = 0; j < allEvaTask.Count; j++)
                     {
-                        CaculateTime = DateTime.Now,
-                        EvaluateTask = allEvaTask[r.Next(0, allEvaTask.Count - 1)],
-                        NormType = allNormType[r.Next(0, allNormType.Count - 1)],
-                        Score = r.Next(0, 100),
-                        Teacher = allEmployee[i % allEmployee.Count]
-                    });
+                        // 每个评价类型
+                        for (int k = 0; k < allNormType.Count; k++)
+                        {
+                            Container.Instance.Resolve<EvaResultService>().Create(new EvaResult()
+                            {
+                                CaculateTime = firstEvaTaskTime,
+                                EvaluateTask = allEvaTask[j],
+                                NormType = allNormType[k],
+                                Score = r.Next(0, 100),
+                                Teacher = allEmployee[i]
+                            });
+                        }
+                        // 评价任务时间++
+                        firstEvaTaskTime = firstEvaTaskTime.AddMonths(2);
+                    }
                 }
+
                 ShowMessage("成功");
             }
             catch (Exception)

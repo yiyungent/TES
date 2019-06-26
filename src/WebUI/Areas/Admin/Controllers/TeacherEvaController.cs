@@ -13,6 +13,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models;
 using WebUI.Areas.Admin.Models.Common;
+using WebUI.Areas.Admin.Models.EvaResultVM;
 using WebUI.Extensions;
 using WebUI.Infrastructure.CaculateScore;
 
@@ -272,6 +273,30 @@ namespace WebUI.Areas.Admin.Controllers
         public ViewResult EvaSuccess()
         {
             return View();
+        }
+        #endregion
+
+        #region 查看评价
+        public ViewResult EvaResult(int evaTaskId, int employeeId)
+        {
+            EmployeeInfo employee = Container.Instance.Resolve<EmployeeInfoService>().GetEntity(employeeId);
+            EvaTask evaTask = Container.Instance.Resolve<EvaTaskService>().GetEntity(evaTaskId);
+            IList<EvaResult> evaResults = Container.Instance.Resolve<EvaResultService>().Query(new List<ICriterion>
+            {
+                Expression.And(
+                    Expression.Eq("EvaluateTask.ID", evaTaskId),
+                    Expression.Eq("Teacher.ID", employeeId)
+                )
+            }).ToList();
+
+            EvaResultViewModel viewModel = new EvaResultViewModel()
+            {
+                EmployeeInfo = employee,
+                EvaTask = evaTask,
+                EvaResultList = evaResults
+            };
+
+            return View(viewModel);
         }
         #endregion
 

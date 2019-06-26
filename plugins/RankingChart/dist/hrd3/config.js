@@ -152,13 +152,13 @@
   // label x轴位置
   labelx: -10,
 
-  use_img: false,
+  use_img: true,
 
   // 图片路径，本地图片或者网上图片。
   // 也可在imgs.js中配置。
   imgs: {
-    "条目": "http://i1.hdslb.com/bfs/face/983034448f81f45f05956d0455a86fe0639d6a36.jpg",
-    "任意名称": "path/to/img"
+    //"条目": "http://i1.hdslb.com/bfs/face/983034448f81f45f05956d0455a86fe0639d6a36.jpg",
+    //"任意名称": "path/to/img"
   },
 
   // 全局背景颜色
@@ -174,3 +174,4 @@
   // limit bar info display length
   bar_name_max: 30
 };
+
