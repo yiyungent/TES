@@ -33,4 +33,23 @@ namespace Framework.HtmlHelpers
             }
         }
     }
+
+    public class PagedList<T>
+    {
+        public IList<T> List { get; set; }
+
+        public PageInfo PageInfo { get; set; }
+
+        public PagedList(IList<T> list, int pageIndex, int pageSize, int totalCount)
+        {
+            this.List = list;
+            this.PageInfo = new PageInfo
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                TotalRecordCount = totalCount,
+                MaxLinkCount = 10
+            };
+        }
+    }
 }

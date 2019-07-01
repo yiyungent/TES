@@ -18,6 +18,7 @@ using WebUI.Infrastructure;
 using System.Threading;
 using WebUI.Attributes;
 using log4net;
+using WebUI.Infrastructure.Search;
 
 namespace WebUI
 {
@@ -50,6 +51,9 @@ namespace WebUI
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             FrameworkConfig.Register();
+
+            // 开启线程扫描队列将数据取出来写到Lucene.NET中。
+            SearchIndexManager.GetInstance().StartThread();
 
             #region log4net
             log4net.Config.XmlConfigurator.Configure();

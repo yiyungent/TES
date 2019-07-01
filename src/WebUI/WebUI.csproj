@@ -81,20 +81,11 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\..\libs\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah.Io, Version=3.3.55.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Elmah.Io.Mvc.3.3.55\lib\net45\Elmah.Io.dll</HintPath>
-    </Reference>
-    <Reference Include="Elmah.Io.Client, Version=3.3.61.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Elmah.Io.Client.3.3.61\lib\net45\Elmah.Io.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="Elmah.Mvc, Version=2.1.2.1389, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Elmah.Mvc.2.1.2\lib\net40\Elmah.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\libs\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\libs\Iesi.Collections.dll</HintPath>
@@ -104,6 +95,9 @@
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net">
+      <HintPath>..\..\libs\lucene.net\Lucene.Net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.SignalR.Core.2.4.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
@@ -127,8 +121,11 @@
     <Reference Include="Microsoft.Web.RedisSessionStateProvider, Version=2.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Web.RedisSessionStateProvider.2.2.6\lib\net40\Microsoft.Web.RedisSessionStateProvider.dll</HintPath>
     </Reference>
-    <Reference Include="mysql.data">
-      <HintPath>..\..\libs\mysql.data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.9.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MySql.Data.6.9.12\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MySql.Data.Entity.6.9.12\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -144,6 +141,15 @@
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="PanGu">
+      <HintPath>..\..\libs\lucene.net\PanGu.dll</HintPath>
+    </Reference>
+    <Reference Include="PanGu.HighLight">
+      <HintPath>..\..\libs\lucene.net\PanGu.HighLight.dll</HintPath>
+    </Reference>
+    <Reference Include="PanGu.Lucene.Analyzer">
+      <HintPath>..\..\libs\lucene.net\PanGu.Lucene.Analyzer.dll</HintPath>
     </Reference>
     <Reference Include="StackExchange.Redis.StrongName, Version=1.2.1.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
       <HintPath>..\..\packages\StackExchange.Redis.StrongName.1.2.1\lib\net45\StackExchange.Redis.StrongName.dll</HintPath>
@@ -216,6 +222,24 @@
     <Content Include="css\fpwd.css" />
     <Content Include="css\login.css" />
     <Content Include="Demos\WebSocketDemo.html" />
+    <Content Include="Dict\ChsDoubleName1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dict\ChsDoubleName2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dict\ChsSingleName.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dict\Stopword.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dict\Synonym.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dict\Wildcard.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="dist\AdminLTE\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.css" />
     <Content Include="dist\AdminLTE\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.min.css" />
     <Content Include="dist\AdminLTE\bower_components\bootstrap-colorpicker\dist\img\bootstrap-colorpicker\alpha-horizontal.png" />
@@ -6574,6 +6598,23 @@
     <Content Include="dist\AdminLTE\plugins\timepicker\bootstrap-timepicker.js" />
     <Content Include="dist\AdminLTE\plugins\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="dist\AdminLTE\plugins\timepicker\bootstrap-timepicker.min.js" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-icons_222222_256x240.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="dist\Autocomplete\css\ui-lightness\jquery-ui-1.8.17.custom.css" />
+    <Content Include="dist\Autocomplete\js\jquery-ui-1.8.17.custom.min.js" />
+    <Content Include="dist\Autocomplete\js\jquery-ui-widget-combobox.js" />
     <Content Include="dist\echarts\asset\logo.png" />
     <Content Include="dist\echarts\build\addHeader.js" />
     <Content Include="dist\echarts\build\amd2common.js" />
@@ -8342,6 +8383,9 @@
     <Content Include="dist\wangEditor\wangEditor.min.js.map" />
     <Content Include="Areas\Admin\Views\Article\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\TeacherEva\EvaResult.cshtml" />
+    <Content Include="Dict\Dict.dct">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.12.0.intellisense.js" />
     <Content Include="Demos\NotificationDemo.html" />
@@ -8440,6 +8484,7 @@
     <Compile Include="Areas\Admin\Controllers\SysMenuController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserInfoController.cs" />
     <Compile Include="Controllers\NotificationDemoController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\WidgetController.cs" />
     <Compile Include="Controllers\WSController.cs" />
     <Compile Include="DependencyRegistrar.cs" />
@@ -8462,10 +8507,24 @@
     <Compile Include="Infrastructure\CaculateScore\CaculateScore.cs" />
     <Compile Include="Infrastructure\CaculateScore\ICaculateScore.cs" />
     <Compile Include="Infrastructure\CmsUrlConstraint.cs" />
+    <Compile Include="Infrastructure\Search\KeyWordsTotalService.cs" />
+    <Compile Include="Infrastructure\Search\LuceneHelper.cs" />
+    <Compile Include="Infrastructure\Search\SearchIndexManager.cs" />
     <Compile Include="MessageHubs\NotificationHub.cs" />
     <Compile Include="MessageHubs\NotificationManager.cs" />
+    <Compile Include="Migrations\201907010805468_try.cs" />
+    <Compile Include="Migrations\201907010805468_try.Designer.cs">
+      <DependentUpon>201907010805468_try.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cms\RenderWidgetModel.cs" />
     <Compile Include="Models\Cms\WidgetModel.cs" />
+    <Compile Include="Models\SearchVM\IndexContent.cs" />
+    <Compile Include="Models\SearchVM\LuceneEnum.cs" />
+    <Compile Include="Models\SearchVM\SearchDbContext.cs" />
+    <Compile Include="Models\SearchVM\SearchDetail.cs" />
+    <Compile Include="Models\SearchVM\SearchResult.cs" />
+    <Compile Include="Models\SearchVM\SearchTotal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -8973,6 +9032,7 @@
     <Content Include="Templates\Bilibili\Views\Shared\_BiliTopNav.cshtml" />
     <Content Include="Templates\Bilibili\Areas\Admin\Views\web.config" />
     <Content Include="Templates\Bilibili\Areas\Admin\Views\Article\Page.cshtml" />
+    <Content Include="Views\Search\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -9039,6 +9099,11 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201907010805468_try.resx">
+      <DependentUpon>201907010805468_try.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

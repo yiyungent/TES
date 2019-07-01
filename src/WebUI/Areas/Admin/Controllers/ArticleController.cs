@@ -10,11 +10,15 @@ using System.Web;
 using System.Web.Mvc;
 using WebUI.Areas.Admin.Models.Common;
 using WebUI.Extensions;
+using WebUI.Infrastructure.Search;
+using WebUI.Models.SearchVM;
 
 namespace WebUI.Areas.Admin.Controllers
 {
     public class ArticleController : Controller
     {
+        private SearchDbContext db = new SearchDbContext();
+
         #region 列表
         public ActionResult Index(int pageIndex = 1, int pageSize = 6)
         {
@@ -151,6 +155,9 @@ namespace WebUI.Areas.Admin.Controllers
                     dbModel.LastUpdateTime = DateTime.Now;
 
                     Container.Instance.Resolve<ArticleService>().Create(dbModel);
+
+                    // 添加到队列-建立索引
+                    SearchIndexManager.GetInstance().AddQueue(inputModel.ID.ToString(), inputModel.Title, inputModel.Content, inputModel.PublishTime);
 
                     return Json(new { code = 1, message = "添加成功" });
                 }
